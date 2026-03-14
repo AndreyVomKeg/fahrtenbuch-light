@@ -252,7 +252,7 @@ function FormPanel({accent, title, icon, children, onSave}) {
   return (
     <div onKeyDown={handleKey} style={{
       background:C.surface,
-      border:"1px solid "+C.border,
+      border:'1px solid '+C.border,
       borderTop:`3px solid ${accent}`,
       borderRadius:8,
       padding:"22px 24px 24px",
@@ -283,7 +283,7 @@ function FormPanel({accent, title, icon, children, onSave}) {
 // FormActions — save/cancel row
 function FormActions({onSave, onCancel, accent, saveDisabled=false}) {
   return (
-    <div style={{display:"flex",gap:10,paddingTop:14,marginTop:4,borderTop:"1px solid "+C.border}}>
+    <div style={{display:"flex",gap:10,paddingTop:14,marginTop:4,borderTop:'1px solid '+C.border}}>
       <button onClick={onSave} disabled={saveDisabled}
         style={{...btnSolid(accent), opacity:saveDisabled?0.4:1, cursor:saveDisabled?"not-allowed":"pointer"}}>
         <Ico name="check" size={15} color="#fff"/>SPEICHERN
@@ -431,7 +431,7 @@ function Kennzeichen({value,size="md"}) {
   );
 }
 function SettingsBlock({children,accent=C.red}) {
-  return <div style={{background:C.surface,border:"1px solid "+C.border,borderTop:`2px solid ${accent}`,padding:"24px 28px",marginBottom:3,boxShadow:C.shadow}}>{children}</div>;
+  return <div style={{background:C.surface,border:'1px solid '+C.border,borderTop:`2px solid ${accent}`,padding:"24px 28px",marginBottom:3,boxShadow:C.shadow}}>{children}</div>;
 }
 function SettingsLabel({icon,text,sub,accent=C.muted}) {
   return (
@@ -748,13 +748,13 @@ const katLabel = {partner:"Partner", messe:"Messe", standorte:"Standort"};
             zIndex:300,maxHeight:280,overflowY:"auto"}}>
             <div onClick={()=>{onChange({zielId:"",zielName:"",kategorie:"standorte"});setOpen(false);}}
               style={{padding:"10px 12px",fontSize:14,fontFamily:SANS,
-                color:C.muted,cursor:"pointer",borderBottom:"1px solid "+C.border}}>
+                color:C.muted,cursor:"pointer",borderBottom:'1px solid '+C.border}}>
               — Fahrziel wählen —
             </div>
             {ziele.map(z=>(
               <div key={z.id} onClick={()=>{onChange({zielId:z.id,zielName:z.label,kategorie:z.kategorie});setOpen(false);}}
                 style={{padding:"10px 12px",fontSize:14,fontFamily:SANS,
-                  cursor:"pointer",borderBottom:"1px solid "+C.border,
+                  cursor:"pointer",borderBottom:'1px solid '+C.border,
                   background:z.id===value?`${accent}11`:"transparent",
                   display:"flex",alignItems:"center",gap:10}}>
                 <span style={{fontSize:13,letterSpacing:1,textTransform:"uppercase",fontWeight:700,
@@ -1235,7 +1235,7 @@ function StandortePanel({aktiv, patchAktiv, setConfirmDel, setFData, setFForm, s
         <div style={{display:"flex",gap:10,alignItems:"center",flexWrap:"wrap",marginBottom:14}}>
           <div style={{position:"relative",flex:1,minWidth:160,display:"flex",alignItems:"center"}}>
             <input value={stQ} onChange={e=>setStQ(e.target?.value ?? "")} placeholder="Standort suchen…"
-              style={{width:"100%",height:40,boxSizing:"border-box",padding:"0 34px 0 36px",border:"1px solid "+C.border,borderRadius:8,boxShadow:"0 1px 4px rgba(0,0,0,0.06)",transition:"border-color 0.15s, box-shadow 0.15s",background:"#fff",color:"#111",fontSize:14,fontFamily:SANS,outline:"none",WebkitAppearance:"none",appearance:"none"}}/>
+              style={{width:"100%",height:40,boxSizing:"border-box",padding:"0 34px 0 36px",border:'1px solid '+C.border,borderRadius:8,boxShadow:"0 1px 4px rgba(0,0,0,0.06)",transition:"border-color 0.15s, box-shadow 0.15s",background:"#fff",color:"#111",fontSize:14,fontFamily:SANS,outline:"none",WebkitAppearance:"none",appearance:"none"}}/>
             <span style={{position:"absolute",left:11,top:"50%",transform:"translateY(-50%)",pointerEvents:"none",display:"flex",alignItems:"center",lineHeight:1}}><Ico name="search" size={13} color={C.muted}/></span>
             {stQ&&<button onClick={()=>setStQ("")} style={{position:"absolute",right:8,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",cursor:"pointer",padding:2,display:"flex"}}><Ico name="close" size={13} color={C.muted}/></button>}
           </div>
@@ -1494,7 +1494,7 @@ function FahrzeugScan({onResult}) {
 function BelegVorschau({src, onRemove}) {
   return (
     <div style={{position:"relative",display:"inline-block",marginTop:4}}>
-      <img src={src} alt="Beleg" style={{maxHeight:160,maxWidth:"100%",border:"1px solid "+C.border,display:"block"}}/>
+      <img src={src} alt="Beleg" style={{maxHeight:160,maxWidth:"100%",border:'1px solid '+C.border,display:"block"}}/>
       <button onClick={onRemove} style={{position:"absolute",top:4,right:4,background:"rgba(0,0,0,0.55)",border:"none",color:"#fff",cursor:"pointer",width:24,height:24,display:"flex",alignItems:"center",justifyContent:"center",borderRadius:8}}>
         <Ico name="x" size={15} color="#fff"/>
       </button>
@@ -2716,7 +2716,7 @@ REGELN:
                     position:"absolute",top:"calc(100% + 10px)",right:0,
                     background:C.surface,
                     borderRadius:8,
-                    border:"1px solid "+C.border,
+                    border:'1px solid '+C.border,
                     boxShadow:"0 16px 48px rgba(0,0,0,0.18), 0 2px 8px rgba(0,0,0,0.08)",
                     minWidth:280,zIndex:200,overflow:"hidden",
                     animation:"modalIn 0.2s cubic-bezier(0.34,1.36,0.64,1)",
@@ -2725,7 +2725,7 @@ REGELN:
                     <div style={{
                       padding:"14px 16px 12px",
                       display:"flex",alignItems:"center",justifyContent:"space-between",
-                      borderBottom:"1px solid "+C.border,
+                      borderBottom:'1px solid '+C.border,
                     }}>
                       <div style={{display:"flex",alignItems:"center",gap:8}}>
                         <div style={{
@@ -2752,7 +2752,7 @@ REGELN:
                       return (
                         <div key={fz.id} style={{
                           padding:"12px 16px",
-                          borderBottom:"1px solid "+C.border,
+                          borderBottom:'1px solid '+C.border,
                           display:"flex",alignItems:"center",justifyContent:"space-between",gap:12,
                         }}>
                           <div>
@@ -2788,7 +2788,7 @@ REGELN:
       </header>
 
       {/* ══ TABS ══ */}
-      <div style={{background:C.surface,overflow:"hidden",borderBottom:"1px solid "+C.border}}>
+      <div style={{background:C.surface,overflow:"hidden",borderBottom:'1px solid '+C.border}}>
         <div style={{maxWidth:1200,margin:"0 auto",display:"flex",width:"100%",padding:"0 32px",boxSizing:"border-box"}}>
           {TABS.map(t=>(
             <button key={t.id} onClick={()=>{setTab(t.id);resetForms();}}
@@ -2883,7 +2883,7 @@ REGELN:
                   const ueberfaellig=x.faelligDatum&&x.faelligDatum<=today;
                   const accentFaellig=ueberfaellig?C.strafe:C.service;
                   return (
-                    <div key={x.id} style={{display:"flex",flexDirection:"column",gap:4,padding:"9px 0",borderBottom:"1px solid "+C.border}}>
+                    <div key={x.id} style={{display:"flex",flexDirection:"column",gap:4,padding:"9px 0",borderBottom:'1px solid '+C.border}}>
                       <span style={{fontSize:15,color:C.text,fontFamily:SANS,fontWeight:600}}>{x.typ}</span>
                       <div style={{display:"flex",gap:12,alignItems:"center"}}>
                         {x.faelligDatum&&(
@@ -2912,7 +2912,7 @@ REGELN:
                 {Object.entries(stats.nP).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([id,km],i)=>{
                   const p=(aktiv.partner||[]).find(x=>x.id===id);
                   return (
-                    <div key={id} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"6px 0",borderBottom:"1px solid "+C.border,fontSize:14}}>
+                    <div key={id} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"6px 0",borderBottom:'1px solid '+C.border,fontSize:14}}>
                       <span style={{color:C.text,minWidth:0,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",fontFamily:SANS}}>
                         <span style={{color:C.muted,marginRight:6}}>{i+1}.</span>{p?p.name:id}
                       </span>
@@ -2939,7 +2939,7 @@ REGELN:
               {(aktiv.fahrten||[]).length>0 ? aktiv.fahrten.slice().reverse().slice(0,5).map(f=>{
                 const ak=katAccent[f.kategorie]||C.strafe;
                 return (
-                  <div key={f.id} style={{display:"flex",alignItems:"center",gap:14,padding:"10px 0",borderBottom:"1px solid "+C.border}}>
+                  <div key={f.id} style={{display:"flex",alignItems:"center",gap:14,padding:"10px 0",borderBottom:'1px solid '+C.border}}>
                     <div style={{width:10,height:10,borderRadius:"50%",background:ak,flexShrink:0}}/>
                     <div style={{flex:1,minWidth:0}}>
                       <div style={{fontSize:15,fontWeight:700,color:C.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",fontFamily:SANS}}>{getZielName(f)}</div>
@@ -3098,14 +3098,14 @@ REGELN:
             <div style={{display:"flex",gap:10,alignItems:"center",flexWrap:"wrap",marginBottom:14}}>
               <div style={{position:"relative",flex:1,minWidth:160,display:"flex",alignItems:"center"}}>
                 <input value={fQ} onChange={e=>setFQ(e.target?.value ?? "")} placeholder="Suchen…"
-                  style={{width:"100%",height:40,boxSizing:"border-box",padding:"0 34px 0 36px",border:"1px solid "+C.border,borderRadius:8,boxShadow:"0 1px 4px rgba(0,0,0,0.06)",transition:"border-color 0.15s, box-shadow 0.15s",background:"#fff",color:"#111",fontSize:14,fontFamily:SANS,outline:"none",WebkitAppearance:"none",appearance:"none"}}/>
+                  style={{width:"100%",height:40,boxSizing:"border-box",padding:"0 34px 0 36px",border:'1px solid '+C.border,borderRadius:8,boxShadow:"0 1px 4px rgba(0,0,0,0.06)",transition:"border-color 0.15s, box-shadow 0.15s",background:"#fff",color:"#111",fontSize:14,fontFamily:SANS,outline:"none",WebkitAppearance:"none",appearance:"none"}}/>
                 <span style={{position:"absolute",left:11,top:"50%",transform:"translateY(-50%)",pointerEvents:"none",display:"flex",alignItems:"center",lineHeight:1}}><Ico name="search" size={13} color={C.muted}/></span>
                 {fQ&&<button onClick={()=>setFQ("")} style={{position:"absolute",right:8,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",cursor:"pointer",padding:2,display:"flex"}}><Ico name="close" size={13} color={C.muted}/></button>}
               </div>
               <div style={{flex:"0 0 clamp(120px,15%,170px)"}}><CustomSelect value={fMonat} onChange={setFMonat} options={[{value:"",label:"Alle Monate"},...(stats.monate||[]).map(m=>({value:m,label:m}))]} accent={C.border}/></div>
               <div style={{flex:"0 0 clamp(140px,17%,200px)"}}><CustomSelect value={fKat} onChange={setFKat} options={OPT_FAHRT_KAT_F} accent={C.border}/></div>
               {(fQ||fMonat||fKat!=="alle")&&(
-                <button style={{height:40,border:"1px solid "+C.border,borderRadius:8,background:"#fff",color:C.muted,boxShadow:"0 1px 4px rgba(0,0,0,0.06)",fontSize:14,fontFamily:SANS,padding:"0 10px",cursor:"pointer",flexShrink:0,outline:"none"}} onClick={()=>{setFQ("");setFMonat("");setFKat("alle");}}>✕ Reset</button>
+                <button style={{height:40,border:'1px solid '+C.border,borderRadius:8,background:"#fff",color:C.muted,boxShadow:"0 1px 4px rgba(0,0,0,0.06)",fontSize:14,fontFamily:SANS,padding:"0 10px",cursor:"pointer",flexShrink:0,outline:"none"}} onClick={()=>{setFQ("");setFMonat("");setFKat("alle");}}>✕ Reset</button>
               )}
             </div>
 
@@ -3277,7 +3277,7 @@ REGELN:
                     <div style={{display:"flex",gap:10,alignItems:"center",flexWrap:"wrap",marginBottom:14}}>
                       <div style={{position:"relative",flex:1,minWidth:160,display:"flex",alignItems:"center"}}>
                         <input value={pQ} onChange={e=>setPQ(e.target?.value ?? "")} placeholder="Partner suchen…"
-                          style={{width:"100%",height:40,boxSizing:"border-box",padding:"0 34px 0 36px",border:"1px solid "+C.border,borderRadius:8,boxShadow:"0 1px 4px rgba(0,0,0,0.06)",transition:"border-color 0.15s, box-shadow 0.15s",background:"#fff",color:"#111",fontSize:14,fontFamily:SANS,outline:"none",WebkitAppearance:"none",appearance:"none"}}/>
+                          style={{width:"100%",height:40,boxSizing:"border-box",padding:"0 34px 0 36px",border:'1px solid '+C.border,borderRadius:8,boxShadow:"0 1px 4px rgba(0,0,0,0.06)",transition:"border-color 0.15s, box-shadow 0.15s",background:"#fff",color:"#111",fontSize:14,fontFamily:SANS,outline:"none",WebkitAppearance:"none",appearance:"none"}}/>
                         <span style={{position:"absolute",left:11,top:"50%",transform:"translateY(-50%)",pointerEvents:"none",display:"flex",alignItems:"center",lineHeight:1}}><Ico name="search" size={13} color={C.muted}/></span>
                       </div>
                       <div style={{flex:"0 0 clamp(150px,18%,200px)"}}><CustomSelect value={pTyp} onChange={setPTyp} options={[{value:"",label:"Alle Typen"},...PARTNER_TYP_OPTS.map(t=>({value:t,label:PARTNER_TYP_LABELS[t]}))]} accent={C.border}/></div>
@@ -3483,7 +3483,7 @@ REGELN:
                     <F label="Adresse der Behörde" value={sData.adresseBehoerde||""} onChange={v=>setSData({...sData,adresseBehoerde:v})} placeholder="Straße, PLZ Ort"/>
                     <F label="Aktenzeichen (optional)" value={sData.aktenzeichen||""} onChange={v=>setSData({...sData,aktenzeichen:v})} placeholder="Az. 12345/25"/>
                     <div>
-                      <label style={{display:"flex",alignItems:"center",gap:10,cursor:"pointer",height:40,padding:"0 12px",border:"1px solid "+C.border,borderRadius:8,background:sData.bezahlt?C.strafeLight:"#FFFFFF",boxSizing:"border-box",userSelect:"none",width:"100%"}}>
+                      <label style={{display:"flex",alignItems:"center",gap:10,cursor:"pointer",height:40,padding:"0 12px",border:'1px solid '+C.border,borderRadius:8,background:sData.bezahlt?C.strafeLight:"#FFFFFF",boxSizing:"border-box",userSelect:"none",width:"100%"}}>
                         <input type="checkbox" checked={!!sData.bezahlt} onChange={e=>setSData({...sData,bezahlt:e.target.checked})}
                           style={{width:16,height:16,flexShrink:0,cursor:"pointer",
                             accentColor:C.strafe,WebkitAppearance:"checkbox",appearance:"checkbox",
@@ -3616,7 +3616,7 @@ REGELN:
                       <F label="Betrag (€)" type="number" value={svData.betrag||""} onChange={v=>setSvData({...svData,betrag:v})} placeholder="0.00" accent={C.service}/>
                       <F label="Rechnungs-Nr." value={svData.rechnungsNr||""} onChange={v=>setSvData({...svData,rechnungsNr:v})} placeholder="RE-2025-001" accent={C.service}/>
                     </FormRow>
-                    <div style={{fontSize:13,color:C.text,letterSpacing:2,textTransform:"uppercase",fontFamily:SANS,fontWeight:700,padding:"10px 0 6px",borderTop:"1px solid "+C.border,marginTop:4}}>Nächste Fälligkeit (optional)</div>
+                    <div style={{fontSize:13,color:C.text,letterSpacing:2,textTransform:"uppercase",fontFamily:SANS,fontWeight:700,padding:"10px 0 6px",borderTop:'1px solid '+C.border,marginTop:4}}>Nächste Fälligkeit (optional)</div>
                     <FormRow cols={2}>
                       <F label="Fällig bis Datum" type="date" value={svData.faelligDatum||""} onChange={v=>setSvData({...svData,faelligDatum:v})} accent={C.service}/>
                       <F label="Fällig bei KM-Stand" type="number" value={svData.faelligKm||""} onChange={v=>setSvData({...svData,faelligKm:v})} placeholder="140000" accent={C.service}/>
@@ -3728,7 +3728,7 @@ REGELN:
                     <F label="Adresse der Behörde" value={sData.adresseBehoerde||""} onChange={v=>setSData({...sData,adresseBehoerde:v})} placeholder="Straße, PLZ Ort"/>
                     <F label="Aktenzeichen (optional)" value={sData.aktenzeichen||""} onChange={v=>setSData({...sData,aktenzeichen:v})} placeholder="Az. 12345/25"/>
                     <div>
-                      <label style={{display:"flex",alignItems:"center",gap:10,cursor:"pointer",height:40,padding:"0 12px",border:"1px solid "+C.border,borderRadius:8,background:sData.bezahlt?C.strafeLight:"#FFFFFF",boxSizing:"border-box",userSelect:"none",width:"100%"}}>
+                      <label style={{display:"flex",alignItems:"center",gap:10,cursor:"pointer",height:40,padding:"0 12px",border:'1px solid '+C.border,borderRadius:8,background:sData.bezahlt?C.strafeLight:"#FFFFFF",boxSizing:"border-box",userSelect:"none",width:"100%"}}>
                         <input type="checkbox" checked={!!sData.bezahlt} onChange={e=>setSData({...sData,bezahlt:e.target.checked})} style={{width:16,height:16,flexShrink:0,cursor:"pointer",accentColor:C.strafe,WebkitAppearance:"checkbox",appearance:"checkbox",margin:0,padding:0}}/>
                         <span style={{fontSize:14,fontFamily:SANS,fontWeight:700,letterSpacing:1.5,textTransform:"uppercase",color:sData.bezahlt?C.strafe:C.textSoft}}>{sData.bezahlt?<><Ico name="check" size={13} color={C.strafe} style={{marginRight:4}}/>{" Bereits bezahlt"}</>:"Noch offen"}</span>
                       </label>
@@ -3805,7 +3805,7 @@ REGELN:
             whiteSpace:"normal",
             boxSizing:"border-box",
           };
-          const SEP  = {borderRight:"1px solid "+C.border};
+          const SEP  = {borderRight:'1px solid '+C.border};
           const SEP2 = {borderRight:`2px solid ${C.borderHi}`};
 
           // Kopfzeilen-Stil
@@ -3996,7 +3996,7 @@ REGELN:
                 <div style={{
                   display:"flex",alignItems:"center",gap:8,
                   padding:"8px 12px",borderRadius:8,background:C.surfaceAlt,
-                  border:"1px solid "+C.border,marginBottom:16,
+                  border:'1px solid '+C.border,marginBottom:16,
                 }}>
                   <Ico name="fileText" size={13} color={C.muted}/>
                   <span style={{fontSize:14,color:C.muted,fontFamily:SANS}}>
@@ -4006,7 +4006,7 @@ REGELN:
                 <textarea readOnly value={buildCsv()}
                   style={{
                     width:"100%",height:150,fontFamily:"'Courier New',monospace",fontSize:14,
-                    background:C.bg,border:"1px solid "+C.border,borderRadius:8,
+                    background:C.bg,border:'1px solid '+C.border,borderRadius:8,
                     padding:"10px 12px",resize:"none",boxSizing:"border-box",
                     color:C.textSoft,lineHeight:1.6,outline:"none",
                   }}
@@ -4045,7 +4045,7 @@ REGELN:
             {/* Toolbar */}
             <div style={{display:"flex",justifyContent:"flex-end",gap:8,marginBottom:14}}>
               <button onClick={()=>{setCopied(false);setCsvModal(true);}}
-                style={{height:36,border:"1px solid "+C.border,borderRadius:8,background:"transparent",color:C.text,
+                style={{height:36,border:'1px solid '+C.border,borderRadius:8,background:"transparent",color:C.text,
                   fontSize:14,fontFamily:SANS,fontWeight:700,letterSpacing:2,
                   textTransform:"uppercase",padding:"0 14px",cursor:"pointer",display:"flex",alignItems:"center",gap:6}}>
                 <Ico name="copy" size={13} color={C.muted}/> CSV
@@ -4071,7 +4071,7 @@ REGELN:
                 <div className="print-topbar" style={{
                   position:"sticky",top:0,
                   background:C.surface,
-                  borderBottom:"1px solid "+C.border,
+                  borderBottom:'1px solid '+C.border,
                   height:58,zIndex:10,
                   boxShadow:"0 1px 8px rgba(0,0,0,0.08)",
                 }}>
@@ -4127,7 +4127,7 @@ REGELN:
                 </div>
                 {/* Content — this is what gets printed */}
                 <div className="print-content" style={{padding:"24px 20px",background:"#fff",fontFamily:SANS,maxWidth:1200,margin:"0 auto"}}>
-                  <div className="print-header" style={{marginBottom:16,paddingBottom:12,borderBottom:"1px solid "+C.border}}>
+                  <div className="print-header" style={{marginBottom:16,paddingBottom:12,borderBottom:'1px solid '+C.border}}>
                     <h1 style={{fontSize:16,fontWeight:800,color:C.text,fontFamily:SANS,letterSpacing:-0.3,marginBottom:4,margin:"0 0 4px 0"}}>
                       Fahrtenbuch – {aktiv.kennzeichen||""} {aktiv.marke||""} {aktiv.modell||""}
                     </h1>
@@ -4203,7 +4203,7 @@ REGELN:
                   </div>
                   {/* Footer note for print */}
                   <div className="print-footer-note" style={{marginTop:14,fontSize:13,color:C.muted,fontFamily:SANS,
-                    textAlign:"right",borderTop:"1px solid "+C.border,paddingTop:8}}>
+                    textAlign:"right",borderTop:'1px solid '+C.border,paddingTop:8}}>
                     Fahrtenbuch erstellt am {new Date().toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit",year:"numeric"})}
                     {" "}· Fahrer: {aktiv.fahrer||"—"}
                     {" "}· Kfz: {aktiv.kennzeichen||""} {aktiv.marke||""} {aktiv.modell||""}
@@ -4261,7 +4261,7 @@ REGELN:
 
                 return (
                   <Row key={f.id} style={{
-                    borderBottom:"1px solid "+C.border,
+                    borderBottom:'1px solid '+C.border,
                     borderLeft:`2px solid ${acc}`,
                     background: rowBg,
                   }}>
@@ -4521,7 +4521,7 @@ REGELN:
                 onClick={()=>setChatInput(cmd)}
                 style={{
                   fontSize:13, padding:"7px 4px", textAlign:"center",
-                  background:C.surface, border:"1px solid "+C.border,
+                  background:C.surface, border:'1px solid '+C.border,
                   cursor:"pointer", color:C.text, letterSpacing:0.3,
                   fontFamily:SANS, lineHeight:1.4,
                   display:"flex", flexDirection:"column", alignItems:"center", gap:4,
@@ -4529,7 +4529,7 @@ REGELN:
                   boxShadow:"0 2px 6px rgba(0,0,0,0.09), 0 1px 2px rgba(0,0,0,0.06)",
                   borderRadius:8,
                 }}
-                onMouseEnter={e=>{e.currentTarget.style.background=C.euBluePale;e.currentTarget.style.borderColor=C.euBlue;e.currentTarget.style.color=C.euBlue;e.currentTarget.style.boxShadow={"0 4px 10px "+C.euBlue+"26"};}}
+                onMouseEnter={e=>{e.currentTarget.style.background=C.euBluePale;e.currentTarget.style.borderColor=C.euBlue;e.currentTarget.style.color=C.euBlue;e.currentTarget.style.boxShadow={'0 4px 10px '+C.euBlue+'26'};}}
                 onMouseLeave={e=>{e.currentTarget.style.background=C.surface;e.currentTarget.style.borderColor=C.border;e.currentTarget.style.color=C.text;e.currentTarget.style.boxShadow="0 2px 6px rgba(0,0,0,0.09), 0 1px 2px rgba(0,0,0,0.06)";}}
               >
                 {ico}
@@ -4556,7 +4556,7 @@ REGELN:
                 }}>
                   {hasImg && (
                     <div style={{
-                      background:C.steelLight, border:"1px solid "+C.border,
+                      background:C.steelLight, border:'1px solid '+C.border,
                       padding:"6px 10px", marginBottom:4,
                       fontSize:14, color:C.muted, display:"flex", alignItems:"center", gap:6,
                       alignSelf: isUser ? "flex-start" : "flex-end",
