@@ -3871,7 +3871,8 @@ REGELN:
   }
       html, body { height: auto !important; overflow: visible !important; margin: 0 !important; padding: 0 !important; }
       body *:not(:has(.fahrt-print-area)):not(.fahrt-print-area):not(.fahrt-print-area *):not(style):not(script):not(link) { display: none !important; }
-      html, body, #root, #root > * { display: block !important; }
+      html, body, #root, #root > *:not(style) { display: block !important; }
+      style { display: none !important; }
       .fahrt-print-area { display: block !important; position: static !important; width: 100% !important; left: auto !important; top: auto !important; }
   .fahrt-print-area {
     display: block !important;
