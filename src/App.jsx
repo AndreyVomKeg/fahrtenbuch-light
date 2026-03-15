@@ -4164,6 +4164,22 @@ REGELN:
                     <p style={{fontSize:14,color:C.muted,fontFamily:SANS,margin:0}}>
                       Fahrer: {aktiv.fahrer||"—"} · Standort: {aktiv.standort?.name||"—"} · Erstellt: {new Date().toLocaleDateString("de-DE")} · {gefFahrten.length} Einträge
                     </p>
+                                  {/* Fahrzeugdaten */}
+              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"4px 24px",marginTop:8,fontSize:13,color:C.muted,fontFamily:SANS}}>
+                <div><strong>Halter:</strong> {aktiv.halterName||"\u2014"}{aktiv.halterAnschrift?`, ${aktiv.halterAnschrift}`:""}</div>
+                <div><strong>Fahrgestell-Nr. (VIN):</strong> {aktiv.fahrgestellNr||"\u2014"}</div>
+                <div><strong>KFZ-Brief Nr.:</strong> {aktiv.kfzBriefNr||"\u2014"}</div>
+                <div><strong>Kraftstoff:</strong> {aktiv.kraftstoff||"\u2014"}</div>
+              </div>
+              {/* Zeitraum + KM-Stand */}
+              {gefFahrten.length>0&&(
+                <div style={{display:"flex",gap:24,marginTop:8,fontSize:13,color:C.muted,fontFamily:SANS,flexWrap:"wrap"}}>
+                  <div><strong>Zeitraum:</strong> {formatDatum(gefFahrten[gefFahrten.length-1]?.datum)} \u2013 {formatDatum(gefFahrten[0]?.datum)}</div>
+                  <div><strong>KM-Stand Anfang:</strong> {gefFahrten[gefFahrten.length-1]?.kmStart||aktiv.kmStandInitial||"\u2014"}</div>
+                  <div><strong>KM-Stand Ende:</strong> {gefFahrten[0]?.kmEnd||"\u2014"}</div>
+                  <div><strong>Gefahrene km:</strong> {(kmGesch+kmWohn+kmPrivat).toFixed(1)}</div>
+                </div>
+              )}
                   </div>
                   <div style={{overflowX:"auto"}}>
                     <table style={{width:"100%",borderCollapse:"collapse",fontSize:14,fontFamily:SANS,border:"1px solid #bbb"}}>
