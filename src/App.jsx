@@ -4538,7 +4538,7 @@ REGELN:
                   boxShadow:"0 2px 6px rgba(0,0,0,0.09), 0 1px 2px rgba(0,0,0,0.06)",
                   borderRadius:8,
                 }}
-                onMouseEnter={e=>{e.currentTarget.style.background=C.euBluePale;e.currentTarget.style.borderColor=C.euBlue;e.currentTarget.style.color=C.euBlue;e.currentTarget.style.boxShadow={"0 4px 10px #00339926"};}}
+                onMouseEnter={e=>{e.currentTarget.style.background=C.euBluePale;e.currentTarget.style.borderColor=C.euBlue;e.currentTarget.style.color=C.euBlue;e.currentTarget.style.boxShadow="0 4px 10px #00339926";}}
                 onMouseLeave={e=>{e.currentTarget.style.background=C.surface;e.currentTarget.style.borderColor=C.border;e.currentTarget.style.color=C.text;e.currentTarget.style.boxShadow="0 2px 6px rgba(0,0,0,0.09), 0 1px 2px rgba(0,0,0,0.06)";}}
               >
                 {ico}
