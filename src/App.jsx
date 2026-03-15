@@ -4345,7 +4345,7 @@ REGELN:
                   return (
                     <div key={fz.id} style={{marginBottom:2}}>
                       <div onClick={()=>{if(!isEditing){setState(prev=>({...prev,aktivId:fz.id}));resetForms();}}}
-                        style={{background:isActive?C.surface:C.surfaceAlt,borderLeft:`2px solid ${fzAcc}`,padding:"12px 28px 12px 24px",display:"flex",alignItems:"center",gap:14,cursor:"pointer",transition:"all 0.15s"}}>
+                        style={{background:isActive?C.surface:"#FFFFFF"Alt,borderLeft:`2px solid ${fzAcc}`,padding:"12px 28px 12px 24px",display:"flex",alignItems:"center",gap:14,cursor:"pointer",transition:"all 0.15s"}}>
                         <Kennzeichen value={fz.kennzeichen||"—"} size="lg"/>
                         <div style={{flex:1,minWidth:0}}>
                           <div style={{fontSize:16,fontWeight:700,color:C.text,fontFamily:SANS}}>{label}</div>
@@ -4529,7 +4529,7 @@ REGELN:
                   boxShadow:"0 2px 6px rgba(0,0,0,0.09), 0 1px 2px rgba(0,0,0,0.06)",
                   borderRadius:8,
                 }}
-                onMouseEnter={e=>{e.currentTarget.style.background=C.euBluePale;e.currentTarget.style.borderColor=C.euBlue;e.currentTarget.style.color=C.euBlue;e.currentTarget.style.boxShadow=`0 4px 10px ${C.euBlue}26`};}}
+                onMouseEnter={e=>{e.currentTarget.style.background=C.euBluePale;e.currentTarget.style.borderColor=C.euBlue;e.currentTarget.style.color=C.euBlue;e.currentTarget.style.boxShadow={`0 4px 10px ${C.euBlue}26`};}}
                 onMouseLeave={e=>{e.currentTarget.style.background=C.surface;e.currentTarget.style.borderColor=C.border;e.currentTarget.style.color=C.text;e.currentTarget.style.boxShadow="0 2px 6px rgba(0,0,0,0.09), 0 1px 2px rgba(0,0,0,0.06)";}}
               >
                 {ico}
