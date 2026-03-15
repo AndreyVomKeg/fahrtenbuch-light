@@ -4345,7 +4345,7 @@ REGELN:
                   return (
                     <div key={fz.id} style={{marginBottom:2}}>
                       <div onClick={()=>{if(!isEditing){setState(prev=>({...prev,aktivId:fz.id}));resetForms();}}}
-                        style={{background:isActive?C.surface:"#FFFFFF"Alt,borderLeft:`2px solid ${fzAcc}`,padding:"12px 28px 12px 24px",display:"flex",alignItems:"center",gap:14,cursor:"pointer",transition:"all 0.15s"}}>
+                        style={{background:isActive?C.surface:C.surfaceAlt,borderLeft:`2px solid ${fzAcc}`,padding:"12px 28px 12px 24px",display:"flex",alignItems:"center",gap:14,cursor:"pointer",transition:"all 0.15s"}}>
                         <Kennzeichen value={fz.kennzeichen||"—"} size="lg"/>
                         <div style={{flex:1,minWidth:0}}>
                           <div style={{fontSize:16,fontWeight:700,color:C.text,fontFamily:SANS}}>{label}</div>
