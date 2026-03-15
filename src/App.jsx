@@ -3871,6 +3871,10 @@ REGELN:
   }
   body > *:not(#root) { display: none !important; }
     #root { display: block !important; }
+        #root > *:not(.fahrt-print-area) { display: none !important; }
+    .fahrt-print-area .print-topbar { display: none !important; }
+    #root > script, #root > style { display: none !important; }
+        [style*="position: fixed"], [style*="position:fixed"] { display: none !important; }
   .fahrt-print-area {
     display: block !important;
     position: static !important;
