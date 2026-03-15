@@ -1,4 +1,4 @@
-// FahrtenbuchLight v39 - 1773159293
+// FahrtenbuchLight v40 - 1773159293
 import React, { useState, useMemo, useEffect, useRef } from "react";
 
 
@@ -3869,7 +3869,8 @@ REGELN:
     size: A4 landscape;
     margin: 10mm 8mm 12mm 8mm;
   }
-  body > * { display: none !important; }
+  body > *:not(#root) { display: none !important; }
+    #root { display: block !important; }
   .fahrt-print-area {
     display: block !important;
     position: fixed !important;
