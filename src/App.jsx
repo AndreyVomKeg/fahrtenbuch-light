@@ -3869,13 +3869,10 @@ REGELN:
     size: A4 landscape;
     margin: 10mm 8mm 12mm 8mm;
   }
-      html, body { height: auto !important; overflow: visible !important; }
-      body > *:not(#root) { display: none !important; }
-      #root > *:not(div):not(style):not(script) { display: none !important; }
-      #root > div > *:not(.fahrt-print-area):not(style):not(script) { display: none !important; }
-      #root > div > div > *:not(.fahrt-print-area):not(style):not(script) { display: none !important; }
-      .fahrt-print-area .print-topbar { display: none !important; }
-      .fahrt-print-area { position: absolute !important; left: 0 !important; top: 0 !important; width: 100% !important; }
+      html, body { height: auto !important; overflow: visible !important; margin: 0 !important; padding: 0 !important; }
+      body *:not(:has(.fahrt-print-area)):not(.fahrt-print-area):not(.fahrt-print-area *):not(style):not(script):not(link) { display: none !important; }
+      html, body, #root, #root > * { display: block !important; }
+      .fahrt-print-area { display: block !important; position: static !important; width: 100% !important; left: auto !important; top: auto !important; }
   .fahrt-print-area {
     display: block !important;
   
