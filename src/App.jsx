@@ -2239,6 +2239,27 @@ export default function FahrtenbuchLight() {
     setConfirmDel(null);
   };
 
+
+    // ── Missing functions: doExport, del, toggleBezahlt ──
+  const doExport = () => {
+    const data = {_version:2, fahrzeuge:state.fahrzeuge, aktivId:state.aktivId};
+    const blob = new Blob([JSON.stringify(data,null,2)], {type:"application/json"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `fahrtenbuch_${new Date().toISOString().slice(0,10)}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+  const del = (type, id) => {
+    const map = {fahrt:"fahrten",partner:"partner",messe:"messen",tanke:"tankstellen",strafe:"strafen",waesche:"waesche",service:"services",standort:"standorteExtra"};
+    const key = map[type];
+    if(key) patchAktiv({[key]:(aktiv[key]||[]).filter(x=>x.id!==id)});
+  };
+  const toggleBezahlt = (id) => {
+    patchAktiv({strafen:(aktiv.strafen||[]).map(s=>s.id===id?{...s,bezahlt:!s.bezahlt}:s)});
+  };
+  const setImportOk = setIOk;
   // ── KI-Assistent: sendChat ─────────────────────────────────────────────────
   const CHAT_TOOLS = [
     {
