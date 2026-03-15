@@ -159,6 +159,15 @@ const makeFahrzeug = (idx=0) => ({
   waesche:[], services:[], fahrten:[],
 });
 
+
+// ─── EMPTY ENTRY FACTORIES ─────────────────────────────────────────────────
+const E_F = () => ({datum:"",zeitStr:"",kategorie:"partner",zielId:"",zielName:"",km:"",dauerMin:"",rueckfahrt:false,kmTyp:"geschaeftlich",kmStart:"",kmEnd:"",notiz:"",belegFoto:""});
+const E_P = () => ({name:"",adresse:"",telefon:"",email:"",typ:"kunde",kmVonStandort:"",notiz:""});
+const E_M = () => ({name:"",adresse:"",datum:"",partnerId:"",kmVonStandort:"",notiz:""});
+const E_T = () => ({datum:"",uhrzeit:"",stationName:"",adresse:"",menge:"",preisProLiter:"",gesamtbetrag:"",kraftstoff:"Diesel",kmStand:"",bonNr:"",zahlungsart:"",kmVonStandort:"",notiz:"",belegFoto:""});
+const E_S = () => ({datum:"",typ:"",betrag:"",ort:"",behoerde:"",adresseBehoerde:"",aktenzeichen:"",punkte:"0",faellig:"",bezahlt:false,notiz:"",belegFoto:""});
+const E_W = () => ({datum:"",uhrzeit:"",typ:"Außenwäsche",name:"",adresse:"",betrag:"",zahlungsart:"",kmVonStandort:"",notiz:"",belegFoto:""});
+const E_SV = () => ({datum:"",typ:"",werkstatt:"",adresse:"",kmStand:"",betrag:"",rechnungsNr:"",faelligKm:"",faelligDatum:"",zahlungsart:"",kmVonStandort:"",notiz:"",belegFoto:""});
 // ─── BASE STYLES ──────────────────────────────────────────────────────────────
 // height:40 + boxSizing:border-box унифицирует все поля
 const inp = {
