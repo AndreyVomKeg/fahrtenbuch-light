@@ -5,7 +5,7 @@ import React, { useState, useMemo, useEffect, useRef } from "react";
 const C = {
   bg:"#F4F4F0", surface:"#FFFFFF", surfaceAlt:"#F9F9F7",
   border:"#DDDDD8", borderHi:"#BBBBBB",
-  red:"#B30000",   redLight:"#F5E6E6",
+  red:"#B30000",   redLight:"#f5e6e6",
   gold:"#A07800",  goldLight:"#FFF3D6",
   steel:"#3A4A5A", steelMid:"#555555",
   muted:"#666666", text:"#111111", textSoft:"#333333",
@@ -172,8 +172,8 @@ const E_SV = () => ({datum:"",typ:"",werkstatt:"",adresse:"",kmStand:"",betrag:"
 // height:40 + boxSizing:border-box унифицирует все поля
 const inp = {
   display:"block", width:"100%", height:40, boxSizing:"border-box",
-  padding:"0 14px", background:"#FFFFFF",
-  border:"1px solid #DDDDD8", outline:"none",
+  padding:"0 14px", background:C.surface,
+  border:`1px solid ${C.border}`, outline:"none",
   fontSize:14, fontFamily:SANS,
   color:C.text, transition:"border-color 0.15s, box-shadow 0.15s",
   WebkitAppearance:"none", appearance:"none",
@@ -219,7 +219,7 @@ function IcoBtn({color=C.muted, size=16, icon, onClick, title}) {
 
 // ─── FORM PRIMITIVES ──────────────────────────────────────────────────────────
 // F — input field
-function F({label, value, onChange, type="text", placeholder="", accent="#B30000"}) {
+function F({label, value, onChange, type="text", placeholder="", accent=C.red}) {
   const [focus, setFocus] = useState(false);
   return (
     <div style={{paddingTop:14}}>
@@ -229,7 +229,7 @@ function F({label, value, onChange, type="text", placeholder="", accent="#B30000
           type={type} value={value} placeholder={placeholder}
           onChange={e=>onChange(e.target?.value ?? "")}
           onFocus={()=>setFocus(true)} onBlur={()=>setFocus(false)}
-          style={{...inp, borderColor:focus?accent:"#DDDDD8", background:"#FFFFFF"}}
+          style={{...inp, borderColor:focus?accent:"#DDDDD8", background:C.surface}}
         />
       </div>
     </div>
@@ -1621,18 +1621,18 @@ class ErrorBoundary extends React.Component {
   render() {
     if(this.state.error) {
       return (
-        <div style={{minHeight:"100vh",background:"#F4F4F0",display:"flex",alignItems:"center",justifyContent:"center",fontFamily:"'Inter',sans-serif"}}>
-          <div style={{background:"#fff",border:"1px solid #DDDDD8",borderTop:"3px solid #B30000",padding:"40px 48px",maxWidth:480,textAlign:"center"}}>
+        <div style={{minHeight:"100vh",background:C.bg,display:"flex",alignItems:"center",justifyContent:"center",fontFamily:"'Inter',sans-serif"}}>
+          <div style={{background:"#fff",border:`1px solid ${C.border}`,borderTop:`3px solid ${C.red}`,padding:"40px 48px",maxWidth:480,textAlign:"center"}}>
             <div style={{fontSize:32,marginBottom:16}}>⚠️</div>
             <div style={{fontSize:18,fontWeight:700,color:"#111",marginBottom:8}}>Anwendungsfehler</div>
             <div style={{fontSize:14,color:"#666",marginBottom:24,lineHeight:1.6}}>
               Ein unerwarteter Fehler ist aufgetreten.<br/>Ihre Daten sind in localStorage gesichert.
             </div>
-            <div style={{fontSize:11,color:"#999",background:"#F4F4F0",padding:"8px 12px",marginBottom:24,textAlign:"left",fontFamily:"monospace",wordBreak:"break-all"}}>
+            <div style={{fontSize:11,color:C.muted,background:C.bg,padding:"8px 12px",marginBottom:24,textAlign:"left",fontFamily:"monospace",wordBreak:"break-all"}}>
               {this.state.error?.message}
             </div>
             <button onClick={()=>window.location.reload()}
-              style={{padding:"10px 28px",background:"#B30000",color:"#fff",border:"none",cursor:"pointer",fontSize:14,fontWeight:700,letterSpacing:1}}>
+              style={{padding:"10px 28px",background:C.red,color:"#fff",border:"none",cursor:"pointer",fontSize:14,fontWeight:700,letterSpacing:1}}>
               Neu laden
             </button>
           </div>
@@ -4207,9 +4207,9 @@ REGELN:
                         })}
                       </tbody>
                       <tfoot>
-                        <tr style={{borderTop:"2px solid #111",background:"#f5e6e6"}}>
-                          <td colSpan={6} style={{padding:"6px",fontSize:14,textAlign:"right",fontWeight:700,color:"#B30000"}}>SUMME:</td>
-                          <td style={{padding:"6px",textAlign:"right",fontWeight:700,color:"#B30000"}}>{kmGesch.toFixed(0)}</td>
+                        <tr style={{borderTop:"2px solid #111",background:C.redLight}}>
+                          <td colSpan={6} style={{padding:"6px",fontSize:14,textAlign:"right",fontWeight:700,color:C.red}}>SUMME:</td>
+                          <td style={{padding:"6px",textAlign:"right",fontWeight:700,color:C.red}}>{kmGesch.toFixed(0)}</td>
                           <td style={{padding:"6px",textAlign:"right",fontWeight:700,color:"#1A4A8A"}}>{kmWohn.toFixed(0)}</td>
                           <td style={{padding:"6px",textAlign:"right",fontWeight:700,color:"#666"}}>{kmPrivat.toFixed(0)}</td>
                           <td colSpan={2}></td>
@@ -4220,7 +4220,7 @@ REGELN:
                   {/* Summary row */}
                   <div className="print-summary" style={{display:"flex",gap:24,marginTop:12,flexWrap:"wrap"}}>
                     {[
-                      {label:"Geschäftlich",km:kmGesch,color:"#B30000"},
+                      {label:"Geschäftlich",km:kmGesch,color:C.red},
                       {label:"Wohnung/Arbeit",km:kmWohn,color:"#1A4A8A"},
                       {label:"Privat",km:kmPrivat,color:"#666"},
                       {label:"Gesamt",km:kmGesch+kmWohn+kmPrivat,color:"#111"},
@@ -4368,7 +4368,7 @@ REGELN:
             <SettingsBlock accent={acc}>
               <SettingsLabel icon="car" text="FAHRZEUGE / FUHRPARK" accent={C.muted}/>
               <div style={{marginBottom:16,marginLeft:-28,marginRight:-28}}>
-                {state.fahrzeuge.map(fz=>{
+                {(state.fahrzeuge||[]).map(fz=>{
                   const isActive=fz.id===state.aktivId, isEditing=editFzId===fz.id;
                   const fzAcc=fz.farbe||C.steel;
                   const label=[fz.marke,fz.modell].filter(Boolean).join(" ")||fz.kennzeichen||"—";
@@ -4824,7 +4824,7 @@ REGELN:
                           }}>{item.ico}</div>
                           <div>
                             <div style={{fontSize:15, fontWeight:700, color:"#111", letterSpacing:0.3}}>{item.label}</div>
-                            <div style={{fontSize:13, color:"#999", marginTop:1, letterSpacing:0.5}}>{item.hint}</div>
+                            <div style={{fontSize:13, color:C.muted, marginTop:1, letterSpacing:0.5}}>{item.hint}</div>
                           </div>
                         </button>
                       ))}
