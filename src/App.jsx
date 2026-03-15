@@ -4086,7 +4086,7 @@ REGELN:
                   textTransform:"uppercase",padding:"0 14px",cursor:"pointer",display:"flex",alignItems:"center",gap:6}}>
                 <Ico name="fileText" size={15} color={C.sheetsGreen}/> SHEETS
               </button>
-              <button onClick={()=>setPrintPreview(true)}
+              <button onClick={()=>{document.title=`Fahrtenbuch_${(aktiv.kennzeichen||"").replace(/\s+/g,"_")}_${aktiv.marke||""}_${aktiv.modell||""}`.replace(/_+$/,"");setPrintPreview(true);}}
                 style={{height:36,border:`1px solid ${acc}`,borderRadius:8,background:acc,color:"#fff",
                   fontSize:14,fontFamily:SANS,fontWeight:700,letterSpacing:2,
                   textTransform:"uppercase",padding:"0 14px",cursor:"pointer",display:"flex",alignItems:"center",gap:6}}>
@@ -4375,7 +4375,7 @@ REGELN:
                   return (
                     <div key={fz.id} style={{marginBottom:2}}>
                       <div onClick={()=>{if(!isEditing){setState(prev=>({...prev,aktivId:fz.id}));resetForms();}}}
-                        style={{background:isActive?C.surface:"#FFFFFF"Alt,borderLeft:`2px solid ${fzAcc}`,padding:"12px 28px 12px 24px",display:"flex",alignItems:"center",gap:14,cursor:"pointer",transition:"all 0.15s"}}>
+                        style={{background:isActive?C.surface:C.surfaceAlt,borderLeft:`2px solid ${fzAcc}`,padding:"12px 28px 12px 24px",display:"flex",alignItems:"center",gap:14,cursor:"pointer",transition:"all 0.15s"}}>
                         <Kennzeichen value={fz.kennzeichen||"—"} size="lg"/>
                         <div style={{flex:1,minWidth:0}}>
                           <div style={{fontSize:16,fontWeight:700,color:C.text,fontFamily:SANS}}>{label}</div>
