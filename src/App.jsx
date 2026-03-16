@@ -1,11 +1,11 @@
-// FahrtenbuchLight v47 - 1773159294
+// FahrtenbuchLight v41
 import React, { useState, useMemo, useEffect, useRef } from "react";
 
 
 const C = {
   bg:"#F4F4F0", surface:"#FFFFFF", surfaceAlt:"#F9F9F7",
   border:"#DDDDD8", borderHi:"#BBBBBB",
-  red:"#B30000",   redLight:"#f5e6e6",
+  red:"#B30000",   redLight:"#F5E6E6",
   gold:"#A07800",  goldLight:"#FFF3D6",
   steel:"#3A4A5A", steelMid:"#555555",
   muted:"#666666", text:"#111111", textSoft:"#333333",
@@ -14,6 +14,7 @@ const C = {
   tank:"#1A6A3A",  tankLight:"#E6F5ED",
   wasch:"#0E7490", waschLight:"#E0F9FF",
   service:"#3A4A5A", serviceLight:"#E8EDF2",
+  park:"#7A5A1A",    parkLight:"#FFF0D0",
   standort:"#5A3A8A", standortLight:"#EEE6F5",
   shadow:"0 1px 4px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.04)",
   shadowMd:"0 2px 8px rgba(0,0,0,0.10), 0 8px 32px rgba(0,0,0,0.06)",
@@ -36,7 +37,6 @@ const FS = {
 
 // ─── UTILS ───────────────────────────────────────────────────────────────────
 const safeFloat = (v, fallback=0) => { const n=parseFloat(v); return isNaN(n)?fallback:n; };
-const safeInt   = (v, fallback=0) => { const n=parseInt(v);   return isNaN(n)?fallback:n; };
 
 const FARBEN = ["#1A1A1A","#8A9090","#B30000","#3A4A5A","#8A6800","#2A5A8A","#4A7A3A","#6A3A7A","#7A3800","#1A5A6A"];
 
@@ -79,7 +79,7 @@ function Ico({ name, size=16, color="currentColor", style={} }) {
     car:(<><path d="M5 17H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1l2-4h12l2 4h1a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/><line x1="9" y1="17" x2="15" y2="17"/></>),
     road:(<><path d="M3 17l3-14h12l3 14"/><line x1="12" y1="3" x2="12" y2="17"/><line x1="6" y1="10" x2="18" y2="10"/></>),
     users:(<><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></>),
-    clock:(<><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></>),
+    clock:(<><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10"/><path d="M12 6v6l4 2"/><path d="M17 3l2 2-2 2"/><path d="M21 3l-2 2 2 2"/></>),
     settings:(<><path d="M12 9a3 3 0 1 0 0.001 0"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></>),
     mapPin:(<><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></>),
     phone:(<><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.77 2.7h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.4a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></>),
@@ -100,7 +100,13 @@ function Ico({ name, size=16, color="currentColor", style={} }) {
     zap:<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>,
     fileText:(<><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></>),
     copy:(<><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></>),
-    droplet:(<><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></>),
+    droplet:(<><path d="M3 22V6a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v16"/><path d="M14 10h2a2 2 0 0 1 2 2v3a1 1 0 0 0 2 0v-6l-3-3"/><line x1="3" y1="22" x2="14" y2="22"/><line x1="7" y1="10" x2="10" y2="10"/></>),
+    wasch:  (<><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></>),
+    home:   (<><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></>),
+    book:   (<><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></>),
+    car2:   (<><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></>),
+    park:   (<><rect x="2" y="2" width="20" height="20" rx="3"/><path d="M9 16V8h4.5a2.5 2.5 0 0 1 0 5H9" strokeWidth="2.2"/></>),
+    tool:   (<><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></>) ,
   };
   const sw = name==="check"||name==="plus"?"2.5":name==="arrowRight"?"2":name==="chevron"?"2.5":"1.8";
   return (
@@ -116,7 +122,6 @@ function Ico({ name, size=16, color="currentColor", style={} }) {
 const uid = () => Math.random().toString(36).slice(2,9);
 const sumKm = (arr) => (arr||[]).reduce((s,f)=>s+(parseFloat(f.km)||0),0);
 const formatDatum = (iso) => !iso?"—":new Date(iso).toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit",year:"numeric"});
-const formatZeit = (min) => { if(!min) return "—"; const h=Math.floor(min/60),m=min%60; return h>0?`${h}h ${m>0?m+"min":""}`:`${m}min`; };
 
 const PARTNER_TYP_COLORS = {kunde:"#8A1A1A",lieferant:"#B85C00",steuerberater:"#1A4A8A",anwalt:"#4A1A7A",sonstiges:"#555555"};
 const PARTNER_TYP_LABELS = {kunde:"Kunde",lieferant:"Lieferant",steuerberater:"Steuerberater",anwalt:"Anwalt",sonstiges:"Sonstiges"};
@@ -128,6 +133,47 @@ const OPT_ZAHLUNG_SV  = ["EC-Karte","Kreditkarte","Bar","Überweisung"].map(v=>(
 const OPT_ZAHLUNG_W   = ["EC-Karte","Kreditkarte","Bar","App / Mobile"].map(v=>({value:v,label:v}));
 const OPT_SERVICE_TYP = ["Ölwechsel","Reifenwechsel Sommer","Reifenwechsel Winter","TÜV / HU","AU / Abgasuntersuchung","Inspektion","Bremsen","Reparatur","Karosserie","Sonstiges"].map(v=>({value:v,label:v}));
 const OPT_WASCHE_TYP  = ["Außenwäsche","Innenreinigung","Komplettreinigung","Handwäsche","SB-Waschanlage","Polieren / Versiegeln"].map(v=>({value:v,label:v}));
+const OPT_STRAFE_TYP = [
+  // Geschwindigkeit
+  "Geschwindigkeitsüberschreitung (bis 10 km/h)",
+  "Geschwindigkeitsüberschreitung (11–15 km/h)",
+  "Geschwindigkeitsüberschreitung (16–20 km/h)",
+  "Geschwindigkeitsüberschreitung (21–25 km/h)",
+  "Geschwindigkeitsüberschreitung (26–30 km/h)",
+  "Geschwindigkeitsüberschreitung (über 30 km/h)",
+  // Parken
+  "Parken im Halteverbot",
+  "Parken auf Gehweg / Radweg",
+  "Parken in zweiter Reihe",
+  "Parken vor Einfahrt / Ausfahrt",
+  "Parken ohne Parkschein / abgelaufen",
+  "Parken auf Behindertenparkplatz",
+  "Parken an Bushaltestelle",
+  // Rotlicht / Vorfahrt
+  "Rotlichtverstoß (unter 1 Sekunde)",
+  "Rotlichtverstoß (über 1 Sekunde)",
+  "Vorfahrtverletzung",
+  "Missachtung Stoppschild",
+  // Handy / Ablenkung
+  "Handynutzung am Steuer",
+  "Ablenkung durch Handy / Tablet",
+  // Sicherheit
+  "Gurt nicht angelegt",
+  "Kinderrückhaltesystem fehlt",
+  "Abstandsunterschreitung",
+  "Überholen trotz Verbot",
+  "Fahren unter Alkohol (bis 0,5 ‰)",
+  "Fahren unter Alkohol (0,5–1,09 ‰)",
+  "Fahren unter Alkohol (ab 1,1 ‰)",
+  // Technisch / Verwaltung
+  "Fahren ohne Hauptuntersuchung (TÜV)",
+  "Fahren ohne gültige Versicherung",
+  "Kennzeichen unleserlich / fehlt",
+  "Ladungssicherung mangelhaft",
+  // Sonstiges
+  "Bußgeld wegen Falschparken (Knöllchen)",
+  "Sonstiger Verstoß",
+].map(v=>({value:v,label:v}));
 const OPT_FAHRT_KAT   = [{value:"partner",label:"Geschäftspartner"},{value:"standorte",label:"Standort"},{value:"tankstelle",label:"Tankstelle"},{value:"messe",label:"Messe / Ausstellung"},{value:"waesche",label:"Wäsche"},{value:"service",label:"Service"},{value:"laden",label:"Laden"},{value:"bank",label:"Bank"},{value:"behoerde",label:"Behörde"}];
 const OPT_FAHRT_KAT_F = [{value:"alle",label:"Alle Fahrziele"},...OPT_FAHRT_KAT];
 
@@ -156,24 +202,15 @@ const makeFahrzeug = (idx=0) => ({
   standort:{name:"",adresse:""},
   kmStandInitial:"",
   partner:[], messen:[], strafen:[], tankstellen:[],
-  waesche:[], services:[], fahrten:[],
+  waesche:[], services:[], parkplaetze:[], fahrten:[],
 });
 
-
-// ─── EMPTY ENTRY FACTORIES ─────────────────────────────────────────────────
-const E_F = () => ({datum:"",zeitStr:"",kategorie:"partner",zielId:"",zielName:"",km:"",dauerMin:"",rueckfahrt:false,kmTyp:"geschaeftlich",kmStart:"",kmEnd:"",notiz:"",belegFoto:""});
-const E_P = () => ({name:"",adresse:"",telefon:"",email:"",typ:"kunde",kmVonStandort:"",notiz:""});
-const E_M = () => ({name:"",adresse:"",datum:"",partnerId:"",kmVonStandort:"",notiz:""});
-const E_T = () => ({datum:"",uhrzeit:"",stationName:"",adresse:"",menge:"",preisProLiter:"",gesamtbetrag:"",kraftstoff:"Diesel",kmStand:"",bonNr:"",zahlungsart:"",kmVonStandort:"",notiz:"",belegFoto:""});
-const E_S = () => ({datum:"",typ:"",betrag:"",ort:"",behoerde:"",adresseBehoerde:"",aktenzeichen:"",punkte:"0",faellig:"",bezahlt:false,notiz:"",belegFoto:""});
-const E_W = () => ({datum:"",uhrzeit:"",typ:"Außenwäsche",name:"",adresse:"",betrag:"",zahlungsart:"",kmVonStandort:"",notiz:"",belegFoto:""});
-const E_SV = () => ({datum:"",typ:"",werkstatt:"",adresse:"",kmStand:"",betrag:"",rechnungsNr:"",faelligKm:"",faelligDatum:"",zahlungsart:"",kmVonStandort:"",notiz:"",belegFoto:""});
 // ─── BASE STYLES ──────────────────────────────────────────────────────────────
 // height:40 + boxSizing:border-box унифицирует все поля
 const inp = {
   display:"block", width:"100%", height:40, boxSizing:"border-box",
-  padding:"0 14px", background:C.surface,
-  border:`1px solid ${C.border}`, outline:"none",
+  padding:"0 14px", background:"#FFFFFF",
+  border:"1px solid #DDDDD8", outline:"none",
   fontSize:14, fontFamily:SANS,
   color:C.text, transition:"border-color 0.15s, box-shadow 0.15s",
   WebkitAppearance:"none", appearance:"none",
@@ -219,7 +256,7 @@ function IcoBtn({color=C.muted, size=16, icon, onClick, title}) {
 
 // ─── FORM PRIMITIVES ──────────────────────────────────────────────────────────
 // F — input field
-function F({label, value, onChange, type="text", placeholder="", accent=C.red}) {
+function F({label, value, onChange, type="text", placeholder="", accent="#B30000"}) {
   const [focus, setFocus] = useState(false);
   return (
     <div style={{paddingTop:14}}>
@@ -229,7 +266,7 @@ function F({label, value, onChange, type="text", placeholder="", accent=C.red}) 
           type={type} value={value} placeholder={placeholder}
           onChange={e=>onChange(e.target?.value ?? "")}
           onFocus={()=>setFocus(true)} onBlur={()=>setFocus(false)}
-          style={{...inp, borderColor:focus?accent:"#DDDDD8", background:C.surface}}
+          style={{...inp, borderColor:focus?accent:"#DDDDD8", background:"#FFFFFF"}}
         />
       </div>
     </div>
@@ -355,85 +392,70 @@ function Kat({kat}) {
 function Kennzeichen({value,size="md"}) {
   const big=size==="lg"; const sm=size==="sm";
 
-  // Размеры: высота определяет всё остальное
-  const h  = big ? 52 : sm ? 36 : 44;
-  const bw = big ? 34 : sm ? 24 : 30;  // ширина синей полосы EU
-  // Ширина подстраивается под длину номера — минимум фиксированный
-  const kz = (value||"—").toUpperCase();
-  const charW = big ? 14 : sm ? 10 : 12;  // примерная ширина символа
-  const minWhite = big ? 90 : sm ? 64 : 78;
-  const whiteW = Math.max(minWhite, kz.length * charW + (big?28:sm?18:22));
-  const w = bw + whiteW;
-  const cx = bw / 2;
+  const h   = big ? 52 : sm ? 36 : 44;
+  const bw  = big ? 32 : sm ? 22 : 28;  // EU-полоса ~20% общей ширины
+  const kz  = (value||"—").toUpperCase();
+  const charW   = big ? 15 : sm ? 11 : 13;
+  const minWhite= big ? 100 : sm ? 70 : 84;
+  const whiteW  = Math.max(minWhite, kz.length * charW + (big?32:sm?20:26));
+  const w   = bw + whiteW;
+  const cx  = bw / 2;
+  const bord= big ? 2.5 : sm ? 1.5 : 2;
 
-  // SVG polygon star
-  function star(cx,cy,r) {
+  // 12 звёзд вокруг кольца
+  const sr    = big ? 6.0 : sm ? 4.2 : 5.2;
+  const starR = big ? 1.4 : sm ? 1.0 : 1.2;
+  const ir    = starR * 0.42;
+  const starCY= h * 0.30;
+  function starPts(sx,sy) {
     const pts=[];
-    for(let i=0;i<5;i++){
-      const ao=(i*72-90)*Math.PI/180;
-      const ai=(i*72-90+36)*Math.PI/180;
-      pts.push(cx+r*Math.cos(ao),cy+r*Math.sin(ao));
-      pts.push(cx+r*0.4*Math.cos(ai),cy+r*0.4*Math.sin(ai));
+    for(let j=0;j<5;j++){
+      const ao=(j*72-90)*Math.PI/180;
+      const ai=(j*72-90+36)*Math.PI/180;
+      pts.push((sx+starR*Math.cos(ao)).toFixed(1)+","+(sy+starR*Math.sin(ao)).toFixed(1));
+      pts.push((sx+ir*Math.cos(ai)).toFixed(1)+","+(sy+ir*Math.sin(ai)).toFixed(1));
     }
     return pts.join(" ");
   }
-
-  // ── Синяя полоса EU: делим на 2 зоны ────────────────────────────────────
-  // Зона A (звёзды): 0 → h*0.55   → центр кольца h*0.28
-  // Зона B (D):      h*0.55 → h   → центр буквы  h*0.77
-  const sr    = big ? 7   : sm ? 5   : 6;    // радиус кольца звёзд
-  const starR = big ? 2.6 : sm ? 1.9 : 2.2; // размер одной звезды
-  const starCY = h * 0.30;                   // центр кольца — верхняя треть
-  const stars=Array.from({length:12},(_,i)=>{
+  const stars12=Array.from({length:12},(_,i)=>{
     const a=(i*30-90)*Math.PI/180;
     return {x:cx+sr*Math.cos(a), y:starCY+sr*Math.sin(a)};
   });
 
-  // Буква D — строго в нижней зоне синей полосы
-  const dFS = big ? 12 : sm ? 9 : 11;
-  const dY  = h * 0.73;   // центр нижней зоны (0.55+1)/2 * h ≈ 0.78, но чуть выше смотрится лучше
-
-  // Номер — математически точный центр белого поля
+  const dFS = big ? 14 : sm ? 10 : 12;  // буква D — чуть меньше чтобы не упиралась
+  const dY  = h * 0.70;                  // поднята выше от нижней границы
   const numCX = bw + whiteW / 2;
   const numFS = big ? 20 : sm ? 14 : 17;
-  const numY  = h / 2 - 3;  // -3px вверх для оптической компенсации
-  const bord  = big ? 2.5 : sm ? 1.5 : 2;
+  const numY  = h / 2 - 1;
 
   return (
     <div style={{
       display:"inline-flex", flexShrink:0,
       height:h, width:w,
-      border:`${bord}px solid #8A8A8A`,
-      borderRadius: big ? 5 : sm ? 3 : 4,
+      border:`${bord}px solid #888`,
+      borderRadius: big ? 7 : sm ? 4 : 5,
       overflow:"hidden",
       background:"#fff",
       boxShadow: big
-        ? "0 4px 14px rgba(0,0,0,0.22), 0 1px 4px rgba(0,0,0,0.12)"
-        : "0 2px 6px rgba(0,0,0,0.16), 0 1px 2px rgba(0,0,0,0.08)",
-      transform: big ? "translateY(-1px)" : "none",
+        ? "0 0 0 1px #aaa,0 4px 14px rgba(0,0,0,0.20)"
+        : "0 0 0 1px #bbb,0 2px 6px rgba(0,0,0,0.14)",
     }}>
       <svg width={w} height={h} style={{display:"block"}}>
-        {/* EU синяя полоса — выходит за край чтобы не было просветов */}
-        <rect x={-bord} y={-bord} width={bw+bord} height={h+bord*2} fill="#003EC6"/>
-        {/* 12 звёзд */}
-        {stars.map((s,i)=>(
-          <polygon key={`s${i}`} points={star(s.x,s.y,starR)} fill="#FFD700"/>
+        <rect x={-bord} y={-bord} width={bw+bord} height={h+bord*2} fill="#003399"/>
+        {stars12.map((s,i)=>(
+          <polygon key={`s${i}`} points={starPts(s.x,s.y)} fill="#FFD700"/>
         ))}
-        {/* Буква D */}
         <text x={cx} y={dY}
           textAnchor="middle" dominantBaseline="middle"
-          fontSize={dFS} fill="#fff" fontWeight="900"
-          fontFamily="'Arial Black',Arial,sans-serif">D</text>
-        {/* Разделитель */}
-        <line x1={bw} y1={0} x2={bw} y2={h} stroke="#6A6A6A" strokeWidth={big?1.5:1}/>
-        {/* Номер — точно по центру белого поля */}
+          fontSize={dFS} fill="#fff" fontWeight="800"
+          fontFamily="'Inter',-apple-system,sans-serif">D</text>
+        <line x1={bw} y1={0} x2={bw} y2={h} stroke="#555" strokeWidth={big?1.5:1}/>
         <text x={numCX} y={numY}
           textAnchor="middle"
           dominantBaseline="central"
-          alignmentBaseline="central"
-          fontSize={numFS} fontWeight="900"
-          fontFamily="'Arial Black',Arial,sans-serif"
-          letterSpacing={big ? 2 : sm ? 1 : 1.5}
+          fontSize={numFS} fontWeight="800"
+          fontFamily="'Inter',-apple-system,sans-serif"
+          letterSpacing={big ? 2.5 : sm ? 1 : 2}
           fill="#111">{kz}</text>
       </svg>
     </div>
@@ -732,7 +754,7 @@ function FahrzielPicker({value, onChange, aktiv, accent=C.red}) {
   },[]);
 
   const katColor = {partner:C.red, messe:C.gold, standorte:C.standort};
-const katLabel = {partner:"Partner", messe:"Messe", standorte:"Standort"};
+  const pickerKatLabel = {partner:"Partner", messe:"Messe", standorte:"Standort"};
 
   return (
     <div>
@@ -769,7 +791,7 @@ const katLabel = {partner:"Partner", messe:"Messe", standorte:"Standort"};
                 <span style={{fontSize:13,letterSpacing:1,textTransform:"uppercase",fontWeight:700,
                   color:katColor[z.kategorie]||C.steel,flexShrink:0,minWidth:44,
                   fontFamily:SANS}}>
-                  {katLabel[z.kategorie]||z.kategorie}
+                  {pickerKatLabel[z.kategorie]||z.kategorie}
                   {z.freq>0&&<span style={{color:C.muted,fontWeight:400}}> ×{z.freq}</span>}
                 </span>
                 <span style={{flex:1,minWidth:0}}>
@@ -885,6 +907,16 @@ function CustomSelect({value, onChange, options, placeholder="— bitte wählen 
               </div>
             )}
             {filtered.map(o=>{
+              if(o.disabled) return (
+                <div key={o.value} style={{
+                  padding:"6px 14px", fontSize:11, fontFamily:SANS,
+                  color:C.muted, letterSpacing:1.5, textTransform:"uppercase",
+                  background:C.surfaceAlt, borderBottom:"1px solid #f0f0f0",
+                  userSelect:"none", pointerEvents:"none",
+                }}>
+                  {o.label}
+                </div>
+              );
               const parts = o.label.split(" · ");
               const name = parts[0], rest = parts.slice(1).join(" · ");
               const isSelected = o.value === value;
@@ -1301,12 +1333,12 @@ function SettingsBtn({active, accent, onClick}) {
   const svgFilter = active ? "none" : pressed ? "brightness(0.3)" : hov ? "brightness(0.45)" : "none";
   return (
     <button onClick={onClick}
-      style={{width:48,height:48,background:bg,border:"none",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",borderRadius:8,transition:"background 0.12s"}}
+      style={{width:40,height:40,background:bg,border:"none",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",borderRadius:8,transition:"background 0.12s"}}
       onMouseEnter={()=>setHov(true)}
       onMouseLeave={()=>{setHov(false);setPressed(false);}}
       onMouseDown={()=>setPressed(true)}
       onMouseUp={()=>setPressed(false)}>
-      <Ico name="settings" size={26} color={active ? accent : C.muted} style={{filter:svgFilter,transition:"filter 0.12s"}}/>
+      <Ico name="settings" size={22} color={active ? accent : C.muted} style={{filter:svgFilter,transition:"filter 0.12s"}}/>
     </button>
   );
 }
@@ -1517,7 +1549,7 @@ function ConfirmModal({item, onConfirm, onCancel}) {
   const labels = {
     fahrt:"diese Fahrt", partner:"diesen Partner",
     messe:"diese Messe", tanke:"diesen Tankstopp", strafe:"dieses Bußgeld",
-    fahrzeug:"dieses Fahrzeug", waesche:"diese Wäsche", service:"diesen Service-Eintrag",
+    fahrzeug:"dieses Fahrzeug", waesche:"diese Wäsche", service:"diesen Service-Eintrag", park:"diesen Parkvorgang",
     standort:"diesen Standort",
   };
   useEffect(()=>{
@@ -1621,18 +1653,18 @@ class ErrorBoundary extends React.Component {
   render() {
     if(this.state.error) {
       return (
-        <div style={{minHeight:"100vh",background:C.bg,display:"flex",alignItems:"center",justifyContent:"center",fontFamily:"'Inter',sans-serif"}}>
-          <div style={{background:"#fff",border:`1px solid ${C.border}`,borderTop:`3px solid ${C.red}`,padding:"40px 48px",maxWidth:480,textAlign:"center"}}>
+        <div style={{minHeight:"100vh",background:"#F4F4F0",display:"flex",alignItems:"center",justifyContent:"center",fontFamily:"'Inter',sans-serif"}}>
+          <div style={{background:"#fff",border:"1px solid #DDDDD8",borderTop:"3px solid #B30000",padding:"40px 48px",maxWidth:480,textAlign:"center"}}>
             <div style={{fontSize:32,marginBottom:16}}>⚠️</div>
             <div style={{fontSize:18,fontWeight:700,color:"#111",marginBottom:8}}>Anwendungsfehler</div>
             <div style={{fontSize:14,color:"#666",marginBottom:24,lineHeight:1.6}}>
               Ein unerwarteter Fehler ist aufgetreten.<br/>Ihre Daten sind in localStorage gesichert.
             </div>
-            <div style={{fontSize:11,color:C.muted,background:C.bg,padding:"8px 12px",marginBottom:24,textAlign:"left",fontFamily:"monospace",wordBreak:"break-all"}}>
+            <div style={{fontSize:11,color:"#999",background:"#F4F4F0",padding:"8px 12px",marginBottom:24,textAlign:"left",fontFamily:"monospace",wordBreak:"break-all"}}>
               {this.state.error?.message}
             </div>
             <button onClick={()=>window.location.reload()}
-              style={{padding:"10px 28px",background:C.red,color:"#fff",border:"none",cursor:"pointer",fontSize:14,fontWeight:700,letterSpacing:1}}>
+              style={{padding:"10px 28px",background:"#B30000",color:"#fff",border:"none",cursor:"pointer",fontSize:14,fontWeight:700,letterSpacing:1}}>
               Neu laden
             </button>
           </div>
@@ -1649,24 +1681,24 @@ function TankenListe({ items, onEdit, onDelete }) {
   return (
     <>
       {(items||[]).slice().sort((a,b)=>b.datum?.localeCompare(a.datum)).map(t=>(
-        <div key={t.id} style={{background:C.surface,borderLeft:`2px solid ${C.tank}`,padding:"12px 18px",marginBottom:2,display:"flex",alignItems:"center",gap:12,boxShadow:C.shadow}}>
-          <div style={{minWidth:88}}>
-            <div style={{color:C.text,fontSize:13}}>{formatDatum(t.datum)}</div>
-            {t.uhrzeit&&<div style={{color:C.text,fontSize:13}}>{t.uhrzeit}</div>}
+        <div key={t.id} style={{background:C.surface,borderLeft:`2px solid ${C.tank}`,padding:"12px 16px",marginBottom:2,display:"flex",alignItems:"center",gap:12,boxShadow:C.shadow}}>
+          <div style={{width:96,flexShrink:0}}>
+            <div style={{fontSize:14,fontWeight:700,color:C.text}}>{formatDatum(t.datum)}</div>
+            {t.uhrzeit&&<div style={{fontSize:13,color:C.muted,marginTop:3}}>{t.uhrzeit}</div>}
           </div>
           <div style={{flex:1,minWidth:0}}>
             <div style={{fontSize:16,fontWeight:700,color:C.text,marginBottom:2}}>{t.stationName||"Tankstelle"}</div>
             {t.adresse&&<div style={{fontSize:14,color:C.text,display:"flex",alignItems:"center",gap:4,fontFamily:SANS}}><Ico name="mapPin" size={13} color={C.muted}/>{t.adresse}</div>}
             <div style={{fontSize:13,color:C.steelMid,marginTop:2,display:"flex",gap:8,flexWrap:"wrap"}}>
-              <span style={{background:C.tankLight,color:C.tank,padding:"2px 8px",fontWeight:700,letterSpacing:1.5,fontSize:11,lineHeight:1,display:"inline-flex",alignItems:"center",borderRadius:20,padding:"2px 8px"}}>{t.kraftstoff||"Kraftstoff"}</span>
+              <span style={{background:C.tankLight,color:C.tank,padding:"2px 8px",fontWeight:700,letterSpacing:1.5,fontSize:11,lineHeight:1,display:"inline-flex",alignItems:"center",borderRadius:20}}>{t.kraftstoff||"Kraftstoff"}</span>
               {t.kmStand&&<span>KM: <b>{t.kmStand}</b></span>}
               {t.zapfsaeule&&<span>Säule: {t.zapfsaeule}</span>}
               {t.bonNr&&<span>Bon: {t.bonNr}</span>}
               {t.zahlungsart&&<span>{t.zahlungsart}</span>}
             </div>
           </div>
-          <div style={{textAlign:"right",minWidth:100,flexShrink:0}}>
-            <div style={{fontSize:20,fontWeight:800,color:C.tank,fontFamily:SANS}}>{(parseFloat(t.menge)||0).toFixed(2)} L</div>
+          <div style={{textAlign:"center",minWidth:100,flexShrink:0}}>
+            <div style={{fontSize:22,fontWeight:800,color:C.tank,fontFamily:SANS,lineHeight:1}}>{(parseFloat(t.menge)||0).toFixed(2)} L</div>
             {t.preisProLiter&&<div style={{fontSize:14,color:C.text}}>{parseFloat(t.preisProLiter).toFixed(3)} €/L</div>}
             {t.gesamtbetrag&&<div style={{fontSize:16,fontWeight:700,color:C.text,fontFamily:SANS}}>{parseFloat(t.gesamtbetrag).toFixed(2)} €</div>}
           </div>
@@ -1686,19 +1718,22 @@ function StrafenListe({ items, onEdit, onDelete, onToggleBezahlt }) {
   return (
     <>
       {(items||[]).slice().sort((a,b)=>b.datum?.localeCompare(a.datum)).map(s=>(
-        <div key={s.id} style={{background:C.surface,borderLeft:`2px solid ${s.bezahlt?C.border:C.strafe}`,padding:"12px 18px",marginBottom:2,display:"flex",alignItems:"center",gap:12,boxShadow:C.shadow}}>
+        <div key={s.id} style={{background:C.surface,borderLeft:`2px solid ${s.bezahlt?C.border:C.strafe}`,padding:"12px 16px",marginBottom:2,display:"flex",alignItems:"center",gap:12,boxShadow:C.shadow}}>
           <label title="Bezahlt umschalten" style={{display:"flex",alignItems:"center",cursor:"pointer",flexShrink:0}}>
             <input type="checkbox" checked={!!s.bezahlt} onChange={()=>onToggleBezahlt(s.id)}
               style={{width:18,height:18,cursor:"pointer",accentColor:C.strafe,flexShrink:0,margin:0}}/>
           </label>
-          <div style={{minWidth:88,color:C.text,fontSize:13}}>{formatDatum(s.datum)}</div>
+          <div style={{width:96,flexShrink:0}}>
+            <div style={{fontSize:14,fontWeight:700,color:C.text}}>{formatDatum(s.datum)}</div>
+          </div>
           <div style={{flex:1,minWidth:0}}>
             <div style={{fontSize:16,fontWeight:700,color:C.text,marginBottom:2,wordBreak:"break-word"}}>{s.typ||"Strafe"}</div>
             {s.behoerde&&<div style={{fontSize:14,color:C.text,display:"flex",alignItems:"center",gap:4,fontFamily:SANS}}><Ico name="building" size={13} color={C.muted}/>{s.behoerde}</div>}
             {s.aktenzeichen&&<div style={{fontSize:14,color:C.text,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>Az: {s.aktenzeichen}</div>}
           </div>
-          <div style={{textAlign:"right",minWidth:80,flexShrink:0}}>
-            <div style={{fontSize:20,fontWeight:800,color:s.bezahlt?C.muted:C.strafe,fontFamily:SANS}}>{(parseFloat(s.betrag)||0).toFixed(2)} €</div>
+          <div style={{textAlign:"center",minWidth:88,flexShrink:0}}>
+            <div style={{fontSize:22,fontWeight:800,color:s.bezahlt?C.muted:C.strafe,fontFamily:SANS,lineHeight:1}}>{(parseFloat(s.betrag)||0).toFixed(2)} €</div>
+            {!s.bezahlt&&<div style={{fontSize:11,color:C.strafe,letterSpacing:1,textTransform:"uppercase",marginTop:2}}>offen</div>}
             {s.bezahlt&&<div style={{fontSize:13,color:C.muted,letterSpacing:1}}>BEZAHLT</div>}
           </div>
           <div style={{display:"flex",gap:2,flexShrink:0}}>
@@ -1707,7 +1742,7 @@ function StrafenListe({ items, onEdit, onDelete, onToggleBezahlt }) {
           </div>
         </div>
       ))}
-      {!(items||[]).length&&<EmptyState icon="zap" accent={C.strafe} text="Keine Strafen erfasst" hint="Strafzettel, Bußgeldbescheide erfassen"/>}
+      {!(items||[]).length&&<EmptyState icon="alert" accent={C.strafe} text="Keine Strafen erfasst" hint="Strafzettel, Bußgeldbescheide erfassen"/>}
     </>
   );
 }
@@ -1763,20 +1798,20 @@ function createMusterDaten() {
     {id:uid(), datum:"2025-11-05", typ:"Geschwindigkeitsverstoß", betrag:"55",  ort:"A95 Richtung Garmisch km 28",     aktenzeichen:"M-OWI-2025-1101", punkte:"1", faellig:"2025-12-05", bezahlt:false, notiz:"Tempo 120/100",   belegFoto:""},
     ],
     tankstellen:[
-    {id:uid(), datum:"2025-01-08", uhrzeit:"07:45", stationName:"Shell Schwabing",    adresse:"Leopoldstraße 200, 80804 München",   menge:"52.4", preisProLiter:"1.799", gesamtbetrag:"94.27",  kraftstoff:"Diesel", kmStand:"44320", bonNr:"SH-2025-00112", zahlungsart:"EC-Karte", notiz:"", belegFoto:""},
-    {id:uid(), datum:"2025-02-05", uhrzeit:"16:30", stationName:"Aral Schwabing Nord",  adresse:"Ingolstädter Str. 3, 80807 München", menge:"50.0", preisProLiter:"1.819", gesamtbetrag:"90.95",  kraftstoff:"Diesel", kmStand:"45580", bonNr:"AR-2025-00201", zahlungsart:"EC-Karte", notiz:"", belegFoto:""},
-    {id:uid(), datum:"2025-03-12", uhrzeit:"12:10", stationName:"BP Autobahn A9",     adresse:"Rastanlage Fürholzen West, A9",    menge:"55.0", preisProLiter:"1.869", gesamtbetrag:"102.80", kraftstoff:"Diesel", kmStand:"46900", bonNr:"BP-2025-00789", zahlungsart:"Bar",    notiz:"Autobahn Nürnberg", belegFoto:""},
-    {id:uid(), datum:"2025-04-06", uhrzeit:"08:20", stationName:"Shell Schwabing",    adresse:"Leopoldstraße 200, 80804 München",   menge:"51.0", preisProLiter:"1.789", gesamtbetrag:"91.24",  kraftstoff:"Diesel", kmStand:"48200", bonNr:"SH-2025-01001", zahlungsart:"EC-Karte", notiz:"Vor Messe bauma", belegFoto:""},
-    {id:uid(), datum:"2025-05-14", uhrzeit:"08:55", stationName:"Esso Garching",    adresse:"Parkring 22, 85748 Garching",    menge:"50.3", preisProLiter:"1.849", gesamtbetrag:"93.00",  kraftstoff:"Diesel", kmStand:"49550", bonNr:"ES-2025-01023", zahlungsart:"EC-Karte", notiz:"", belegFoto:""},
-    {id:uid(), datum:"2025-06-16", uhrzeit:"07:30", stationName:"Shell Schwabing",    adresse:"Leopoldstraße 200, 80804 München",   menge:"53.0", preisProLiter:"1.799", gesamtbetrag:"95.35",  kraftstoff:"Diesel", kmStand:"50900", bonNr:"SH-2025-02101", zahlungsart:"EC-Karte", notiz:"Vor Messe automatica", belegFoto:""},
-    {id:uid(), datum:"2025-07-09", uhrzeit:"16:30", stationName:"Aral Schwabing Nord",  adresse:"Ingolstädter Str. 3, 80807 München", menge:"49.8", preisProLiter:"1.779", gesamtbetrag:"88.60",  kraftstoff:"Diesel", kmStand:"52200", bonNr:"AR-2025-02501", zahlungsart:"EC-Karte", notiz:"", belegFoto:""},
-    {id:uid(), datum:"2025-08-13", uhrzeit:"08:10", stationName:"Shell Schwabing",    adresse:"Leopoldstraße 200, 80804 München",   menge:"51.5", preisProLiter:"1.809", gesamtbetrag:"93.16",  kraftstoff:"Diesel", kmStand:"53480", bonNr:"SH-2025-03101", zahlungsart:"EC-Karte", notiz:"", belegFoto:""},
-    {id:uid(), datum:"2025-09-08", uhrzeit:"07:30", stationName:"Shell Schwabing",    adresse:"Leopoldstraße 200, 80804 München",   menge:"54.0", preisProLiter:"1.769", gesamtbetrag:"95.53",  kraftstoff:"Diesel", kmStand:"54800", bonNr:"SH-2025-04001", zahlungsart:"EC-Karte", notiz:"Vor IAA", belegFoto:""},
-    {id:uid(), datum:"2025-10-05", uhrzeit:"08:00", stationName:"Esso Garching",    adresse:"Parkring 22, 85748 Garching",    menge:"50.0", preisProLiter:"1.759", gesamtbetrag:"87.95",  kraftstoff:"Diesel", kmStand:"56100", bonNr:"ES-2025-05001", zahlungsart:"EC-Karte", notiz:"Vor EXPO Real", belegFoto:""},
-    {id:uid(), datum:"2025-11-12", uhrzeit:"16:00", stationName:"Aral Schwabing Nord",  adresse:"Ingolstädter Str. 3, 80807 München", menge:"52.0", preisProLiter:"1.779", gesamtbetrag:"92.51",  kraftstoff:"Diesel", kmStand:"57450", bonNr:"AR-2025-06001", zahlungsart:"EC-Karte", notiz:"", belegFoto:""},
-    {id:uid(), datum:"2025-12-10", uhrzeit:"08:30", stationName:"Shell Schwabing",    adresse:"Leopoldstraße 200, 80804 München",   menge:"50.5", preisProLiter:"1.809", gesamtbetrag:"91.35",  kraftstoff:"Diesel", kmStand:"58750", bonNr:"SH-2025-07001", zahlungsart:"EC-Karte", notiz:"", belegFoto:""},
-    {id:uid(), datum:"2026-01-14", uhrzeit:"07:45", stationName:"Shell Schwabing",    adresse:"Leopoldstraße 200, 80804 München",   menge:"53.5", preisProLiter:"1.789", gesamtbetrag:"95.71",  kraftstoff:"Diesel", kmStand:"60100", bonNr:"SH-2026-00101", zahlungsart:"EC-Karte", notiz:"", belegFoto:""},
-    {id:uid(), datum:"2026-02-18", uhrzeit:"16:00", stationName:"Aral Schwabing Nord",  adresse:"Ingolstädter Str. 3, 80807 München", menge:"49.0", preisProLiter:"1.749", gesamtbetrag:"85.70",  kraftstoff:"Diesel", kmStand:"61350", bonNr:"AR-2026-00201", zahlungsart:"EC-Karte", notiz:"", belegFoto:""},
+    {id:uid(), datum:"2025-01-08", uhrzeit:"07:45", stationName:"Shell Schwabing",    adresse:"Leopoldstraße 200, 80804 München",   menge:"52.4", preisProLiter:"1.799", betrag:"94.27",  kraftstoff:"Diesel", kmStand:"44320", bonNr:"SH-2025-00112", zahlungsart:"EC-Karte", notiz:"", belegFoto:""},
+    {id:uid(), datum:"2025-02-05", uhrzeit:"16:30", stationName:"Aral Schwabing Nord",  adresse:"Ingolstädter Str. 3, 80807 München", menge:"50.0", preisProLiter:"1.819", betrag:"90.95",  kraftstoff:"Diesel", kmStand:"45580", bonNr:"AR-2025-00201", zahlungsart:"EC-Karte", notiz:"", belegFoto:""},
+    {id:uid(), datum:"2025-03-12", uhrzeit:"12:10", stationName:"BP Autobahn A9",     adresse:"Rastanlage Fürholzen West, A9",    menge:"55.0", preisProLiter:"1.869", betrag:"102.80", kraftstoff:"Diesel", kmStand:"46900", bonNr:"BP-2025-00789", zahlungsart:"Bar",    notiz:"Autobahn Nürnberg", belegFoto:""},
+    {id:uid(), datum:"2025-04-06", uhrzeit:"08:20", stationName:"Shell Schwabing",    adresse:"Leopoldstraße 200, 80804 München",   menge:"51.0", preisProLiter:"1.789", betrag:"91.24",  kraftstoff:"Diesel", kmStand:"48200", bonNr:"SH-2025-01001", zahlungsart:"EC-Karte", notiz:"Vor Messe bauma", belegFoto:""},
+    {id:uid(), datum:"2025-05-14", uhrzeit:"08:55", stationName:"Esso Garching",    adresse:"Parkring 22, 85748 Garching",    menge:"50.3", preisProLiter:"1.849", betrag:"93.00",  kraftstoff:"Diesel", kmStand:"49550", bonNr:"ES-2025-01023", zahlungsart:"EC-Karte", notiz:"", belegFoto:""},
+    {id:uid(), datum:"2025-06-16", uhrzeit:"07:30", stationName:"Shell Schwabing",    adresse:"Leopoldstraße 200, 80804 München",   menge:"53.0", preisProLiter:"1.799", betrag:"95.35",  kraftstoff:"Diesel", kmStand:"50900", bonNr:"SH-2025-02101", zahlungsart:"EC-Karte", notiz:"Vor Messe automatica", belegFoto:""},
+    {id:uid(), datum:"2025-07-09", uhrzeit:"16:30", stationName:"Aral Schwabing Nord",  adresse:"Ingolstädter Str. 3, 80807 München", menge:"49.8", preisProLiter:"1.779", betrag:"88.60",  kraftstoff:"Diesel", kmStand:"52200", bonNr:"AR-2025-02501", zahlungsart:"EC-Karte", notiz:"", belegFoto:""},
+    {id:uid(), datum:"2025-08-13", uhrzeit:"08:10", stationName:"Shell Schwabing",    adresse:"Leopoldstraße 200, 80804 München",   menge:"51.5", preisProLiter:"1.809", betrag:"93.16",  kraftstoff:"Diesel", kmStand:"53480", bonNr:"SH-2025-03101", zahlungsart:"EC-Karte", notiz:"", belegFoto:""},
+    {id:uid(), datum:"2025-09-08", uhrzeit:"07:30", stationName:"Shell Schwabing",    adresse:"Leopoldstraße 200, 80804 München",   menge:"54.0", preisProLiter:"1.769", betrag:"95.53",  kraftstoff:"Diesel", kmStand:"54800", bonNr:"SH-2025-04001", zahlungsart:"EC-Karte", notiz:"Vor IAA", belegFoto:""},
+    {id:uid(), datum:"2025-10-05", uhrzeit:"08:00", stationName:"Esso Garching",    adresse:"Parkring 22, 85748 Garching",    menge:"50.0", preisProLiter:"1.759", betrag:"87.95",  kraftstoff:"Diesel", kmStand:"56100", bonNr:"ES-2025-05001", zahlungsart:"EC-Karte", notiz:"Vor EXPO Real", belegFoto:""},
+    {id:uid(), datum:"2025-11-12", uhrzeit:"16:00", stationName:"Aral Schwabing Nord",  adresse:"Ingolstädter Str. 3, 80807 München", menge:"52.0", preisProLiter:"1.779", betrag:"92.51",  kraftstoff:"Diesel", kmStand:"57450", bonNr:"AR-2025-06001", zahlungsart:"EC-Karte", notiz:"", belegFoto:""},
+    {id:uid(), datum:"2025-12-10", uhrzeit:"08:30", stationName:"Shell Schwabing",    adresse:"Leopoldstraße 200, 80804 München",   menge:"50.5", preisProLiter:"1.809", betrag:"91.35",  kraftstoff:"Diesel", kmStand:"58750", bonNr:"SH-2025-07001", zahlungsart:"EC-Karte", notiz:"", belegFoto:""},
+    {id:uid(), datum:"2026-01-14", uhrzeit:"07:45", stationName:"Shell Schwabing",    adresse:"Leopoldstraße 200, 80804 München",   menge:"53.5", preisProLiter:"1.789", betrag:"95.71",  kraftstoff:"Diesel", kmStand:"60100", bonNr:"SH-2026-00101", zahlungsart:"EC-Karte", notiz:"", belegFoto:""},
+    {id:uid(), datum:"2026-02-18", uhrzeit:"16:00", stationName:"Aral Schwabing Nord",  adresse:"Ingolstädter Str. 3, 80807 München", menge:"49.0", preisProLiter:"1.749", betrag:"85.70",  kraftstoff:"Diesel", kmStand:"61350", bonNr:"AR-2026-00201", zahlungsart:"EC-Karte", notiz:"", belegFoto:""},
     ],
     waesche:[
     {id:uid(), datum:"2025-01-25", uhrzeit:"10:00", typ:"Außenwäsche",     adresse:"SB-Waschcenter Nord, Ingolstädter Str. 88, 80807 München",  betrag:"9.90",  zahlungsart:"Bar",    notiz:"", belegFoto:""},
@@ -1801,6 +1836,31 @@ function createMusterDaten() {
     {id:uid(), datum:"2025-10-16", typ:"Reifenwechsel Winter",  werkstatt:"ATU München Nord",  adresse:"Schleißheimer Str. 400, 80935 München", kmStand:"56300", betrag:"95.00",  rechnungsNr:"ATU-2025-8801", faelligKm:"",   faelligDatum:"",       zahlungsart:"EC-Karte",   notiz:"Neue Winterreifen Michelin", belegFoto:""},
     {id:uid(), datum:"2025-12-15", typ:"Inspektion",      werkstatt:"BMW Service München", adresse:"Arnulfstraße 5, 80335 München",      kmStand:"58900", betrag:"380.00", rechnungsNr:"BMW-2025-1501", faelligKm:"73000",faelligDatum:"2026-12-01", zahlungsart:"EC-Karte",   notiz:"Jahresinspektion + Ölwechsel",belegFoto:""},
     {id:uid(), datum:"2026-03-05", typ:"Reifenwechsel Sommer",  werkstatt:"ATU München Nord",  adresse:"Schleißheimer Str. 400, 80935 München", kmStand:"61800", betrag:"95.00",  rechnungsNr:"ATU-2026-1101", faelligKm:"",   faelligDatum:"",       zahlungsart:"EC-Karte",   notiz:"Sommersaison 2026",     belegFoto:""},
+    ],
+    parkplaetze:[
+    // Partner-Besuche — passend zu den Fahrten
+    {id:uid(), datum:"2025-01-06", uhrzeit:"13:05", ort:"Parkhaus Maximilianstraße", adresse:"Maximilianstraße 18, 80539 München", dauer:"2.5", betrag:"6.50", zahlungsart:"App / Mobile", bemerkung:"Besuch Müller & Partner"},
+    {id:uid(), datum:"2025-01-15", uhrzeit:"09:35", ort:"Parkplatz Oberschleißheim Mitte", adresse:"Industriestraße 80, 85764 Oberschleißheim", dauer:"1.5", betrag:"3.00", zahlungsart:"Bar", bemerkung:"Bayer Logistik"},
+    {id:uid(), datum:"2025-01-22", uhrzeit:"14:05", ort:"Parkhaus Sendlinger Tor", adresse:"Sendlinger-Tor-Platz 9, 80336 München", dauer:"2.0", betrag:"5.00", zahlungsart:"EC-Karte", bemerkung:"Weber & Söhne"},
+    {id:uid(), datum:"2025-02-05", uhrzeit:"10:05", ort:"Tiefgarage Rosenheimer Platz", adresse:"Rosenheimer Str. 28, 81669 München", dauer:"1.5", betrag:"4.50", zahlungsart:"App / Mobile", bemerkung:"Schmidt Consulting"},
+    {id:uid(), datum:"2025-02-19", uhrzeit:"11:05", ort:"Parkhaus Garching Forschungszentrum", adresse:"Lichtenbergstraße 8, 85748 Garching", dauer:"1.5", betrag:"2.50", zahlungsart:"Bar", bemerkung:"TechVision GmbH"},
+    {id:uid(), datum:"2025-03-12", uhrzeit:"09:05", ort:"Parkhaus Maximilianstraße", adresse:"Maximilianstraße 18, 80539 München", dauer:"2.5", betrag:"6.50", zahlungsart:"App / Mobile", bemerkung:"Müller & Partner"},
+    {id:uid(), datum:"2025-04-07", uhrzeit:"07:50", ort:"P10 Parkhaus Messe München", adresse:"Heinrich-Braun-Straße, 81829 München", dauer:"9.5", betrag:"16.00", zahlungsart:"EC-Karte", bemerkung:"bauma 2025 – Tag 1"},
+    {id:uid(), datum:"2025-04-08", uhrzeit:"07:50", ort:"P10 Parkhaus Messe München", adresse:"Heinrich-Braun-Straße, 81829 München", dauer:"9.5", betrag:"16.00", zahlungsart:"EC-Karte", bemerkung:"bauma 2025 – Tag 2"},
+    {id:uid(), datum:"2025-04-16", uhrzeit:"10:05", ort:"Tiefgarage Rosenheimer Platz", adresse:"Rosenheimer Str. 28, 81669 München", dauer:"1.5", betrag:"4.50", zahlungsart:"App / Mobile", bemerkung:"Schmidt Consulting + Weber & Söhne"},
+    {id:uid(), datum:"2025-05-07", uhrzeit:"09:35", ort:"Parkhaus Garching Forschungszentrum", adresse:"Lichtenbergstraße 8, 85748 Garching", dauer:"1.5", betrag:"2.50", zahlungsart:"Bar", bemerkung:"TechVision GmbH"},
+    {id:uid(), datum:"2025-06-17", uhrzeit:"07:50", ort:"P20 Parkhaus Messe München Ost", adresse:"Messegelände, 81829 München", dauer:"9.5", betrag:"16.00", zahlungsart:"EC-Karte", bemerkung:"automatica 2025 – Tag 1"},
+    {id:uid(), datum:"2025-06-18", uhrzeit:"07:50", ort:"P20 Parkhaus Messe München Ost", adresse:"Messegelände, 81829 München", dauer:"8.5", betrag:"16.00", zahlungsart:"EC-Karte", bemerkung:"automatica 2025 – Tag 2"},
+    {id:uid(), datum:"2025-07-09", uhrzeit:"10:05", ort:"Parkhaus Rosenheimer Platz", adresse:"Rosenheimer Str. 28, 81669 München", dauer:"2.0", betrag:"5.00", zahlungsart:"App / Mobile", bemerkung:"Bayer Logistik KG"},
+    {id:uid(), datum:"2025-08-20", uhrzeit:"14:05", ort:"Parkhaus Sendlinger Tor", adresse:"Sendlinger-Tor-Platz 9, 80336 München", dauer:"2.0", betrag:"5.00", zahlungsart:"EC-Karte", bemerkung:"Bayer Logistik KG"},
+    {id:uid(), datum:"2025-09-09", uhrzeit:"07:50", ort:"P1 Parkhaus ICM Messe München", adresse:"Am Messesee 6, 81829 München", dauer:"9.5", betrag:"18.00", zahlungsart:"EC-Karte", bemerkung:"IAA Mobility 2025 – Tag 1"},
+    {id:uid(), datum:"2025-09-10", uhrzeit:"07:50", ort:"P1 Parkhaus ICM Messe München", adresse:"Am Messesee 6, 81829 München", dauer:"8.5", betrag:"18.00", zahlungsart:"EC-Karte", bemerkung:"IAA Mobility 2025 – Tag 2"},
+    {id:uid(), datum:"2025-10-06", uhrzeit:"07:50", ort:"P10 Parkhaus Messe München", adresse:"Heinrich-Braun-Straße, 81829 München", dauer:"9.5", betrag:"16.00", zahlungsart:"EC-Karte", bemerkung:"EXPO Real 2025 – Tag 1"},
+    {id:uid(), datum:"2025-10-07", uhrzeit:"07:50", ort:"P10 Parkhaus Messe München", adresse:"Heinrich-Braun-Straße, 81829 München", dauer:"8.5", betrag:"16.00", zahlungsart:"EC-Karte", bemerkung:"EXPO Real 2025 – Tag 2"},
+    {id:uid(), datum:"2025-11-05", uhrzeit:"10:05", ort:"Tiefgarage Maximilianstraße", adresse:"Maximilianstraße 18, 80539 München", dauer:"1.5", betrag:"4.50", zahlungsart:"App / Mobile", bemerkung:"Müller & Partner GmbH"},
+    {id:uid(), datum:"2025-12-10", uhrzeit:"09:05", ort:"Parkhaus Maximilianstraße", adresse:"Maximilianstraße 18, 80539 München", dauer:"2.0", betrag:"5.50", zahlungsart:"EC-Karte", bemerkung:"Müller & Partner GmbH"},
+    {id:uid(), datum:"2026-01-14", uhrzeit:"09:05", ort:"Parkhaus Maximilianstraße", adresse:"Maximilianstraße 18, 80539 München", dauer:"2.0", betrag:"5.50", zahlungsart:"App / Mobile", bemerkung:"Müller & Partner GmbH"},
+    {id:uid(), datum:"2026-02-11", uhrzeit:"09:35", ort:"Parkhaus Garching Forschungszentrum", adresse:"Lichtenbergstraße 8, 85748 Garching", dauer:"1.5", betrag:"2.50", zahlungsart:"Bar", bemerkung:"TechVision GmbH"},
     ],
     fahrten:[
     // Januar 2025
@@ -1945,20 +2005,20 @@ function createMusterDaten() {
     {id:uid(), datum:"2025-08-14", typ:"Geschwindigkeitsverstoß",  betrag:"70",  ort:"A10 Abfahrt Ludwigsfelde-Nord",   aktenzeichen:"TF-OWI-2025-0641", punkte:"1", faellig:"2025-09-14", bezahlt:true,  notiz:"Radar Baustelle",  belegFoto:""},
     ],
     tankstellen:[
-    {id:uid(), datum:"2025-01-10", uhrzeit:"07:30", stationName:"Aral Luckenwalde",  adresse:"Berliner Str. 10, 14943 Luckenwalde", menge:"53.0", preisProLiter:"1.779", gesamtbetrag:"94.29",  kraftstoff:"Diesel", kmStand:"58420", bonNr:"AR-2025-01101", zahlungsart:"EC-Karte",  notiz:"", belegFoto:""},
-    {id:uid(), datum:"2025-02-07", uhrzeit:"16:20", stationName:"Shell Zossen",    adresse:"Berliner Str. 55, 15806 Zossen",    menge:"49.0", preisProLiter:"1.799", gesamtbetrag:"88.15",  kraftstoff:"Diesel", kmStand:"59280", bonNr:"SH-2025-02071", zahlungsart:"EC-Karte",  notiz:"", belegFoto:""},
-    {id:uid(), datum:"2025-03-13", uhrzeit:"08:00", stationName:"Aral Luckenwalde",  adresse:"Berliner Str. 10, 14943 Luckenwalde", menge:"51.5", preisProLiter:"1.809", gesamtbetrag:"93.16",  kraftstoff:"Diesel", kmStand:"60220", bonNr:"AR-2025-03131", zahlungsart:"EC-Karte",  notiz:"Vor Messe", belegFoto:""},
-    {id:uid(), datum:"2025-04-22", uhrzeit:"12:45", stationName:"Jet Ludwigsfelde",  adresse:"Gewerbepark 1, 14974 Ludwigsfelde",   menge:"47.5", preisProLiter:"1.759", gesamtbetrag:"83.55",  kraftstoff:"Diesel", kmStand:"61150", bonNr:"JT-2025-04221", zahlungsart:"Tankkarte", notiz:"", belegFoto:""},
-    {id:uid(), datum:"2025-05-19", uhrzeit:"07:45", stationName:"Aral Luckenwalde",  adresse:"Berliner Str. 10, 14943 Luckenwalde", menge:"52.0", preisProLiter:"1.749", gesamtbetrag:"90.95",  kraftstoff:"Diesel", kmStand:"62100", bonNr:"AR-2025-05191", zahlungsart:"EC-Karte",  notiz:"", belegFoto:""},
-    {id:uid(), datum:"2025-06-18", uhrzeit:"17:00", stationName:"BP Autobahn A10",   adresse:"Rastanlage Michendorf, A10",      menge:"55.0", preisProLiter:"1.839", gesamtbetrag:"101.15", kraftstoff:"Diesel", kmStand:"63200", bonNr:"BP-2025-06181", zahlungsart:"Tankkarte", notiz:"Rückfahrt Messe", belegFoto:""},
-    {id:uid(), datum:"2025-07-11", uhrzeit:"08:15", stationName:"Aral Luckenwalde",  adresse:"Berliner Str. 10, 14943 Luckenwalde", menge:"50.5", preisProLiter:"1.729", gesamtbetrag:"87.31",  kraftstoff:"Diesel", kmStand:"64250", bonNr:"AR-2025-07111", zahlungsart:"EC-Karte",  notiz:"", belegFoto:""},
-    {id:uid(), datum:"2025-08-06", uhrzeit:"16:30", stationName:"Shell Zossen",    adresse:"Berliner Str. 55, 15806 Zossen",    menge:"48.0", preisProLiter:"1.769", gesamtbetrag:"84.91",  kraftstoff:"Diesel", kmStand:"65180", bonNr:"SH-2025-08061", zahlungsart:"EC-Karte",  notiz:"", belegFoto:""},
-    {id:uid(), datum:"2025-09-10", uhrzeit:"07:30", stationName:"Aral Luckenwalde",  adresse:"Berliner Str. 10, 14943 Luckenwalde", menge:"53.5", preisProLiter:"1.759", gesamtbetrag:"94.11",  kraftstoff:"Diesel", kmStand:"66300", bonNr:"AR-2025-09101", zahlungsart:"EC-Karte",  notiz:"", belegFoto:""},
-    {id:uid(), datum:"2025-10-06", uhrzeit:"07:30", stationName:"Aral Luckenwalde",  adresse:"Berliner Str. 10, 14943 Luckenwalde", menge:"52.0", preisProLiter:"1.749", gesamtbetrag:"90.95",  kraftstoff:"Diesel", kmStand:"67380", bonNr:"AR-2025-10061", zahlungsart:"EC-Karte",  notiz:"", belegFoto:""},
-    {id:uid(), datum:"2025-11-18", uhrzeit:"16:45", stationName:"Shell Zossen",    adresse:"Berliner Str. 55, 15806 Zossen",    menge:"48.5", preisProLiter:"1.769", gesamtbetrag:"85.80",  kraftstoff:"Diesel", kmStand:"68590", bonNr:"SH-2025-11181", zahlungsart:"EC-Karte",  notiz:"", belegFoto:""},
-    {id:uid(), datum:"2025-12-15", uhrzeit:"08:00", stationName:"Aral Luckenwalde",  adresse:"Berliner Str. 10, 14943 Luckenwalde", menge:"51.0", preisProLiter:"1.789", gesamtbetrag:"91.24",  kraftstoff:"Diesel", kmStand:"69650", bonNr:"AR-2025-12151", zahlungsart:"EC-Karte",  notiz:"", belegFoto:""},
-    {id:uid(), datum:"2026-01-14", uhrzeit:"08:15", stationName:"Aral Luckenwalde",  adresse:"Berliner Str. 10, 14943 Luckenwalde", menge:"50.0", preisProLiter:"1.729", gesamtbetrag:"86.45",  kraftstoff:"Diesel", kmStand:"70720", bonNr:"AR-2026-01141", zahlungsart:"EC-Karte",  notiz:"", belegFoto:""},
-    {id:uid(), datum:"2026-02-25", uhrzeit:"12:00", stationName:"Jet Ludwigsfelde",  adresse:"Gewerbepark 1, 14974 Ludwigsfelde",   menge:"46.0", preisProLiter:"1.719", gesamtbetrag:"79.07",  kraftstoff:"Diesel", kmStand:"71840", bonNr:"JT-2026-02251", zahlungsart:"Tankkarte", notiz:"", belegFoto:""},
+    {id:uid(), datum:"2025-01-10", uhrzeit:"07:30", stationName:"Aral Luckenwalde",  adresse:"Berliner Str. 10, 14943 Luckenwalde", menge:"53.0", preisProLiter:"1.779", betrag:"94.29",  kraftstoff:"Diesel", kmStand:"58420", bonNr:"AR-2025-01101", zahlungsart:"EC-Karte",  notiz:"", belegFoto:""},
+    {id:uid(), datum:"2025-02-07", uhrzeit:"16:20", stationName:"Shell Zossen",    adresse:"Berliner Str. 55, 15806 Zossen",    menge:"49.0", preisProLiter:"1.799", betrag:"88.15",  kraftstoff:"Diesel", kmStand:"59280", bonNr:"SH-2025-02071", zahlungsart:"EC-Karte",  notiz:"", belegFoto:""},
+    {id:uid(), datum:"2025-03-13", uhrzeit:"08:00", stationName:"Aral Luckenwalde",  adresse:"Berliner Str. 10, 14943 Luckenwalde", menge:"51.5", preisProLiter:"1.809", betrag:"93.16",  kraftstoff:"Diesel", kmStand:"60220", bonNr:"AR-2025-03131", zahlungsart:"EC-Karte",  notiz:"Vor Messe", belegFoto:""},
+    {id:uid(), datum:"2025-04-22", uhrzeit:"12:45", stationName:"Jet Ludwigsfelde",  adresse:"Gewerbepark 1, 14974 Ludwigsfelde",   menge:"47.5", preisProLiter:"1.759", betrag:"83.55",  kraftstoff:"Diesel", kmStand:"61150", bonNr:"JT-2025-04221", zahlungsart:"Tankkarte", notiz:"", belegFoto:""},
+    {id:uid(), datum:"2025-05-19", uhrzeit:"07:45", stationName:"Aral Luckenwalde",  adresse:"Berliner Str. 10, 14943 Luckenwalde", menge:"52.0", preisProLiter:"1.749", betrag:"90.95",  kraftstoff:"Diesel", kmStand:"62100", bonNr:"AR-2025-05191", zahlungsart:"EC-Karte",  notiz:"", belegFoto:""},
+    {id:uid(), datum:"2025-06-18", uhrzeit:"17:00", stationName:"BP Autobahn A10",   adresse:"Rastanlage Michendorf, A10",      menge:"55.0", preisProLiter:"1.839", betrag:"101.15", kraftstoff:"Diesel", kmStand:"63200", bonNr:"BP-2025-06181", zahlungsart:"Tankkarte", notiz:"Rückfahrt Messe", belegFoto:""},
+    {id:uid(), datum:"2025-07-11", uhrzeit:"08:15", stationName:"Aral Luckenwalde",  adresse:"Berliner Str. 10, 14943 Luckenwalde", menge:"50.5", preisProLiter:"1.729", betrag:"87.31",  kraftstoff:"Diesel", kmStand:"64250", bonNr:"AR-2025-07111", zahlungsart:"EC-Karte",  notiz:"", belegFoto:""},
+    {id:uid(), datum:"2025-08-06", uhrzeit:"16:30", stationName:"Shell Zossen",    adresse:"Berliner Str. 55, 15806 Zossen",    menge:"48.0", preisProLiter:"1.769", betrag:"84.91",  kraftstoff:"Diesel", kmStand:"65180", bonNr:"SH-2025-08061", zahlungsart:"EC-Karte",  notiz:"", belegFoto:""},
+    {id:uid(), datum:"2025-09-10", uhrzeit:"07:30", stationName:"Aral Luckenwalde",  adresse:"Berliner Str. 10, 14943 Luckenwalde", menge:"53.5", preisProLiter:"1.759", betrag:"94.11",  kraftstoff:"Diesel", kmStand:"66300", bonNr:"AR-2025-09101", zahlungsart:"EC-Karte",  notiz:"", belegFoto:""},
+    {id:uid(), datum:"2025-10-06", uhrzeit:"07:30", stationName:"Aral Luckenwalde",  adresse:"Berliner Str. 10, 14943 Luckenwalde", menge:"52.0", preisProLiter:"1.749", betrag:"90.95",  kraftstoff:"Diesel", kmStand:"67380", bonNr:"AR-2025-10061", zahlungsart:"EC-Karte",  notiz:"", belegFoto:""},
+    {id:uid(), datum:"2025-11-18", uhrzeit:"16:45", stationName:"Shell Zossen",    adresse:"Berliner Str. 55, 15806 Zossen",    menge:"48.5", preisProLiter:"1.769", betrag:"85.80",  kraftstoff:"Diesel", kmStand:"68590", bonNr:"SH-2025-11181", zahlungsart:"EC-Karte",  notiz:"", belegFoto:""},
+    {id:uid(), datum:"2025-12-15", uhrzeit:"08:00", stationName:"Aral Luckenwalde",  adresse:"Berliner Str. 10, 14943 Luckenwalde", menge:"51.0", preisProLiter:"1.789", betrag:"91.24",  kraftstoff:"Diesel", kmStand:"69650", bonNr:"AR-2025-12151", zahlungsart:"EC-Karte",  notiz:"", belegFoto:""},
+    {id:uid(), datum:"2026-01-14", uhrzeit:"08:15", stationName:"Aral Luckenwalde",  adresse:"Berliner Str. 10, 14943 Luckenwalde", menge:"50.0", preisProLiter:"1.729", betrag:"86.45",  kraftstoff:"Diesel", kmStand:"70720", bonNr:"AR-2026-01141", zahlungsart:"EC-Karte",  notiz:"", belegFoto:""},
+    {id:uid(), datum:"2026-02-25", uhrzeit:"12:00", stationName:"Jet Ludwigsfelde",  adresse:"Gewerbepark 1, 14974 Ludwigsfelde",   menge:"46.0", preisProLiter:"1.719", betrag:"79.07",  kraftstoff:"Diesel", kmStand:"71840", bonNr:"JT-2026-02251", zahlungsart:"Tankkarte", notiz:"", belegFoto:""},
     ],
     waesche:[
     {id:uid(), datum:"2025-01-25", uhrzeit:"10:00", typ:"Außenwäsche",     adresse:"Waschpark Luckenwalde, Bahnhofstr. 22, 14943 Luckenwalde", betrag:"8.50",   zahlungsart:"Bar",    notiz:"", belegFoto:""},
@@ -1978,6 +2038,28 @@ function createMusterDaten() {
     {id:uid(), datum:"2025-10-15", typ:"Reifenwechsel Winter", werkstatt:"ATU Luckenwalde",  adresse:"Potsdamer Str. 80, 14943 Luckenwalde",  kmStand:"67500", betrag:"95.00",  rechnungsNr:"ATU-2025-9901", faelligKm:"",   faelligDatum:"",       zahlungsart:"EC-Karte",   notiz:"Sommerreifen eingelagert",  belegFoto:""},
     {id:uid(), datum:"2025-12-03", typ:"Ölwechsel",      werkstatt:"VW Autohaus Teltow", adresse:"Mahlower Str. 44, 14513 Teltow",     kmStand:"69400", betrag:"195.00", rechnungsNr:"VWT-2025-4412", faelligKm:"79000",faelligDatum:"2026-12-01", zahlungsart:"Überweisung",notiz:"5W-30 Longlife",       belegFoto:""},
     {id:uid(), datum:"2026-02-20", typ:"TÜV / HU",       werkstatt:"DEKRA Luckenwalde",  adresse:"Jüterboger Str. 12, 14943 Luckenwalde", kmStand:"71700", betrag:"125.00", rechnungsNr:"DEK-2026-0220", faelligKm:"",   faelligDatum:"2028-02-01", zahlungsart:"Bar",     notiz:"Bestanden ohne Mängel",   belegFoto:""},
+    ],
+    parkplaetze:[
+    // Partner-Besuche — passend zu den Fahrten
+    {id:uid(), datum:"2025-01-07", uhrzeit:"09:05", ort:"Parkplatz Rathaus Blankenfelde", adresse:"Bahnhofstr. 2, 15827 Blankenfelde-Mahlow", dauer:"1.5", betrag:"2.00", zahlungsart:"Bar", bemerkung:"Blankenfelde Steuerberatung"},
+    {id:uid(), datum:"2025-01-14", uhrzeit:"10:05", ort:"Parkplatz Industrieweg Jüterbog", adresse:"Industrieweg 30, 14913 Jüterbog", dauer:"2.0", betrag:"0.00", zahlungsart:"Bar", bemerkung:"Kostenloser Kundenparkplatz"},
+    {id:uid(), datum:"2025-01-21", uhrzeit:"08:05", ort:"P&R Ludwigsfelde Gewerbepark", adresse:"Gewerbepark 8, 14974 Ludwigsfelde", dauer:"0.5", betrag:"1.00", zahlungsart:"Bar", bemerkung:"Ludwigsfelde Logistik"},
+    {id:uid(), datum:"2025-01-28", uhrzeit:"09:35", ort:"Parkplatz Zossen Mitte", adresse:"Berliner Str. 80, 15806 Zossen", dauer:"1.5", betrag:"1.50", zahlungsart:"Münzzahler", bemerkung:"Zossener Bau GmbH"},
+    {id:uid(), datum:"2025-02-13", uhrzeit:"11:05", ort:"Parkplatz Teltow Stadtmitte", adresse:"Potsdamer Str. 50, 14513 Teltow", dauer:"1.5", betrag:"2.50", zahlungsart:"App / Mobile", bemerkung:"Teltow IT Solutions"},
+    {id:uid(), datum:"2025-03-14", uhrzeit:"07:50", ort:"Stadthallenpark Brandenburg a.d.H.", adresse:"Magdeburger Str. 34, 14770 Brandenburg", dauer:"9.0", betrag:"8.00", zahlungsart:"EC-Karte", bemerkung:"Handwerksmesse Brandenburg 2025"},
+    {id:uid(), datum:"2025-04-10", uhrzeit:"09:05", ort:"Firmenparkplatz Jüterboger Metallbau", adresse:"Industrieweg 33, 14913 Jüterbog", dauer:"1.0", betrag:"0.00", zahlungsart:"Bar", bemerkung:"Kostenloser Kundenparkplatz"},
+    {id:uid(), datum:"2025-04-22", uhrzeit:"11:05", ort:"P&R Ludwigsfelde Gewerbepark", adresse:"Gewerbepark 8, 14974 Ludwigsfelde", dauer:"1.5", betrag:"1.50", zahlungsart:"Bar", bemerkung:"Ludwigsfelde Logistik AG"},
+    {id:uid(), datum:"2025-05-13", uhrzeit:"09:05", ort:"Parkplatz Zossen Mitte", adresse:"Berliner Str. 80, 15806 Zossen", dauer:"2.0", betrag:"2.00", zahlungsart:"Münzzahler", bemerkung:"Zossener Bau GmbH"},
+    {id:uid(), datum:"2025-06-11", uhrzeit:"10:05", ort:"Parkplatz Rathaus Blankenfelde", adresse:"Bahnhofstr. 2, 15827 Blankenfelde-Mahlow", dauer:"1.5", betrag:"2.00", zahlungsart:"Bar", bemerkung:"Blankenfelde Steuerberatung"},
+    {id:uid(), datum:"2025-06-20", uhrzeit:"07:50", ort:"Parkplatz Gewerbepark Luckenwalde", adresse:"Gewerbepark Luckenwalde, 14943 Luckenwalde", dauer:"9.0", betrag:"5.00", zahlungsart:"Bar", bemerkung:"Baufachmesse Teltow-Fläming 2025"},
+    {id:uid(), datum:"2025-07-09", uhrzeit:"09:05", ort:"P&R Ludwigsfelde Bahnhof", adresse:"Bahnhofstr. 1, 14974 Ludwigsfelde", dauer:"1.5", betrag:"1.50", zahlungsart:"Bar", bemerkung:"Ludwigsfelde Logistik AG"},
+    {id:uid(), datum:"2025-08-20", uhrzeit:"09:05", ort:"Firmenparkplatz Jüterboger Metallbau", adresse:"Industrieweg 33, 14913 Jüterbog", dauer:"1.5", betrag:"0.00", zahlungsart:"Bar", bemerkung:"Kostenloser Kundenparkplatz"},
+    {id:uid(), datum:"2025-09-23", uhrzeit:"09:05", ort:"Parkplatz Teltow Stadtmitte", adresse:"Potsdamer Str. 50, 14513 Teltow", dauer:"1.5", betrag:"2.50", zahlungsart:"App / Mobile", bemerkung:"Teltow IT Solutions"},
+    {id:uid(), datum:"2025-10-14", uhrzeit:"08:05", ort:"P&R Ludwigsfelde Gewerbepark", adresse:"Gewerbepark 8, 14974 Ludwigsfelde", dauer:"1.5", betrag:"1.50", zahlungsart:"Bar", bemerkung:"Ludwigsfelde Logistik AG"},
+    {id:uid(), datum:"2025-11-05", uhrzeit:"10:05", ort:"Parkplatz Zossen Mitte", adresse:"Berliner Str. 80, 15806 Zossen", dauer:"1.0", betrag:"1.00", zahlungsart:"Bar", bemerkung:"Zossener Bau GmbH"},
+    {id:uid(), datum:"2025-12-10", uhrzeit:"08:05", ort:"Havel-Forum Parkplatz", adresse:"Magdeburger Str. 34, 14770 Brandenburg", dauer:"1.5", betrag:"3.00", zahlungsart:"EC-Karte", bemerkung:"IHK Veranstaltung"},
+    {id:uid(), datum:"2026-01-14", uhrzeit:"09:05", ort:"Parkplatz Rathaus Blankenfelde", adresse:"Bahnhofstr. 2, 15827 Blankenfelde-Mahlow", dauer:"2.0", betrag:"2.00", zahlungsart:"Bar", bemerkung:"Blankenfelde Steuerberatung"},
+    {id:uid(), datum:"2026-02-04", uhrzeit:"10:05", ort:"P&R Ludwigsfelde Gewerbepark", adresse:"Gewerbepark 8, 14974 Ludwigsfelde", dauer:"1.5", betrag:"1.50", zahlungsart:"Bar", bemerkung:"Weber & Söhne OHG"},
     ],
     fahrten:[
     // Januar 2025
@@ -2077,7 +2159,866 @@ function createMusterDaten() {
   return { fz, fz2 };
 }
 
+// ─── ÜBERSICHT TAB ───────────────────────────────────────────────────────────
+function UebersichtTab({stats, aktiv, acc, C, SANS, FS, katAccent, setTab, setFForm, setFData, E_F, patchAktiv, safeFloat, formatDatum, getZielName, getZielAdr}) {
+  const kostenCats=[
+  {label:"Tanken",  color:C.tank,    betrag:stats.tankKosten,   count:(aktiv.tankstellen||[]).length, icon:"droplet"},
+  {label:"Service", color:C.service, betrag:stats.serviceKosten,count:(aktiv.services||[]).length,    icon:"tool"},
+  {label:"Wäsche",  color:C.wasch,   betrag:stats.waschKosten,  count:(aktiv.waesche||[]).length,     icon:"wasch"},
+  {label:"Strafen", color:C.strafe,  betrag:stats.strafeKosten, count:(aktiv.strafen||[]).length,     icon:"alert"}
+  ,{label:"Parken",  color:C.park,    betrag:stats.parkKosten,   count:(aktiv.parkplaetze||[]).length, icon:"park"},
+  ];
+  return (
+    <div>
+
+    {/* ── ZONE 2: 4 Haupt-KPIs — 2 строки по 2 ── */}
+    <div style={{display:"grid",gridTemplateColumns:"repeat(4,minmax(0,1fr))",gap:12,marginBottom:12}}>
+    <KpiCard wert={stats.gesamtKosten.toFixed(2)} unit="€" label="GESAMTKOSTEN" akzent={C.steel} icon="download"/>
+    <KpiCard wert={stats.gKm.toFixed(1)}          unit="km" label="GEFAHRENE KM" akzent={C.red}   icon="road"/>
+    <KpiCard wert={(aktiv.fahrten||[]).length}                     label="FAHRTEN"      akzent={C.gold}  icon="car"/>
+    <KpiCard wert={stats.strafenOffen}                        label="OFF. STRAFEN" akzent={stats.strafenOffen>0?C.strafe:C.muted} icon="alert"/>
+    </div>
+
+    {/* ── ZONE 3: Kosten-Breakdown + KM nach Kat ── */}
+    <div style={{display:"grid",gridTemplateColumns:"minmax(0,3fr) minmax(0,2fr)",gap:12,marginBottom:12}}>
+
+    {/* Kosten Breakdown */}
+    <div style={{background:C.surface,padding:"18px 20px",borderLeft:`2px solid ${C.steel}`,boxShadow:C.shadow,borderRadius:8}}>
+    <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",marginBottom:16}}>
+    <div style={{fontSize:13,color:C.text,letterSpacing:2,textTransform:"uppercase",fontWeight:700,fontFamily:SANS}}>KOSTEN ÜBERSICHT</div>
+    <div style={{fontSize:20,fontWeight:800,color:C.text,fontFamily:SANS}}>{stats.gesamtKosten.toFixed(2)} €</div>
+    </div>
+    <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+    {kostenCats.map(cat=>(
+    <div key={cat.label} style={{padding:"12px 14px",borderLeft:`2px solid ${cat.color}`,background:C.surfaceAlt,borderRadius:"0 6px 6px 0"}}>
+    <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:6}}>
+    <Ico name={cat.icon} size={18} color={cat.color}/>
+    <span style={{fontSize:13,fontWeight:700,letterSpacing:1.5,textTransform:"uppercase",fontFamily:SANS,color:C.text}}>{cat.label}</span>
+    </div>
+    <div style={{fontSize:20,fontWeight:800,color:C.text,fontFamily:SANS,lineHeight:1,marginBottom:4}}>{cat.betrag.toFixed(2)} €</div>
+    <AnimatedBar pct={stats.gesamtKosten>0?Math.min((cat.betrag/stats.gesamtKosten)*100,100).toFixed(1):0} color={cat.color} height={3}/>
+    </div>
+    ))}
+    </div>
+    </div>
+
+    {/* KM nach Kategorie */}
+    <div style={{background:C.surface,padding:"18px 20px",borderLeft:`2px solid ${C.red}`,boxShadow:C.shadow,borderRadius:8}}>
+    <div style={{fontSize:13,color:C.text,letterSpacing:1.5,textTransform:"uppercase",fontWeight:700,marginBottom:16,fontFamily:SANS}}>KM NACH KAT.</div>
+    {Object.entries(stats.nK).map(([kat,km])=>{
+    const pct=((km/(stats.gKm||1))*100).toFixed(0);
+    const ak=katAccent[kat]||C.steel;
+    const short={standorte:"Standort",partner:"Partner",messe:"Messen"};
+    return (
+    <div key={kat} style={{marginBottom:14}}>
+    <div style={{display:"flex",justifyContent:"space-between",marginBottom:5,fontSize:14}}>
+    <span style={{color:C.text,fontFamily:SANS}}>{short[kat]||kat}</span>
+    <span style={{color:C.text,fontWeight:700,fontFamily:SANS}}>
+    {km.toFixed(0)} km <span style={{color:C.muted,fontSize:13}}>({pct}%)</span>
+    </span>
+    </div>
+    <AnimatedBar pct={pct} color={ak}/>
+    </div>
+    );
+    })}
+    </div>
+    </div>
+
+    {/* ── ZONE 4: KM / Monat Chart ── */}
+    <div style={{background:C.surface,padding:"18px 20px",borderLeft:`2px solid ${C.red}`,boxShadow:C.shadow,borderRadius:8,marginBottom:12}}>
+    <div style={{fontSize:13,color:C.text,letterSpacing:1.5,textTransform:"uppercase",fontWeight:700,marginBottom:4,fontFamily:SANS}}>KM / MONAT</div>
+    <MonatsChart kmByMonth={stats.kmByMonth} accent={C.red}/>
+    </div>
+
+    {/* ── ZONE 5: Nächste Fälligkeiten + Top Besucht ── */}
+    <div style={{display:"grid",gridTemplateColumns:"minmax(0,1fr) minmax(0,1fr)",gap:12,marginBottom:12}}>
+
+    {/* Nächste Fälligkeiten */}
+    <div style={{background:C.surface,padding:"18px 20px",borderLeft:`2px solid ${C.service}`,boxShadow:C.shadow,borderRadius:8}}>
+    <div style={{fontSize:13,color:C.text,letterSpacing:1.5,textTransform:"uppercase",fontWeight:700,marginBottom:14,fontFamily:SANS}}>NÄCHSTE FÄLLIGKEITEN</div>
+    {stats.faelligkeiten.length>0 ? stats.faelligkeiten.map(x=>{
+    const today=new Date().toISOString().slice(0,10);
+    const ueberfaellig=x.faelligDatum&&x.faelligDatum<=today;
+    const accentFaellig=ueberfaellig?C.strafe:C.service;
+    return (
+    <div key={x.id} style={{display:"flex",flexDirection:"column",gap:4,padding:"9px 0",borderBottom:`1px solid ${C.border}`}}>
+    <span style={{fontSize:15,color:C.text,fontFamily:SANS,fontWeight:600}}>{x.typ}</span>
+    <div style={{display:"flex",gap:12,alignItems:"center"}}>
+    {x.faelligDatum&&(
+    <span style={{fontSize:15,color:C.text,fontFamily:SANS,display:"flex",alignItems:"center",gap:4,whiteSpace:"nowrap"}}>
+    <Ico name="clock" size={15} color={accentFaellig}/>
+    {formatDatum(x.faelligDatum)}
+    </span>
+    )}
+    {x.faelligKm&&(
+    <span style={{fontSize:15,color:C.text,fontFamily:SANS,display:"flex",alignItems:"center",gap:4,whiteSpace:"nowrap"}}>
+    <Ico name="road" size={15} color={C.tank}/>
+    {x.faelligKm} km
+    </span>
+    )}
+    </div>
+    </div>
+    );
+    }) : (
+    <div style={{color:C.muted,fontSize:13,textAlign:"center",padding:"16px 0",fontFamily:SANS}}>Keine Fälligkeiten eingetragen</div>
+    )}
+    </div>
+
+    {/* Top Besucht */}
+    <div style={{background:C.surface,padding:"18px 20px",borderLeft:`2px solid ${C.red}`,boxShadow:C.shadow,borderRadius:8}}>
+    <div style={{fontSize:13,color:C.text,letterSpacing:1.5,textTransform:"uppercase",fontWeight:700,marginBottom:14,fontFamily:SANS}}>TOP BESUCHT</div>
+    {Object.entries(stats.nP).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([id,km],i)=>{
+    const p=(aktiv.partner||[]).find(x=>x.id===id);
+    return (
+    <div key={id} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"6px 0",borderBottom:`1px solid ${C.border}`,fontSize:14}}>
+    <span style={{color:C.text,minWidth:0,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",fontFamily:SANS}}>
+    <span style={{color:C.muted,marginRight:6}}>{i+1}.</span>{p?p.name:id}
+    </span>
+    <span style={{color:C.text,fontWeight:700,fontFamily:SANS,flexShrink:0,marginLeft:8}}>
+    {km.toFixed(0)} km
+    </span>
+    </div>
+    );
+    })}
+    {!Object.keys(stats.nP).length&&(
+    <div style={{color:C.muted,fontSize:13,textAlign:"center",padding:"16px 0",fontFamily:SANS}}>Keine Partnerfahrten</div>
+    )}
+    </div>
+    </div>
+
+    {/* ── ZONE 6: Letzte Fahrten ── */}
+    <div style={{background:C.surface,padding:"18px 20px",borderLeft:`2px solid ${C.red}`,boxShadow:C.shadow,borderRadius:8}}>
+    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
+    <div style={{fontSize:13,color:C.text,letterSpacing:2,textTransform:"uppercase",fontWeight:700,fontFamily:SANS}}>LETZTE FAHRTEN</div>
+    <button onClick={()=>{setTab("fahrten");setFForm("new");setFData(E_F());}} style={btnSolid(C.red)}>
+    <Ico name="plus" size={15} color="#fff"/>FAHRT
+    </button>
+    </div>
+    {(aktiv.fahrten||[]).length>0 ? aktiv.fahrten.slice().reverse().slice(0,5).map(f=>{
+    const ak=katAccent[f.kategorie]||C.strafe;
+    return (
+    <div key={f.id} style={{display:"flex",alignItems:"center",gap:14,padding:"10px 0",borderBottom:`1px solid ${C.border}`}}>
+    <div style={{width:10,height:10,borderRadius:"50%",background:ak,flexShrink:0}}/>
+    <div style={{flex:1,minWidth:0}}>
+    <div style={{fontSize:15,fontWeight:700,color:C.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",fontFamily:SANS}}>{getZielName(f)}</div>
+    <div style={{fontSize:14,color:C.muted,fontFamily:SANS}}>{formatDatum(f.datum)}</div>
+    </div>
+    <span style={{color:C.text,fontWeight:700,fontFamily:SANS,fontSize:14,flexShrink:0}}>{safeFloat(f.km).toFixed(0)} km</span>
+    </div>
+    );
+    }) : (
+    <EmptyState icon="car" accent={C.red} text="Noch keine Fahrten" hint="Erste Fahrt erfassen und hier sehen" btnLabel="FAHRT ERFASSEN" onBtnClick={()=>{setTab("fahrten");setFForm("new");setFData(E_F());}}/>
+    )}
+    </div>
+
+    {/* ── ZONE 7: Alerts ── */}
+    {(!aktiv.standort?.name||stats.strafenOffen>0||stats.faelligUeberfaellig.length>0)&&(
+    <div style={{display:"flex",flexDirection:"column",gap:12,marginTop:12}}>
+    {!aktiv.standort?.name&&(
+    <div style={{background:C.surface,borderTop:`2px solid ${C.red}`,padding:"16px 20px",
+    display:"flex",alignItems:"center",justifyContent:"space-between",
+    boxShadow:C.shadow,borderRadius:8}}>
+    <div style={{display:"flex",alignItems:"center",gap:10,fontSize:14,color:C.red,fontFamily:SANS,fontWeight:600}}>
+    <Ico name="alert" size={15} color={C.red}/>Kein Stammstandort — bitte einrichten.
+    </div>
+    <button onClick={()=>setTab("einstellungen")} style={btnSolid(C.red)}>
+    <Ico name="settings" size={15} color="#fff"/>EINSTELLUNGEN
+    </button>
+    </div>
+    )}
+    {stats.strafenOffen>0&&(
+    <div style={{background:C.surface,borderTop:`2px solid ${C.strafe}`,padding:"16px 20px",
+    display:"flex",alignItems:"center",justifyContent:"space-between",
+    boxShadow:C.shadow,borderRadius:8}}>
+    <div style={{display:"flex",alignItems:"center",gap:10,fontSize:14,color:C.strafe,fontFamily:SANS,fontWeight:600}}>
+    <Ico name="zap" size={15} color={C.strafe}/>
+    {stats.strafenOffen} offene {stats.strafenOffen===1?"Strafe":"Strafen"} — noch nicht bezahlt
+    </div>
+    <button onClick={()=>{setTab("kosten");setKostenSub("strafen");}} style={btnSolid(C.strafe)}>
+    <Ico name="arrowRight" size={15} color="#fff"/>ANZEIGEN
+    </button>
+    </div>
+    )}
+    {stats.faelligUeberfaellig.length>0&&(
+    <div style={{background:C.surface,borderTop:`2px solid ${C.service}`,padding:"16px 20px",
+    display:"flex",alignItems:"center",justifyContent:"space-between",
+    boxShadow:C.shadow,borderRadius:8}}>
+    <div style={{display:"flex",alignItems:"center",gap:10,fontSize:14,color:C.service,fontFamily:SANS,fontWeight:600}}>
+    <Ico name="alert" size={15} color={C.service}/>
+    {stats.faelligUeberfaellig.length} {stats.faelligUeberfaellig.length===1?"Fälligkeit":"Fälligkeiten"} überfällig: {stats.faelligUeberfaellig.map(x=>x.typ).join(", ")}
+    </div>
+    <button onClick={()=>{setTab("kosten");setKostenSub("service");}} style={btnSolid(C.service)}>
+    <Ico name="arrowRight" size={15} color="#fff"/>ANZEIGEN
+    </button>
+    </div>
+    )}
+    </div>
+    )}
+
+    </div>
+  );
+}
+
+// ─── BERICHT TAB ─────────────────────────────────────────────────────────────
+function BerichtTab({gefFahrten, aktiv, acc, C, SANS, safeFloat, formatDatum,
+  getZielName, getZielAdr, fMonat, setFMonat, fKat, setFKat, fQ, setFQ,
+  OPT_FAHRT_KAT_F, katAccent, csvModal, setCsvModal, sheetsModal, setSheetsModal,
+  printPreview, setPrintPreview, copied, setCopied, sheetsCopied, setSheetsCopied,
+  copiedTimer, sheetsCopiedTimer}) {
+  const kmGesch  = gefFahrten.reduce((s,f)=>s+(f.kmTyp==="geschaeftlich"||!f.kmTyp?safeFloat(f.km):0),0);
+  const kmWohn   = gefFahrten.reduce((s,f)=>s+(f.kmTyp==="wohnArbeit"?safeFloat(f.km):0),0);
+  const kmPrivat = gefFahrten.reduce((s,f)=>s+(f.kmTyp==="privat"?safeFloat(f.km):0),0);
+  const buildCsv = () => {
+  const esc = v => `"${String(v||"").replace(/"/g,'""')}"`;
+  const headers = ["Datum","Fahrzeit von-bis","Reiseroute und Ziel","Zweck der Fahrt","Besuchte Personen / Firmen / Behörden","km-Stand Fahrtbeginn","gesch. km","Wohn/Arbeit km","privat km","km-Stand Fahrtende","Name des Fahrers"];
+  const rows = gefFahrten.map(f=>{
+  const typ = f.kmTyp||"geschaeftlich";
+  const km  = safeFloat(f.km);
+  const von = aktiv.standort?.name||aktiv.standort?.adresse||"";
+  const nach= getZielAdr(f)||getZielName(f)||f.zielName||"";
+  const route=[von,nach].filter(Boolean).join(" – ")+(f.rueckfahrt?" (hin+zurück)":"");
+  return [
+  formatDatum(f.datum),
+  f.zeitStr||"",
+  route,
+  f.notiz||"",
+  getZielName(f)||"",
+  f.kmStart||"",
+  typ==="geschaeftlich"?km.toFixed(0):"",
+  typ==="wohnArbeit"?km.toFixed(0):"",
+  typ==="privat"?km.toFixed(0):"",
+  f.kmEnd||"",
+  aktiv.fahrer||"",
+  ].map(esc).join(";");
+  });
+  return [headers.map(esc).join(";"), ...rows].join("\r\n");
+  };
+  // Числовые и текстовые колонки — все фиксированные (горизонтальный скролл на малых экранах)
+  const gridCols = "100px 96px 220px 160px 140px 96px 64px 64px 64px 96px 1fr";
+  const MIN_W = 100+96+220+160+140+96+64+64+64+96+120+40;
+  // Gemeinsame Zell-Basis
+  const CELL_BASE = {
+  padding:"7px 8px",
+  fontSize:14,
+  fontFamily:SANS,
+  lineHeight:1.45,
+  wordBreak:"break-word",
+  whiteSpace:"normal",
+  boxSizing:"border-box",
+  };
+  const SEP  = {borderRight:`1px solid ${C.border}`};
+  const SEP2 = {borderRight:`2px solid ${C.borderHi}`};
+  // Kopfzeilen-Stil
+  const TH = {
+  ...CELL_BASE,
+  fontSize:14,
+  color:C.muted,
+  letterSpacing:1.5,
+  textTransform:"uppercase",
+  fontWeight:700,
+  lineHeight:1.35,
+  padding:"8px 8px",
+  };
+  const Row = ({children, style={}}) => (
+  <div style={{
+  display:"grid",
+  gridTemplateColumns:gridCols,
+  width:"100%",
+  boxSizing:"border-box",
+  ...style,
+  }}>{children}</div>
+  );
+  return (
+    <div>
+    {/* Print CSS */}
+
+    {/* Google Sheets Modal */}
+    {sheetsModal&&(
+    <BaseModal onClose={()=>setSheetsModal(false)} title="Google Sheets Export" icon="fileText" accent={C.sheetsGreen} maxWidth={480}>
+    {/* Steps */}
+    <div style={{display:"flex",flexDirection:"column",gap:12,marginBottom:24}}>
+    {[
+    {n:1, label:"Klicke auf", strong:"KOPIEREN", sub:"Daten werden in die Zwischenablage gelegt"},
+    {n:2, label:"Klicke auf", strong:"SHEETS ÖFFNEN", sub:"Eine neue Tabelle öffnet sich"},
+    {n:3, label:"Zelle A1 anklicken →", strong:"Einfügen (Strg+V)", sub:"Fertig — alle Spalten korrekt"},
+    ].map(s=>(
+    <div key={s.n} style={{display:"flex",gap:12,alignItems:"flex-start"}}>
+    <div style={{
+    width:24,height:24,borderRadius:"50%",background:C.sheetsGreen,
+    color:"#fff",fontSize:14,fontWeight:800,fontFamily:SANS,
+    display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1,
+    }}>{s.n}</div>
+    <div>
+    <span style={{fontSize:14,color:C.textSoft,fontFamily:SANS}}>{s.label} </span>
+    <span style={{fontSize:14,fontWeight:700,color:C.text,fontFamily:SANS}}>{s.strong}</span>
+    <div style={{fontSize:14,color:C.muted,fontFamily:SANS,marginTop:2}}>{s.sub}</div>
+    </div>
+    </div>
+    ))}
+    </div>
+    {/* Buttons */}
+    <div style={{display:"flex",gap:10}}>
+    <button onClick={()=>{
+    const escTab = v => String(v||"").replace(/\t/g," ");
+    const hdr = ["Datum","Fahrzeit","Reiseroute und Ziel","Zweck","Besuchte Personen","km-Stand Beginn","gesch.","Wohn/Arb.","privat","km-Stand Ende","Fahrer"];
+    const rows = gefFahrten.map(f=>{
+    const typ=f.kmTyp||"geschaeftlich", km=safeFloat(f.km);
+    const von=aktiv.standort?.name||"";
+    const nach=getZielAdr(f)||getZielName(f)||f.zielName||"";
+    const route=[von,nach].filter(Boolean).join(" – ")+(f.rueckfahrt?" (h+z)":"");
+    return [formatDatum(f.datum),f.zeitStr||"",route,f.notiz||"",getZielName(f)||"",
+    f.kmStart||"",typ==="geschaeftlich"?km.toFixed(0):"",typ==="wohnArbeit"?km.toFixed(0):"",
+    typ==="privat"?km.toFixed(0):"",f.kmEnd||"",aktiv.fahrer||""].map(escTab).join("\t");
+    });
+    navigator.clipboard?.writeText([hdr.join("\t"),...rows].join("\n"))
+    .then(()=>{setSheetsCopied(true);sheetsCopiedTimer.current=setTimeout(()=>setSheetsCopied(false),3000);})
+    .catch(()=>{});
+    }} style={{
+    flex:1,height:48,borderRadius:8,border:"none",
+    background:sheetsCopied?C.sheetsGreen:C.text,
+    color:"#fff",cursor:"pointer",fontSize:16,fontFamily:SANS,fontWeight:700,
+    letterSpacing:0.5,display:"flex",alignItems:"center",justifyContent:"center",gap:8,
+    transition:"background 0.2s",
+    }}>
+    <Ico name={sheetsCopied?"check":"copy"} size={15} color="#fff"/>
+    {sheetsCopied?"Kopiert!":"1. Kopieren"}
+    </button>
+    <button onClick={()=>window.open("https://sheets.new","_blank")}
+    style={{
+    flex:1,height:48,borderRadius:8,border:"none",
+    background:C.sheetsGreen,color:"#fff",cursor:"pointer",
+    fontSize:16,fontFamily:SANS,fontWeight:700,letterSpacing:0.5,
+    display:"flex",alignItems:"center",justifyContent:"center",gap:8,
+    opacity:sheetsCopied?1:0.55,transition:"opacity 0.2s",
+    }}>
+    <Ico name="arrowRight" size={15} color="#fff"/>
+    2. Sheets öffnen
+    </button>
+    </div>
+    </BaseModal>
+    )}
+
+    {/* CSV-Export Modal */}
+    {csvModal&&(
+    <BaseModal onClose={()=>setCsvModal(false)} title="CSV Exportieren" icon="download" accent={acc} maxWidth={540}>
+    <div style={{
+    display:"flex",alignItems:"center",gap:8,
+    padding:"8px 12px",borderRadius:8,background:C.surfaceAlt,
+    border:`1px solid ${C.border}`,marginBottom:16,
+    }}>
+    <Ico name="fileText" size={13} color={C.muted}/>
+    <span style={{fontSize:14,color:C.muted,fontFamily:SANS}}>
+    <strong style={{color:C.text}}>{gefFahrten.length}</strong> Fahrten · Separator: Semikolon · UTF-8
+    </span>
+    </div>
+    <textarea readOnly value={buildCsv()}
+    style={{
+    width:"100%",height:150,fontFamily:"'Courier New',monospace",fontSize:14,
+    background:C.bg,border:`1px solid ${C.border}`,borderRadius:8,
+    padding:"10px 12px",resize:"none",boxSizing:"border-box",
+    color:C.textSoft,lineHeight:1.6,outline:"none",
+    }}
+    onFocus={e=>e.target.select()}
+    />
+    <div style={{display:"flex",gap:10,marginTop:16}}>
+    <button onClick={()=>{
+    navigator.clipboard?.writeText(buildCsv())
+    .then(()=>{setCopied(true);copiedTimer.current=setTimeout(()=>setCopied(false),2000);})
+    .catch(()=>{});
+    }} style={{
+    flex:1,height:48,borderRadius:8,
+    background:copied?C.savedGreen:acc,border:"none",
+    color:"#fff",cursor:"pointer",fontSize:16,fontFamily:SANS,fontWeight:700,
+    letterSpacing:0.5,display:"flex",alignItems:"center",justifyContent:"center",gap:8,
+    transition:"background 0.2s",
+    }}>
+    <Ico name={copied?"check":"copy"} size={15} color="#fff"/>
+    {copied?"Kopiert!":"Kopieren"}
+    </button>
+    <button onClick={()=>setCsvModal(false)}
+    onMouseEnter={e=>{e.currentTarget.style.background=C.surfaceAlt;e.currentTarget.style.borderColor=C.borderHi;}}
+    onMouseLeave={e=>{e.currentTarget.style.background="transparent";e.currentTarget.style.borderColor=C.border;}}
+    style={{
+    height:48,padding:"0 24px",borderRadius:8,
+    background:"transparent",border:`1.5px solid ${C.border}`,
+    color:C.textSoft,cursor:"pointer",fontSize:16,fontFamily:SANS,fontWeight:700,
+    transition:"background 0.15s, border-color 0.15s",
+    }}>
+    Schließen
+    </button>
+    </div>
+    </BaseModal>
+    )}
+
+    {/* Toolbar */}
+    <div style={{display:"flex",justifyContent:"flex-end",gap:8,marginBottom:14}}>
+    <button onClick={()=>{setCopied(false);setCsvModal(true);}}
+    style={{height:36,border:`1px solid ${C.border}`,borderRadius:8,background:"transparent",color:C.text,
+    fontSize:14,fontFamily:SANS,fontWeight:700,letterSpacing:2,
+    textTransform:"uppercase",padding:"0 14px",cursor:"pointer",display:"flex",alignItems:"center",gap:6}}>
+    <Ico name="copy" size={13} color={C.muted}/> CSV
+    </button>
+    <button onClick={()=>{setSheetsCopied(false);setSheetsModal(true);}}
+    style={{height:36,border:`1px solid ${C.sheetsGreen}`,borderRadius:8,background:"transparent",color:C.sheetsGreen,
+    fontSize:14,fontFamily:SANS,fontWeight:700,letterSpacing:2,
+    textTransform:"uppercase",padding:"0 14px",cursor:"pointer",display:"flex",alignItems:"center",gap:6}}>
+    <Ico name="fileText" size={15} color={C.sheetsGreen}/> SHEETS
+    </button>
+    <button onClick={()=>setPrintPreview(true)}
+    style={{height:36,border:`1px solid ${acc}`,borderRadius:8,background:acc,color:"#fff",
+    fontSize:14,fontFamily:SANS,fontWeight:700,letterSpacing:2,
+    textTransform:"uppercase",padding:"0 14px",cursor:"pointer",display:"flex",alignItems:"center",gap:6}}>
+    <Ico name="download" size={15} color="#fff"/> PDF
+    </button>
+    </div>
+
+    {/* Print Preview Modal */}
+    {printPreview&&(
+    <div className="fahrt-print-area" style={{position:"fixed",inset:0,background:"#F8F8F6",zIndex:600,overflowY:"auto"}}>
+    {/* Top bar — hidden when printing */}
+    <div className="print-topbar" style={{
+    position:"sticky",top:0,
+    background:C.surface,
+    borderBottom:`1px solid ${C.border}`,
+    height:58,zIndex:10,
+    boxShadow:"0 1px 8px rgba(0,0,0,0.08)",
+    }}>
+    <div style={{maxWidth:1200,margin:"0 auto",padding:"0 32px",height:"100%",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+    <div style={{display:"flex",alignItems:"center",gap:12}}>
+    <div style={{
+    width:32,height:32,borderRadius:8,background:`${acc}18`,
+    display:"flex",alignItems:"center",justifyContent:"center",
+    }}>
+    <Ico name="fileText" size={15} color={acc}/>
+    </div>
+    <div>
+    <div style={{fontSize:13,fontWeight:800,color:C.text,fontFamily:SANS,letterSpacing:-0.2}}>
+    Druckvorschau / PDF-Export
+    </div>
+    <div style={{fontSize:14,color:C.muted,fontFamily:SANS}}>
+    {gefFahrten.length} Fahrten · A4 Querformat
+    </div>
+    </div>
+    </div>
+    <div style={{display:"flex",gap:8,alignItems:"center"}}>
+    {/* PDF PRINT BUTTON */}
+    <button
+    onClick={()=>window.print()}
+    onMouseEnter={e=>{e.currentTarget.style.background=`${acc}dd`;}}
+    onMouseLeave={e=>{e.currentTarget.style.background=acc;}}
+    style={{
+    height:38,padding:"0 24px",borderRadius:8,
+    background:acc,border:`1.5px solid ${acc}`,
+    color:"#fff",cursor:"pointer",fontSize:14,fontFamily:SANS,
+    fontWeight:700,display:"flex",alignItems:"center",gap:8,
+    transition:"background 0.15s",
+    boxShadow:`0 2px 8px ${acc}44`,
+    }}>
+    <Ico name="download" size={15} color="#fff"/>
+    Drucken
+    </button>
+    <button onClick={()=>setPrintPreview(false)}
+    onMouseEnter={e=>{e.currentTarget.style.background=C.surfaceAlt;e.currentTarget.style.borderColor=C.borderHi;}}
+    onMouseLeave={e=>{e.currentTarget.style.background="transparent";e.currentTarget.style.borderColor=C.border;}}
+    style={{
+    height:38,padding:"0 20px",borderRadius:8,
+    background:"transparent",border:`1.5px solid ${C.border}`,
+    color:C.textSoft,cursor:"pointer",fontSize:14,fontFamily:SANS,
+    fontWeight:700,display:"flex",alignItems:"center",gap:6,
+    transition:"background 0.15s, border-color 0.15s",
+    }}>
+    <Ico name="x" size={13} color={C.muted}/>
+    Schließen
+    </button>
+    </div>
+    </div>{/* /maxWidth wrapper */}
+    </div>
+    {/* Content — this is what gets printed */}
+    <div className="print-content" style={{padding:"24px 20px",background:"#fff",fontFamily:SANS,maxWidth:1200,margin:"0 auto"}}>
+    <div className="print-header" style={{marginBottom:16,paddingBottom:12,borderBottom:`1px solid ${C.border}`}}>
+    <h1 style={{fontSize:16,fontWeight:800,color:C.text,fontFamily:SANS,letterSpacing:-0.3,marginBottom:4,margin:"0 0 4px 0"}}>
+    Fahrtenbuch – {aktiv.kennzeichen||""} {aktiv.marke||""} {aktiv.modell||""}
+    </h1>
+    <p style={{fontSize:14,color:C.muted,fontFamily:SANS,margin:0}}>
+    Fahrer: {aktiv.fahrer||"—"} · Standort: {aktiv.standort?.name||"—"} · Erstellt: {new Date().toLocaleDateString("de-DE")} · {gefFahrten.length} Einträge
+    </p>
+    </div>
+    <div style={{overflowX:"auto"}}>
+    <table style={{width:"100%",borderCollapse:"collapse",fontSize:14,fontFamily:SANS,border:"1px solid #bbb"}}>
+    <thead>
+    <tr style={{borderBottom:"2px solid #111",background:"#f5f5f3"}}>
+    {["Datum","Fahrzeit","Reiseroute und Ziel","Zweck","Besuchte Personen / Firmen / Behörden","Beginn km","gesch.","W/A","priv.","Ende km","Fahrer"].map((h,i)=>(
+    <th key={h} style={{padding:"5px 6px",fontSize:8,textTransform:"uppercase",letterSpacing:1,
+    color:"#555",textAlign:i>=5&&i<=9?"right":"left",whiteSpace:"nowrap",fontWeight:700,
+    borderRight:i<10?"1px solid #ccc":"none"}}>
+    {h}
+    </th>
+    ))}
+    </tr>
+    </thead>
+    <tbody>
+    {gefFahrten.map((f,idx)=>{
+    const typ=f.kmTyp||"geschaeftlich", km=safeFloat(f.km);
+    const von=aktiv.standort?.name||"";
+    const nach=getZielAdr(f)||getZielName(f)||f.zielName||"";
+    const route=[von,nach].filter(Boolean).join(" → ")+(f.rueckfahrt?" (H+Z)":"");
+    const cell=(v,align="left",bold=false,last=false)=>(
+    <td style={{padding:"5px 6px",borderBottom:"1px solid #e8e8e8",
+    borderRight:last?"none":"1px solid #e0e0e0",textAlign:align,
+    fontWeight:bold?700:400,color:"#111",verticalAlign:"top"}}>{v||"—"}</td>
+    );
+    return (
+    <tr key={f.id} className={idx%2!==0?"fahrt-print-tr-alt":""} style={{background:idx%2===0?"#fff":"#f9f9f7"}}>
+    {cell(formatDatum(f.datum))}
+    {cell(f.zeitStr||"")}
+    {cell(route)}
+    {cell(f.notiz||"")}
+    {cell(getZielName(f)||"")}
+    {cell(f.kmStart?Number(f.kmStart).toLocaleString("de-DE"):"","right")}
+    {cell(typ==="geschaeftlich"?km.toFixed(0):"","right",true)}
+    {cell(typ==="wohnArbeit"?km.toFixed(0):"","right")}
+    {cell(typ==="privat"?km.toFixed(0):"","right")}
+    {cell(f.kmEnd?Number(f.kmEnd).toLocaleString("de-DE"):"","right")}
+    {cell(aktiv.fahrer||"","left",false,true)}
+    </tr>
+    );
+    })}
+    </tbody>
+    <tfoot>
+    <tr style={{borderTop:"2px solid #111",background:"#f5e6e6"}}>
+    <td colSpan={6} style={{padding:"6px",fontSize:14,textAlign:"right",fontWeight:700,color:"#B30000"}}>SUMME:</td>
+    <td style={{padding:"6px",textAlign:"right",fontWeight:700,color:"#B30000"}}>{kmGesch.toFixed(0)}</td>
+    <td style={{padding:"6px",textAlign:"right",fontWeight:700,color:"#1A4A8A"}}>{kmWohn.toFixed(0)}</td>
+    <td style={{padding:"6px",textAlign:"right",fontWeight:700,color:"#666"}}>{kmPrivat.toFixed(0)}</td>
+    <td colSpan={2}></td>
+    </tr>
+    </tfoot>
+    </table>
+    </div>
+    {/* Summary row */}
+    <div className="print-summary" style={{display:"flex",gap:24,marginTop:12,flexWrap:"wrap"}}>
+    {[
+    {label:"Geschäftlich",km:kmGesch,color:"#B30000"},
+    {label:"Wohnung/Arbeit",km:kmWohn,color:"#1A4A8A"},
+    {label:"Privat",km:kmPrivat,color:"#666"},
+    {label:"Gesamt",km:kmGesch+kmWohn+kmPrivat,color:"#111"},
+    ].map(s=>(
+    <div key={s.label} style={{display:"flex",alignItems:"center",gap:8,fontFamily:SANS}}>
+    <span style={{fontSize:13,color:C.muted}}>{s.label}:</span>
+    <span style={{fontSize:14,fontWeight:800,color:s.color}}>{s.km.toFixed(1)} km</span>
+    </div>
+    ))}
+    </div>
+    {/* Footer note for print */}
+    <div className="print-footer-note" style={{marginTop:14,fontSize:13,color:C.muted,fontFamily:SANS,
+    textAlign:"right",borderTop:`1px solid ${C.border}`,paddingTop:8}}>
+    Fahrtenbuch erstellt am {new Date().toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit",year:"numeric"})}
+    {" "}· Fahrer: {aktiv.fahrer||"—"}
+    {" "}· Kfz: {aktiv.kennzeichen||""} {aktiv.marke||""} {aktiv.modell||""}
+    </div>
+    </div>
+    </div>
+    )}
+
+    {/* Tabelle */}
+    <div style={{background:C.surface,boxShadow:C.shadow,overflowX:"auto",border:`1px solid ${C.borderHi}`,borderRight:`2px solid ${C.borderHi}`}}>
+    <div style={{width:"100%", minWidth:MIN_W+"px"}}>
+
+    {/* Kopfzeile */}
+    <Row style={{borderBottom:`2px solid ${C.borderHi}`,borderLeft:`2px solid ${acc}`,background:C.surfaceAlt}}>
+    <div style={{...TH,...SEP}}>Datum</div>
+    <div style={{...TH,...SEP}}>Fahrzeit<br/>von - bis</div>
+    <div style={{...TH,...SEP}}>Reiseroute und Ziel</div>
+    <div style={{...TH,...SEP}}>Zweck der Fahrt</div>
+    <div style={{...TH,...SEP2}}>Besuchte Personen,<br/>Firmen, Behörden</div>
+    <div style={{...TH,...SEP,textAlign:"right"}}>km-Stand<br/>Fahrtbeginn</div>
+    <div style={{...TH,...SEP,textAlign:"right"}}>gesch.</div>
+    <div style={{...TH,...SEP,textAlign:"right"}}>Wohn/<br/>Arbeit</div>
+    <div style={{...TH,...SEP2,textAlign:"right"}}>privat</div>
+    <div style={{...TH,...SEP,textAlign:"right"}}>km-Stand<br/>Fahrtende</div>
+    <div style={{...TH}}>Name des<br/>Fahrers</div>
+    </Row>
+
+    {/* Leer */}
+    {gefFahrten.length===0&&(
+    <div style={{padding:"44px 0",textAlign:"center",color:C.muted,fontSize:13,
+    fontFamily:SANS}}>
+    Keine Fahrten im gewählten Zeitraum
+    </div>
+    )}
+
+    {/* Datenzeilen */}
+    {gefFahrten.map((f,i)=>{
+    const ak  = katAccent[f.kategorie]||C.steel;
+    const typ = f.kmTyp||"geschaeftlich";
+    const km  = safeFloat(f.km);
+    const von = aktiv.standort?.name||aktiv.standort?.adresse||"";
+    const nach= getZielAdr(f)||getZielName(f)||f.zielName||"";
+    const route=[von,nach].filter(Boolean).join(" – ")+(f.rueckfahrt?", hin+zurück":"");
+
+    const rowBg = i%2===0 ? C.surface : C.surfaceAlt;
+    const TD = {
+    ...CELL_BASE,
+    };
+    const NUM = {
+    ...TD,
+    fontWeight:700,
+    textAlign:"right",
+    fontVariantNumeric:"tabular-nums",
+    };
+
+    return (
+    <Row key={f.id} style={{
+    borderBottom:`1px solid ${C.border}`,
+    borderLeft:`2px solid ${acc}`,
+    background: rowBg,
+    }}>
+    {/* Datum */}
+    <div style={{...TD,...SEP,color:C.text,whiteSpace:"nowrap"}}>
+    {formatDatum(f.datum)}
+    </div>
+    {/* Fahrzeit */}
+    <div style={{...TD,...SEP,color:C.text}}>
+    {f.zeitStr||"—"}
+    </div>
+    {/* Reiseroute */}
+    <div style={{...TD,...SEP,color:C.text,fontSize:14}}>
+    {route||"—"}
+    </div>
+    {/* Zweck */}
+    <div style={{...TD,...SEP,color:C.textSoft,fontSize:14}}>
+    {f.notiz||"—"}
+    </div>
+    {/* Besuchte Personen */}
+    <div style={{...TD,...SEP2,fontWeight:700,color:C.text,fontSize:14}}>
+    {getZielName(f)||"—"}
+    </div>
+    {/* km-Stand Beginn */}
+    <div style={{...NUM,...SEP,color:C.muted}}>
+    {f.kmStart?Number(f.kmStart).toLocaleString("de-DE"):"—"}
+    </div>
+    {/* gesch. */}
+    <div style={{...NUM,...SEP,color:ak}}>
+    {typ==="geschaeftlich"?km.toFixed(0):""}
+    </div>
+    {/* W/A */}
+    <div style={{...NUM,...SEP,color:C.gold}}>
+    {typ==="wohnArbeit"?km.toFixed(0):""}
+    </div>
+    {/* priv. */}
+    <div style={{...NUM,...SEP2,color:C.muted}}>
+    {typ==="privat"?km.toFixed(0):""}
+    </div>
+    {/* km-Stand Ende */}
+    <div style={{...NUM,...SEP,color:C.muted}}>
+    {f.kmEnd?Number(f.kmEnd).toLocaleString("de-DE"):"—"}
+    </div>
+    {/* Fahrer */}
+    <div style={{...TD,color:C.muted,fontSize:13}}>
+    {aktiv.fahrer||"—"}
+    </div>
+    </Row>
+    );
+    })}
+
+
+
+    </div>
+    </div>
+    </div>
+  );
+}
+
+
+// ─── DEMO USERS ───────────────────────────────────────────────────────────────
+const DEMO_USERS = [
+  {email:"admin@fahrtenbuch.de",     password:"admin123",  role:"admin",      name:"Max Mustermann"},
+  {email:"fahrer@fahrtenbuch.de",    password:"fahrer123", role:"fahrer",     name:"Klaus Mustermann"},
+  {email:"buchhalter@fahrtenbuch.de",password:"buch123",   role:"buchhalter", name:"Anna Muster"},
+];
+
+// ─── AUTH FORM ────────────────────────────────────────────────────────────────
+function AuthForm({onLogin, onMuster}) {
+  const [email,    setEmail]    = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [role,     setRole]     = React.useState("admin");
+  const [err,      setErr]      = React.useState("");
+  const [ok,       setOk]       = React.useState("");
+  const [busy,     setBusy]     = React.useState(false);
+  const [shaking,  setShaking]  = React.useState(false);
+  const [eFocus,   setEFocus]   = React.useState(false);
+  const [pFocus,   setPFocus]   = React.useState(false);
+  const titleRef = React.useRef(null);
+  const btnRef   = React.useRef(null);
+
+  React.useEffect(()=>{
+    if(!titleRef.current||!btnRef.current) return;
+    const s=window.getComputedStyle(btnRef.current);
+    titleRef.current.style.fontSize=s.fontSize;
+    titleRef.current.style.letterSpacing=s.letterSpacing;
+  },[]);
+
+  function shake(){setShaking(true);setTimeout(()=>setShaking(false),350);}
+  function showErr(msg){setErr(msg);setOk("");shake();}
+
+  async function handleLogin(){
+    setErr("");setOk("");
+    const em=email.trim();
+    if(!em)               return showErr("Bitte E-Mail eingeben");
+    if(!em.includes("@")) return showErr("Ungültige E-Mail Adresse");
+    if(!password)         return showErr("Bitte Passwort eingeben");
+    if(password.length<6) return showErr("Passwort min. 6 Zeichen");
+    setBusy(true);
+    await new Promise(r=>setTimeout(r,900));
+    const user=DEMO_USERS.find(u=>u.email===em&&u.password===password);
+    if(user&&user.role===role){
+      setOk("✓ Willkommen, "+user.name);
+      setTimeout(()=>onLogin&&onLogin({...user,isMuster:false}),600);
+    } else {
+      setBusy(false);
+      showErr("E-Mail, Passwort oder Rolle falsch");
+    }
+  }
+
+  function handleMuster(){
+    setErr("");setBusy(true);
+    setTimeout(()=>{
+      setOk("★ Demo · BMW 520d & VW Passat aktiv");
+      setTimeout(()=>onMuster&&onMuster(),600);
+    },800);
+  }
+
+  const euW=72;
+  const fieldBase={
+    flex:1, border:"2px solid #D8D8D4", borderRadius:7,
+    outline:"none", height:40, padding:"0 12px",
+    fontFamily:SANS, fontSize:14, fontWeight:600,
+    letterSpacing:1, color:"#111", background:"#fff",
+    transition:"border-color 0.18s,box-shadow 0.18s",
+  };
+  const fieldFocus={borderColor:"#003399",boxShadow:"0 0 0 2px rgba(0,51,153,0.17)"};
+
+  // звёзды для EU полосы
+  const euStars=Array.from({length:12},(_,i)=>{
+    const a=(i*30-90)*Math.PI/180;
+    const sr=euW*0.21, starR=euW*0.049, ir2=starR*0.42;
+    const sx=euW/2+sr*Math.cos(a), sy=euW/2+sr*Math.sin(a);
+    const pts=[];
+    for(let j=0;j<5;j++){
+      const ao=(j*72-90)*Math.PI/180, ai=(j*72-90+36)*Math.PI/180;
+      pts.push((sx+starR*Math.cos(ao)).toFixed(1)+","+(sy+starR*Math.sin(ao)).toFixed(1));
+      pts.push((sx+ir2*Math.cos(ai)).toFixed(1)+","+(sy+ir2*Math.sin(ai)).toFixed(1));
+    }
+    return <polygon key={i} points={pts.join(" ")} fill="#FFD700"/>;
+  });
+
+  return (
+    <div style={{
+      minHeight:"100vh", background:"#F0F0EC",
+      display:"flex", flexDirection:"column",
+      alignItems:"center", justifyContent:"center",
+      padding:"32px 16px", gap:10, fontFamily:SANS,
+    }}>
+      <style>{`@keyframes authShake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}`}</style>
+
+      {/* Заголовок */}
+      <div style={{width:"100%",maxWidth:500,textAlign:"center",paddingBottom:4}}>
+        <div ref={titleRef} style={{fontFamily:SANS,fontSize:12,fontWeight:700,letterSpacing:"3px",textTransform:"uppercase",color:"#111"}}>Fahrtenbuch</div>
+        <div style={{fontSize:10,letterSpacing:"2px",textTransform:"uppercase",color:"#999",marginTop:3}}>Fahrzeugverwaltung · Deutschland</div>
+      </div>
+
+      {/* Знак */}
+      <div style={{
+        border:"2.5px solid #888", borderRadius:10, overflow:"hidden",
+        display:"flex", width:"100%", maxWidth:500,
+        background:"#fff",
+        boxShadow:"0 0 0 1px #aaa,0 8px 32px rgba(0,0,0,0.14)",
+        animation:shaking?"authShake 0.32s ease":undefined,
+      }}>
+        {/* EU полоса */}
+        <div style={{width:euW,minWidth:euW,background:"#003399",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"space-between",padding:"10px 0 9px",flexShrink:0}}>
+          <svg width={euW} height={euW} viewBox={"0 0 "+euW+" "+euW} style={{display:"block"}}>
+            {euStars}
+          </svg>
+          <span style={{fontFamily:SANS,fontSize:Math.round(euW*0.47),fontWeight:800,color:"#fff",lineHeight:1,letterSpacing:1,marginBottom:2}}>D</span>
+        </div>
+        {/* Белое поле */}
+        <div style={{flex:1,padding:"14px 18px",display:"flex",flexDirection:"column",gap:10,borderLeft:"2px solid #555",justifyContent:"center"}}>
+          <div style={{display:"flex",alignItems:"center",gap:9}}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#003399" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0,opacity:eFocus?0.9:0.28}}>
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+              <polyline points="22,6 12,13 2,6"/>
+            </svg>
+            <input type="email" value={email} onChange={e=>setEmail(e.target.value)}
+              onFocus={()=>setEFocus(true)} onBlur={()=>setEFocus(false)}
+              placeholder="E-Mail Adresse" autoComplete="email" disabled={busy}
+              style={{...fieldBase,...(eFocus?fieldFocus:{})}}/>
+          </div>
+          <div style={{display:"flex",alignItems:"center",gap:9}}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#003399" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0,opacity:pFocus?0.9:0.28}}>
+              <rect x="3" y="11" width="18" height="11" rx="2"/>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+            <input type="password" value={password} onChange={e=>setPassword(e.target.value)}
+              onFocus={()=>setPFocus(true)} onBlur={()=>setPFocus(false)}
+              onKeyDown={e=>e.key==="Enter"&&handleLogin()}
+              placeholder="Passwort" autoComplete="current-password" disabled={busy}
+              style={{...fieldBase,...(pFocus?fieldFocus:{})}}/>
+          </div>
+        </div>
+      </div>
+
+      {/* Под знаком */}
+      <div style={{width:"100%",maxWidth:500,display:"flex",flexDirection:"column",gap:8}}>
+        <div style={{minHeight:16,textAlign:"center"}}>
+          {err&&<span style={{fontSize:11,color:"#A32D2D",fontWeight:500,fontFamily:SANS}}>{err}</span>}
+          {ok &&<span style={{fontSize:11,color:"#0F6E56",fontWeight:600,fontFamily:SANS}}>{ok}</span>}
+        </div>
+        <button ref={btnRef} onClick={handleLogin} disabled={busy}
+          style={{width:"100%",height:40,background:ok?"#0F6E56":"#003399",color:ok?"#fff":"#FFD700",border:"none",borderRadius:6,fontFamily:SANS,fontSize:12,fontWeight:700,letterSpacing:"3px",textTransform:"uppercase",cursor:busy?"default":"pointer",transition:"background 0.15s",opacity:busy&&!ok?0.8:1}}>
+          {ok?"✓ Angemeldet":busy?"Prüfe…":"Anmelden"}
+        </button>
+        <div style={{display:"flex",gap:6}}>
+          {["admin","fahrer","buchhalter"].map(r=>(
+            <button key={r} onClick={()=>setRole(r)} disabled={busy}
+              style={{flex:1,padding:"7px 0",border:`1px solid ${role===r?"#003399":"#D8D8D4"}`,borderRadius:20,fontFamily:SANS,fontSize:10,fontWeight:600,letterSpacing:"1.5px",textTransform:"uppercase",cursor:"pointer",background:role===r?"#003399":"#fff",color:role===r?"#FFD700":"#888",transition:"all 0.15s",textAlign:"center"}}>
+              {r.charAt(0).toUpperCase()+r.slice(1)}
+            </button>
+          ))}
+        </div>
+        <button onClick={handleMuster} disabled={busy}
+          style={{width:"100%",height:38,background:"#fff",border:"1px solid #D8D8D4",borderRadius:6,color:"#888",fontFamily:SANS,fontSize:11,fontWeight:600,letterSpacing:"1.5px",textTransform:"uppercase",cursor:busy?"default":"pointer",transition:"all 0.15s",display:"flex",alignItems:"center",justifyContent:"center",gap:7}}
+          onMouseEnter={e=>{e.currentTarget.style.borderColor="#003399";e.currentTarget.style.color="#003399";}}
+          onMouseLeave={e=>{e.currentTarget.style.borderColor="#D8D8D4";e.currentTarget.style.color="#888";}}>
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="#888" stroke="none"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
+          Musterdaten · Demo-Zugang
+        </button>
+        <div style={{fontSize:10,color:"#BBB",letterSpacing:"2px",textTransform:"uppercase",textAlign:"center",fontFamily:SANS}}>Fahrtenbuch · v41 · 2026</div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Корневой компонент — только роутинг auth ─────────────────────────────────
 export default function FahrtenbuchLight() {
+  const [authUser, setAuthUser] = useState(()=>{
+    try { const s=sessionStorage.getItem("fb2_auth"); return s?JSON.parse(s):null; } catch(e){return null;}
+  });
+  function handleLogin(user) {
+    try { sessionStorage.setItem("fb2_auth", JSON.stringify(user)); } catch(e){}
+    setAuthUser(user);
+  }
+  function handleMuster() {
+    const u={email:"demo@fahrtenbuch.de",role:"admin",name:"Demo User",isMuster:true};
+    try { sessionStorage.setItem("fb2_auth", JSON.stringify(u)); } catch(e){}
+    setAuthUser(u);
+  }
+  if(!authUser) return <AuthForm onLogin={handleLogin} onMuster={handleMuster}/>;
+  return <FahrtenbuchApp authUser={authUser} onLogout={()=>{try{sessionStorage.removeItem("fb2_auth");}catch(e){}setAuthUser(null);}}/>;
+}
+
+// ─── Основное приложение (все хуки здесь) ─────────────────────────────────────
+function FahrtenbuchApp({authUser, onLogout}) {
   const [state,setState] = useState(()=>{
     // Синхронная загрузка из localStorage — данные не теряются при перезагрузке
     try {
@@ -2087,8 +3028,10 @@ export default function FahrtenbuchLight() {
         if(saved?.fahrzeuge?.length) {
           const clean = saved.fahrzeuge.filter(f=>f.kennzeichen&&f.kennzeichen!=="—");
           if(clean.length) {
-            const aktivId = clean.find(f=>f.id===saved.aktivId)?saved.aktivId:clean[0].id;
-            return {fahrzeuge:clean, aktivId};
+            // Migration: добавляем parkplaetze если отсутствует в сохранённых данных
+            const migrated = clean.map(f=>({...f, parkplaetze: f.parkplaetze||[]}));
+            const aktivId = migrated.find(f=>f.id===saved.aktivId)?saved.aktivId:migrated[0].id;
+            return {fahrzeuge:migrated, aktivId};
           }
         }
       }
@@ -2138,6 +3081,8 @@ export default function FahrtenbuchLight() {
   const [wData,setWData] = useState({});
   const [svForm,setSvForm] = useState(null); // service
   const [svData,setSvData] = useState({});
+  const [parkForm,setParkForm] = useState(null); // parken
+  const [parkData,setParkData] = useState({});
   const [kostenSub,setKostenSub] = useState("tanken"); // kosten sub-tab
   const [confirmDel,setConfirmDel] = useState(null);
   const [csvModal,setCsvModal] = useState(false);
@@ -2149,7 +3094,7 @@ export default function FahrtenbuchLight() {
   // ── KI-Assistent ──
   const [chatOpen,   setChatOpen]   = useState(false);
   const [chatMsgs,   setChatMsgs]   = useState([
-    {role:"assistant", id:"init_msg", content:"Guten Tag! Ich bin Ihr Fahrtenbuch-Assistent.\n\nIch kann:\n• Fahrten, Tankstopps, Wäsche, Services und Strafen aufnehmen\n• Fotos von Belegen auslesen\n• Kilometerstand prüfen und verteilen\n• Partner und Standorte anlegen\n\nEinfach schreiben oder ein Foto anhängen [CLIP]"}
+    {role:"assistant", id:"init_msg", content:"Hallo! Ich bin Ihr Fahrtenbuch-Assistent.\n\nIch erfasse für Sie:\n• Fahrten — Ziel, km, Zweck, Odometer\n• Tanken, Parken, Wäsche, Service, Strafen\n• Belege per Foto — Datum, Betrag, Adresse automatisch\n\nSagen Sie einfach was passiert ist — ich trage es ein."}
   ]);
   const [chatInput,  setChatInput]  = useState("");
   const [chatBusy,   setChatBusy]   = useState(false);
@@ -2199,8 +3144,9 @@ export default function FahrtenbuchLight() {
         if(saved?.fahrzeuge?.length) {
           const clean=saved.fahrzeuge.filter(f=>f.kennzeichen&&f.kennzeichen!=="—");
           if(clean.length) {
-            const aktivId=clean.find(f=>f.id===saved.aktivId)?saved.aktivId:clean[0].id;
-            setState({fahrzeuge:clean, aktivId});
+            const migrated=clean.map(f=>({...f,parkplaetze:f.parkplaetze||[]}));
+            const aktivId=migrated.find(f=>f.id===saved.aktivId)?saved.aktivId:migrated[0].id;
+            setState({fahrzeuge:migrated, aktivId});
           }
         }
       }
@@ -2211,6 +3157,12 @@ export default function FahrtenbuchLight() {
         try { if(localStorage.getItem("fb2_vorMuster")) hasMusterBackup=true; } catch(e) {}
       }
       if(hasMusterBackup) setMusterAktiv(true);
+      // Автозагрузка Musterdaten при Demo-входе
+      if(authUser?.isMuster && !hasMusterBackup) {
+        const {fz,fz2}=createMusterDaten();
+        setState({fahrzeuge:[fz,fz2],aktivId:fz.id});
+        setMusterAktiv(true);
+      }
       setReady(true);
     })();
   },[]);
@@ -2228,6 +3180,79 @@ export default function FahrtenbuchLight() {
   const aktiv    = state.fahrzeuge.find(f=>f.id===state.aktivId)||state.fahrzeuge[0];
   const acc      = aktiv.farbe || C.red;
   const patchAktiv = patch=>setState(prev=>({...prev,fahrzeuge:prev.fahrzeuge.map(f=>f.id===prev.aktivId?{...f,...patch}:f)}));
+  const toggleBezahlt = id => patchAktiv({strafen:(aktiv.strafen||[]).map(s=>s.id===id?{...s,bezahlt:!s.bezahlt}:s)});
+
+  // ── CRUD helpers ─────────────────────────────────────────────────────────
+  const del = (type, id) => {
+    const map = {
+      fahrt:'fahrten', partner:'partner', messe:'messen',
+      tanke:'tankstellen', strafe:'strafen', waesche:'waesche', service:'services', park:'parkplaetze',
+    };
+    const key = map[type];
+    if(key) patchAktiv({[key]:(aktiv[key]||[]).filter(x=>x.id!==id)});
+  };
+  const delFz = id => setState(prev=>{
+    const rem=prev.fahrzeuge.filter(f=>f.id!==id);
+    if(!rem.length){const fz=makeFahrzeug(0);return{fahrzeuge:[fz],aktivId:fz.id};}
+    return{fahrzeuge:rem,aktivId:prev.aktivId===id?rem[0].id:prev.aktivId};
+  });
+
+  const saveFahrt = () => {
+    if(!fData.datum) return;
+    const list = aktiv.fahrten||[];
+    const exists = list.find(x=>x.id===fData.id);
+    patchAktiv({fahrten: exists ? list.map(x=>x.id===fData.id?{...fData}:x) : [...list,{...fData,id:fData.id||uid()}]});
+    setFForm(null); setFData({});
+  };
+  const savePartner = () => {
+    if(!pData.name) return;
+    const list = aktiv.partner||[];
+    const exists = list.find(x=>x.id===pData.id);
+    patchAktiv({partner: exists ? list.map(x=>x.id===pData.id?{...pData}:x) : [...list,{...pData,id:pData.id||uid()}]});
+    setPForm(null); setPData({});
+  };
+  const saveMesse = () => {
+    if(!mData.name) return;
+    const list = aktiv.messen||[];
+    const exists = list.find(x=>x.id===mData.id);
+    patchAktiv({messen: exists ? list.map(x=>x.id===mData.id?{...mData}:x) : [...list,{...mData,id:mData.id||uid()}]});
+    setMForm(null); setMData({});
+  };
+  const saveTanke = () => {
+    if(!tData.datum) return;
+    const list = aktiv.tankstellen||[];
+    const exists = list.find(x=>x.id===tData.id);
+    patchAktiv({tankstellen: exists ? list.map(x=>x.id===tData.id?{...tData}:x) : [...list,{...tData,id:tData.id||uid()}]});
+    setTForm(null); setTData({});
+  };
+  const saveStrafe = () => {
+    if(!sData.datum) return;
+    const list = aktiv.strafen||[];
+    const exists = list.find(x=>x.id===sData.id);
+    patchAktiv({strafen: exists ? list.map(x=>x.id===sData.id?{...sData}:x) : [...list,{...sData,id:sData.id||uid()}]});
+    setSForm(null); setSData({});
+  };
+  const saveWaesche = () => {
+    if(!wData.datum) return;
+    const list = aktiv.waesche||[];
+    const exists = list.find(x=>x.id===wData.id);
+    patchAktiv({waesche: exists ? list.map(x=>x.id===wData.id?{...wData}:x) : [...list,{...wData,id:wData.id||uid()}]});
+    setWForm(null); setWData({});
+  };
+  const saveService = () => {
+    if(!svData.datum) return;
+    const list = aktiv.services||[];
+    const exists = list.find(x=>x.id===svData.id);
+    patchAktiv({services: exists ? list.map(x=>x.id===svData.id?{...svData}:x) : [...list,{...svData,id:svData.id||uid()}]});
+    setSvForm(null); setSvData({});
+  };
+  const savePark = () => {
+    if(!parkData.datum) return;
+    const list = aktiv.parkplaetze||[];
+    const exists = list.find(x=>x.id===parkData.id);
+    patchAktiv({parkplaetze: exists ? list.map(x=>x.id===parkData.id?{...parkData}:x) : [...list,{...parkData,id:parkData.id||uid()}]});
+    setParkForm(null); setParkData({});
+  };
   const resetForms = () => {
     setFForm(null); setFData({});
     setPForm(null); setPData({});
@@ -2236,30 +3261,19 @@ export default function FahrtenbuchLight() {
     setSForm(null); setSData({});
     setWForm(null); setWData({});
     setSvForm(null);setSvData({});
+    setParkForm(null);setParkData({});
     setConfirmDel(null);
   };
+  // ── Empty templates ───────────────────────────────────────────────────────
+  const E_F  = () => ({id:uid(), datum:new Date().toISOString().slice(0,10), kategorie:"partner", ziel:"", km:"", zweck:"", personen:"", bemerkung:""});
+  const E_P  = () => ({id:uid(), name:"", typ:"kunde", adresse:"", telefon:"", email:"", bemerkung:""});
+  const E_M  = () => ({id:uid(), name:"", ort:"", datum:new Date().toISOString().slice(0,10), einladungen:[], bemerkung:""});
+  const E_T  = () => ({id:uid(), datum:new Date().toISOString().slice(0,10), liter:"", preis:"", gesamt:"", kraftstoff:"Diesel", zahlungsart:"EC-Karte", station:"", adresse:"", km:"", bemerkung:"", bezahlt:true});
+  const E_S  = () => ({id:uid(), datum:new Date().toISOString().slice(0,10), typ:"Geschwindigkeitsverstoß", betrag:"", ort:"", aktenzeichen:"", behoerde:"", bezahlt:false, bemerkung:""});
+  const E_W  = () => ({id:uid(), datum:new Date().toISOString().slice(0,10), typ:"Außenwäsche", preis:"", adresse:"", zahlungsart:"EC-Karte", bemerkung:""});
+  const E_SV = () => ({id:uid(), datum:new Date().toISOString().slice(0,10), typ:"Ölwechsel", werkstatt:"", adresse:"", kosten:"", km:"", faelligDatum:"", faelligKm:"", zahlungsart:"EC-Karte", bemerkung:""});
+  const E_Park = () => ({id:uid(), datum:new Date().toISOString().slice(0,10), uhrzeit:"", ort:"", adresse:"", dauer:"", betrag:"", zahlungsart:"EC-Karte", kennzeichen:"", bemerkung:""});
 
-
-    // ── Missing functions: doExport, del, toggleBezahlt ──
-  const doExport = () => {
-    const data = {_version:2, fahrzeuge:state.fahrzeuge, aktivId:state.aktivId};
-    const blob = new Blob([JSON.stringify(data,null,2)], {type:"application/json"});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `fahrtenbuch_${new Date().toISOString().slice(0,10)}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
-  };
-  const del = (type, id) => {
-    const map = {fahrt:"fahrten",partner:"partner",messe:"messen",tanke:"tankstellen",strafe:"strafen",waesche:"waesche",service:"services",standort:"standorteExtra"};
-    const key = map[type];
-    if(key) patchAktiv({[key]:(aktiv[key]||[]).filter(x=>x.id!==id)});
-  };
-  const toggleBezahlt = (id) => {
-    patchAktiv({strafen:(aktiv.strafen||[]).map(s=>s.id===id?{...s,bezahlt:!s.bezahlt}:s)});
-  };
-  const setImportOk = setIOk;
   // ── KI-Assistent: sendChat ─────────────────────────────────────────────────
   const CHAT_TOOLS = [
     {
@@ -2344,6 +3358,20 @@ export default function FahrtenbuchLight() {
       }}
     },
     {
+      name:"add_parken",
+      description:"Fügt einen Parkvorgang hinzu",
+      input_schema:{type:"object",required:["datum","betrag"],properties:{
+        datum:       {type:"string", description:"ISO-Datum z.B. 2025-03-12"},
+        uhrzeit:     {type:"string", description:"Uhrzeit z.B. 09:05"},
+        ort:         {type:"string", description:"Name des Parkplatzes / Parkhauses"},
+        adresse:     {type:"string"},
+        dauer:       {type:"string", description:"Dauer in Stunden z.B. 2.5"},
+        betrag:      {type:"string", description:"Betrag in Euro"},
+        zahlungsart: {type:"string"},
+        bemerkung:   {type:"string"},
+      }}
+    },
+    {
       name:"add_partner",
       description:"Legt einen neuen Geschäftspartner an",
       input_schema:{type:"object",required:["name","adresse"],properties:{
@@ -2399,6 +3427,14 @@ export default function FahrtenbuchLight() {
       patchAktiv({strafen:[...(aktiv.strafen||[]), entry]});
       return `Strafe (${inp.typ}) am ${inp.datum} — ${inp.betrag}€ gespeichert.`;
     }
+    if(name==="add_parken"){
+      const entry={id:nid(),datum:inp.datum||"",uhrzeit:inp.uhrzeit||"",
+        ort:inp.ort||"",adresse:inp.adresse||"",dauer:inp.dauer||"",
+        betrag:inp.betrag||"",zahlungsart:inp.zahlungsart||"EC-Karte",
+        bemerkung:inp.bemerkung||"",belegFoto:""};
+      patchAktiv({parkplaetze:[...(aktiv.parkplaetze||[]), entry]});
+      return `Parkvorgang am ${inp.datum}${inp.ort?" — "+inp.ort:""} (${inp.betrag}€) gespeichert.`;
+    }
     if(name==="add_partner"){
       const entry={id:nid(),name:inp.name||"",adresse:inp.adresse||"",
         telefon:inp.telefon||"",kmVonStandort:inp.kmVonStandort||"",notiz:inp.notiz||""};
@@ -2434,6 +3470,7 @@ REGELN:
 - Datum immer im Format YYYY-MM-DD
 - km ist optional — wenn Adresse bekannt, wird Distanz über Google Maps berechnet
 - Speichere sofort wenn Datum bekannt — unvollständige Einträge sind erlaubt
+- Parkkosten: ort = Parkplatzbeschreibung, dauer in Dezimalstunden (1h30 = 1.5)
 - Bei Belegen: extrahiere Datum, Adresse, Betrag, ggf. Liter — auch Teilinfos speichern
 - Antworte immer auf Deutsch, knapp und präzise
 - Nach dem Speichern kurz bestätigen was gespeichert wurde`;
@@ -2547,7 +3584,6 @@ REGELN:
   };
 
   const patchFzId  = (id,patch)=>setState(prev=>({...prev,fahrzeuge:prev.fahrzeuge.map(f=>f.id===id?{...f,...patch}:f)}));
-  const delFz    = id=>setState(prev=>{const rem=prev.fahrzeuge.filter(f=>f.id!==id);if(!rem.length){const fz=makeFahrzeug(0);return{fahrzeuge:[fz],aktivId:fz.id};}return{fahrzeuge:rem,aktivId:prev.aktivId===id?rem[0].id:prev.aktivId};});
   const saveFzInline = (id, f) => {
     if(!f.kennzeichen) return;
     const n = f.name || [f.marke, f.modell].filter(Boolean).join(" ") || f.kennzeichen;
@@ -2588,8 +3624,8 @@ REGELN:
           if(!clean.length) { setIErr("Keine gültigen Fahrzeuge gefunden."); return; }
           const aktivId = clean.find(f => f.id === p.aktivId) ? p.aktivId : clean[0].id;
           setState({fahrzeuge: clean, aktivId});
-          setImportOk(true);
-          setTimeout(() => setImportOk(false), 3000);
+          setIOk(true);
+          setTimeout(() => setIOk(false), 3000);
         } else {
           setIErr("Ungültiges Format — bitte FahrtenbuchLight-Export verwenden.");
         }
@@ -2600,6 +3636,17 @@ REGELN:
     r.readAsText(file);
     e.target.value = "";
   }
+
+  const doExport = () => {
+    try {
+      const payload = JSON.stringify({_version:2, ...state}, null, 2);
+      const blob = new Blob([payload], {type:"application/json"});
+      const url  = URL.createObjectURL(blob);
+      const a    = document.createElement("a");
+      a.href = url; a.download = `fahrtenbuch-backup-${new Date().toISOString().slice(0,10)}.json`; a.click();
+      URL.revokeObjectURL(url);
+    } catch(err) { setIErr("Export fehlgeschlagen."); }
+  };
   const loadMuster=()=>{
     // Сохраняем реальные данные в хранилище перед заменой
     const backup = JSON.parse(JSON.stringify(state));
@@ -2660,18 +3707,19 @@ REGELN:
     const tankKosten=(aktiv.tankstellen||[]).reduce((s,t)=>s+(parseFloat(t.gesamtbetrag)||0),0);
     const serviceKosten=(aktiv.services||[]).reduce((s,x)=>s+(parseFloat(x.betrag)||0),0);
     const waschKosten=(aktiv.waesche||[]).reduce((s,x)=>s+(parseFloat(x.betrag)||0),0);
+    const parkKosten=(aktiv.parkplaetze||[]).reduce((s,x)=>s+(parseFloat(x.betrag)||0),0);
     const strafeKosten=(aktiv.strafen||[]).reduce((s,x)=>s+(parseFloat(x.betrag)||0),0);
-    const gesamtKosten=tankKosten+serviceKosten+waschKosten+strafeKosten;
+    const gesamtKosten=tankKosten+serviceKosten+waschKosten+strafeKosten+parkKosten;
     const strafenOffen=(aktiv.strafen||[]).filter(s=>!s.bezahlt).length;
     const faelligkeiten=(aktiv.services||[]).filter(x=>x.faelligDatum||x.faelligKm)
       .sort((a,b)=>(a.faelligDatum||"9999").localeCompare(b.faelligDatum||"9999")).slice(0,3);
     const today=new Date().toISOString().slice(0,10);
     const faelligUeberfaellig=faelligkeiten.filter(x=>x.faelligDatum&&x.faelligDatum<=today);
-    return{nP,nK,monate,kmByMonth,tankKosten,serviceKosten,waschKosten,strafeKosten,
+    return{nP,nK,monate,kmByMonth,tankKosten,serviceKosten,waschKosten,strafeKosten,parkKosten,
       gesamtKosten,strafenOffen,faelligkeiten,faelligUeberfaellig,
       gKm:sumKm(aktiv.fahrten||[]),gZeit:(aktiv.fahrten||[]).reduce((a,f)=>a+(parseInt(f.dauerMin)||0),0),
       gefKm:sumKm(gefFahrten),gefZeit:gefFahrten.reduce((a,f)=>a+(parseInt(f.dauerMin)||0),0)};
-  },[aktiv.fahrten,gefFahrten,aktiv.tankstellen,aktiv.strafen,aktiv.services,aktiv.waesche]);
+  },[aktiv.fahrten,gefFahrten,aktiv.tankstellen,aktiv.strafen,aktiv.services,aktiv.waesche,aktiv.parkplaetze]);
 
   const getZielName=f=>{
     if(f.kategorie==="partner"&&f.zielId){const p=(aktiv.partner||[]).find(x=>x.id===f.zielId);return p?p.name:"—";}
@@ -2689,6 +3737,9 @@ REGELN:
   const TABS=[{id:"uebersicht",label:"Übersicht"},{id:"ziele",label:"Ziele"},{id:"kosten",label:"Kosten"},{id:"fahrten",label:"Fahrt"},{id:"bericht",label:"Fahrtenbuch"}];
 
   // ─────────────────────────────────────────────────────────────────────────────
+  const dupCheckP = pForm!=null ? checkDuplikat(pData.name,pData.adresse,aktiv,pForm==="new"?"":pForm) : {exakt:false,adresse:false,matches:[]};
+  const dupCheckM = mForm!=null ? checkDuplikat(mData.name,mData.adresse,aktiv,mForm==="new"?"":mForm) : {exakt:false,adresse:false,matches:[]};
+
   return (
     <ErrorBoundary>
     <>
@@ -2698,6 +3749,95 @@ REGELN:
 @keyframes overlayIn { from { opacity:0; } to { opacity:1; } }
 @keyframes toastIn   { from { opacity:0; transform:translateX(-50%) translateY(12px); } to { opacity:1; transform:translateX(-50%) translateY(0); } }
 @keyframes toastOut  { from { opacity:1; transform:translateX(-50%) translateY(0); } to { opacity:0; transform:translateX(-50%) translateY(8px); } }
+
+@media print {
+  @page {
+    size: A4 landscape;
+    margin: 10mm 8mm 12mm 8mm;
+  }
+  body > * { display: none !important; }
+  .fahrt-print-area {
+    display: block !important;
+    position: fixed !important;
+    top: 0 !important; left: 0 !important;
+    width: 100% !important; height: auto !important;
+    z-index: 99999 !important;
+    background: #fff !important;
+    overflow: visible !important;
+  }
+  .fahrt-print-area .print-topbar { display: none !important; }
+  .fahrt-print-area .print-content {
+    padding: 0 !important;
+    max-width: 100% !important;
+  }
+  .fahrt-print-area table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    font-size: 8pt !important;
+    font-family: Arial, sans-serif !important;
+    page-break-inside: auto;
+  }
+  .fahrt-print-area table thead { display: table-header-group !important; }
+  .fahrt-print-area table tfoot { display: table-footer-group !important; }
+  .fahrt-print-area table tr { page-break-inside: avoid; }
+  .fahrt-print-area table th {
+    background: #f0f0f0 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    border-bottom: 1.5pt solid #111 !important;
+    border-right: 0.5pt solid #bbb !important;
+    font-size: 7pt !important;
+    padding: 3pt 4pt !important;
+  }
+  .fahrt-print-area table th:last-child { border-right: none !important; }
+  .fahrt-print-area table td {
+    padding: 3pt 4pt !important;
+    border-bottom: 0.5pt solid #ddd !important;
+    border-right: 0.5pt solid #ddd !important;
+    font-size: 8pt !important;
+  }
+  .fahrt-print-area table td:last-child { border-right: none !important; }
+  .fahrt-print-area table tfoot td {
+    border-top: 1.5pt solid #111 !important;
+    border-right: 0.5pt solid #bbb !important;
+    font-weight: bold !important;
+    background: #f5e6e6 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  .fahrt-print-area table tfoot td:last-child { border-right: none !important; }
+  .fahrt-print-area table { border: 1pt solid #bbb !important; }
+  .fahrt-print-area .print-header {
+    margin-bottom: 6pt !important;
+    padding-bottom: 4pt !important;
+    border-bottom: 1pt solid #ccc !important;
+  }
+  .fahrt-print-area .print-header h1 {
+    font-size: 13pt !important;
+    font-weight: 800 !important;
+    margin: 0 0 2pt 0 !important;
+    color: #111 !important;
+  }
+  .fahrt-print-area .print-header p {
+    font-size: 8pt !important;
+    color: #555 !important;
+    margin: 0 !important;
+  }
+  .fahrt-print-area .print-footer-note {
+    margin-top: 8pt !important;
+    font-size: 7pt !important;
+    color: #888 !important;
+    text-align: right !important;
+    border-top: 0.5pt solid #ddd !important;
+    padding-top: 4pt !important;
+  }
+  .fahrt-print-area .print-summary {
+    display: flex !important;
+    gap: 16pt !important;
+    margin-top: 6pt !important;
+    font-size: 8pt !important;
+  }
+  .fahrt-print-tr-alt { background: #f9f9f7 !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
 `}</style>
     <div style={{minHeight:"100vh",background:C.bg,color:C.text,fontFamily:SANS}}>
 
@@ -2716,19 +3856,19 @@ REGELN:
             }
           </div>
         </div>
-        <div style={{display:"flex",alignItems:"flex-start",gap:10}}>
+        <div style={{display:"flex",alignItems:"center",gap:8}}>
           <LiveClock accent={acc}/>
-          <div style={{width:16,flexShrink:0}}/>
-          {(()=>{
-            const now=new Date();
-            const nowYM=now.getFullYear()*12+now.getMonth();
-            const alertFz=state.fahrzeuge.filter(fz=>{
-              if(!fz.tuvDatum) return false;
-              const [y,m]=fz.tuvDatum.split("-").map(Number);
-              return (y*12+(m-1))-nowYM<=2;
-            });
-            if(!alertFz.length) return null;
-            return (
+          <button onClick={onLogout} title="Abmelden"
+            style={{width:40,height:40,background:"transparent",border:"none",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",borderRadius:8,transition:"background 0.12s",color:C.muted}}
+            onMouseEnter={e=>{e.currentTarget.style.background="rgba(0,0,0,0.08)";e.currentTarget.querySelector("svg").style.stroke=C.red;}}
+            onMouseLeave={e=>{e.currentTarget.style.background="transparent";e.currentTarget.querySelector("svg").style.stroke=C.muted;}}>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={C.muted} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{transition:"stroke 0.12s"}}>
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+              <polyline points="16 17 21 12 16 7"/>
+              <line x1="21" y1="12" x2="9" y2="12"/>
+            </svg>
+          </button>
+          {(()=>{const now=new Date();const nowYM=now.getFullYear()*12+now.getMonth();const alertFz=state.fahrzeuge.filter(fz=>{if(!fz.tuvDatum)return false;const[y,m]=fz.tuvDatum.split("-").map(Number);return(y*12+(m-1))-nowYM<=2;});if(!alertFz.length)return null;return(
               <div ref={tuvRef} style={{position:"relative"}}>
                 {/* Кнопка — только иконка + красная точка */}
                 <button onClick={()=>setTuvPopup(v=>!v)}
@@ -2833,203 +3973,16 @@ REGELN:
       <main style={{padding:"28px 32px 40px",maxWidth:1200,margin:"0 auto"}}>
 
         {/* ── Übersicht ── */}
-        {tab==="uebersicht"&&(()=>{
-          const kostenCats=[
-            {label:"Tanken",  color:C.tank,    betrag:stats.tankKosten,   count:(aktiv.tankstellen||[]).length, icon:"droplet"},
-            {label:"Service", color:C.service, betrag:stats.serviceKosten,count:(aktiv.services||[]).length,    icon:"settings"},
-            {label:"Wäsche",  color:C.wasch,   betrag:stats.waschKosten,  count:(aktiv.waesche||[]).length,     icon:"clock"},
-            {label:"Strafen", color:C.strafe,  betrag:stats.strafeKosten, count:(aktiv.strafen||[]).length,     icon:"zap"},
-          ];
-          return (
-          <div>
-
-            {/* ── ZONE 2: 4 Haupt-KPIs — 2 строки по 2 ── */}
-            <div style={{display:"grid",gridTemplateColumns:"repeat(4,minmax(0,1fr))",gap:12,marginBottom:12}}>
-              <KpiCard wert={stats.gesamtKosten.toFixed(2)} unit="€" label="GESAMTKOSTEN" akzent={C.steel} icon="download"/>
-              <KpiCard wert={stats.gKm.toFixed(1)}          unit="km" label="GEFAHRENE KM" akzent={C.red}   icon="road"/>
-              <KpiCard wert={(aktiv.fahrten||[]).length}                     label="FAHRTEN"      akzent={C.gold}  icon="car"/>
-              <KpiCard wert={stats.strafenOffen}                        label="OFF. STRAFEN" akzent={stats.strafenOffen>0?C.strafe:C.muted} icon="zap"/>
-            </div>
-
-            {/* ── ZONE 3: Kosten-Breakdown + KM nach Kat ── */}
-            <div style={{display:"grid",gridTemplateColumns:"minmax(0,3fr) minmax(0,2fr)",gap:12,marginBottom:12}}>
-
-              {/* Kosten Breakdown */}
-              <div style={{background:C.surface,padding:"18px 20px",borderLeft:`2px solid ${C.steel}`,boxShadow:C.shadow,borderRadius:8}}>
-                <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",marginBottom:16}}>
-                  <div style={{fontSize:13,color:C.text,letterSpacing:2,textTransform:"uppercase",fontWeight:700,fontFamily:SANS}}>KOSTEN ÜBERSICHT</div>
-                  <div style={{fontSize:20,fontWeight:800,color:C.text,fontFamily:SANS}}>{stats.gesamtKosten.toFixed(2)} €</div>
-                </div>
-                <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
-                  {kostenCats.map(cat=>(
-                    <div key={cat.label} style={{padding:"12px 14px",borderLeft:`2px solid ${cat.color}`,background:C.surfaceAlt,borderRadius:"0 6px 6px 0"}}>
-                      <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:6}}>
-                        <Ico name={cat.icon} size={18} color={cat.color}/>
-                        <span style={{fontSize:13,fontWeight:700,letterSpacing:1.5,textTransform:"uppercase",fontFamily:SANS,color:C.text}}>{cat.label}</span>
-                      </div>
-                      <div style={{fontSize:20,fontWeight:800,color:C.text,fontFamily:SANS,lineHeight:1,marginBottom:4}}>{cat.betrag.toFixed(2)} €</div>
-                      <AnimatedBar pct={stats.gesamtKosten>0?Math.min((cat.betrag/stats.gesamtKosten)*100,100).toFixed(1):0} color={cat.color} height={3}/>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* KM nach Kategorie */}
-              <div style={{background:C.surface,padding:"18px 20px",borderLeft:`2px solid ${C.red}`,boxShadow:C.shadow,borderRadius:8}}>
-                <div style={{fontSize:13,color:C.text,letterSpacing:1.5,textTransform:"uppercase",fontWeight:700,marginBottom:16,fontFamily:SANS}}>KM NACH KAT.</div>
-                {Object.entries(stats.nK).map(([kat,km])=>{
-                  const pct=((km/(stats.gKm||1))*100).toFixed(0);
-                  const ak=katAccent[kat]||C.steel;
-                  const short={standorte:"Standort",partner:"Partner",messe:"Messen"};
-                  return (
-                    <div key={kat} style={{marginBottom:14}}>
-                      <div style={{display:"flex",justifyContent:"space-between",marginBottom:5,fontSize:14}}>
-                        <span style={{color:C.text,fontFamily:SANS}}>{short[kat]||kat}</span>
-                        <span style={{color:C.text,fontWeight:700,fontFamily:SANS}}>
-                          {km.toFixed(0)} km <span style={{color:C.muted,fontSize:13}}>({pct}%)</span>
-                        </span>
-                      </div>
-                      <AnimatedBar pct={pct} color={ak}/>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* ── ZONE 4: KM / Monat Chart ── */}
-            <div style={{background:C.surface,padding:"18px 20px",borderLeft:`2px solid ${C.red}`,boxShadow:C.shadow,borderRadius:8,marginBottom:12}}>
-              <div style={{fontSize:13,color:C.text,letterSpacing:1.5,textTransform:"uppercase",fontWeight:700,marginBottom:4,fontFamily:SANS}}>KM / MONAT</div>
-              <MonatsChart kmByMonth={stats.kmByMonth} accent={C.red}/>
-            </div>
-
-            {/* ── ZONE 5: Nächste Fälligkeiten + Top Besucht ── */}
-            <div style={{display:"grid",gridTemplateColumns:"minmax(0,1fr) minmax(0,1fr)",gap:12,marginBottom:12}}>
-
-              {/* Nächste Fälligkeiten */}
-              <div style={{background:C.surface,padding:"18px 20px",borderLeft:`2px solid ${C.service}`,boxShadow:C.shadow,borderRadius:8}}>
-                <div style={{fontSize:13,color:C.text,letterSpacing:1.5,textTransform:"uppercase",fontWeight:700,marginBottom:14,fontFamily:SANS}}>NÄCHSTE FÄLLIGKEITEN</div>
-                {stats.faelligkeiten.length>0 ? stats.faelligkeiten.map(x=>{
-                  const today=new Date().toISOString().slice(0,10);
-                  const ueberfaellig=x.faelligDatum&&x.faelligDatum<=today;
-                  const accentFaellig=ueberfaellig?C.strafe:C.service;
-                  return (
-                    <div key={x.id} style={{display:"flex",flexDirection:"column",gap:4,padding:"9px 0",borderBottom:`1px solid ${C.border}`}}>
-                      <span style={{fontSize:15,color:C.text,fontFamily:SANS,fontWeight:600}}>{x.typ}</span>
-                      <div style={{display:"flex",gap:12,alignItems:"center"}}>
-                        {x.faelligDatum&&(
-                          <span style={{fontSize:15,color:C.text,fontFamily:SANS,display:"flex",alignItems:"center",gap:4,whiteSpace:"nowrap"}}>
-                            <Ico name="clock" size={15} color={accentFaellig}/>
-                            {formatDatum(x.faelligDatum)}
-                          </span>
-                        )}
-                        {x.faelligKm&&(
-                          <span style={{fontSize:15,color:C.text,fontFamily:SANS,display:"flex",alignItems:"center",gap:4,whiteSpace:"nowrap"}}>
-                            <Ico name="road" size={15} color={C.tank}/>
-                            {x.faelligKm} km
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  );
-                }) : (
-                  <div style={{color:C.muted,fontSize:13,textAlign:"center",padding:"16px 0",fontFamily:SANS}}>Keine Fälligkeiten eingetragen</div>
-                )}
-              </div>
-
-              {/* Top Besucht */}
-              <div style={{background:C.surface,padding:"18px 20px",borderLeft:`2px solid ${C.red}`,boxShadow:C.shadow,borderRadius:8}}>
-                <div style={{fontSize:13,color:C.text,letterSpacing:1.5,textTransform:"uppercase",fontWeight:700,marginBottom:14,fontFamily:SANS}}>TOP BESUCHT</div>
-                {Object.entries(stats.nP).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([id,km],i)=>{
-                  const p=(aktiv.partner||[]).find(x=>x.id===id);
-                  return (
-                    <div key={id} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"6px 0",borderBottom:`1px solid ${C.border}`,fontSize:14}}>
-                      <span style={{color:C.text,minWidth:0,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",fontFamily:SANS}}>
-                        <span style={{color:C.muted,marginRight:6}}>{i+1}.</span>{p?p.name:id}
-                      </span>
-                      <span style={{color:C.text,fontWeight:700,fontFamily:SANS,flexShrink:0,marginLeft:8}}>
-                        {km.toFixed(0)} km
-                      </span>
-                    </div>
-                  );
-                })}
-                {!Object.keys(stats.nP).length&&(
-                  <div style={{color:C.muted,fontSize:13,textAlign:"center",padding:"16px 0",fontFamily:SANS}}>Keine Partnerfahrten</div>
-                )}
-              </div>
-            </div>
-
-            {/* ── ZONE 6: Letzte Fahrten ── */}
-            <div style={{background:C.surface,padding:"18px 20px",borderLeft:`2px solid ${C.red}`,boxShadow:C.shadow,borderRadius:8}}>
-              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
-                <div style={{fontSize:13,color:C.text,letterSpacing:2,textTransform:"uppercase",fontWeight:700,fontFamily:SANS}}>LETZTE FAHRTEN</div>
-                <button onClick={()=>{setTab("fahrten");setFForm("new");setFData(E_F());}} style={btnSolid(C.red)}>
-                  <Ico name="plus" size={15} color="#fff"/>FAHRT
-                </button>
-              </div>
-              {(aktiv.fahrten||[]).length>0 ? aktiv.fahrten.slice().reverse().slice(0,5).map(f=>{
-                const ak=katAccent[f.kategorie]||C.strafe;
-                return (
-                  <div key={f.id} style={{display:"flex",alignItems:"center",gap:14,padding:"10px 0",borderBottom:`1px solid ${C.border}`}}>
-                    <div style={{width:10,height:10,borderRadius:"50%",background:ak,flexShrink:0}}/>
-                    <div style={{flex:1,minWidth:0}}>
-                      <div style={{fontSize:15,fontWeight:700,color:C.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",fontFamily:SANS}}>{getZielName(f)}</div>
-                      <div style={{fontSize:14,color:C.muted,fontFamily:SANS}}>{formatDatum(f.datum)}</div>
-                    </div>
-                    <span style={{color:C.text,fontWeight:700,fontFamily:SANS,fontSize:14,flexShrink:0}}>{safeFloat(f.km).toFixed(0)} km</span>
-                  </div>
-                );
-              }) : (
-                <EmptyState icon="car" accent={C.red} text="Noch keine Fahrten" hint="Erste Fahrt erfassen und hier sehen" btnLabel="FAHRT ERFASSEN" onBtnClick={()=>{setTab("fahrten");setFForm("new");setFData(E_F());}}/>
-              )}
-            </div>
-
-            {/* ── ZONE 7: Alerts ── */}
-            {(!aktiv.standort?.name||stats.strafenOffen>0||stats.faelligUeberfaellig.length>0)&&(
-              <div style={{display:"flex",flexDirection:"column",gap:12,marginTop:12}}>
-                {!aktiv.standort?.name&&(
-                  <div style={{background:C.surface,borderTop:`2px solid ${C.red}`,padding:"16px 20px",
-                    display:"flex",alignItems:"center",justifyContent:"space-between",
-                    boxShadow:C.shadow,borderRadius:8}}>
-                    <div style={{display:"flex",alignItems:"center",gap:10,fontSize:14,color:C.red,fontFamily:SANS,fontWeight:600}}>
-                      <Ico name="alert" size={15} color={C.red}/>Kein Stammstandort — bitte einrichten.
-                    </div>
-                    <button onClick={()=>setTab("einstellungen")} style={btnSolid(C.red)}>
-                      <Ico name="settings" size={15} color="#fff"/>EINSTELLUNGEN
-                    </button>
-                  </div>
-                )}
-                {stats.strafenOffen>0&&(
-                  <div style={{background:C.surface,borderTop:`2px solid ${C.strafe}`,padding:"16px 20px",
-                    display:"flex",alignItems:"center",justifyContent:"space-between",
-                    boxShadow:C.shadow,borderRadius:8}}>
-                    <div style={{display:"flex",alignItems:"center",gap:10,fontSize:14,color:C.strafe,fontFamily:SANS,fontWeight:600}}>
-                      <Ico name="zap" size={15} color={C.strafe}/>
-                      {stats.strafenOffen} offene {stats.strafenOffen===1?"Strafe":"Strafen"} — noch nicht bezahlt
-                    </div>
-                    <button onClick={()=>{setTab("kosten");setKostenSub("strafen");}} style={btnSolid(C.strafe)}>
-                      <Ico name="arrowRight" size={15} color="#fff"/>ANZEIGEN
-                    </button>
-                  </div>
-                )}
-                {stats.faelligUeberfaellig.length>0&&(
-                  <div style={{background:C.surface,borderTop:`2px solid ${C.service}`,padding:"16px 20px",
-                    display:"flex",alignItems:"center",justifyContent:"space-between",
-                    boxShadow:C.shadow,borderRadius:8}}>
-                    <div style={{display:"flex",alignItems:"center",gap:10,fontSize:14,color:C.service,fontFamily:SANS,fontWeight:600}}>
-                      <Ico name="alert" size={15} color={C.service}/>
-                      {stats.faelligUeberfaellig.length} {stats.faelligUeberfaellig.length===1?"Fälligkeit":"Fälligkeiten"} überfällig: {stats.faelligUeberfaellig.map(x=>x.typ).join(", ")}
-                    </div>
-                    <button onClick={()=>{setTab("kosten");setKostenSub("service");}} style={btnSolid(C.service)}>
-                      <Ico name="arrowRight" size={15} color="#fff"/>ANZEIGEN
-                    </button>
-                  </div>
-                )}
-              </div>
-            )}
-
-          </div>
-          );
-        })()}
+        {/* ── Übersicht ── */}
+        {tab==="uebersicht"&&(
+          <UebersichtTab
+            stats={stats} aktiv={aktiv} acc={acc} C={C} SANS={SANS} FS={FS}
+            katAccent={katAccent} setTab={setTab} setFForm={setFForm}
+            setFData={setFData} E_F={E_F} patchAktiv={patchAktiv}
+            safeFloat={safeFloat} formatDatum={formatDatum}
+            getZielName={getZielName} getZielAdr={getZielAdr}
+          />
+        )}
 
         {/* ── Fahrtenbuch ── */}
         {tab==="fahrten"&&(
@@ -3132,7 +4085,7 @@ REGELN:
                 <span style={{position:"absolute",left:11,top:"50%",transform:"translateY(-50%)",pointerEvents:"none",display:"flex",alignItems:"center",lineHeight:1}}><Ico name="search" size={13} color={C.muted}/></span>
                 {fQ&&<button onClick={()=>setFQ("")} style={{position:"absolute",right:8,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",cursor:"pointer",padding:2,display:"flex"}}><Ico name="close" size={13} color={C.muted}/></button>}
               </div>
-              <div style={{flex:"0 0 clamp(120px,15%,170px)"}}><CustomSelect value={fMonat} onChange={setFMonat} options={[{value:"",label:"Alle Monate"},...(stats.monate||[]).map(m=>({value:m,label:m}))]} accent={C.border}/></div>
+              <div style={{flex:"0 0 clamp(120px,15%,170px)"}}><CustomSelect value={fMonat} onChange={setFMonat} accent={C.border} options={[{value:"",label:"Alle Monate"},{value:"__2025",label:"── 2025 ──",disabled:true},...(stats.monate||[]).filter(m=>m.startsWith("2025")).map(m=>({value:m,label:m})),{value:"__2024",label:"── 2024 ──",disabled:true},...["2024-12","2024-11","2024-10","2024-09","2024-08","2024-07","2024-06","2024-05","2024-04","2024-03","2024-02","2024-01"].map(m=>({value:m,label:m}))]}/></div>
               <div style={{flex:"0 0 clamp(140px,17%,200px)"}}><CustomSelect value={fKat} onChange={setFKat} options={OPT_FAHRT_KAT_F} accent={C.border}/></div>
               {(fQ||fMonat||fKat!=="alle")&&(
                 <button style={{height:40,border:`1px solid ${C.border}`,borderRadius:8,background:"#fff",color:C.muted,boxShadow:"0 1px 4px rgba(0,0,0,0.06)",fontSize:14,fontFamily:SANS,padding:"0 10px",cursor:"pointer",flexShrink:0,outline:"none"}} onClick={()=>{setFQ("");setFMonat("");setFKat("alle");}}>✕ Reset</button>
@@ -3214,21 +4167,38 @@ REGELN:
                     </FormPanel>
                   )}
                   {!isEditing&&(
-                    <div style={{background:C.surface,borderLeft:`2px solid ${ak}`,padding:"11px 16px",marginBottom:2,display:"flex",alignItems:"center",gap:12,boxShadow:C.shadow}}>
-                      <div style={{minWidth:88,flexShrink:0,color:C.text,fontSize:13}}>{formatDatum(f.datum)}</div>
+                    <div style={{background:C.surface,borderLeft:`2px solid ${ak}`,padding:"12px 16px",marginBottom:2,display:"flex",alignItems:"center",gap:12,boxShadow:C.shadow}}>
+                      {/* Дата + время */}
+                      <div style={{width:96,flexShrink:0}}>
+                        <div style={{fontSize:14,fontWeight:700,color:C.text}}>{formatDatum(f.datum)}</div>
+                        {f.zeitStr&&<div style={{fontSize:13,color:C.muted,marginTop:3}}>{f.zeitStr}</div>}
+                      </div>
+                      {/* Маршрут + Zweck */}
                       <div style={{flex:1,minWidth:0}}>
-                        <div style={{fontSize:16,fontWeight:700,color:C.text,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",marginBottom:2}}>{getZielName(f)}</div>
-                        {f.notiz&&<div style={{fontSize:13,color:C.steelMid,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",fontFamily:SANS}}>{f.notiz}</div>}
+                        <div style={{fontSize:15,fontWeight:700,color:C.text,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{f.zielName||f.notiz||"—"}</div>
+                        {f.notiz&&f.zielName&&<div style={{fontSize:13,color:C.steelMid,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",marginTop:1}}>{f.notiz}</div>}
                       </div>
-                      <div style={{textAlign:"right",minWidth:80,flexShrink:0}}>
-                        <div style={{fontSize:18,fontWeight:700,color:ak,fontFamily:SANS}}>{safeFloat(f.km).toFixed(1)} km</div>
-                        {f.zeitStr&&<div style={{fontSize:14,color:C.muted,fontFamily:SANS}}>{f.zeitStr}</div>}
-                        {(f.kmStart||f.kmEnd)&&<div style={{fontSize:13,color:C.muted}}>{f.kmStart||"—"} → {f.kmEnd||"—"}</div>}
-                        <div style={{fontSize:13,color:C.muted,display:"flex",alignItems:"center",justifyContent:"flex-end",gap:3}}>
-                          {f.rueckfahrt&&<span>↔</span>}
-                          {f.kmTyp&&f.kmTyp!=="geschaeftlich"&&<span style={{color:f.kmTyp==="privat"?C.muted:C.gold}}>{f.kmTyp==="privat"?"priv":"W/A"}</span>}
+                      {/* KM крупно */}
+                      <div style={{textAlign:"center",minWidth:72,flexShrink:0}}>
+                        <div style={{fontSize:22,fontWeight:800,color:ak,fontFamily:SANS,lineHeight:1}}>{safeFloat(f.km).toFixed(1)}</div>
+                        <div style={{fontSize:11,color:C.muted,letterSpacing:1,textTransform:"uppercase",marginTop:2}}>km</div>
+                      </div>
+                      {/* Одометр */}
+                      {(f.kmStart||f.kmEnd)&&(
+                        <div style={{textAlign:"center",minWidth:88,flexShrink:0,borderLeft:`1px solid ${C.border}`,paddingLeft:12}}>
+                          <div style={{fontSize:13,fontWeight:700,color:C.text,fontFamily:SANS}}>{f.kmStart||"—"}</div>
+                          <div style={{fontSize:10,color:C.muted,margin:"1px 0"}}>→</div>
+                          <div style={{fontSize:13,fontWeight:700,color:C.text,fontFamily:SANS}}>{f.kmEnd||"—"}</div>
                         </div>
-                      </div>
+                      )}
+                      {/* Тип */}
+                      {(f.rueckfahrt||(f.kmTyp&&f.kmTyp!=="geschaeftlich"))&&(
+                        <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:3,flexShrink:0,minWidth:36}}>
+                          {f.rueckfahrt&&<span style={{fontSize:11,color:C.muted,background:C.surfaceAlt,borderRadius:4,padding:"2px 6px"}}>↔</span>}
+                          {f.kmTyp&&f.kmTyp!=="geschaeftlich"&&<span style={{fontSize:11,color:f.kmTyp==="privat"?C.muted:C.gold,background:C.surfaceAlt,borderRadius:4,padding:"2px 6px"}}>{f.kmTyp==="privat"?"privat":"Arb."}</span>}
+                        </div>
+                      )}
+                      {/* Кнопки */}
                       <div style={{display:"flex",gap:2,flexShrink:0}}>
                         <IcoBtn icon="edit" color={C.steelMid} title="Bearbeiten" onClick={()=>{setFForm(f.id);setFData({...f});}}/>
                         <IcoBtn icon="trash" color={C.red} title="Löschen" onClick={()=>setConfirmDel({type:"fahrt",id:f.id})}/>
@@ -3250,7 +4220,7 @@ REGELN:
               {[
                 {id:"standorte", label:"Standorte", icon:"road",   color:C.standort},
                 {id:"partner",   label:"Partner",   icon:"users",  color:C.red},
-                {id:"messe",     label:"Messen",    icon:"mapPin", color:C.gold},
+                {id:"messe",     label:"Messen",    icon:"building", color:C.gold},
               ].map(s=>{
                 const active = sub===s.id;
                 return (
@@ -3277,43 +4247,39 @@ REGELN:
             {/* ─ PARTNER ─ */}
             {sub==="partner"&&(
               <div>
-                {pForm!==null&&(()=>{
-                  const dupCheck=checkDuplikat(pData.name,pData.adresse,aktiv,pForm==="new"?"":pForm);
-                  return (
+                {pForm!==null&&(
                   <FormPanel accent={C.red} title={pForm==="new"?"Neuer Partner":"Partner bearbeiten"} icon="users" onSave={savePartner}>
                     <FormRow cols={2}>
                       <F label="Name" value={pData.name||""} onChange={v=>setPData({...pData,name:v})} placeholder="Firmenname"/>
                       <LS label="Typ" value={pData.typ||"sonstiges"} onChange={v=>setPData({...pData,typ:v})} options={PARTNER_TYP_OPTS.map(t=>({value:t,label:PARTNER_TYP_LABELS[t]}))}/>
                     </FormRow>
                     <F label="Adresse" value={pData.adresse||""} onChange={v=>setPData({...pData,adresse:v})} placeholder="Straße, PLZ Ort"/>
-                    <DuplikatWarnung check={dupCheck} accent={C.red}/>
+                    <DuplikatWarnung check={dupCheckP} accent={C.red}/>
                     <FormRow cols={2}>
                       <F label="Telefon" value={pData.telefon||""} onChange={v=>setPData({...pData,telefon:v})} placeholder="+49 89 …"/>
                       <F label="E-Mail" value={pData.email||""} onChange={v=>setPData({...pData,email:v})} placeholder="info@firma.de"/>
                     </FormRow>
                     <F label="km vom Stammstandort" type="number" value={pData.kmVonStandort||""} onChange={v=>setPData({...pData,kmVonStandort:v})} placeholder="z.B. 8.4"/>
                     <F label="Notiz" value={pData.notiz||""} onChange={v=>setPData({...pData,notiz:v})} placeholder="Interne Bemerkung"/>
-                    <FormActions onSave={savePartner} onCancel={()=>setPForm(null)} accent={C.red} saveDisabled={dupCheck.exakt}/>
+                    <FormActions onSave={savePartner} onCancel={()=>setPForm(null)} accent={C.red} saveDisabled={dupCheckP.exakt}/>
                   </FormPanel>
-                  );
-                })()}
+                )}
                 <SectionBar count={(aktiv.partner||[]).length} label="Partner" accent={C.red} addLabel="PARTNER HINZUFÜGEN"
                   onAdd={()=>{setPForm("new");setPData(E_P());}}/>
                 {/* Suche + Typ-Filter */}
-                {(aktiv.partner||[]).length>0&&(()=>{
-                  const [pQ,setPQ] = [pFilter?.q||"", q=>setPFilter(f=>({...f,q}))];
-                  const [pTyp,setPTyp] = [pFilter?.typ||"", t=>setPFilter(f=>({...f,typ:t}))];
-                  return (
-                    <div style={{display:"flex",gap:10,alignItems:"center",flexWrap:"wrap",marginBottom:14}}>
-                      <div style={{position:"relative",flex:1,minWidth:160,display:"flex",alignItems:"center"}}>
-                        <input value={pQ} onChange={e=>setPQ(e.target?.value ?? "")} placeholder="Partner suchen…"
-                          style={{width:"100%",height:40,boxSizing:"border-box",padding:"0 34px 0 36px",border:`1px solid ${C.border}`,borderRadius:8,boxShadow:"0 1px 4px rgba(0,0,0,0.06)",transition:"border-color 0.15s, box-shadow 0.15s",background:"#fff",color:"#111",fontSize:14,fontFamily:SANS,outline:"none",WebkitAppearance:"none",appearance:"none"}}/>
-                        <span style={{position:"absolute",left:11,top:"50%",transform:"translateY(-50%)",pointerEvents:"none",display:"flex",alignItems:"center",lineHeight:1}}><Ico name="search" size={13} color={C.muted}/></span>
-                      </div>
-                      <div style={{flex:"0 0 clamp(150px,18%,200px)"}}><CustomSelect value={pTyp} onChange={setPTyp} options={[{value:"",label:"Alle Typen"},...PARTNER_TYP_OPTS.map(t=>({value:t,label:PARTNER_TYP_LABELS[t]}))]} accent={C.border}/></div>
+                {(aktiv.partner||[]).length>0&&(
+                  <div style={{display:"flex",gap:10,alignItems:"center",flexWrap:"wrap",marginBottom:14}}>
+                    <div style={{position:"relative",flex:1,minWidth:160,display:"flex",alignItems:"center"}}>
+                      <input value={pFilter?.q||""} onChange={e=>setPFilter(f=>({...f,q:e.target?.value??""}))} placeholder="Partner suchen…"
+                        style={{width:"100%",height:40,boxSizing:"border-box",padding:"0 34px 0 36px",border:`1px solid ${C.border}`,borderRadius:8,fontSize:14,fontFamily:SANS,outline:"none"}}/>
+                      <span style={{position:"absolute",left:11,top:"50%",transform:"translateY(-50%)",pointerEvents:"none",display:"flex"}}>
+                        <Ico name="search" size={15} color={C.muted}/>
+                      </span>
+                      {pFilter?.q&&<button onClick={()=>setPFilter(f=>({...f,q:""}))} style={{position:"absolute",right:8,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",cursor:"pointer",padding:2}}><Ico name="x" size={12} color={C.muted}/></button>}
                     </div>
-                  );
-                })()}
+                    <div style={{flex:"0 0 clamp(150px,18%,200px)"}}><CustomSelect value={pFilter?.typ||""} onChange={v=>setPFilter(f=>({...f,typ:v}))} options={[{value:"",label:"Alle Typen"},...Object.entries(PARTNER_TYP_LABELS).map(([v,l])=>({value:v,label:l}))]} accent={C.red}/></div>
+                  </div>
+                )}
                 <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(340px,1fr))",gap:2}}>
                   {aktiv.partner
                     .filter(p=>{
@@ -3377,13 +4343,11 @@ REGELN:
             {/* ─ MESSEN ─ */}
             {sub==="messe"&&(
               <div>
-                {mForm!==null&&(()=>{
-                  const dupCheck=checkDuplikat(mData.name,mData.adresse,aktiv,mForm==="new"?"":mForm);
-                  return (
+                {mForm!==null&&(
                   <FormPanel accent={C.gold} title={mForm==="new"?"Neue Messe":"Messe bearbeiten"} icon="mapPin" onSave={saveMesse}>
                     <F label="Name" value={mData.name||""} onChange={v=>setMData({...mData,name:v})} placeholder="z.B. automatica München"/>
                     <F label="Adresse" value={mData.adresse||""} onChange={v=>setMData({...mData,adresse:v})} placeholder="Messezentrum, PLZ Ort"/>
-                    <DuplikatWarnung check={dupCheck} accent={C.gold}/>
+                    <DuplikatWarnung check={dupCheckM} accent={C.gold}/>
                     <F label="Datum" type="date" value={mData.datum||""} onChange={v=>setMData({...mData,datum:v})}/>
                     <div style={{paddingTop:14}}>
                       <label style={LBL}>Einladender Partner</label>
@@ -3397,10 +4361,9 @@ REGELN:
                     </div>
                     <F label="km vom Stammstandort" type="number" value={mData.kmVonStandort||""} onChange={v=>setMData({...mData,kmVonStandort:v})} placeholder="z.B. 22.0"/>
                     <F label="Notiz" value={mData.notiz||""} onChange={v=>setMData({...mData,notiz:v})} placeholder="Interne Bemerkung"/>
-                    <FormActions onSave={saveMesse} onCancel={()=>setMForm(null)} accent={C.gold} saveDisabled={dupCheck.exakt}/>
+                    <FormActions onSave={saveMesse} onCancel={()=>setMForm(null)} accent={C.gold} saveDisabled={dupCheckP.exakt}/>
                   </FormPanel>
-                  );
-                })()}
+                )}
                 <SectionBar count={(aktiv.messen||[]).length} label="Messen" accent={C.gold} addLabel="MESSE HINZUFÜGEN"
                   onAdd={()=>{setMForm("new");setMData(E_M());}}/>
                 <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(340px,1fr))",gap:2}}>
@@ -3503,12 +4466,21 @@ REGELN:
             {sub==="strafe"&&(
               <div>
                 {sForm!==null&&(
-                  <FormPanel accent={C.strafe} title={sForm==="new"?"Strafe erfassen":"Strafe bearbeiten"} icon="zap" onSave={saveStrafe}>
+                  <FormPanel accent={C.strafe} title={sForm==="new"?"Strafe erfassen":"Strafe bearbeiten"} icon="alert" onSave={saveStrafe}>
                     <FormRow cols={2}>
                       <F label="Datum *" type="date" value={sData.datum||""} onChange={v=>setSData({...sData,datum:v})} accent={C.strafe}/>
                       <F label="Betrag (€)" type="number" value={sData.betrag||""} onChange={v=>setSData({...sData,betrag:v})} placeholder="0.00" accent={C.strafe}/>
                     </FormRow>
-                    <F label="Art der Strafe" value={sData.typ||""} onChange={v=>setSData({...sData,typ:v})} placeholder="z.B. Geschwindigkeitsverstoß" accent={C.strafe}/>
+                    <div style={{paddingTop:14}}>
+                      <label style={LBL}>Art der Strafe</label>
+                      <CustomSelect
+                        value={sData.typ||""}
+                        onChange={v=>setSData({...sData,typ:v})}
+                        accent={C.strafe}
+                        placeholder="— Art wählen —"
+                        options={OPT_STRAFE_TYP}
+                      />
+                    </div>
                     <F label="Behörde / Stelle" value={sData.behoerde||""} onChange={v=>setSData({...sData,behoerde:v})} placeholder="z.B. Bußgeldbehörde München"/>
                     <F label="Adresse der Behörde" value={sData.adresseBehoerde||""} onChange={v=>setSData({...sData,adresseBehoerde:v})} placeholder="Straße, PLZ Ort"/>
                     <F label="Aktenzeichen (optional)" value={sData.aktenzeichen||""} onChange={v=>setSData({...sData,aktenzeichen:v})} placeholder="Az. 12345/25"/>
@@ -3560,16 +4532,17 @@ REGELN:
         {tab==="kosten"&&(
           <div>
             {/* Sub-tabs */}
-            <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:"2px",marginBottom:22}}>
+            <div style={{display:"grid",gridTemplateColumns:"repeat(5,1fr)",gap:"2px",marginBottom:22}}>
               {[
                 {id:"tanken",     label:"Tanken",    icon:"droplet",  color:C.tank},
-                {id:"waesche",    label:"Wäsche",    icon:"clock",    color:C.wasch},
-                {id:"service",    label:"Service",   icon:"settings", color:C.service},
-                {id:"strafen",    label:"Strafen",   icon:"zap",      color:C.strafe},
+                {id:"parken",     label:"Parken",    icon:"park",     color:C.park},
+                {id:"waesche",    label:"Wäsche",    icon:"wasch",    color:C.wasch},
+                {id:"service",    label:"Service",   icon:"tool",     color:C.service},
+                {id:"strafen",    label:"Strafen",   icon:"alert",    color:C.strafe},
               ].map(s=>{
                 const active=kostenSub===s.id;
                 return (
-                  <button key={s.id} onClick={()=>{setKostenSub(s.id);setTForm(null);setSForm(null);setWForm(null);setSvForm(null);}}
+                  <button key={s.id} onClick={()=>{setKostenSub(s.id);setTForm(null);setSForm(null);setWForm(null);setParkForm(null);setSvForm(null);}}
                     style={{padding:"12px 0",background:active?s.color:C.surface,border:`1px solid ${active?s.color:C.border}`,color:active?"#fff":C.muted,cursor:"pointer",fontSize:14,fontFamily:SANS,fontWeight:700,letterSpacing:1.5,textTransform:"uppercase",display:"flex",alignItems:"center",justifyContent:"center",gap:6,transition:"all 0.15s",width:"100%",boxSizing:"border-box",borderRadius:8}}>
                     <Ico name={s.icon} size={15} color={active?"#fff":s.color}/>
                     {s.label}
@@ -3631,7 +4604,7 @@ REGELN:
             {kostenSub==="service"&&(
               <div>
                 {svForm!==null&&(
-                  <FormPanel accent={C.service} title={svForm==="new"?"Service erfassen":"Service bearbeiten"} icon="settings" onSave={saveService}>
+                  <FormPanel accent={C.service} title={svForm==="new"?"Service erfassen":"Service bearbeiten"} icon="tool" onSave={saveService}>
                     <BelegScan accent={C.service} onResult={d=>setSvData(prev=>({...prev,...d}))}/>
                     <FormRow cols={2}>
                       <F label="Datum *" type="date" value={svData.datum||""} onChange={v=>setSvData({...svData,datum:v})} accent={C.service}/>
@@ -3667,7 +4640,10 @@ REGELN:
                 </div>
                 {(aktiv.services||[]).slice().sort((a,b)=>b.datum?.localeCompare(a.datum)).map(x=>(
                   <div key={x.id} style={{background:C.surface,borderLeft:`2px solid ${C.service}`,padding:"12px 18px",marginBottom:2,display:"flex",alignItems:"center",gap:14,boxShadow:C.shadow}}>
-                    <div style={{minWidth:88}}><div style={{color:C.text,fontSize:13}}>{formatDatum(x.datum)}</div>{x.kmStand&&<div style={{fontSize:14,color:C.text}}>{x.kmStand} km</div>}</div>
+                    <div style={{width:96,flexShrink:0}}>
+                      <div style={{fontSize:14,fontWeight:700,color:C.text}}>{formatDatum(x.datum)}</div>
+                      {x.kmStand&&<div style={{fontSize:13,color:C.muted,marginTop:3}}>{x.kmStand} km</div>}
+                    </div>
                     <div style={{flex:1,minWidth:0}}>
                       <div style={{fontSize:16,fontWeight:700,color:C.text,marginBottom:2}}>{x.typ}</div>
                       {x.werkstatt&&<div style={{fontSize:14,color:C.text,display:"flex",alignItems:"center",gap:4,fontFamily:SANS}}><Ico name="building" size={13} color={C.muted}/>{x.werkstatt}</div>}
@@ -3678,8 +4654,9 @@ REGELN:
                         {x.rechnungsNr&&<span>RE: {x.rechnungsNr}</span>}
                       </div>
                     </div>
-                    <div style={{textAlign:"right",minWidth:90,flexShrink:0}}>
-                      <div style={{fontSize:20,fontWeight:800,color:C.service,fontFamily:SANS}}>{safeFloat(x.betrag).toFixed(2)} €</div>
+                    <div style={{textAlign:"center",minWidth:90,flexShrink:0}}>
+                      <div style={{fontSize:22,fontWeight:800,color:C.service,fontFamily:SANS,lineHeight:1}}>{safeFloat(x.betrag).toFixed(2)} €</div>
+                      <div style={{fontSize:11,color:C.muted,letterSpacing:1,textTransform:"uppercase",marginTop:2}}>Kosten</div>
                       {x.zahlungsart&&<div style={{fontSize:14,color:C.text}}>{x.zahlungsart}</div>}
                     </div>
                     <div style={{display:"flex",gap:2,flexShrink:0}}>
@@ -3688,7 +4665,7 @@ REGELN:
                     </div>
                   </div>
                 ))}
-                {!(aktiv.services||[]).length&&<EmptyState icon="settings" accent={C.service} text="Keine Service-Einträge" hint="Werkstattbesuche, TÜV, Ölwechsel erfassen" btnLabel="SERVICE ERFASSEN" onBtnClick={()=>{setSvForm("new");setSvData(E_SV());}}/>}
+                {!(aktiv.services||[]).length&&<EmptyState icon="tool" accent={C.service} text="Keine Service-Einträge" hint="Werkstattbesuche, TÜV, Ölwechsel erfassen" btnLabel="SERVICE ERFASSEN" onBtnClick={()=>{setSvForm("new");setSvData(E_SV());}}/>}
               </div>
             )}
 
@@ -3696,7 +4673,7 @@ REGELN:
             {kostenSub==="waesche"&&(
               <div>
                 {wForm!==null&&(
-                  <FormPanel accent={C.wasch} title={wForm==="new"?"Autowäsche erfassen":"Autowäsche bearbeiten"} icon="clock" onSave={saveWaesche}>
+                  <FormPanel accent={C.wasch} title={wForm==="new"?"Autowäsche erfassen":"Autowäsche bearbeiten"} icon="wasch" onSave={saveWaesche}>
                     <BelegScan accent={C.wasch} onResult={d=>setWData(prev=>({...prev,...d}))}/>
                     <FormRow cols={2}>
                       <F label="Datum *" type="date" value={wData.datum||""} onChange={v=>setWData({...wData,datum:v})} accent={C.wasch}/>
@@ -3724,14 +4701,18 @@ REGELN:
                 </div>
                 {(aktiv.waesche||[]).slice().sort((a,b)=>b.datum?.localeCompare(a.datum)).map(x=>(
                   <div key={x.id} style={{background:C.surface,borderLeft:`2px solid ${C.wasch}`,padding:"12px 18px",marginBottom:2,display:"flex",alignItems:"center",gap:14,boxShadow:C.shadow}}>
-                    <div style={{minWidth:88}}><div style={{color:C.text,fontSize:13}}>{formatDatum(x.datum)}</div>{x.uhrzeit&&<div style={{color:C.text,fontSize:14}}>{x.uhrzeit}</div>}</div>
+                    <div style={{width:96,flexShrink:0}}>
+                      <div style={{fontSize:14,fontWeight:700,color:C.text}}>{formatDatum(x.datum)}</div>
+                      {x.uhrzeit&&<div style={{fontSize:13,color:C.muted,marginTop:3}}>{x.uhrzeit}</div>}
+                    </div>
                     <div style={{flex:1,minWidth:0}}>
                       <div style={{fontSize:16,fontWeight:700,color:C.text,marginBottom:2}}>{x.typ}</div>
                       {x.adresse&&<div style={{fontSize:14,color:C.text,display:"flex",alignItems:"center",gap:4,fontFamily:SANS}}><Ico name="mapPin" size={13} color={C.muted}/>{x.adresse}</div>}
                       {x.zahlungsart&&<div style={{fontSize:13,color:C.steelMid,marginTop:3,fontFamily:SANS}}>{x.zahlungsart}</div>}
                     </div>
-                    <div style={{textAlign:"right",minWidth:80,flexShrink:0}}>
-                      <div style={{fontSize:20,fontWeight:800,color:C.wasch,fontFamily:SANS}}>{safeFloat(x.betrag).toFixed(2)} €</div>
+                    <div style={{textAlign:"center",minWidth:88,flexShrink:0}}>
+                      <div style={{fontSize:22,fontWeight:800,color:C.wasch,fontFamily:SANS,lineHeight:1}}>{safeFloat(x.betrag).toFixed(2)} €</div>
+                      <div style={{fontSize:11,color:C.muted,letterSpacing:1,textTransform:"uppercase",marginTop:2}}>Preis</div>
                     </div>
                     <div style={{display:"flex",gap:2,flexShrink:0}}>
                       <IcoBtn icon="edit" color={C.steelMid} title="Bearbeiten" onClick={()=>{setWForm(x.id);setWData({...x});}}/>
@@ -3739,7 +4720,61 @@ REGELN:
                     </div>
                   </div>
                 ))}
-                {!(aktiv.waesche||[]).length&&<EmptyState icon="clock" accent={C.wasch} text="Keine Wäschen erfasst" hint="Autowäschen und Reinigungen dokumentieren" btnLabel="WÄSCHE ERFASSEN" onBtnClick={()=>{setWForm("new");setWData({});}}/>}
+                {!(aktiv.waesche||[]).length&&<EmptyState icon="wasch" accent={C.wasch} text="Keine Wäschen erfasst" hint="Autowäschen und Reinigungen dokumentieren" btnLabel="WÄSCHE ERFASSEN" onBtnClick={()=>{setWForm("new");setWData({});}}/>}
+              </div>
+            )}
+
+            {/* ─ PARKEN ─ */}
+            {kostenSub==="parken"&&(
+              <div>
+                {parkForm!==null&&(
+                  <FormPanel accent={C.park} title={parkForm==="new"?"Parkvorgang erfassen":"Parkvorgang bearbeiten"} icon="mapPin" onSave={savePark}>
+                    <BelegScan accent={C.park} onResult={d=>setParkData(prev=>({...prev,...d}))}/>
+                    <FormRow cols={2}>
+                      <F label="Datum *" type="date" value={parkData.datum||""} onChange={v=>setParkData({...parkData,datum:v})} accent={C.park}/>
+                      <F label="Uhrzeit" type="time" value={parkData.uhrzeit||""} onChange={v=>setParkData({...parkData,uhrzeit:v})} accent={C.park}/>
+                    </FormRow>
+                    <F label="Parkort / Name" value={parkData.ort||""} onChange={v=>setParkData({...parkData,ort:v})} placeholder="z.B. Parkhaus City, P+R Messe"/>
+                    <F label="Adresse (optional)" value={parkData.adresse||""} onChange={v=>setParkData({...parkData,adresse:v})} placeholder="Straße, Stadt"/>
+                    <FormRow cols={2}>
+                      <F label="Dauer (Std.)" type="number" value={parkData.dauer||""} onChange={v=>setParkData({...parkData,dauer:v})} placeholder="z.B. 2.5"/>
+                      <F label="Betrag (€) *" type="number" value={parkData.betrag||""} onChange={v=>setParkData({...parkData,betrag:v})} placeholder="0.00" accent={C.park}/>
+                    </FormRow>
+                    <LS label="Zahlungsart" value={parkData.zahlungsart||"EC-Karte"} onChange={v=>setParkData({...parkData,zahlungsart:v})} accent={C.park} options={OPT_ZAHLUNG}/>
+                    <F label="Notiz" value={parkData.bemerkung||""} onChange={v=>setParkData({...parkData,bemerkung:v})} placeholder="Intern, Verwendungszweck"/>
+                    {parkData.belegFoto&&<BelegVorschau src={parkData.belegFoto} onRemove={()=>setParkData({...parkData,belegFoto:""})}/>}
+                    <FormActions onSave={savePark} onCancel={()=>setParkForm(null)} accent={C.park}/>
+                  </FormPanel>
+                )}
+                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
+                  <div style={{fontSize:14,color:C.text}}>
+                    Gesamt: <span style={{color:C.park,fontWeight:700}}>{(aktiv.parkplaetze||[]).reduce((s,x)=>s+(parseFloat(x.betrag)||0),0).toFixed(2)} €</span>
+                    {" · "}<span style={{color:C.text}}>{(aktiv.parkplaetze||[]).length} Parkvorgänge</span>
+                  </div>
+                  {parkForm===null&&<button onClick={()=>{setParkForm("new");setParkData(E_Park());}} style={btnSolid(C.park)}><Ico name="plus" size={15} color="#fff"/>PARKVORGANG ERFASSEN</button>}
+                </div>
+                {(aktiv.parkplaetze||[]).slice().sort((a,b)=>b.datum?.localeCompare(a.datum)).map(x=>(
+                  <div key={x.id} style={{background:C.surface,borderLeft:`2px solid ${C.park}`,padding:"12px 16px",marginBottom:2,display:"flex",alignItems:"center",gap:12,boxShadow:C.shadow}}>
+                    <div style={{width:96,flexShrink:0}}>
+                      <div style={{fontSize:14,fontWeight:700,color:C.text}}>{formatDatum(x.datum)}</div>
+                      {x.uhrzeit&&<div style={{fontSize:13,color:C.muted,marginTop:3}}>{x.uhrzeit}</div>}
+                    </div>
+                    <div style={{flex:1,minWidth:0}}>
+                      <div style={{fontSize:15,fontWeight:700,color:C.text,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{x.ort||"Parkvorgang"}</div>
+                      {x.adresse&&<div style={{fontSize:13,color:C.steelMid,display:"flex",alignItems:"center",gap:4,marginTop:2}}><Ico name="mapPin" size={12} color={C.muted}/>{x.adresse}</div>}
+                      {x.dauer&&<div style={{fontSize:13,color:C.muted,marginTop:2}}>{x.dauer} Std. · {x.zahlungsart||""}</div>}
+                    </div>
+                    <div style={{textAlign:"center",minWidth:88,flexShrink:0}}>
+                      <div style={{fontSize:22,fontWeight:800,color:C.park,fontFamily:SANS,lineHeight:1}}>{safeFloat(x.betrag).toFixed(2)} €</div>
+                      <div style={{fontSize:11,color:C.muted,letterSpacing:1,textTransform:"uppercase",marginTop:2}}>Preis</div>
+                    </div>
+                    <div style={{display:"flex",gap:2,flexShrink:0}}>
+                      <IcoBtn icon="edit" color={C.steelMid} title="Bearbeiten" onClick={()=>{setParkForm(x.id);setParkData({...x});}}/>
+                      <IcoBtn icon="trash" color={C.park} title="Löschen" onClick={()=>setConfirmDel({type:"park",id:x.id})}/>
+                    </div>
+                  </div>
+                ))}
+                {!(aktiv.parkplaetze||[]).length&&<EmptyState icon="park" accent={C.park} text="Keine Parkvorgänge" hint="Parkhaus, Parkschein, Parkgebühren erfassen"/>}
               </div>
             )}
 
@@ -3747,13 +4782,22 @@ REGELN:
             {kostenSub==="strafen"&&(
               <div>
                 {sForm!==null&&(
-                  <FormPanel accent={C.strafe} title={sForm==="new"?"Strafe erfassen":"Strafe bearbeiten"} icon="zap" onSave={saveStrafe}>
+                  <FormPanel accent={C.strafe} title={sForm==="new"?"Strafe erfassen":"Strafe bearbeiten"} icon="alert" onSave={saveStrafe}>
                     <BelegScan accent={C.strafe} onResult={d=>setSData(prev=>({...prev,...d}))}/>
                     <FormRow cols={2}>
                       <F label="Datum *" type="date" value={sData.datum||""} onChange={v=>setSData({...sData,datum:v})} accent={C.strafe}/>
                       <F label="Betrag (€)" type="number" value={sData.betrag||""} onChange={v=>setSData({...sData,betrag:v})} placeholder="0.00" accent={C.strafe}/>
                     </FormRow>
-                    <F label="Art der Strafe" value={sData.typ||""} onChange={v=>setSData({...sData,typ:v})} placeholder="z.B. Geschwindigkeitsverstoß" accent={C.strafe}/>
+                    <div style={{paddingTop:14}}>
+                      <label style={LBL}>Art der Strafe</label>
+                      <CustomSelect
+                        value={sData.typ||""}
+                        onChange={v=>setSData({...sData,typ:v})}
+                        accent={C.strafe}
+                        placeholder="— Art wählen —"
+                        options={OPT_STRAFE_TYP}
+                      />
+                    </div>
                     <F label="Behörde / Stelle" value={sData.behoerde||""} onChange={v=>setSData({...sData,behoerde:v})} placeholder="z.B. Bußgeldbehörde München"/>
                     <F label="Adresse der Behörde" value={sData.adresseBehoerde||""} onChange={v=>setSData({...sData,adresseBehoerde:v})} placeholder="Straße, PLZ Ort"/>
                     <F label="Aktenzeichen (optional)" value={sData.aktenzeichen||""} onChange={v=>setSData({...sData,aktenzeichen:v})} placeholder="Az. 12345/25"/>
@@ -3789,585 +4833,22 @@ REGELN:
         )}
 
         {/* ── Bericht / Fahrtenbuch-Ausdruck ── */}
-        {tab==="bericht"&&(()=>{
-          const kmGesch  = gefFahrten.reduce((s,f)=>s+(f.kmTyp==="geschaeftlich"||!f.kmTyp?safeFloat(f.km):0),0);
-          const kmWohn   = gefFahrten.reduce((s,f)=>s+(f.kmTyp==="wohnArbeit"?safeFloat(f.km):0),0);
-          const kmPrivat = gefFahrten.reduce((s,f)=>s+(f.kmTyp==="privat"?safeFloat(f.km):0),0);
-
-
-          const buildCsv = () => {
-            const esc = v => `"${String(v||"").replace(/"/g,'""')}"`;
-            const headers = ["Datum","Fahrzeit von-bis","Reiseroute und Ziel","Zweck der Fahrt","Besuchte Personen / Firmen / Behörden","km-Stand Fahrtbeginn","gesch. km","Wohn/Arbeit km","privat km","km-Stand Fahrtende","Name des Fahrers"];
-            const rows = gefFahrten.map(f=>{
-              const typ = f.kmTyp||"geschaeftlich";
-              const km  = safeFloat(f.km);
-              const von = aktiv.standort?.name||aktiv.standort?.adresse||"";
-              const nach= getZielAdr(f)||getZielName(f)||f.zielName||"";
-              const route=[von,nach].filter(Boolean).join(" – ")+(f.rueckfahrt?" (hin+zurück)":"");
-              return [
-                formatDatum(f.datum),
-                f.zeitStr||"",
-                route,
-                f.notiz||"",
-                getZielName(f)||"",
-                f.kmStart||"",
-                typ==="geschaeftlich"?km.toFixed(0):"",
-                typ==="wohnArbeit"?km.toFixed(0):"",
-                typ==="privat"?km.toFixed(0):"",
-                f.kmEnd||"",
-                aktiv.fahrer||"",
-              ].map(esc).join(";");
-            });
-            return [headers.map(esc).join(";"), ...rows].join("\r\n");
-          };
-
-          // Числовые и текстовые колонки — все фиксированные (горизонтальный скролл на малых экранах)
-          const gridCols = "100px 96px 220px 160px 140px 96px 64px 64px 64px 96px 1fr";
-          const MIN_W = 100+96+220+160+140+96+64+64+64+96+120+40;
-
-          // Gemeinsame Zell-Basis
-          const CELL_BASE = {
-            padding:"7px 8px",
-            fontSize:14,
-            fontFamily:SANS,
-            lineHeight:1.45,
-            wordBreak:"break-word",
-            whiteSpace:"normal",
-            boxSizing:"border-box",
-          };
-          const SEP  = {borderRight:`1px solid ${C.border}`};
-          const SEP2 = {borderRight:`2px solid ${C.borderHi}`};
-
-          // Kopfzeilen-Stil
-          const TH = {
-            ...CELL_BASE,
-            fontSize:14,
-            color:C.muted,
-            letterSpacing:1.5,
-            textTransform:"uppercase",
-            fontWeight:700,
-            lineHeight:1.35,
-            padding:"8px 8px",
-          };
-
-          const Row = ({children, style={}}) => (
-            <div style={{
-              display:"grid",
-              gridTemplateColumns:gridCols,
-              width:"100%",
-              boxSizing:"border-box",
-              ...style,
-            }}>{children}</div>
-          );
-
-          return (
-          <div>
-            {/* Print CSS */}
-            <style>{`
-@media print {
-  @page {
-    size: A4 landscape;
-    margin: 10mm 8mm 12mm 8mm;
-  }
-      html, body { height: auto !important; overflow: visible !important; margin: 0 !important; padding: 0 !important; }
-      body > body > *:not(.fahrt-print-area) { display: none !important; } 
-      html, 
-      style 
-      .fahrt-print-area { display: block !important; position: static !important; width: 100% !important; left: auto !important; top: auto !important; }
-  .fahrt-print-area {
-    display: block !important;
-  
-  
-    z-index: 99999 !important;
-    background: #fff !important;
-    overflow: visible !important;
-  }
-  .fahrt-print-area .print-topbar 
-  .fahrt-print-area .print-content {
-    padding: 0 !important;
-    max-width: 100% !important;
-  }
-  .fahrt-print-area table {
-    width: 100% !important;
-    border-collapse: collapse !important;
-    font-size: 8pt !important;
-    font-family: Arial, sans-serif !important;
-    page-break-inside: auto;
-  }
-  .fahrt-print-area table thead { display: table-header-group !important; }
-  .fahrt-print-area table tfoot { display: table-footer-group !important; }
-  .fahrt-print-area table tr { page-break-inside: avoid; }
-  .fahrt-print-area table th {
-    background: #f0f0f0 !important;
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-    border-bottom: 1.5pt solid #111 !important;
-    border-right: 0.5pt solid #bbb !important;
-    font-size: 7pt !important;
-    padding: 3pt 4pt !important;
-  }
-  .fahrt-print-area table th:last-child { border-right: none !important; }
-  .fahrt-print-area table td {
-    padding: 3pt 4pt !important;
-    border-bottom: 0.5pt solid #ddd !important;
-    border-right: 0.5pt solid #ddd !important;
-    font-size: 8pt !important;
-  }
-  .fahrt-print-area table td:last-child { border-right: none !important; }
-  .fahrt-print-area table tfoot td {
-    border-top: 1.5pt solid #111 !important;
-    border-right: 0.5pt solid #bbb !important;
-    font-weight: bold !important;
-    background: #f5e6e6 !important;
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-  }
-  .fahrt-print-area table tfoot td:last-child { border-right: none !important; }
-  .fahrt-print-area table { border: 1pt solid #bbb !important; }
-  .fahrt-print-area .print-header {
-    margin-bottom: 6pt !important;
-    padding-bottom: 4pt !important;
-    border-bottom: 1pt solid #ccc !important;
-  }
-  .fahrt-print-area .print-header h1 {
-    font-size: 13pt !important;
-    font-weight: 800 !important;
-    margin: 0 0 2pt 0 !important;
-    color: #111 !important;
-  }
-  .fahrt-print-area .print-header p {
-    font-size: 8pt !important;
-    color: #555 !important;
-    margin: 0 !important;
-  }
-  .fahrt-print-area .print-footer-note {
-    margin-top: 8pt !important;
-    font-size: 7pt !important;
-    color: #888 !important;
-    text-align: right !important;
-    border-top: 0.5pt solid #ddd !important;
-    padding-top: 4pt !important;
-  }
-  .fahrt-print-area .print-summary {
-    display: flex !important;
-    gap: 16pt !important;
-    margin-top: 6pt !important;
-    font-size: 8pt !important;
-  }
-  .fahrt-print-tr-alt { background: #f9f9f7 !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-}`}</style>
-
-            {/* Google Sheets Modal */}
-            {sheetsModal&&(
-              <BaseModal onClose={()=>setSheetsModal(false)} title="Google Sheets Export" icon="fileText" accent={C.sheetsGreen} maxWidth={480}>
-                {/* Steps */}
-                <div style={{display:"flex",flexDirection:"column",gap:12,marginBottom:24}}>
-                  {[
-                    {n:1, label:"Klicke auf", strong:"KOPIEREN", sub:"Daten werden in die Zwischenablage gelegt"},
-                    {n:2, label:"Klicke auf", strong:"SHEETS ÖFFNEN", sub:"Eine neue Tabelle öffnet sich"},
-                    {n:3, label:"Zelle A1 anklicken →", strong:"Einfügen (Strg+V)", sub:"Fertig — alle Spalten korrekt"},
-                  ].map(s=>(
-                    <div key={s.n} style={{display:"flex",gap:12,alignItems:"flex-start"}}>
-                      <div style={{
-                        width:24,height:24,borderRadius:"50%",background:C.sheetsGreen,
-                        color:"#fff",fontSize:14,fontWeight:800,fontFamily:SANS,
-                        display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1,
-                      }}>{s.n}</div>
-                      <div>
-                        <span style={{fontSize:14,color:C.textSoft,fontFamily:SANS}}>{s.label} </span>
-                        <span style={{fontSize:14,fontWeight:700,color:C.text,fontFamily:SANS}}>{s.strong}</span>
-                        <div style={{fontSize:14,color:C.muted,fontFamily:SANS,marginTop:2}}>{s.sub}</div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                {/* Buttons */}
-                <div style={{display:"flex",gap:10}}>
-                  <button onClick={()=>{
-                    const esc = v => String(v||"").replace(/\t/g," ");
-                    const hdr = ["Datum","Fahrzeit","Reiseroute und Ziel","Zweck","Besuchte Personen","km-Stand Beginn","gesch.","Wohn/Arb.","privat","km-Stand Ende","Fahrer"];
-                    const rows = gefFahrten.map(f=>{
-                      const typ=f.kmTyp||"geschaeftlich", km=safeFloat(f.km);
-                      const von=aktiv.standort?.name||"";
-                      const nach=getZielAdr(f)||getZielName(f)||f.zielName||"";
-                      const route=[von,nach].filter(Boolean).join(" – ")+(f.rueckfahrt?" (h+z)":"");
-                      return [formatDatum(f.datum),f.zeitStr||"",route,f.notiz||"",getZielName(f)||"",
-                        f.kmStart||"",typ==="geschaeftlich"?km.toFixed(0):"",typ==="wohnArbeit"?km.toFixed(0):"",
-                        typ==="privat"?km.toFixed(0):"",f.kmEnd||"",aktiv.fahrer||""].map(esc).join("\t");
-                    });
-                    navigator.clipboard?.writeText([hdr.join("\t"),...rows].join("\n"))
-                      .then(()=>{setSheetsCopied(true);sheetsCopiedTimer.current=setTimeout(()=>setSheetsCopied(false),3000);})
-                      .catch(()=>{});
-                  }} style={{
-                    flex:1,height:48,borderRadius:8,border:"none",
-                    background:sheetsCopied?C.sheetsGreen:C.text,
-                    color:"#fff",cursor:"pointer",fontSize:16,fontFamily:SANS,fontWeight:700,
-                    letterSpacing:0.5,display:"flex",alignItems:"center",justifyContent:"center",gap:8,
-                    transition:"background 0.2s",
-                  }}>
-                    <Ico name={sheetsCopied?"check":"copy"} size={15} color="#fff"/>
-                    {sheetsCopied?"Kopiert!":"1. Kopieren"}
-                  </button>
-                  <button onClick={()=>window.open("https://sheets.new","_blank")}
-                    style={{
-                      flex:1,height:48,borderRadius:8,border:"none",
-                      background:C.sheetsGreen,color:"#fff",cursor:"pointer",
-                      fontSize:16,fontFamily:SANS,fontWeight:700,letterSpacing:0.5,
-                      display:"flex",alignItems:"center",justifyContent:"center",gap:8,
-                      opacity:sheetsCopied?1:0.55,transition:"opacity 0.2s",
-                    }}>
-                    <Ico name="arrowRight" size={15} color="#fff"/>
-                    2. Sheets öffnen
-                  </button>
-                </div>
-              </BaseModal>
-            )}
-
-            {/* CSV-Export Modal */}
-            {csvModal&&(
-              <BaseModal onClose={()=>setCsvModal(false)} title="CSV Exportieren" icon="download" accent={acc} maxWidth={540}>
-                <div style={{
-                  display:"flex",alignItems:"center",gap:8,
-                  padding:"8px 12px",borderRadius:8,background:C.surfaceAlt,
-                  border:`1px solid ${C.border}`,marginBottom:16,
-                }}>
-                  <Ico name="fileText" size={13} color={C.muted}/>
-                  <span style={{fontSize:14,color:C.muted,fontFamily:SANS}}>
-                    <strong style={{color:C.text}}>{gefFahrten.length}</strong> Fahrten · Separator: Semikolon · UTF-8
-                  </span>
-                </div>
-                <textarea readOnly value={buildCsv()}
-                  style={{
-                    width:"100%",height:150,fontFamily:"'Courier New',monospace",fontSize:14,
-                    background:C.bg,border:`1px solid ${C.border}`,borderRadius:8,
-                    padding:"10px 12px",resize:"none",boxSizing:"border-box",
-                    color:C.textSoft,lineHeight:1.6,outline:"none",
-                  }}
-                  onFocus={e=>e.target.select()}
-                />
-                <div style={{display:"flex",gap:10,marginTop:16}}>
-                  <button onClick={()=>{
-                    navigator.clipboard?.writeText(buildCsv())
-                      .then(()=>{setCopied(true);copiedTimer.current=setTimeout(()=>setCopied(false),2000);})
-                      .catch(()=>{});
-                  }} style={{
-                    flex:1,height:48,borderRadius:8,
-                    background:copied?C.savedGreen:acc,border:"none",
-                    color:"#fff",cursor:"pointer",fontSize:16,fontFamily:SANS,fontWeight:700,
-                    letterSpacing:0.5,display:"flex",alignItems:"center",justifyContent:"center",gap:8,
-                    transition:"background 0.2s",
-                  }}>
-                    <Ico name={copied?"check":"copy"} size={15} color="#fff"/>
-                    {copied?"Kopiert!":"Kopieren"}
-                  </button>
-                  <button onClick={()=>setCsvModal(false)}
-                    onMouseEnter={e=>{e.currentTarget.style.background=C.surfaceAlt;e.currentTarget.style.borderColor=C.borderHi;}}
-                    onMouseLeave={e=>{e.currentTarget.style.background="transparent";e.currentTarget.style.borderColor=C.border;}}
-                    style={{
-                      height:48,padding:"0 24px",borderRadius:8,
-                      background:"transparent",border:`1.5px solid ${C.border}`,
-                      color:C.textSoft,cursor:"pointer",fontSize:16,fontFamily:SANS,fontWeight:700,
-                      transition:"background 0.15s, border-color 0.15s",
-                    }}>
-                    Schließen
-                  </button>
-                </div>
-              </BaseModal>
-            )}
-
-            {/* Toolbar */}
-            <div style={{display:"flex",justifyContent:"flex-end",gap:8,marginBottom:14}}>
-              <button onClick={()=>{setCopied(false);setCsvModal(true);}}
-                style={{height:36,border:`1px solid ${C.border}`,borderRadius:8,background:"transparent",color:C.text,
-                  fontSize:14,fontFamily:SANS,fontWeight:700,letterSpacing:2,
-                  textTransform:"uppercase",padding:"0 14px",cursor:"pointer",display:"flex",alignItems:"center",gap:6}}>
-                <Ico name="copy" size={13} color={C.muted}/> CSV
-              </button>
-              <button onClick={()=>{setSheetsCopied(false);setSheetsModal(true);}}
-                style={{height:36,border:`1px solid ${C.sheetsGreen}`,borderRadius:8,background:"transparent",color:C.sheetsGreen,
-                  fontSize:14,fontFamily:SANS,fontWeight:700,letterSpacing:2,
-                  textTransform:"uppercase",padding:"0 14px",cursor:"pointer",display:"flex",alignItems:"center",gap:6}}>
-                <Ico name="fileText" size={15} color={C.sheetsGreen}/> SHEETS
-              </button>
-              <button onClick={()=>{document.title=`Fahrtenbuch_${(aktiv.kennzeichen||"").replace(/\s+/g,"_")}_${aktiv.marke||""}_${aktiv.modell||""}`.replace(/_+$/,"");setPrintPreview(true);}}
-                style={{height:36,border:`1px solid ${acc}`,borderRadius:8,background:acc,color:"#fff",
-                  fontSize:14,fontFamily:SANS,fontWeight:700,letterSpacing:2,
-                  textTransform:"uppercase",padding:"0 14px",cursor:"pointer",display:"flex",alignItems:"center",gap:6}}>
-                <Ico name="download" size={15} color="#fff"/> PDF
-              </button>
-
-            {/* Print Preview Modal */}
-            {printPreview&&(
-              <div className="fahrt-print-area" style={{position:"fixed",inset:0,background:"#F8F8F6",zIndex:600,overflowY:"auto"}}>
-                {/* Top bar — hidden when printing */}
-                <div className="print-topbar" style={{
-                  position:"sticky",top:0,
-                  background:C.surface,
-                  borderBottom:`1px solid ${C.border}`,
-                  height:58,zIndex:10,
-                  boxShadow:"0 1px 8px rgba(0,0,0,0.08)",
-                }}>
-                  <div style={{maxWidth:1200,margin:"0 auto",padding:"0 32px",height:"100%",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-                  <div style={{display:"flex",alignItems:"center",gap:12}}>
-                    <div style={{
-                      width:32,height:32,borderRadius:8,background:`${acc}18`,
-                      display:"flex",alignItems:"center",justifyContent:"center",
-                    }}>
-                      <Ico name="fileText" size={15} color={acc}/>
-                    </div>
-                    <div>
-                      <div style={{fontSize:13,fontWeight:800,color:C.text,fontFamily:SANS,letterSpacing:-0.2}}>
-                        Druckvorschau / PDF-Export
-                      </div>
-                      <div style={{fontSize:14,color:C.muted,fontFamily:SANS}}>
-                        {gefFahrten.length} Fahrten · A4 Querformat
-                      </div>
-                    </div>
-                  </div>
-                  <div style={{display:"flex",gap:8,alignItems:"center"}}>
-                    {/* PDF PRINT BUTTON */}
-                    <button
-                      
-                      onMouseEnter={e=>{e.currentTarget.style.background=`${acc}dd`;}}
-                      onMouseLeave={e=>{e.currentTarget.style.background=acc;}}
-                      style={{
-                        height:38,padding:"0 24px",borderRadius:8,
-                        background:acc,border:`1.5px solid ${acc}`,
-                        color:"#fff",cursor:"pointer",fontSize:14,fontFamily:SANS,
-                        fontWeight:700,display:"flex",alignItems:"center",gap:8,
-                        transition:"background 0.15s",
-                        boxShadow:`0 2px 8px ${acc}44`,
-                      }}>
-                      <Ico name="download" size={15} color="#fff"/>
-                      Drucken
-                    </button>
-                    <button onClick={()=>setPrintPreview(false)}
-                      onMouseEnter={e=>{e.currentTarget.style.background=C.surfaceAlt;e.currentTarget.style.borderColor=C.borderHi;}}
-                      onMouseLeave={e=>{e.currentTarget.style.background="transparent";e.currentTarget.style.borderColor=C.border;}}
-                      style={{
-                        height:38,padding:"0 20px",borderRadius:8,
-                        background:"transparent",border:`1.5px solid ${C.border}`,
-                        color:C.textSoft,cursor:"pointer",fontSize:14,fontFamily:SANS,
-                        fontWeight:700,display:"flex",alignItems:"center",gap:6,
-                        transition:"background 0.15s, border-color 0.15s",
-                      }}>
-                      <Ico name="x" size={13} color={C.muted}/>
-                      Schließen
-                    </button>
-                  </div>
-                  </div>{/* /maxWidth wrapper */}
-                </div>
-                {/* Content — this is what gets printed */}
-                <div className="print-content" style={{padding:"24px 20px",background:"#fff",fontFamily:SANS,maxWidth:1200,margin:"0 auto"}}>
-                  <div className="print-header" style={{marginBottom:16,paddingBottom:12,borderBottom:`1px solid ${C.border}`}}>
-                    <h1 style={{fontSize:16,fontWeight:800,color:C.text,fontFamily:SANS,letterSpacing:-0.3,marginBottom:4,margin:"0 0 4px 0"}}>
-                      Fahrtenbuch – {aktiv.kennzeichen||""} {aktiv.marke||""} {aktiv.modell||""}
-                    </h1>
-                    <p style={{fontSize:14,color:C.muted,fontFamily:SANS,margin:0}}>
-                      Fahrer: {aktiv.fahrer||"—"} · Standort: {aktiv.standort?.name||"—"} · Erstellt: {new Date().toLocaleDateString("de-DE")} · {gefFahrten.length} Einträge
-                    </p>
-                                  {/* Fahrzeugdaten */}
-              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"4px 24px",marginTop:8,fontSize:13,color:C.muted,fontFamily:SANS}}>
-                <div><strong>Halter:</strong> {aktiv.halterName||"\u2014"}{aktiv.halterAnschrift?`, ${aktiv.halterAnschrift}`:""}</div>
-                <div><strong>Fahrgestell-Nr. (VIN):</strong> {aktiv.fahrgestellNr||"\u2014"}</div>
-                <div><strong>KFZ-Brief Nr.:</strong> {aktiv.kfzBriefNr||"\u2014"}</div>
-                <div><strong>Kraftstoff:</strong> {aktiv.kraftstoff||"\u2014"}</div>
-              </div>
-              {/* Zeitraum + KM-Stand */}
-              {gefFahrten.length>0&&(
-                <div style={{display:"flex",gap:24,marginTop:8,fontSize:13,color:C.muted,fontFamily:SANS,flexWrap:"wrap"}}>
-                  <div><strong>Zeitraum:</strong> {formatDatum(gefFahrten[gefFahrten.length-1]?.datum)} \u2013 {formatDatum(gefFahrten[0]?.datum)}</div>
-                  <div><strong>KM-Stand Anfang:</strong> {gefFahrten[gefFahrten.length-1]?.kmStart||aktiv.kmStandInitial||"\u2014"}</div>
-                  <div><strong>KM-Stand Ende:</strong> {gefFahrten[0]?.kmEnd||"\u2014"}</div>
-                  <div><strong>Gefahrene km:</strong> {(kmGesch+kmWohn+kmPrivat).toFixed(1)}</div>
-                </div>
-              )}
-                  </div>
-                  <div style={{overflowX:"auto"}}>
-                    <table style={{width:"100%",borderCollapse:"collapse",fontSize:14,fontFamily:SANS,border:"1px solid #bbb"}}>
-                      <thead>
-                        <tr style={{borderBottom:"2px solid #111",background:"#f5f5f3"}}>
-                          {["Datum","Fahrzeit","Reiseroute und Ziel","Zweck","Besuchte Personen / Firmen / Behörden","Beginn km","gesch.","W/A","priv.","Ende km","Fahrer"].map((h,i)=>(
-                            <th key={h} style={{padding:"5px 6px",fontSize:8,textTransform:"uppercase",letterSpacing:1,
-                              color:"#555",textAlign:i>=5&&i<=9?"right":"left",whiteSpace:"nowrap",fontWeight:700,
-                              borderRight:i<10?"1px solid #ccc":"none"}}>
-                              {h}
-                            </th>
-                          ))}
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {gefFahrten.map((f,idx)=>{
-                          const typ=f.kmTyp||"geschaeftlich", km=safeFloat(f.km);
-                          const von=aktiv.standort?.name||"";
-                          const nach=getZielAdr(f)||getZielName(f)||f.zielName||"";
-                          const route=[von,nach].filter(Boolean).join(" → ")+(f.rueckfahrt?" (H+Z)":"");
-                          const cell=(v,align="left",bold=false,last=false)=>(
-                            <td style={{padding:"5px 6px",borderBottom:"1px solid #e8e8e8",
-                              borderRight:last?"none":"1px solid #e0e0e0",textAlign:align,
-                              fontWeight:bold?700:400,color:"#111",verticalAlign:"top"}}>{v||"—"}</td>
-                          );
-                          return (
-                            <tr key={f.id} className={idx%2!==0?"fahrt-print-tr-alt":""} style={{background:idx%2===0?"#fff":"#f9f9f7"}}>
-                              {cell(formatDatum(f.datum))}
-                              {cell(f.zeitStr||"")}
-                              {cell(route)}
-                              {cell(f.notiz||"")}
-                              {cell(getZielName(f)||"")}
-                              {cell(f.kmStart?Number(f.kmStart).toLocaleString("de-DE"):"","right")}
-                              {cell(typ==="geschaeftlich"?km.toFixed(0):"","right",true)}
-                              {cell(typ==="wohnArbeit"?km.toFixed(0):"","right")}
-                              {cell(typ==="privat"?km.toFixed(0):"","right")}
-                              {cell(f.kmEnd?Number(f.kmEnd).toLocaleString("de-DE"):"","right")}
-                              {cell(aktiv.fahrer||"","left",false,true)}
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                      <tfoot>
-                        <tr style={{borderTop:"2px solid #111",background:C.redLight}}>
-                          <td colSpan={6} style={{padding:"6px",fontSize:14,textAlign:"right",fontWeight:700,color:C.red}}>SUMME:</td>
-                          <td style={{padding:"6px",textAlign:"right",fontWeight:700,color:C.red}}>{kmGesch.toFixed(0)}</td>
-                          <td style={{padding:"6px",textAlign:"right",fontWeight:700,color:"#1A4A8A"}}>{kmWohn.toFixed(0)}</td>
-                          <td style={{padding:"6px",textAlign:"right",fontWeight:700,color:"#666"}}>{kmPrivat.toFixed(0)}</td>
-                          <td colSpan={2}></td>
-                        </tr>
-                      </tfoot>
-                    </table>
-                  </div>
-                  {/* Summary row */}
-                  <div className="print-summary" style={{display:"flex",gap:24,marginTop:12,flexWrap:"wrap"}}>
-                    {[
-                      {label:"Geschäftlich",km:kmGesch,color:C.red},
-                      {label:"Wohnung/Arbeit",km:kmWohn,color:"#1A4A8A"},
-                      {label:"Privat",km:kmPrivat,color:"#666"},
-                      {label:"Gesamt",km:kmGesch+kmWohn+kmPrivat,color:"#111"},
-                    ].map(s=>(
-                      <div key={s.label} style={{display:"flex",alignItems:"center",gap:8,fontFamily:SANS}}>
-                        <span style={{fontSize:13,color:C.muted}}>{s.label}:</span>
-                        <span style={{fontSize:14,fontWeight:800,color:s.color}}>{s.km.toFixed(1)} km</span>
-                      </div>
-                    ))}
-                  </div>
-                  {/* Footer note for print */}
-                  <div className="print-footer-note" style={{marginTop:14,fontSize:13,color:C.muted,fontFamily:SANS,
-                    textAlign:"right",borderTop:`1px solid ${C.border}`,paddingTop:8}}>
-                    Fahrtenbuch erstellt am {new Date().toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit",year:"numeric"})}
-                    {" "}· Fahrer: {aktiv.fahrer||"—"}
-                    {" "}· Kfz: {aktiv.kennzeichen||""} {aktiv.marke||""} {aktiv.modell||""}
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Tabelle */}
-            <div style={{background:C.surface,boxShadow:C.shadow,overflowX:"auto",border:`1px solid ${C.borderHi}`,borderRight:`2px solid ${C.borderHi}`}}>
-              <div style={{width:"100%", minWidth:MIN_W+"px"}}>
-
-              {/* Kopfzeile */}
-              <Row style={{borderBottom:`2px solid ${C.borderHi}`,borderLeft:`2px solid ${acc}`,background:C.surfaceAlt}}>
-                <div style={{...TH,...SEP}}>Datum</div>
-                <div style={{...TH,...SEP}}>Fahrzeit<br/>von - bis</div>
-                <div style={{...TH,...SEP}}>Reiseroute und Ziel</div>
-                <div style={{...TH,...SEP}}>Zweck der Fahrt</div>
-                <div style={{...TH,...SEP2}}>Besuchte Personen,<br/>Firmen, Behörden</div>
-                <div style={{...TH,...SEP,textAlign:"right"}}>km-Stand<br/>Fahrtbeginn</div>
-                <div style={{...TH,...SEP,textAlign:"right"}}>gesch.</div>
-                <div style={{...TH,...SEP,textAlign:"right"}}>Wohn/<br/>Arbeit</div>
-                <div style={{...TH,...SEP2,textAlign:"right"}}>privat</div>
-                <div style={{...TH,...SEP,textAlign:"right"}}>km-Stand<br/>Fahrtende</div>
-                <div style={{...TH}}>Name des<br/>Fahrers</div>
-              </Row>
-
-              {/* Leer */}
-              {gefFahrten.length===0&&(
-                <div style={{padding:"44px 0",textAlign:"center",color:C.muted,fontSize:13,
-                  fontFamily:SANS}}>
-                  Keine Fahrten im gewählten Zeitraum
-                </div>
-              )}
-
-              {/* Datenzeilen */}
-              {gefFahrten.map((f,i)=>{
-                const ak  = katAccent[f.kategorie]||C.steel;
-                const typ = f.kmTyp||"geschaeftlich";
-                const km  = safeFloat(f.km);
-                const von = aktiv.standort?.name||aktiv.standort?.adresse||"";
-                const nach= getZielAdr(f)||getZielName(f)||f.zielName||"";
-                const route=[von,nach].filter(Boolean).join(" – ")+(f.rueckfahrt?", hin+zurück":"");
-
-                const rowBg = i%2===0 ? C.surface : C.surfaceAlt;
-                const TD = {
-                  ...CELL_BASE,
-                };
-                const NUM = {
-                  ...TD,
-                  fontWeight:700,
-                  textAlign:"right",
-                  fontVariantNumeric:"tabular-nums",
-                };
-
-                return (
-                  <Row key={f.id} style={{
-                    borderBottom:`1px solid ${C.border}`,
-                    borderLeft:`2px solid ${acc}`,
-                    background: rowBg,
-                  }}>
-                    {/* Datum */}
-                    <div style={{...TD,...SEP,color:C.text,whiteSpace:"nowrap"}}>
-                      {formatDatum(f.datum)}
-                    </div>
-                    {/* Fahrzeit */}
-                    <div style={{...TD,...SEP,color:C.text}}>
-                      {f.zeitStr||"—"}
-                    </div>
-                    {/* Reiseroute */}
-                    <div style={{...TD,...SEP,color:C.text,fontSize:14}}>
-                      {route||"—"}
-                    </div>
-                    {/* Zweck */}
-                    <div style={{...TD,...SEP,color:C.textSoft,fontSize:14}}>
-                      {f.notiz||"—"}
-                    </div>
-                    {/* Besuchte Personen */}
-                    <div style={{...TD,...SEP2,fontWeight:700,color:C.text,fontSize:14}}>
-                      {getZielName(f)||"—"}
-                    </div>
-                    {/* km-Stand Beginn */}
-                    <div style={{...NUM,...SEP,color:C.muted}}>
-                      {f.kmStart?Number(f.kmStart).toLocaleString("de-DE"):"—"}
-                    </div>
-                    {/* gesch. */}
-                    <div style={{...NUM,...SEP,color:ak}}>
-                      {typ==="geschaeftlich"?km.toFixed(0):""}
-                    </div>
-                    {/* W/A */}
-                    <div style={{...NUM,...SEP,color:C.gold}}>
-                      {typ==="wohnArbeit"?km.toFixed(0):""}
-                    </div>
-                    {/* priv. */}
-                    <div style={{...NUM,...SEP2,color:C.muted}}>
-                      {typ==="privat"?km.toFixed(0):""}
-                    </div>
-                    {/* km-Stand Ende */}
-                    <div style={{...NUM,...SEP,color:C.muted}}>
-                      {f.kmEnd?Number(f.kmEnd).toLocaleString("de-DE"):"—"}
-                    </div>
-                    {/* Fahrer */}
-                    <div style={{...TD,color:C.muted,fontSize:13}}>
-                      {aktiv.fahrer||"—"}
-                    </div>
-                  </Row>
-                );
-              })}
-
-
-
-            </div>
-          </div>
-        </div>
-          );
-        })()}
+        {/* ── Bericht / Fahrtenbuch-Ausdruck ── */}
+        {tab==="bericht"&&(
+          <BerichtTab
+            gefFahrten={gefFahrten} aktiv={aktiv} acc={acc} C={C} SANS={SANS}
+            safeFloat={safeFloat} formatDatum={formatDatum}
+            getZielName={getZielName} getZielAdr={getZielAdr}
+            fMonat={fMonat} setFMonat={setFMonat} fKat={fKat} setFKat={setFKat}
+            fQ={fQ} setFQ={setFQ} OPT_FAHRT_KAT_F={OPT_FAHRT_KAT_F} katAccent={katAccent}
+            csvModal={csvModal} setCsvModal={setCsvModal}
+            sheetsModal={sheetsModal} setSheetsModal={setSheetsModal}
+            printPreview={printPreview} setPrintPreview={setPrintPreview}
+            copied={copied} setCopied={setCopied}
+            sheetsCopied={sheetsCopied} setSheetsCopied={setSheetsCopied}
+            copiedTimer={copiedTimer} sheetsCopiedTimer={sheetsCopiedTimer}
+          />
+        )}
 
                 {/* ── Einstellungen ── */}
         {tab==="einstellungen"&&(
@@ -4384,7 +4865,7 @@ REGELN:
 
             {/* FAHRZEUGE */}
             <SettingsBlock accent={acc}>
-              <SettingsLabel icon="car" text="FAHRZEUGE / FUHRPARK" accent={C.muted}/>
+              <SettingsLabel icon="car2" text="FAHRZEUGE / FUHRPARK" accent={C.muted}/>
               <div style={{marginBottom:16,marginLeft:-28,marginRight:-28}}>
                 {(state.fahrzeuge||[]).map(fz=>{
                   const isActive=fz.id===state.aktivId, isEditing=editFzId===fz.id;
@@ -4409,12 +4890,9 @@ REGELN:
                   );
                 })}
               </div>
-              {editFzId&&(()=>{
-                const fz=state.fahrzeuge.find(f=>f.id===editFzId);
-                if(!fz) return null;
-                const fzAcc=fz.farbe||C.steel;
-                return <FzEditForm fz={fz} accent={fzAcc} onSave={f=>saveFzInline(fz.id,f)} onCancel={()=>setEditFzId(null)}/>;
-              })()}
+              {editFzId&&state.fahrzeuge.find(f=>f.id===editFzId)&&(
+                <FzEditForm fz={state.fahrzeuge.find(f=>f.id===editFzId)} accent={state.fahrzeuge.find(f=>f.id===editFzId)?.farbe||C.steel} onSave={f=>saveFzInline(editFzId,f)} onCancel={()=>setEditFzId(null)}/>
+              )}
               {!editFzId&&(addingFz?(
                 <FzEditForm fz={makeFahrzeug(state.fahrzeuge.length)} accent={C.red} onSave={addFzInline} onCancel={()=>setAddingFz(false)}/>
               ):(
@@ -4550,37 +5028,37 @@ REGELN:
             }}/>
           </div>
 
-          {/* Quick-Actions — SVG icons, grid 3×2 */}
+          {/* Quick-Actions — text only */}
           <div style={{
-            display:"grid", gridTemplateColumns:"1fr 1fr 1fr",
+            display:"flex", flexWrap:"wrap",
             gap:5, padding:"10px 12px",
             borderBottom:"0.5px solid rgba(0,0,0,0.10)",
             flexShrink:0,
           }}>
             {[
-              {label:"Tanken",  cmd:"Ich habe heute getankt. Bitte Tankstopp erfassen.",   ico:<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M3 22V6a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v16"/><path d="M14 10h2a2 2 0 0 1 2 2v3a1 1 0 0 0 2 0v-6l-3-3"/><line x1="3" y1="22" x2="14" y2="22"/><line x1="7" y1="10" x2="10" y2="10"/></svg>},
-              {label:"Fahrt",   cmd:"Ich war heute bei einem Kunden. Bitte Fahrt erfassen.", ico:<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M5 17H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1l2-4h12l2 4h1a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/><line x1="9" y1="17" x2="15" y2="17"/></svg>},
-              {label:"Service", cmd:"Ich war heute in der Werkstatt. Bitte Service eintragen.", ico:<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>},
-              {label:"Wäsche",  cmd:"Ich habe das Auto waschen lassen. Bitte eintragen.",    ico:<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10"/><path d="M12 6v6l4 2"/><path d="M17 3l2 2-2 2"/><path d="M21 3l-2 2 2 2"/></svg>},
-              {label:"Prüfen",  cmd:"Bitte prüfe das Fahrtenbuch auf Lücken und Fehler.",    ico:<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>},
-              {label:"Partner", cmd:"Bitte neuen Geschäftspartner anlegen.",                  ico:<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="16" y1="11" x2="22" y2="11"/></svg>},
-            ].map(({label,cmd,ico})=>(
+              {label:"Tanken",  cmd:"Ich habe heute getankt. Bitte Tankstopp erfassen."},
+              {label:"Fahrt",   cmd:"Ich war heute bei einem Kunden. Bitte Fahrt erfassen."},
+              {label:"Service", cmd:"Ich war heute in der Werkstatt. Bitte Service eintragen."},
+              {label:"Parken",  cmd:"Ich habe heute geparkt. Bitte Parkvorgang erfassen."},
+              {label:"Wäsche",  cmd:"Ich habe das Auto waschen lassen. Bitte eintragen."},
+              {label:"Prüfen",  cmd:"Bitte prüfe das Fahrtenbuch auf Lücken und Fehler."},
+              {label:"Strafe",  cmd:"Ich habe einen Strafzettel erhalten. Bitte erfassen."},
+              {label:"Partner", cmd:"Bitte neuen Geschäftspartner anlegen."},
+            ].map(({label,cmd})=>(
               <button key={label}
                 onClick={()=>setChatInput(cmd)}
                 style={{
-                  fontSize:13, padding:"7px 4px", textAlign:"center",
+                  fontSize:12, padding:"6px 12px", textAlign:"center",
                   background:C.surface, border:`1px solid ${C.border}`,
                   cursor:"pointer", color:C.text, letterSpacing:0.3,
                   fontFamily:SANS, lineHeight:1.4,
-                  display:"flex", flexDirection:"column", alignItems:"center", gap:4,
                   transition:"all 0.15s",
-                  boxShadow:"0 2px 6px rgba(0,0,0,0.09), 0 1px 2px rgba(0,0,0,0.06)",
-                  borderRadius:8,
+                  boxShadow:"0 1px 3px rgba(0,0,0,0.06)",
+                  borderRadius:6,
                 }}
-                onMouseEnter={e=>{e.currentTarget.style.background=C.euBluePale;e.currentTarget.style.borderColor=C.euBlue;e.currentTarget.style.color=C.euBlue;e.currentTarget.style.boxShadow="0 4px 10px #00339926";}}
-                onMouseLeave={e=>{e.currentTarget.style.background=C.surface;e.currentTarget.style.borderColor=C.border;e.currentTarget.style.color=C.text;e.currentTarget.style.boxShadow="0 2px 6px rgba(0,0,0,0.09), 0 1px 2px rgba(0,0,0,0.06)";}}
+                onMouseEnter={e=>{e.currentTarget.style.background=C.euBluePale;e.currentTarget.style.borderColor=C.euBlue;e.currentTarget.style.color=C.euBlue;e.currentTarget.style.boxShadow=`0 4px 10px ${C.euBlue}26`;}}
+                onMouseLeave={e=>{e.currentTarget.style.background=C.surface;e.currentTarget.style.borderColor=C.border;e.currentTarget.style.color=C.text;e.currentTarget.style.boxShadow="0 1px 3px rgba(0,0,0,0.06)";}}
               >
-                {ico}
                 {label}
               </button>
             ))}
@@ -4627,7 +5105,6 @@ REGELN:
                     fontSize:14, lineHeight:1.65,
                     fontFamily:SANS,
                     whiteSpace:"pre-wrap", wordBreak:"break-word",
-                    border: isUser ? "1px solid #e0e0e0" : "1px solid #dde3f0",
                     boxShadow: isUser
                       ? "0 1px 4px rgba(0,0,0,0.08)"
                       : "0 2px 10px rgba(0,51,153,0.10), 0 1px 4px rgba(0,0,0,0.07)",
@@ -4842,7 +5319,7 @@ REGELN:
                           }}>{item.ico}</div>
                           <div>
                             <div style={{fontSize:15, fontWeight:700, color:"#111", letterSpacing:0.3}}>{item.label}</div>
-                            <div style={{fontSize:13, color:C.muted, marginTop:1, letterSpacing:0.5}}>{item.hint}</div>
+                            <div style={{fontSize:13, color:"#999", marginTop:1, letterSpacing:0.5}}>{item.hint}</div>
                           </div>
                         </button>
                       ))}
