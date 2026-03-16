@@ -1,4 +1,4 @@
-// FahrtenbuchLight v43 - 1773159293
+// FahrtenbuchLight v44 - 1773159294
 import React, { useState, useMemo, useEffect, useRef } from "react";
 
 
@@ -3870,9 +3870,9 @@ REGELN:
     margin: 10mm 8mm 12mm 8mm;
   }
       html, body { height: auto !important; overflow: visible !important; margin: 0 !important; padding: 0 !important; }
-      body *:not(:has(.fahrt-print-area)):not(.fahrt-print-area):not(.fahrt-print-area *):not(style):not(script):not(link) { display: none !important; }
-      html, body, #root, #root > *:not(style) { display: block !important; }
-      style { display: none !important; }
+      body > body > *:not(.fahrt-print-area) { display: none !important; } 
+      html, 
+      style 
       .fahrt-print-area { display: block !important; position: static !important; width: 100% !important; left: auto !important; top: auto !important; }
   .fahrt-print-area {
     display: block !important;
@@ -3882,7 +3882,7 @@ REGELN:
     background: #fff !important;
     overflow: visible !important;
   }
-  .fahrt-print-area .print-topbar { display: none !important; }
+  .fahrt-print-area .print-topbar 
   .fahrt-print-area .print-content {
     padding: 0 !important;
     max-width: 100% !important;
