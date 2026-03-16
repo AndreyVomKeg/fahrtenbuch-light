@@ -1,4 +1,4 @@
-// FahrtenbuchLight v45 - 1773159294
+// FahrtenbuchLight v46 - 1773159294
 import React, { useState, useMemo, useEffect, useRef } from "react";
 
 
@@ -4095,7 +4095,7 @@ REGELN:
                   textTransform:"uppercase",padding:"0 14px",cursor:"pointer",display:"flex",alignItems:"center",gap:6}}>
                 <Ico name="download" size={15} color="#fff"/> PDF
               </button>
-onClick={()=>{if(screen.orientation?.lock){screen.orientation.lock('landscape').catch(()=>{});} window.print();}}
+
             {/* Print Preview Modal */}
             {printPreview&&(
               <div className="fahrt-print-area" style={{position:"fixed",inset:0,background:"#F8F8F6",zIndex:600,overflowY:"auto"}}>
@@ -4127,7 +4127,7 @@ onClick={()=>{if(screen.orientation?.lock){screen.orientation.lock('landscape').
                   <div style={{display:"flex",gap:8,alignItems:"center"}}>
                     {/* PDF PRINT BUTTON */}
                     <button
-                      onClick={()=>{if(screen.orientation?.lock){screen.orientation.lock('landscape').catch(()=>{});} window.print();}}
+                      
                       onMouseEnter={e=>{e.currentTarget.style.background=`${acc}dd`;}}
                       onMouseLeave={e=>{e.currentTarget.style.background=acc;}}
                       style={{
