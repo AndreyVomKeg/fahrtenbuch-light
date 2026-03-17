@@ -5036,19 +5036,19 @@ REGELN:
             flexShrink:0,
           }}>
             {[
-              {label:"Tanken",  cmd:"Ich habe heute getankt. Bitte Tankstopp erfassen."},
-              {label:"Fahrt",   cmd:"Ich war heute bei einem Kunden. Bitte Fahrt erfassen."},
-              {label:"Service", cmd:"Ich war heute in der Werkstatt. Bitte Service eintragen."},
-              {label:"Parken",  cmd:"Ich habe heute geparkt. Bitte Parkvorgang erfassen."},
-              {label:"Wäsche",  cmd:"Ich habe das Auto waschen lassen. Bitte eintragen."},
-              {label:"Prüfen",  cmd:"Bitte prüfe das Fahrtenbuch auf Lücken und Fehler."},
-              {label:"Strafe",  cmd:"Ich habe einen Strafzettel erhalten. Bitte erfassen."},
-              {label:"Partner", cmd:"Bitte neuen Geschäftspartner anlegen."},
-            ].map(({label,cmd})=>(
+              {label:"Tanken", icon:"droplet", cmd:"Ich habe heute getankt. Bitte Tankstopp erfassen."},
+              {label:"Fahrt", icon:"road", cmd:"Ich war heute bei einem Kunden. Bitte Fahrt erfassen."},
+              {label:"Service", icon:"tool", cmd:"Ich war heute in der Werkstatt. Bitte Service eintragen."},
+              {label:"Parken", icon:"park", cmd:"Ich habe heute geparkt. Bitte Parkvorgang erfassen."},
+              {label:"Wäsche", icon:"wasch", cmd:"Ich habe das Auto waschen lassen. Bitte eintragen."},
+              {label:"Prüfen", icon:"check", cmd:"Bitte prüfe das Fahrtenbuch auf Lücken und Fehler."},
+              {label:"Strafe", icon:"alert", cmd:"Ich habe einen Strafzettel erhalten. Bitte erfassen."},
+              {label:"Partner", icon:"users", cmd:"Bitte neuen Geschäftspartner anlegen."},
+            ].map(({label,icon,cmd})=>(
               <button key={label}
                 onClick={()=>setChatInput(cmd)}
                 style={{
-                  fontSize:12, padding:"6px 12px", textAlign:"center",
+                  fontSize:12, padding:"6px 12px", textAlign:"center" display:"flex", alignItems:"center", gap:4,,
                   background:C.surface, border:`1px solid ${C.border}`,
                   cursor:"pointer", color:C.text, letterSpacing:0.3,
                   fontFamily:SANS, lineHeight:1.4,
@@ -5059,7 +5059,7 @@ REGELN:
                 onMouseEnter={e=>{e.currentTarget.style.background=C.euBluePale;e.currentTarget.style.borderColor=C.euBlue;e.currentTarget.style.color=C.euBlue;e.currentTarget.style.boxShadow=`0 4px 10px ${C.euBlue}26`;}}
                 onMouseLeave={e=>{e.currentTarget.style.background=C.surface;e.currentTarget.style.borderColor=C.border;e.currentTarget.style.color=C.text;e.currentTarget.style.boxShadow="0 1px 3px rgba(0,0,0,0.06)";}}
               >
-                {label}
+              {icon&&<Ico name={icon} size={12}/>}{label}
               </button>
             ))}
           </div>
