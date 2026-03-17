@@ -5048,7 +5048,7 @@ REGELN:
               <button key={label}
                 onClick={()=>setChatInput(cmd)}
                 style={{
-                  fontSize:12, padding:"6px 12px", textAlign:"center" display:"flex", alignItems:"center", gap:4,,
+                  fontSize:12, padding:"6px 12px", textAlign:"center", display:"flex", alignItems:"center", gap:4,
                   background:C.surface, border:`1px solid ${C.border}`,
                   cursor:"pointer", color:C.text, letterSpacing:0.3,
                   fontFamily:SANS, lineHeight:1.4,
