@@ -3755,7 +3755,8 @@ REGELN:
     size: A4 landscape;
     margin: 10mm 8mm 12mm 8mm;
   }
-  body * { visibility: hidden !important; } .fahrt-print-area, .fahrt-print-area * { visibility: visible !important; }
+                body * { visibility: hidden !important; }
+              .fahrt-print-area, .fahrt-print-area * { visibility: visible !important; }
   .fahrt-print-area {
     display: block !important;
     position: static !important;
