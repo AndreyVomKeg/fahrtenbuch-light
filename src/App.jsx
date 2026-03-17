@@ -1,4 +1,4 @@
-// FahrtenbuchLight v43
+// FahrtenbuchLight v44
 import React, { useState, useMemo, useEffect, useRef } from "react";
 
 
@@ -3758,7 +3758,7 @@ REGELN:
   body * { visibility: hidden !important; } .fahrt-print-area, .fahrt-print-area * { visibility: visible !important; }
   .fahrt-print-area {
     display: block !important;
-    position: fixed !important;
+    position: static !important;
     top: 0 !important; left: 0 !important;
     width: 100% !important; height: auto !important;
     z-index: 99999 !important;
