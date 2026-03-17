@@ -3755,7 +3755,10 @@ REGELN:
     size: A4 landscape;
     margin: 10mm 8mm 12mm 8mm;
   }
-    body > *:not(.fahrt-print-area) { display: none !important; }
+      body > * { display: none !important; }
+      body > #root { display: block !important; }
+      body > #root > * { display: none !important; }
+      body > #root .fahrt-print-area { display: block !important; }
     html, body { height: auto !important; overflow: visible !important; margin: 0 !important; padding: 0 !important; }
     .fahrt-print-area {
     display: block !important;
