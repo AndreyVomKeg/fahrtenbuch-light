@@ -1,5 +1,6 @@
 // FahrtenbuchLight v45
 import React, { useState, useMemo, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 
 
 const C = {
@@ -2573,7 +2574,7 @@ function BerichtTab({gefFahrten, aktiv, acc, C, SANS, safeFloat, formatDatum,
     </div>
 
     {/* Print Preview Modal */}
-    {printPreview&&(
+    {printPreview&&createPortal(
     <div className="fahrt-print-area" style={{position:"fixed",inset:0,background:"#F8F8F6",zIndex:600,overflowY:"auto"}}>
     {/* Top bar — hidden when printing */}
     <div className="print-topbar" style={{
@@ -2718,7 +2719,7 @@ function BerichtTab({gefFahrten, aktiv, acc, C, SANS, safeFloat, formatDatum,
     </div>
     </div>
     </div>
-    )}
+          , document.body)}
 
     {/* Tabelle */}
     <div style={{background:C.surface,boxShadow:C.shadow,overflowX:"auto",border:`1px solid ${C.borderHi}`,borderRight:`2px solid ${C.borderHi}`}}>
@@ -3758,7 +3759,7 @@ REGELN:
       body > * { display: none !important; }
       body > #root { display: block !important; }
       body > #root > * { display: none !important; }
-      body > #root .fahrt-print-area { display: block !important; }
+      body > .fahrt-print-area { display: block !important; }
     html, body { height: auto !important; overflow: visible !important; margin: 0 !important; padding: 0 !important; }
     .fahrt-print-area {
     display: block !important;
