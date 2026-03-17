@@ -1,4 +1,4 @@
-// FahrtenbuchLight v42
+// FahrtenbuchLight v43
 import React, { useState, useMemo, useEffect, useRef } from "react";
 
 
@@ -3755,7 +3755,7 @@ REGELN:
     size: A4 landscape;
     margin: 10mm 8mm 12mm 8mm;
   }
-  body > * { display: none !important; }
+  body * { visibility: hidden !important; } .fahrt-print-area, .fahrt-print-area * { visibility: visible !important; }
   .fahrt-print-area {
     display: block !important;
     position: fixed !important;
