@@ -1,4 +1,4 @@
-// FahrtenbuchLight v44
+// FahrtenbuchLight v45
 import React, { useState, useMemo, useEffect, useRef } from "react";
 
 
@@ -3755,9 +3755,9 @@ REGELN:
     size: A4 landscape;
     margin: 10mm 8mm 12mm 8mm;
   }
-                body * { visibility: hidden !important; }
-              .fahrt-print-area, .fahrt-print-area * { visibility: visible !important; }
-  .fahrt-print-area {
+    body > *:not(.fahrt-print-area) { display: none !important; }
+    html, body { height: auto !important; overflow: visible !important; margin: 0 !important; padding: 0 !important; }
+    .fahrt-print-area {
     display: block !important;
     position: static !important;
     top: 0 !important; left: 0 !important;
@@ -3778,10 +3778,10 @@ REGELN:
     font-family: Arial, sans-serif !important;
     page-break-inside: auto;
   }
-  .fahrt-print-area table thead { display: table-header-group !important; }
-  .fahrt-print-area table tfoot { display: table-footer-group !important; }
-  .fahrt-print-area table tr { page-break-inside: avoid; }
-  .fahrt-print-area table th {
+    .fahrt-print-area table thead { display: table-header-group !important; }
+    .fahrt-print-area table tfoot { display: table-footer-group !important; }
+    .fahrt-print-area table tr { page-break-inside: avoid; }
+    .fahrt-print-area table th {
     background: #f0f0f0 !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
