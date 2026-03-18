@@ -1,5 +1,4 @@
-# fahrtenbuch-light[README.md](https://github.com/user-attachments/files/26042287/README.md)
-# FahrtenbuchLight v42
+# FahrtenbuchLight v46
 
 **AI-gestütztes Fahrtenbuch für deutsche Unternehmen**
 
@@ -109,4 +108,4 @@ MIT License — см. [LICENSE](LICENSE)
 
 ---
 
-*FahrtenbuchLight v42 · Март 2026*
+*FahrtenbuchLight v46 · Март 2026*
