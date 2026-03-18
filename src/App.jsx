@@ -1,6 +1,5 @@
-// FahrtenbuchLight v45
+// FahrtenbuchLight v46
 import React, { useState, useMemo, useEffect, useRef } from "react";
-import { createPortal } from "react-dom";
 
 
 const C = {
@@ -204,6 +203,29 @@ const makeFahrzeug = (idx=0) => ({
   kmStandInitial:"",
   partner:[], messen:[], strafen:[], tankstellen:[],
   waesche:[], services:[], parkplaetze:[], fahrten:[],
+});
+
+// ─── REAL CAR DEFAULT: Fiat 500e (Zulassungsbescheinigung TF-IA 2006) ─────────
+const makeFiatDefault = () => ({
+  ...makeFahrzeug(0),
+  name:"Fiat 500e Firmenwagen",
+  kennzeichen:"TF-IA 2006",
+  marke:"FIAT", modell:"500e",
+  kraftstoff:"Elektro",
+  tuvDatum:"2025-10-01",
+  kfzBriefNr:"AVN00342",
+  fahrgestellNr:"ZFAEFAR4SNX101220",
+  reifendruckVorne:"2.5", reifendruckHinten:"2.5",
+  halterName:"Mirra Immobilien GmbH",
+  halterAnschrift:"Parkallee 14, 14974 Ludwigsfelde",
+  halterTelPrivat:"+49 3378 870100",
+  halterTelFirma:"+49 3378 870101",
+  fahrer:"Andrey Mirra",
+  fahrerAnschrift:"Parkallee 14, 14974 Ludwigsfelde",
+  fahrerTelPrivat:"+49 176 555666",
+  fahrerTelFirma:"+49 3378 870102",
+  standort:{name:"Firmensitz Ludwigsfelde", adresse:"Parkallee 14, 14974 Ludwigsfelde"},
+  kmStandInitial:"",
 });
 
 // ─── BASE STYLES ──────────────────────────────────────────────────────────────
@@ -1656,7 +1678,11 @@ class ErrorBoundary extends React.Component {
       return (
         <div style={{minHeight:"100vh",background:"#F4F4F0",display:"flex",alignItems:"center",justifyContent:"center",fontFamily:"'Inter',sans-serif"}}>
           <div style={{background:"#fff",border:"1px solid #DDDDD8",borderTop:"3px solid #B30000",padding:"40px 48px",maxWidth:480,textAlign:"center"}}>
-            <div style={{fontSize:32,marginBottom:16}}>⚠️</div>
+            <div style={{marginBottom:16,display:"flex",justifyContent:"center"}}>
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#B30000" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+              </svg>
+            </div>
             <div style={{fontSize:18,fontWeight:700,color:"#111",marginBottom:8}}>Anwendungsfehler</div>
             <div style={{fontSize:14,color:"#666",marginBottom:24,lineHeight:1.6}}>
               Ein unerwarteter Fehler ist aufgetreten.<br/>Ihre Daten sind in localStorage gesichert.
@@ -1963,24 +1989,24 @@ function createMusterDaten() {
   const tm1=uid(),tm2=uid(),tm3=uid(),tm4=uid();
   const fz2={
     ...makeFahrzeug(3),
-    name:"VW Passat TF Dienstwagen",
-    kennzeichen:"TF-MW 214",
-    marke:"VW", modell:"Passat 2.0 TDI",
+    name:"Fiat 500e Firmenwagen",
+    kennzeichen:"TF-IA 2006",
+    marke:"FIAT", modell:"500e",
     farbe:FARBEN[3],
-    kraftstoff:"Diesel",
-    tuvDatum:"2027-06-01",
-    kfzBriefNr:"TF-KFZ-2023-00512",
-    fahrgestellNr:"WVWZZZ3CZPE012345",
-    reifendruckVorne:"2.4", reifendruckHinten:"2.6",
-    halterName:"Mustermann Handels GmbH",
-    halterAnschrift:"Am Markt 5, 14943 Luckenwalde",
-    halterTelPrivat:"+49 3371 100200",
-    halterTelFirma:"+49 3371 100201",
-    fahrer:"Klaus Mustermann",
-    fahrerAnschrift:"Zinnaer Str. 18, 14943 Luckenwalde",
-    fahrerTelPrivat:"+49 172 333444",
-    fahrerTelFirma:"+49 3371 100202",
-    standort:{name:"Firmensitz Luckenwalde", adresse:"Am Markt 5, 14943 Luckenwalde"},
+    kraftstoff:"Elektro",
+    tuvDatum:"2025-10-01",
+    kfzBriefNr:"AVN00342",
+    fahrgestellNr:"ZFAEFAR4SNX101220",
+    reifendruckVorne:"2.5", reifendruckHinten:"2.5",
+    halterName:"Mirra Immobilien GmbH",
+    halterAnschrift:"Parkallee 14, 14974 Ludwigsfelde",
+    halterTelPrivat:"+49 3378 870100",
+    halterTelFirma:"+49 3378 870101",
+    fahrer:"Andrey Mirra",
+    fahrerAnschrift:"Parkallee 14, 14974 Ludwigsfelde",
+    fahrerTelPrivat:"+49 176 555666",
+    fahrerTelFirma:"+49 3378 870102",
+    standort:{name:"Firmensitz Ludwigsfelde", adresse:"Parkallee 14, 14974 Ludwigsfelde"},
     kmStandInitial:"58000",
     partner:[
     {id:tf1, name:"Zossener Bau GmbH",      adresse:"Berliner Str. 88, 15806 Zossen",       telefon:"+49 3377 300100", notiz:"Bauprojekt Süd",   kmVonStandort:"18"},
@@ -2006,20 +2032,20 @@ function createMusterDaten() {
     {id:uid(), datum:"2025-08-14", typ:"Geschwindigkeitsverstoß",  betrag:"70",  ort:"A10 Abfahrt Ludwigsfelde-Nord",   aktenzeichen:"TF-OWI-2025-0641", punkte:"1", faellig:"2025-09-14", bezahlt:true,  notiz:"Radar Baustelle",  belegFoto:""},
     ],
     tankstellen:[
-    {id:uid(), datum:"2025-01-10", uhrzeit:"07:30", stationName:"Aral Luckenwalde",  adresse:"Berliner Str. 10, 14943 Luckenwalde", menge:"53.0", preisProLiter:"1.779", betrag:"94.29",  kraftstoff:"Diesel", kmStand:"58420", bonNr:"AR-2025-01101", zahlungsart:"EC-Karte",  notiz:"", belegFoto:""},
-    {id:uid(), datum:"2025-02-07", uhrzeit:"16:20", stationName:"Shell Zossen",    adresse:"Berliner Str. 55, 15806 Zossen",    menge:"49.0", preisProLiter:"1.799", betrag:"88.15",  kraftstoff:"Diesel", kmStand:"59280", bonNr:"SH-2025-02071", zahlungsart:"EC-Karte",  notiz:"", belegFoto:""},
-    {id:uid(), datum:"2025-03-13", uhrzeit:"08:00", stationName:"Aral Luckenwalde",  adresse:"Berliner Str. 10, 14943 Luckenwalde", menge:"51.5", preisProLiter:"1.809", betrag:"93.16",  kraftstoff:"Diesel", kmStand:"60220", bonNr:"AR-2025-03131", zahlungsart:"EC-Karte",  notiz:"Vor Messe", belegFoto:""},
-    {id:uid(), datum:"2025-04-22", uhrzeit:"12:45", stationName:"Jet Ludwigsfelde",  adresse:"Gewerbepark 1, 14974 Ludwigsfelde",   menge:"47.5", preisProLiter:"1.759", betrag:"83.55",  kraftstoff:"Diesel", kmStand:"61150", bonNr:"JT-2025-04221", zahlungsart:"Tankkarte", notiz:"", belegFoto:""},
-    {id:uid(), datum:"2025-05-19", uhrzeit:"07:45", stationName:"Aral Luckenwalde",  adresse:"Berliner Str. 10, 14943 Luckenwalde", menge:"52.0", preisProLiter:"1.749", betrag:"90.95",  kraftstoff:"Diesel", kmStand:"62100", bonNr:"AR-2025-05191", zahlungsart:"EC-Karte",  notiz:"", belegFoto:""},
-    {id:uid(), datum:"2025-06-18", uhrzeit:"17:00", stationName:"BP Autobahn A10",   adresse:"Rastanlage Michendorf, A10",      menge:"55.0", preisProLiter:"1.839", betrag:"101.15", kraftstoff:"Diesel", kmStand:"63200", bonNr:"BP-2025-06181", zahlungsart:"Tankkarte", notiz:"Rückfahrt Messe", belegFoto:""},
-    {id:uid(), datum:"2025-07-11", uhrzeit:"08:15", stationName:"Aral Luckenwalde",  adresse:"Berliner Str. 10, 14943 Luckenwalde", menge:"50.5", preisProLiter:"1.729", betrag:"87.31",  kraftstoff:"Diesel", kmStand:"64250", bonNr:"AR-2025-07111", zahlungsart:"EC-Karte",  notiz:"", belegFoto:""},
-    {id:uid(), datum:"2025-08-06", uhrzeit:"16:30", stationName:"Shell Zossen",    adresse:"Berliner Str. 55, 15806 Zossen",    menge:"48.0", preisProLiter:"1.769", betrag:"84.91",  kraftstoff:"Diesel", kmStand:"65180", bonNr:"SH-2025-08061", zahlungsart:"EC-Karte",  notiz:"", belegFoto:""},
-    {id:uid(), datum:"2025-09-10", uhrzeit:"07:30", stationName:"Aral Luckenwalde",  adresse:"Berliner Str. 10, 14943 Luckenwalde", menge:"53.5", preisProLiter:"1.759", betrag:"94.11",  kraftstoff:"Diesel", kmStand:"66300", bonNr:"AR-2025-09101", zahlungsart:"EC-Karte",  notiz:"", belegFoto:""},
-    {id:uid(), datum:"2025-10-06", uhrzeit:"07:30", stationName:"Aral Luckenwalde",  adresse:"Berliner Str. 10, 14943 Luckenwalde", menge:"52.0", preisProLiter:"1.749", betrag:"90.95",  kraftstoff:"Diesel", kmStand:"67380", bonNr:"AR-2025-10061", zahlungsart:"EC-Karte",  notiz:"", belegFoto:""},
-    {id:uid(), datum:"2025-11-18", uhrzeit:"16:45", stationName:"Shell Zossen",    adresse:"Berliner Str. 55, 15806 Zossen",    menge:"48.5", preisProLiter:"1.769", betrag:"85.80",  kraftstoff:"Diesel", kmStand:"68590", bonNr:"SH-2025-11181", zahlungsart:"EC-Karte",  notiz:"", belegFoto:""},
-    {id:uid(), datum:"2025-12-15", uhrzeit:"08:00", stationName:"Aral Luckenwalde",  adresse:"Berliner Str. 10, 14943 Luckenwalde", menge:"51.0", preisProLiter:"1.789", betrag:"91.24",  kraftstoff:"Diesel", kmStand:"69650", bonNr:"AR-2025-12151", zahlungsart:"EC-Karte",  notiz:"", belegFoto:""},
-    {id:uid(), datum:"2026-01-14", uhrzeit:"08:15", stationName:"Aral Luckenwalde",  adresse:"Berliner Str. 10, 14943 Luckenwalde", menge:"50.0", preisProLiter:"1.729", betrag:"86.45",  kraftstoff:"Diesel", kmStand:"70720", bonNr:"AR-2026-01141", zahlungsart:"EC-Karte",  notiz:"", belegFoto:""},
-    {id:uid(), datum:"2026-02-25", uhrzeit:"12:00", stationName:"Jet Ludwigsfelde",  adresse:"Gewerbepark 1, 14974 Ludwigsfelde",   menge:"46.0", preisProLiter:"1.719", betrag:"79.07",  kraftstoff:"Diesel", kmStand:"71840", bonNr:"JT-2026-02251", zahlungsart:"Tankkarte", notiz:"", belegFoto:""},
+    {id:uid(), datum:"2025-01-10", uhrzeit:"07:30", stationName:"Ladepark Ludwigsfelde",  adresse:"Gewerbepark 8, 14974 Ludwigsfelde", menge:"38.0", preisProLiter:"0.39", betrag:"14.82",  kraftstoff:"Strom", kmStand:"58420", bonNr:"AR-2025-01101", zahlungsart:"EC-Karte",  notiz:"", belegFoto:""},
+    {id:uid(), datum:"2025-02-07", uhrzeit:"16:20", stationName:"EnBW Schnelllader Zossen",    adresse:"Berliner Str. 55, 15806 Zossen",    menge:"35.0", preisProLiter:"0.42", betrag:"14.70",  kraftstoff:"Strom", kmStand:"59280", bonNr:"SH-2025-02071", zahlungsart:"EC-Karte",  notiz:"", belegFoto:""},
+    {id:uid(), datum:"2025-03-13", uhrzeit:"08:00", stationName:"Ladepark Ludwigsfelde",  adresse:"Gewerbepark 8, 14974 Ludwigsfelde", menge:"37.0", preisProLiter:"0.44", betrag:"16.28",  kraftstoff:"Strom", kmStand:"60220", bonNr:"AR-2025-03131", zahlungsart:"EC-Karte",  notiz:"Vor Messe", belegFoto:""},
+    {id:uid(), datum:"2025-04-22", uhrzeit:"12:45", stationName:"Tesla Supercharger Ludwigsfelde",  adresse:"Gewerbepark 1, 14974 Ludwigsfelde",   menge:"34.0", preisProLiter:"0.41", betrag:"13.94",  kraftstoff:"Strom", kmStand:"61150", bonNr:"JT-2025-04221", zahlungsart:"Tankkarte", notiz:"", belegFoto:""},
+    {id:uid(), datum:"2025-05-19", uhrzeit:"07:45", stationName:"Ladepark Ludwigsfelde",  adresse:"Gewerbepark 8, 14974 Ludwigsfelde", menge:"37.5", preisProLiter:"0.39", betrag:"14.63",  kraftstoff:"Strom", kmStand:"62100", bonNr:"AR-2025-05191", zahlungsart:"EC-Karte",  notiz:"", belegFoto:""},
+    {id:uid(), datum:"2025-06-18", uhrzeit:"17:00", stationName:"Ionity Ladepark A10",   adresse:"Rastanlage Michendorf, A10",      menge:"39.0", preisProLiter:"0.49", betrag:"19.11", kraftstoff:"Strom", kmStand:"63200", bonNr:"BP-2025-06181", zahlungsart:"Tankkarte", notiz:"Rückfahrt Messe", belegFoto:""},
+    {id:uid(), datum:"2025-07-11", uhrzeit:"08:15", stationName:"Ladepark Ludwigsfelde",  adresse:"Gewerbepark 8, 14974 Ludwigsfelde", menge:"36.0", preisProLiter:"0.38", betrag:"13.68",  kraftstoff:"Strom", kmStand:"64250", bonNr:"AR-2025-07111", zahlungsart:"EC-Karte",  notiz:"", belegFoto:""},
+    {id:uid(), datum:"2025-08-06", uhrzeit:"16:30", stationName:"EnBW Schnelllader Zossen",    adresse:"Berliner Str. 55, 15806 Zossen",    menge:"34.5", preisProLiter:"0.42", betrag:"14.49",  kraftstoff:"Strom", kmStand:"65180", bonNr:"SH-2025-08061", zahlungsart:"EC-Karte",  notiz:"", belegFoto:""},
+    {id:uid(), datum:"2025-09-10", uhrzeit:"07:30", stationName:"Ladepark Ludwigsfelde",  adresse:"Gewerbepark 8, 14974 Ludwigsfelde", menge:"38.5", preisProLiter:"0.41", betrag:"16.17",  kraftstoff:"Strom", kmStand:"66300", bonNr:"AR-2025-09101", zahlungsart:"EC-Karte",  notiz:"", belegFoto:""},
+    {id:uid(), datum:"2025-10-06", uhrzeit:"07:30", stationName:"Ladepark Ludwigsfelde",  adresse:"Gewerbepark 8, 14974 Ludwigsfelde", menge:"37.5", preisProLiter:"0.39", betrag:"14.63",  kraftstoff:"Strom", kmStand:"67380", bonNr:"AR-2025-10061", zahlungsart:"EC-Karte",  notiz:"", belegFoto:""},
+    {id:uid(), datum:"2025-11-18", uhrzeit:"16:45", stationName:"EnBW Schnelllader Zossen",    adresse:"Berliner Str. 55, 15806 Zossen",    menge:"35.0", preisProLiter:"0.42", betrag:"14.70",  kraftstoff:"Strom", kmStand:"68590", bonNr:"SH-2025-11181", zahlungsart:"EC-Karte",  notiz:"", belegFoto:""},
+    {id:uid(), datum:"2025-12-15", uhrzeit:"08:00", stationName:"Ladepark Ludwigsfelde",  adresse:"Gewerbepark 8, 14974 Ludwigsfelde", menge:"36.5", preisProLiter:"0.43", betrag:"15.70",  kraftstoff:"Strom", kmStand:"69650", bonNr:"AR-2025-12151", zahlungsart:"EC-Karte",  notiz:"", belegFoto:""},
+    {id:uid(), datum:"2026-01-14", uhrzeit:"08:15", stationName:"Ladepark Ludwigsfelde",  adresse:"Gewerbepark 8, 14974 Ludwigsfelde", menge:"36.0", preisProLiter:"0.38", betrag:"13.68",  kraftstoff:"Strom", kmStand:"70720", bonNr:"AR-2026-01141", zahlungsart:"EC-Karte",  notiz:"", belegFoto:""},
+    {id:uid(), datum:"2026-02-25", uhrzeit:"12:00", stationName:"Tesla Supercharger Ludwigsfelde",  adresse:"Gewerbepark 1, 14974 Ludwigsfelde",   menge:"46.0", preisProLiter:"1.719", betrag:"79.07",  kraftstoff:"Strom", kmStand:"71840", bonNr:"JT-2026-02251", zahlungsart:"Tankkarte", notiz:"", belegFoto:""},
     ],
     waesche:[
     {id:uid(), datum:"2025-01-25", uhrzeit:"10:00", typ:"Außenwäsche",     adresse:"Waschpark Luckenwalde, Bahnhofstr. 22, 14943 Luckenwalde", betrag:"8.50",   zahlungsart:"Bar",    notiz:"", belegFoto:""},
@@ -2360,12 +2386,170 @@ function UebersichtTab({stats, aktiv, acc, C, SANS, FS, katAccent, setTab, setFF
   );
 }
 
+// ─── PDF GENERATOR (jsPDF + autoTable from CDN) ─────────────────────────────
+async function generatePdfFile(gefFahrten, aktiv, safeFloat, formatDatum, getZielName, getZielAdr) {
+  // Dynamically load jsPDF + autoTable
+  if (!window.jspdf) {
+    await new Promise((res, rej) => {
+      const s = document.createElement("script");
+      s.src = "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js";
+      s.onload = res; s.onerror = rej;
+      document.head.appendChild(s);
+    });
+  }
+  if (!window.jspdf_autotable_loaded) {
+    await new Promise((res, rej) => {
+      const s = document.createElement("script");
+      s.src = "https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.4/jspdf.plugin.autotable.min.js";
+      s.onload = () => { window.jspdf_autotable_loaded = true; res(); };
+      s.onerror = rej;
+      document.head.appendChild(s);
+    });
+  }
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ orientation:"landscape", unit:"mm", format:"a4" });
+  const W = doc.internal.pageSize.getWidth();   // 297
+  const H = doc.internal.pageSize.getHeight();  // 210
+  const M = 8;  // margin
+
+  // ── Header ──
+  doc.setFontSize(14); doc.setFont("helvetica","bold"); doc.setTextColor(17,17,17);
+  doc.text(`Fahrtenbuch – ${aktiv.kennzeichen||""} ${aktiv.marke||""} ${aktiv.modell||""}`.trim(), M, 12);
+  doc.setFontSize(8); doc.setFont("helvetica","normal"); doc.setTextColor(100);
+  doc.text(
+    `Fahrer: ${aktiv.fahrer||"—"}  ·  Standort: ${aktiv.standort?.name||"—"}  ·  Erstellt: ${new Date().toLocaleDateString("de-DE")}  ·  ${gefFahrten.length} Einträge`,
+    M, 17
+  );
+  doc.setDrawColor(180); doc.line(M, 19, W - M, 19);
+
+  // ── Table data ──
+  const headers = [
+    "Datum", "Fahrzeit\nvon–bis", "Reiseroute und Ziel", "Zweck der Fahrt",
+    "Besuchte Personen /\nFirmen / Behörden", "km-Stand\nBeginn", "gesch.",
+    "W/A", "priv.", "km-Stand\nEnde", "Fahrer"
+  ];
+
+  const kmGesch  = gefFahrten.reduce((s,f)=>s+((f.kmTyp==="geschaeftlich"||!f.kmTyp)?safeFloat(f.km):0),0);
+  const kmWohn   = gefFahrten.reduce((s,f)=>s+(f.kmTyp==="wohnArbeit"?safeFloat(f.km):0),0);
+  const kmPrivat = gefFahrten.reduce((s,f)=>s+(f.kmTyp==="privat"?safeFloat(f.km):0),0);
+
+  const rows = gefFahrten.map(f => {
+    const typ = f.kmTyp||"geschaeftlich";
+    const km  = safeFloat(f.km);
+    const von = aktiv.standort?.name||aktiv.standort?.adresse||"";
+    const nach= getZielAdr(f)||getZielName(f)||f.zielName||"";
+    const route = [von,nach].filter(Boolean).join(" → ") + (f.rueckfahrt?" (H+Z)":"");
+    return [
+      formatDatum(f.datum),
+      f.zeitStr||"",
+      route,
+      f.notiz||"",
+      getZielName(f)||"",
+      f.kmStart ? Number(f.kmStart).toLocaleString("de-DE") : "",
+      typ==="geschaeftlich" ? km.toFixed(0) : "",
+      typ==="wohnArbeit"    ? km.toFixed(0) : "",
+      typ==="privat"        ? km.toFixed(0) : "",
+      f.kmEnd ? Number(f.kmEnd).toLocaleString("de-DE") : "",
+      aktiv.fahrer||"",
+    ];
+  });
+
+  // ── Footer row (SUMME) ──
+  const footRow = [
+    {content:"SUMME:", colSpan:6, styles:{halign:"right",fontStyle:"bold",textColor:[179,0,0]}},
+    {content:kmGesch.toFixed(0),  styles:{halign:"right",fontStyle:"bold",textColor:[179,0,0]}},
+    {content:kmWohn.toFixed(0),   styles:{halign:"right",fontStyle:"bold",textColor:[26,74,138]}},
+    {content:kmPrivat.toFixed(0), styles:{halign:"right",fontStyle:"bold",textColor:[102,102,102]}},
+    {content:"", colSpan:2},
+  ];
+
+  // ── autoTable ──
+  doc.autoTable({
+    startY: 22,
+    margin: {left:M, right:M, bottom:18},
+    head: [headers],
+    body: rows,
+    foot: [footRow],
+    theme: "grid",
+    styles: {
+      font:"helvetica", fontSize:7, cellPadding:1.8,
+      lineColor:[187,187,187], lineWidth:0.2,
+      textColor:[30,30,30], overflow:"linebreak",
+    },
+    headStyles: {
+      fillColor:[240,240,238], textColor:[80,80,80],
+      fontStyle:"bold", fontSize:6.5, halign:"left",
+      lineWidth:0.3, lineColor:[150,150,150],
+    },
+    footStyles: {
+      fillColor:[245,230,230], lineWidth:0.3,
+      lineColor:[150,150,150],
+    },
+    alternateRowStyles: { fillColor:[249,249,247] },
+    columnStyles: {
+      0: {cellWidth:22},           // Datum
+      1: {cellWidth:20},           // Fahrzeit
+      2: {cellWidth:52},           // Route
+      3: {cellWidth:36},           // Zweck
+      4: {cellWidth:36},           // Personen
+      5: {cellWidth:20, halign:"right"},  // km Start
+      6: {cellWidth:14, halign:"right"},  // gesch
+      7: {cellWidth:12, halign:"right"},  // W/A
+      8: {cellWidth:12, halign:"right"},  // priv
+      9: {cellWidth:20, halign:"right"},  // km End
+      10:{cellWidth:0},            // Fahrer — auto
+    },
+    didDrawPage: (data) => {
+      // Page footer on every page
+      const pg = doc.internal.getCurrentPageInfo().pageNumber;
+      const total = doc.internal.getNumberOfPages();
+      doc.setFontSize(7); doc.setTextColor(150);
+      doc.text(
+        `Fahrtenbuch · ${aktiv.kennzeichen||""} · Seite ${pg}/${total}`,
+        W - M, H - 5, {align:"right"}
+      );
+      doc.text(
+        `Erstellt am ${new Date().toLocaleDateString("de-DE")}`,
+        M, H - 5
+      );
+    },
+  });
+
+  // ── Summary line after table (last page) ──
+  const finalY = doc.lastAutoTable.finalY || 180;
+  if (finalY + 12 < H - 15) {
+    doc.setFontSize(8); doc.setFont("helvetica","bold");
+    const summLine = `Geschäftlich: ${kmGesch.toFixed(1)} km   ·   Wohnung/Arbeit: ${kmWohn.toFixed(1)} km   ·   Privat: ${kmPrivat.toFixed(1)} km   ·   Gesamt: ${(kmGesch+kmWohn+kmPrivat).toFixed(1)} km`;
+    doc.setTextColor(60);
+    doc.text(summLine, M, finalY + 7);
+  }
+
+  // ── Download ──
+  const kz = (aktiv.kennzeichen||"Fahrtenbuch").replace(/\s+/g,"_");
+  const dateStr = new Date().toISOString().slice(0,10);
+  doc.save(`${kz}_Fahrtenbuch_${dateStr}.pdf`);
+  return true;
+}
+
 // ─── BERICHT TAB ─────────────────────────────────────────────────────────────
 function BerichtTab({gefFahrten, aktiv, acc, C, SANS, safeFloat, formatDatum,
   getZielName, getZielAdr, fMonat, setFMonat, fKat, setFKat, fQ, setFQ,
   OPT_FAHRT_KAT_F, katAccent, csvModal, setCsvModal, sheetsModal, setSheetsModal,
   printPreview, setPrintPreview, copied, setCopied, sheetsCopied, setSheetsCopied,
   copiedTimer, sheetsCopiedTimer}) {
+  const [pdfBusy, setPdfBusy] = useState(false);
+  const handlePdf = async () => {
+    setPdfBusy(true);
+    try {
+      await generatePdfFile(gefFahrten, aktiv, safeFloat, formatDatum, getZielName, getZielAdr);
+    } catch(e) {
+      console.error("PDF generation failed:", e);
+      // Fallback: window.print()
+      setPrintPreview(true);
+    } finally {
+      setPdfBusy(false);
+    }
+  };
   const kmGesch  = gefFahrten.reduce((s,f)=>s+(f.kmTyp==="geschaeftlich"||!f.kmTyp?safeFloat(f.km):0),0);
   const kmWohn   = gefFahrten.reduce((s,f)=>s+(f.kmTyp==="wohnArbeit"?safeFloat(f.km):0),0);
   const kmPrivat = gefFahrten.reduce((s,f)=>s+(f.kmTyp==="privat"?safeFloat(f.km):0),0);
@@ -2565,16 +2749,16 @@ function BerichtTab({gefFahrten, aktiv, acc, C, SANS, safeFloat, formatDatum,
     textTransform:"uppercase",padding:"0 14px",cursor:"pointer",display:"flex",alignItems:"center",gap:6}}>
     <Ico name="fileText" size={15} color={C.sheetsGreen}/> SHEETS
     </button>
-    <button onClick={()=>setPrintPreview(true)}
+    <button onClick={handlePdf} disabled={pdfBusy}
     style={{height:36,border:`1px solid ${acc}`,borderRadius:8,background:acc,color:"#fff",
     fontSize:14,fontFamily:SANS,fontWeight:700,letterSpacing:2,
-    textTransform:"uppercase",padding:"0 14px",cursor:"pointer",display:"flex",alignItems:"center",gap:6}}>
-    <Ico name="download" size={15} color="#fff"/> PDF
+    textTransform:"uppercase",padding:"0 14px",cursor:pdfBusy?"wait":"pointer",opacity:pdfBusy?0.7:1,display:"flex",alignItems:"center",gap:6}}>
+    <Ico name="download" size={15} color="#fff"/> {pdfBusy?"…":"PDF"}
     </button>
     </div>
 
     {/* Print Preview Modal */}
-    {printPreview&&createPortal(
+    {printPreview&&(
     <div className="fahrt-print-area" style={{position:"fixed",inset:0,background:"#F8F8F6",zIndex:600,overflowY:"auto"}}>
     {/* Top bar — hidden when printing */}
     <div className="print-topbar" style={{
@@ -2602,20 +2786,35 @@ function BerichtTab({gefFahrten, aktiv, acc, C, SANS, safeFloat, formatDatum,
     </div>
     </div>
     <div style={{display:"flex",gap:8,alignItems:"center"}}>
-    {/* PDF PRINT BUTTON */}
+    {/* PDF DOWNLOAD + PRINT BUTTONS */}
     <button
-    onClick={()=>window.print()}
-    onMouseEnter={e=>{e.currentTarget.style.background=`${acc}dd`;}}
+    onClick={handlePdf}
+    disabled={pdfBusy}
+    onMouseEnter={e=>{if(!pdfBusy)e.currentTarget.style.background=`${acc}dd`;}}
     onMouseLeave={e=>{e.currentTarget.style.background=acc;}}
     style={{
     height:38,padding:"0 24px",borderRadius:8,
     background:acc,border:`1.5px solid ${acc}`,
-    color:"#fff",cursor:"pointer",fontSize:14,fontFamily:SANS,
+    color:"#fff",cursor:pdfBusy?"wait":"pointer",fontSize:14,fontFamily:SANS,
     fontWeight:700,display:"flex",alignItems:"center",gap:8,
-    transition:"background 0.15s",
+    transition:"background 0.15s",opacity:pdfBusy?0.7:1,
     boxShadow:`0 2px 8px ${acc}44`,
     }}>
     <Ico name="download" size={15} color="#fff"/>
+    {pdfBusy ? "Erstelle PDF…" : "PDF herunterladen"}
+    </button>
+    <button
+    onClick={()=>window.print()}
+    onMouseEnter={e=>{e.currentTarget.style.background=C.surfaceAlt;e.currentTarget.style.borderColor=C.borderHi;}}
+    onMouseLeave={e=>{e.currentTarget.style.background="transparent";e.currentTarget.style.borderColor=C.border;}}
+    style={{
+    height:38,padding:"0 20px",borderRadius:8,
+    background:"transparent",border:`1.5px solid ${C.border}`,
+    color:C.textSoft,cursor:"pointer",fontSize:14,fontFamily:SANS,
+    fontWeight:700,display:"flex",alignItems:"center",gap:6,
+    transition:"background 0.15s, border-color 0.15s",
+    }}>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
     Drucken
     </button>
     <button onClick={()=>setPrintPreview(false)}
@@ -2719,7 +2918,7 @@ function BerichtTab({gefFahrten, aktiv, acc, C, SANS, safeFloat, formatDatum,
     </div>
     </div>
     </div>
-          , document.body)}
+    )}
 
     {/* Tabelle */}
     <div style={{background:C.surface,boxShadow:C.shadow,overflowX:"auto",border:`1px solid ${C.borderHi}`,borderRight:`2px solid ${C.borderHi}`}}>
@@ -2994,7 +3193,7 @@ function AuthForm({onLogin, onMuster}) {
           <svg width="11" height="11" viewBox="0 0 24 24" fill="#888" stroke="none"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
           Musterdaten · Demo-Zugang
         </button>
-        <div style={{fontSize:10,color:"#BBB",letterSpacing:"2px",textTransform:"uppercase",textAlign:"center",fontFamily:SANS}}>Fahrtenbuch · v42 · 2026</div>
+        <div style={{fontSize:10,color:"#BBB",letterSpacing:"2px",textTransform:"uppercase",textAlign:"center",fontFamily:SANS}}>Fahrtenbuch · v46 · 2026</div>
       </div>
     </div>
   );
@@ -3037,8 +3236,8 @@ function FahrtenbuchApp({authUser, onLogout}) {
         }
       }
     } catch(e) {}
-    // Нет сохранённых данных — пустое авто
-    const fz = makeFahrzeug(0);
+    // Нет сохранённых данных — Fiat 500e как стартовое авто
+    const fz = makeFiatDefault();
     return {fahrzeuge:[fz], aktivId:fz.id};
   });
   const [tab,setTab]         = useState("uebersicht");
@@ -3095,7 +3294,7 @@ function FahrtenbuchApp({authUser, onLogout}) {
   // ── KI-Assistent ──
   const [chatOpen,   setChatOpen]   = useState(false);
   const [chatMsgs,   setChatMsgs]   = useState([
-    {role:"assistant", id:"init_msg", content:"Hallo! Ich bin Ihr Fahrtenbuch-Assistent.\n\nIch erfasse für Sie:\n• Fahrten — Ziel, km, Zweck, Odometer\n• Tanken, Parken, Wäsche, Service, Strafen\n• Belege per Foto — Datum, Betrag, Adresse automatisch\n\nSagen Sie einfach was passiert ist — ich trage es ein."}
+    {role:"assistant", id:"init_msg", content:"Hallo! Ich bin Ihr Fahrtenbuch-Assistent.\n\nSo arbeiten wir zusammen:\n\nSchritt 1 — Daten sammeln:\n- Schicken Sie mir Belege, Quittungen, Rechnungen\n- Ich extrahiere Datum, Ort, Betrag automatisch\n- Tanken, Parken, Wäsche, Service, Strafen — alles wird erfasst\n\nSchritt 2 — Fahrtenbuch aufbauen:\n- Sobald Sie mir km-Stände (Odometer) mitteilen\n- Erstelle ich vollständige Fahrten mit Routen\n- Und generiere das offizielle Fahrtenbuch-PDF\n\nSagen Sie einfach was passiert ist — ich trage es ein."}
   ]);
   const [chatInput,  setChatInput]  = useState("");
   const [chatBusy,   setChatBusy]   = useState(false);
@@ -3279,8 +3478,8 @@ function FahrtenbuchApp({authUser, onLogout}) {
   const CHAT_TOOLS = [
     {
       name:"add_fahrt",
-      description:"Fügt eine neue Fahrt zum aktiven Fahrzeug hinzu",
-      input_schema:{type:"object",required:["datum","km","kategorie"],properties:{
+      description:"Fügt eine neue Fahrt zum aktiven Fahrzeug hinzu. Nur datum ist Pflicht, alles andere optional.",
+      input_schema:{type:"object",required:["datum"],properties:{
         datum:     {type:"string", description:"ISO-Datum z.B. 2025-03-12"},
         zeitStr:   {type:"string", description:"Zeitraum z.B. 08:00–09:30"},
         kategorie: {type:"string", enum:["partner","messe","sonstige"]},
@@ -3297,8 +3496,8 @@ function FahrtenbuchApp({authUser, onLogout}) {
     },
     {
       name:"add_tankstelle",
-      description:"Fügt einen Tankstopp hinzu",
-      input_schema:{type:"object",required:["datum","menge","betrag"],properties:{
+      description:"Fügt einen Tankstopp / Ladevorgang hinzu. Nur datum ist Pflicht.",
+      input_schema:{type:"object",required:["datum"],properties:{
         datum:        {type:"string"},
         uhrzeit:      {type:"string"},
         stationName:  {type:"string"},
@@ -3315,8 +3514,8 @@ function FahrtenbuchApp({authUser, onLogout}) {
     },
     {
       name:"add_waesche",
-      description:"Fügt eine Fahrzeugwäsche hinzu",
-      input_schema:{type:"object",required:["datum","betrag"],properties:{
+      description:"Fügt eine Fahrzeugwäsche hinzu. Nur datum ist Pflicht.",
+      input_schema:{type:"object",required:["datum"],properties:{
         datum:       {type:"string"},
         uhrzeit:     {type:"string"},
         typ:         {type:"string"},
@@ -3328,8 +3527,8 @@ function FahrtenbuchApp({authUser, onLogout}) {
     },
     {
       name:"add_service",
-      description:"Fügt einen Werkstatt-/Servicetermin hinzu",
-      input_schema:{type:"object",required:["datum","typ"],properties:{
+      description:"Fügt einen Werkstatt-/Servicetermin hinzu. Nur datum ist Pflicht.",
+      input_schema:{type:"object",required:["datum"],properties:{
         datum:        {type:"string"},
         typ:          {type:"string"},
         werkstatt:    {type:"string"},
@@ -3345,8 +3544,8 @@ function FahrtenbuchApp({authUser, onLogout}) {
     },
     {
       name:"add_strafe",
-      description:"Fügt einen Strafzettel / Bußgeldbescheid hinzu",
-      input_schema:{type:"object",required:["datum","typ","betrag"],properties:{
+      description:"Fügt einen Strafzettel / Bußgeldbescheid hinzu. Nur datum ist Pflicht.",
+      input_schema:{type:"object",required:["datum"],properties:{
         datum:        {type:"string"},
         typ:          {type:"string"},
         betrag:       {type:"string"},
@@ -3360,8 +3559,8 @@ function FahrtenbuchApp({authUser, onLogout}) {
     },
     {
       name:"add_parken",
-      description:"Fügt einen Parkvorgang hinzu",
-      input_schema:{type:"object",required:["datum","betrag"],properties:{
+      description:"Fügt einen Parkvorgang hinzu. Nur datum ist Pflicht.",
+      input_schema:{type:"object",required:["datum"],properties:{
         datum:       {type:"string", description:"ISO-Datum z.B. 2025-03-12"},
         uhrzeit:     {type:"string", description:"Uhrzeit z.B. 09:05"},
         ort:         {type:"string", description:"Name des Parkplatzes / Parkhauses"},
@@ -3374,13 +3573,80 @@ function FahrtenbuchApp({authUser, onLogout}) {
     },
     {
       name:"add_partner",
-      description:"Legt einen neuen Geschäftspartner an",
-      input_schema:{type:"object",required:["name","adresse"],properties:{
+      description:"Legt einen neuen Geschäftspartner an. Wenn nur Name bekannt, nutze web_search um Adresse und Telefon zu finden.",
+      input_schema:{type:"object",required:["name"],properties:{
         name:          {type:"string"},
         adresse:       {type:"string"},
         telefon:       {type:"string"},
         kmVonStandort: {type:"string"},
         notiz:         {type:"string"},
+      }}
+    },
+    {
+      name:"update_entry",
+      description:"Aktualisiert ein bestehendes Element (Fahrt, Tankstelle, Strafe, etc.). Nutze list_entries um die ID zu finden.",
+      input_schema:{type:"object",required:["entryType","entryId","updates"],properties:{
+        entryType: {type:"string", enum:["fahrten","tankstellen","waesche","services","strafen","parkplaetze","partner","messen","standorteExtra"], description:"Welcher Datentyp"},
+        entryId:   {type:"string", description:"ID des Eintrags"},
+        updates:   {type:"object", description:"Felder die aktualisiert werden sollen, z.B. {betrag:'50', notiz:'korrigiert'}"},
+      }}
+    },
+    {
+      name:"delete_entry",
+      description:"Löscht einen Eintrag. Nutze list_entries um die ID zu finden. Frage vorher nach Bestätigung.",
+      input_schema:{type:"object",required:["entryType","entryId"],properties:{
+        entryType: {type:"string", enum:["fahrten","tankstellen","waesche","services","strafen","parkplaetze","partner","messen","standorteExtra"]},
+        entryId:   {type:"string", description:"ID des Eintrags"},
+      }}
+    },
+    {
+      name:"list_entries",
+      description:"Listet die letzten Einträge eines Typs auf (max 10), mit ID für update/delete. Nutze dies um Einträge zu finden.",
+      input_schema:{type:"object",required:["entryType"],properties:{
+        entryType: {type:"string", enum:["fahrten","tankstellen","waesche","services","strafen","parkplaetze","partner","messen","standorteExtra"]},
+        count:     {type:"number", description:"Anzahl (Standard: 5, max: 10)"},
+      }}
+    },
+    {
+      name:"generate_fahrtenbuch",
+      description:"Generiert das Fahrtenbuch als PDF (A4 Querformat) und startet den Download.",
+      input_schema:{type:"object",properties:{}}
+    },
+    {
+      name:"add_messe",
+      description:"Fügt eine Messe / Ausstellung / Veranstaltung hinzu.",
+      input_schema:{type:"object",required:["name"],properties:{
+        name:    {type:"string", description:"Name der Messe, z.B. 'IFA Berlin 2026'"},
+        adresse: {type:"string", description:"Adresse des Messegeländes"},
+        datum:   {type:"string", description:"ISO-Datum (Beginn), z.B. 2026-09-04"},
+        notiz:   {type:"string", description:"Halle, Stand-Nr, Anmerkung"},
+        kmVonStandort:{type:"string", description:"Entfernung vom Stammstandort in km"},
+      }}
+    },
+    {
+      name:"add_standort",
+      description:"Fügt einen zusätzlichen Standort / Adresse hinzu (Bank, Notar, Finanzamt, Lager, Filiale, etc.).",
+      input_schema:{type:"object",required:["name","adresse"],properties:{
+        name:    {type:"string", description:"Name, z.B. 'Finanzamt Luckenwalde'"},
+        adresse: {type:"string", description:"Vollständige Adresse"},
+        notiz:   {type:"string", description:"Zweck / Anmerkung"},
+        kmVonStandort:{type:"string", description:"Entfernung vom Stammstandort in km"},
+      }}
+    },
+    {
+      name:"update_fahrzeug",
+      description:"Aktualisiert Daten des aktiven Fahrzeugs (Kennzeichen, Fahrer, Standort, TÜV, etc.).",
+      input_schema:{type:"object",required:["updates"],properties:{
+        updates:{type:"object", description:"Felder die aktualisiert werden sollen. Mögliche Felder: kennzeichen, marke, modell, kraftstoff, tuvDatum, fahrer, fahrerAnschrift, fahrerTelPrivat, fahrerTelFirma, halterName, halterAnschrift, kmStandInitial, reifendruckVorne, reifendruckHinten, kfzBriefNr, fahrgestellNr. Für Standort: standort_name und standort_adresse."},
+      }}
+    },
+    {
+      name:"calc_distance",
+      description:"Berechnet/speichert die Entfernung vom Stammstandort zu einem Partner, Standort oder einer Messe. Nutze dein Wissen oder Schätzungen basierend auf PLZ/Ort.",
+      input_schema:{type:"object",required:["targetType","targetId","distanceKm"],properties:{
+        targetType:  {type:"string", enum:["partner","messen","standorteExtra"], description:"Typ des Ziels"},
+        targetId:    {type:"string", description:"ID des Eintrags"},
+        distanceKm:  {type:"string", description:"Entfernung in km (einfache Strecke)"},
       }}
     },
   ];
@@ -3397,13 +3663,15 @@ function FahrtenbuchApp({authUser, onLogout}) {
       return `Fahrt am ${inp.datum} nach ${inp.zielName||"?"} (${inp.km} km) gespeichert.`;
     }
     if(name==="add_tankstelle"){
+      const kst = inp.kraftstoff || aktiv.kraftstoff || "Diesel";
       const entry={id:nid(),datum:inp.datum||"",uhrzeit:inp.uhrzeit||"",
         stationName:inp.stationName||"",adresse:inp.adresse||"",menge:inp.menge||"",
-        preisProLiter:inp.preisProLiter||"",gesamtbetrag:inp.gesamtbetrag||inp.betrag||"",
-        kraftstoff:inp.kraftstoff||"Diesel",kmStand:inp.kmStand||"",
+        preisProLiter:inp.preisProLiter||"",gesamtbetrag:inp.betrag||"",
+        kraftstoff:kst,kmStand:inp.kmStand||"",
         bonNr:inp.bonNr||"",zahlungsart:inp.zahlungsart||"",notiz:inp.notiz||"",belegFoto:""};
       patchAktiv({tankstellen:[...(aktiv.tankstellen||[]), entry]});
-      return `Tankstopp am ${inp.datum} — ${inp.menge}L / ${inp.gesamtbetrag||inp.betrag}€ gespeichert.`;
+      const unit = kst==="Elektro"||kst==="Strom" ? "kWh" : "L";
+      return `${kst==="Elektro"||kst==="Strom"?"Laden":"Tanken"} am ${inp.datum}${inp.menge?" — "+inp.menge+unit:""}${inp.betrag?" / "+inp.betrag+"€":""} gespeichert.`;
     }
     if(name==="add_waesche"){
       const entry={id:nid(),datum:inp.datum||"",uhrzeit:inp.uhrzeit||"",
@@ -3440,7 +3708,94 @@ function FahrtenbuchApp({authUser, onLogout}) {
       const entry={id:nid(),name:inp.name||"",adresse:inp.adresse||"",
         telefon:inp.telefon||"",kmVonStandort:inp.kmVonStandort||"",notiz:inp.notiz||""};
       patchAktiv({partner:[...aktiv.partner, entry]});
-      return `Partner "${inp.name}" angelegt.`;
+      return `Partner "${inp.name}" angelegt.${inp.kmVonStandort?" Entfernung: "+inp.kmVonStandort+" km.":""}`;
+    }
+    if(name==="add_messe"){
+      const entry={id:nid(),name:inp.name||"",adresse:inp.adresse||"",
+        datum:inp.datum||"",partnerId:"",notiz:inp.notiz||"",kmVonStandort:inp.kmVonStandort||""};
+      patchAktiv({messen:[...(aktiv.messen||[]), entry]});
+      return `Messe "${inp.name}"${inp.datum?" am "+inp.datum:""} angelegt.${inp.kmVonStandort?" Entfernung: "+inp.kmVonStandort+" km.":""}`;
+    }
+    if(name==="add_standort"){
+      const entry={id:nid(),name:inp.name||"",adresse:inp.adresse||"",
+        notiz:inp.notiz||"",auto:false,besuche:0,letzterBesuch:"",kmVonStandort:inp.kmVonStandort||""};
+      patchAktiv({standorteExtra:[...(aktiv.standorteExtra||[]), entry]});
+      return `Standort "${inp.name}" (${inp.adresse||"?"}) angelegt.${inp.kmVonStandort?" Entfernung: "+inp.kmVonStandort+" km.":""}`;
+    }
+    if(name==="update_fahrzeug"){
+      const u = inp.updates||{};
+      const patch = {};
+      // Direct fields
+      const directFields = ["kennzeichen","marke","modell","kraftstoff","tuvDatum","fahrer","fahrerAnschrift",
+        "fahrerTelPrivat","fahrerTelFirma","halterName","halterAnschrift","halterTelPrivat","halterTelFirma",
+        "kmStandInitial","reifendruckVorne","reifendruckHinten","kfzBriefNr","fahrgestellNr","farbe","name"];
+      directFields.forEach(f=>{ if(u[f]!==undefined) patch[f]=u[f]; });
+      // Standort special handling
+      if(u.standort_name || u.standort_adresse) {
+        patch.standort = {
+          name: u.standort_name || aktiv.standort?.name || "",
+          adresse: u.standort_adresse || aktiv.standort?.adresse || "",
+        };
+      }
+      if(Object.keys(patch).length===0) return "Keine Änderungen angegeben.";
+      patchAktiv(patch);
+      const changes=Object.entries(patch).map(([k,v])=>typeof v==="object"?`${k}: ${JSON.stringify(v)}`:`${k}: ${v}`).join(", ");
+      return `Fahrzeug aktualisiert: ${changes}`;
+    }
+    if(name==="calc_distance"){
+      const key=inp.targetType;
+      const list=aktiv[key]||[];
+      const item=list.find(x=>x.id===inp.targetId);
+      if(!item) return `Eintrag nicht gefunden (ID: ${inp.targetId}).`;
+      const updated={...item, kmVonStandort:inp.distanceKm};
+      patchAktiv({[key]:list.map(x=>x.id===inp.targetId?updated:x)});
+      return `Entfernung für "${item.name||item.id}" gesetzt: ${inp.distanceKm} km vom Stammstandort.`;
+    }
+    if(name==="update_entry"){
+      const key=inp.entryType;
+      const list=aktiv[key]||[];
+      const item=list.find(x=>x.id===inp.entryId);
+      if(!item) return `Eintrag nicht gefunden (ID: ${inp.entryId}).`;
+      const updated = {...item, ...inp.updates};
+      patchAktiv({[key]:list.map(x=>x.id===inp.entryId?updated:x)});
+      const changes=Object.entries(inp.updates).map(([k,v])=>`${k}=${v}`).join(", ");
+      return `Eintrag aktualisiert: ${changes}`;
+    }
+    if(name==="delete_entry"){
+      const key=inp.entryType;
+      const list=aktiv[key]||[];
+      const item=list.find(x=>x.id===inp.entryId);
+      if(!item) return `Eintrag nicht gefunden (ID: ${inp.entryId}).`;
+      const label=item.datum||item.name||inp.entryId;
+      patchAktiv({[key]:list.filter(x=>x.id!==inp.entryId)});
+      return `Eintrag "${label}" aus ${key} gelöscht.`;
+    }
+    if(name==="list_entries"){
+      const key=inp.entryType;
+      const list=aktiv[key]||[];
+      const n=Math.min(inp.count||5, 10);
+      const recent=[...list].reverse().slice(0,n);
+      if(!recent.length) return `Keine ${key}-Einträge vorhanden.`;
+      return recent.map((e,i)=>{
+        const label = e.datum||e.name||"?";
+        const detail = e.betrag?` · ${e.betrag}€`:"";
+        const extra = e.zielName?` → ${e.zielName}`:(e.typ?` · ${e.typ}`:(e.ort?` · ${e.ort}`:(e.adresse?` · ${e.adresse}`:"")));
+        const dist = e.kmVonStandort?` (${e.kmVonStandort} km)`:"";
+        return `${i+1}. [${e.id}] ${label}${extra}${detail}${dist}`;
+      }).join("\n");
+    }
+    if(name==="generate_fahrtenbuch"){
+      const withOdo = (aktiv.fahrten||[]).filter(f=>f.kmStart && f.kmEnd);
+      const withoutOdo = (aktiv.fahrten||[]).filter(f=>!f.kmStart || !f.kmEnd);
+      if(withOdo.length === 0) {
+        return `Fahrtenbuch kann noch nicht erstellt werden — keine Fahrten mit Odometerdaten (kmStart/kmEnd) vorhanden. Aktuell ${(aktiv.fahrten||[]).length} Fahrten gesamt, davon ${withoutOdo.length} ohne km-Stand. Bitte zuerst Kilometerstände nachtragen.`;
+      }
+      try {
+        generatePdfFile(gefFahrten, aktiv, safeFloat, formatDatum, getZielName, getZielAdr);
+        return `Fahrtenbuch PDF wird erstellt (${withOdo.length} Fahrten mit Odometer).${withoutOdo.length>0?" Hinweis: "+withoutOdo.length+" Fahrten ohne km-Stand werden ohne Kilometerangabe aufgeführt.":""}`;
+      } catch(e) {
+        return `PDF-Erstellung fehlgeschlagen: ${e.message}`;
+      }
     }
     return "Unbekanntes Tool.";
   };
@@ -3448,33 +3803,195 @@ function FahrtenbuchApp({authUser, onLogout}) {
   const buildSystemPrompt = () => {
     const fz = aktiv;
     const partnerList = (fz.partner||[]).map(p=>`  • ${p.name} — ${p.adresse} (${p.kmVonStandort||"?"}km)`).join("\n");
-    const recentFahrten = [...(fz.fahrten||[])].sort((a,b)=>(b.datum||"").localeCompare(a.datum||"")).slice(0,5)
-      .map(f=>`  • ${f.datum} → ${f.zielName||f.zielId} ${f.km}km (Odo: ${f.kmEnd||"?"})`).join("\n");
-    const lastOdo = [...(fz.fahrten||[])].sort((a,b)=>(b.datum||"").localeCompare(a.datum||"")).find(f=>f.kmEnd)?.kmEnd
-      || fz.kmStandInitial || "?";
-    return `Du bist ein präziser Fahrtenbuch-Assistent für deutsches Steuerrecht (§4 Abs.5 EStG).
+    const sortedF = [...(fz.fahrten||[])].sort((a,b)=>(b.datum||"").localeCompare(a.datum||""));
+    const recentFahrten = sortedF.slice(0,5)
+      .map(f=>`  • ${f.datum} → ${f.zielName||f.zielId} ${f.km}km (Odo: ${f.kmStart||"?"}→${f.kmEnd||"?"})`).join("\n");
+    const lastOdo = sortedF.find(f=>f.kmEnd)?.kmEnd || fz.kmStandInitial || "?";
+    // Odometer gaps for audit context
+    const odoGaps = [];
+    for(let i=0;i<sortedF.length-1;i++){
+      const cur=sortedF[i], prev=sortedF[i+1];
+      if(cur.kmStart && prev.kmEnd && Math.abs(parseFloat(cur.kmStart)-parseFloat(prev.kmEnd))>1){
+        odoGaps.push(`  ⚠ ${prev.datum}→${cur.datum}: kmEnd ${prev.kmEnd} ≠ kmStart ${cur.kmStart}`);
+      }
+    }
+    // Cost summary
+    const tankSum  = (fz.tankstellen||[]).reduce((s,t)=>s+(parseFloat(t.gesamtbetrag)||0),0);
+    const parkSum  = (fz.parkplaetze||[]).reduce((s,t)=>s+(parseFloat(t.betrag)||0),0);
+    const waschSum = (fz.waesche||[]).reduce((s,t)=>s+(parseFloat(t.betrag)||0),0);
+    const servSum  = (fz.services||[]).reduce((s,t)=>s+(parseFloat(t.betrag)||0),0);
+    const strSum   = (fz.strafen||[]).reduce((s,t)=>s+(parseFloat(t.betrag)||0),0);
+    // Phase stats
+    const allFahrten = fz.fahrten||[];
+    const mitOdo = allFahrten.filter(f=>f.kmStart && f.kmEnd);
+    const ohneOdo = allFahrten.filter(f=>!f.kmStart || !f.kmEnd);
+    const ohneKm  = allFahrten.filter(f=>!f.km);
+    // Events that imply trips but have no Fahrt entry yet
+    const parkDates = new Set((fz.parkplaetze||[]).map(p=>p.datum));
+    const tankDates = new Set((fz.tankstellen||[]).map(t=>t.datum));
+    const fahrDates = new Set(allFahrten.map(f=>f.datum));
+    const unlinkedEvents = [...parkDates,...tankDates].filter(d=>d && !fahrDates.has(d));
 
-AKTIVES FAHRZEUG:
+    return `Du bist der KI-Assistent von FahrtenbuchLight — einer SaaS-Plattform für das gesetzeskonforme Fahrtenbuch deutscher Unternehmen (§4 Abs.5 EStG, §6 Abs.1 Nr.4 EStG).
+
+═══ ROLLE ═══
+Du bist ein erfahrener, freundlicher Fahrtenbuch-Berater. Du hilfst beim Sammeln aller Informationen (Belege, Orte, Kosten) und beim Aufbau des vollständigen Fahrtenbuchs sobald Odometerdaten vorliegen. Du antwortest IMMER auf Deutsch, knapp und präzise.
+
+═══ WORKFLOW — SO FUNKTIONIERT DAS FAHRTENBUCH ═══
+
+Das Fahrtenbuch entsteht in ZWEI PHASEN:
+
+PHASE 1 — DATEN SAMMELN (kein Odometer nötig):
+  Der Nutzer gibt dir Informationen aus dem Alltag:
+  • Belege/Quittungen scannen → Datum, Ort, Betrag extrahieren
+  • Tankstopps, Parkgebühren, Wäsche, Service, Strafen erfassen
+  • Geschäftspartner mit Adresse und Entfernung anlegen
+  • Messen und Standorte eintragen
+  → Du speicherst alles sofort. Diese Daten sind KEINE vollständigen Fahrten,
+    sondern BELEGE und ORTE die später Fahrten zugeordnet werden.
+  → Aus einem Parkticket in Stuttgart weißt du: am Datum X war das Auto in Stuttgart.
+  → Aus einer Tankquittung in Nürnberg weißt du: am Datum Y wurde dort getankt.
+
+PHASE 2 — FAHRTENBUCH AUFBAUEN (Odometerdaten vorhanden):
+  Erst wenn der Nutzer den km-Stand mitteilt (Odometer-Ablesung), kannst du:
+  • Fahrten (Routen) erstellen: Stammstandort → Ziel → zurück
+  • km berechnen aus kmEnd − kmStart
+  • Die gesammelten Kosten-Events den Fahrten zuordnen
+  • Das Fahrtenbuch als PDF generieren
+
+  → OHNE Odometer-Daten: Speichere Fahrt mit Datum + Ziel, aber OHNE km.
+    Markiere als unvollständig. Sage dem Nutzer: "Km-Stand fehlt noch."
+  → MIT Odometer-Daten: Baue die vollständige Fahrt mit kmStart, kmEnd, km.
+
+AKTUELLER STATUS:
+  Fahrten gesamt: ${allFahrten.length}
+  Mit Odometer (kmStart+kmEnd): ${mitOdo.length}
+  Ohne Odometer: ${ohneOdo.length}
+  Ohne km-Angabe: ${ohneKm.length}
+  Kosteneinträge ohne zugehörige Fahrt: ${unlinkedEvents.length > 0 ? unlinkedEvents.length + " (Tage: " + unlinkedEvents.slice(0,3).join(", ") + (unlinkedEvents.length>3?"...":"") + ")" : "0"}
+
+WICHTIG — INTELLIGENTES VERHALTEN:
+  • Wenn der Nutzer einen Beleg schickt → speichere Kosten UND frage:
+    "Soll ich dazu auch eine Fahrt anlegen? Wie war der km-Stand?"
+  • Wenn eine Fahrt OHNE km gespeichert wird → sage:
+    "Fahrt nach {Ziel} am {Datum} gespeichert. Km-Stand fehlt noch —
+     bitte km-Stand bei Abfahrt und Ankunft nachtragen."
+  • Wenn der Nutzer nachträglich km-Stand mitteilt → update_entry nutzen
+  • Wenn Kosteneinträge ohne Fahrt existieren → proaktiv darauf hinweisen:
+    "Am {Datum} gibt es einen Parkvorgang in {Ort} aber keine Fahrt. Soll ich eine Fahrt anlegen?"
+  • Fahrtenbuch PDF nur generieren wenn MINDESTENS EINE Fahrt mit Odometer vorliegt.
+    Sonst sagen: "Für das Fahrtenbuch-PDF werden Odometerstände benötigt.
+    Aktuell haben {N} Fahrten noch keine km-Daten."
+
+═══ AKTIVES FAHRZEUG ═══
   Kennzeichen: ${fz.kennzeichen||"?"} | ${fz.marke||""} ${fz.modell||""}
   Fahrer: ${fz.fahrer||"?"}
   Stammstandort: ${fz.standort?.name||"?"}, ${fz.standort?.adresse||"?"}
   Letzter Kilometerstand: ${lastOdo} km
+  Kraftstoff: ${fz.kraftstoff||"?"}
 
-GESCHÄFTSPARTNER (${(fz.partner||[]).length}):
+═══ GESCHÄFTSPARTNER (${(fz.partner||[]).length}) ═══
 ${partnerList||"  (keine)"}
 
-LETZTE FAHRTEN:
+═══ LETZTE FAHRTEN ═══
 ${recentFahrten||"  (keine)"}
+${odoGaps.length?"\n═══ ODOMETER-LÜCKEN ═══\n"+odoGaps.slice(0,5).join("\n"):""}
 
-REGELN:
-- Pflichtfeld überall ist nur das Datum — alle anderen Felder sind optional
-- Datum immer im Format YYYY-MM-DD
-- km ist optional — wenn Adresse bekannt, wird Distanz über Google Maps berechnet
-- Speichere sofort wenn Datum bekannt — unvollständige Einträge sind erlaubt
-- Parkkosten: ort = Parkplatzbeschreibung, dauer in Dezimalstunden (1h30 = 1.5)
-- Bei Belegen: extrahiere Datum, Adresse, Betrag, ggf. Liter — auch Teilinfos speichern
-- Antworte immer auf Deutsch, knapp und präzise
-- Nach dem Speichern kurz bestätigen was gespeichert wurde`;
+═══ KOSTEN-ÜBERSICHT ═══
+  Tanken: ${tankSum.toFixed(2)}€ (${(fz.tankstellen||[]).length} Einträge)
+  Parken: ${parkSum.toFixed(2)}€ (${(fz.parkplaetze||[]).length})
+  Wäsche: ${waschSum.toFixed(2)}€ (${(fz.waesche||[]).length})
+  Service: ${servSum.toFixed(2)}€ (${(fz.services||[]).length})
+  Strafen: ${strSum.toFixed(2)}€ (${(fz.strafen||[]).length})
+
+═══ DATENERFASSUNG — REGELN ═══
+1. PFLICHTFELD ist überall NUR das Datum (Format: YYYY-MM-DD). Alle anderen Felder sind optional.
+2. SPEICHERE SOFORT wenn Datum bekannt — unvollständige Einträge sind erlaubt und erwünscht. Lieber ein Eintrag mit nur Datum als gar keiner.
+3. KOSTEN-EVENTS (Tanken, Parken, Wäsche, Service, Strafen) = PHASE 1. Hier ist kein Odometer nötig. Speichere Datum, Ort, Betrag. Das sind Belege, keine Fahrten.
+4. FAHRTEN = PHASE 2. Eine Fahrt hat idealerweise: Datum, Ziel, kmStart, kmEnd, km. Ohne Odometer speichere Datum+Ziel und markiere als unvollständig.
+5. ODOMETER-KETTE: kmEnd der vorherigen Fahrt = kmStart der nächsten. Wenn der Nutzer kmEnd angibt, berechne kmStart der neuen Fahrt automatisch. Wenn Lücke entsteht, weise freundlich darauf hin.
+6. RÜCKFAHRT: Wenn rueckfahrt=true, verdoppele die km automatisch (Hin + Zurück). Frage bei geschäftlichen Fahrten aktiv: "War das eine Hin- und Rückfahrt?"
+7. KM-KATEGORIEN:
+   - geschaeftlich = Geschäftsfahrt (Standard, wenn nichts anderes gesagt)
+   - wohnArbeit = Fahrten Wohnung ↔ Arbeitsstätte
+   - privat = private Nutzung
+8. BELEGE/FOTOS: Extrahiere ALLE erkennbaren Daten (Datum, Betrag, Adresse, Liter, Bon-Nr...). Speichere als Kosten-Event. Frage dann: "Soll ich dazu eine Fahrt anlegen?"
+9. VON KOSTEN ZU FAHRTEN: Wenn ein Parkticket oder Tankquittung an einem Ort existiert, aber keine Fahrt dorthin → schlage proaktiv vor: "Am {Datum} gibt es einen Parkvorgang in {Ort} ohne Fahrt. Soll ich eine Fahrt dorthin anlegen?"
+10. PDF NUR MIT ODOMETER: Das Fahrtenbuch-PDF setzt voraus, dass Fahrten kmStart und kmEnd haben. Ohne Odometer → informiere den Nutzer was fehlt.
+
+═══ ERWEITERTE FUNKTIONEN ═══
+
+MESSEN & AUSSTELLUNGEN (add_messe):
+- Nutzer kann bitten: "Finde passende Messen für meine Branche" → nutze web_search um aktuelle Messen zu finden
+- Speichere: Name, Adresse, Datum, Halle/Stand, Entfernung vom Standort
+- Wenn der Nutzer ein Immobilienunternehmen führt (aus Halter-Daten erkennbar) → schlage Immobilien-/Bau-/Wirtschaftsmessen vor
+- Berechne die Entfernung vom Stammstandort und trage sie ein
+
+PARTNER — AUTOMATISCHE ADRESSSUCHE (add_partner + web_search):
+- Wenn der Nutzer nur den Firmennamen nennt (z.B. "Füge Müller Bau GmbH hinzu"):
+  → Nutze web_search um Adresse, Telefon und Standort der Firma zu finden
+  → Suche: "{Firmenname} Adresse" oder "{Firmenname} Kontakt"
+  → Speichere den Partner mit allen gefundenen Daten über add_partner
+  → Berechne Entfernung vom Stammstandort und trage kmVonStandort ein
+- Wenn der Nutzer sagt "Ergänze fehlende Adressen" oder "Fülle die Partnerkarten aus":
+  → Gehe über list_entries(partner) alle Partner durch
+  → Für jeden Partner ohne Adresse → web_search nach Firmenname + "Adresse"
+  → update_entry mit gefundener Adresse + Telefon
+  → calc_distance für die Entfernung
+- Wenn die Suche nichts findet → melde es und frage nach der Adresse
+
+STANDORTE (add_standort):
+- Für wiederkehrende Ziele: Finanzamt, Notar, Bank, Lager, Filiale, Werkstatt
+- Erfasse Name, Adresse, Zweck, Entfernung
+- Frage proaktiv: "Soll ich die Entfernung vom Standort berechnen?"
+
+FAHRZEUG-DATEN (update_fahrzeug):
+- Nutzer kann Fahrzeugdaten per Chat ändern: "Mein neuer Fahrer heißt Klaus"
+- Standort ändern: update_fahrzeug mit standort_name und standort_adresse
+- TÜV-Datum aktualisieren: "TÜV ist jetzt bis 10/2027"
+
+ENTFERNUNGEN (calc_distance):
+- Für jeden Partner, Standort und jede Messe die Entfernung vom Stammstandort berechnen/schätzen
+- Nutze Ortskenntnisse, PLZ-Entfernungen, oder web_search für genaue Werte
+- Trage die km-Entfernung im Feld kmVonStandort ein
+- Wenn der Nutzer fragt "Berechne alle Entfernungen" → gehe alle Partner/Standorte/Messen durch und setze kmVonStandort
+- Entfernungen sind EINFACHE Strecke (nicht hin+zurück)
+
+WEB-SUCHE:
+- Du hast Zugriff auf web_search — nutze es wenn der Nutzer nach aktuellen Messen, Adressen, oder Entfernungen fragt
+- Suche immer auf Deutsch: "Immobilienmessen Deutschland 2026", "Entfernung Ludwigsfelde Berlin Messe"
+- Nach der Suche: speichere gefundene Ergebnisse direkt über add_messe, add_standort oder add_partner
+
+═══ STRAFEN-KATALOG (Deutschland) ═══
+Geschwindigkeit: bis 10 km/h | 11–15 | 16–20 | 21–25 | 26–30 | über 30 km/h
+Parkverstöße: Halteverbot | Gehweg/Radweg | zweite Reihe | vor Einfahrt | ohne Parkschein | Behindertenparkplatz | Bushaltestelle
+Rotlicht: unter 1s | über 1s
+Vorfahrt: Vorfahrtverletzung | Stoppschild missachtet
+Ablenkung: Handynutzung am Steuer | Tablet-Ablenkung
+Sicherheit: Gurt | Kinderrückhaltesystem | Abstandsunterschreitung | Überholen trotz Verbot
+Alkohol: bis 0,5‰ | 0,5–1,09‰ | ab 1,1‰
+Technisch: ohne TÜV/HU | ohne Versicherung | Kennzeichen unleserlich | Ladungssicherung mangelhaft
+Sonstiges: Knöllchen | Sonstiger Verstoß
+
+═══ AUDIT-MODUS (Befehl "Prüfen") ═══
+Wenn der Nutzer "Prüfen" oder "prüfe" sagt:
+1. DATUM-LÜCKEN: Finde Werktage (Mo–Fr) zwischen Fahrten ohne Einträge. Wochenenden/Feiertage sind ok.
+2. ODOMETER-KETTE: Prüfe ob kmEnd[n] = kmStart[n+1] für alle aufeinanderfolgenden Fahrten. Melde Lücken.
+3. VERBRAUCH: Berechne ∅ Verbrauch (Liter ÷ gefahrene km × 100). Melde wenn >15 L/100km oder <3 L/100km als Anomalie.
+4. RÜCKFAHRTEN: Prüfe ob Geschäftsfahrten eine Rückfahrt haben. Wenn Hinfahrt ohne Rückfahrt → Hinweis.
+5. PFLICHTFELDER: Melde Einträge ohne km, ohne Ziel, ohne Fahrer.
+6. UNBEZAHLTE STRAFEN: Liste Strafen mit bezahlt=false und überschrittenem Fälligkeitsdatum.
+7. TÜV: Wenn tuvDatum bekannt und <30 Tage entfernt oder abgelaufen → Warnung.
+Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
+
+═══ KONVERSATIONS-STIL ═══
+- Sprache: IMMER Deutsch
+- Tonfall: freundlich-professionell, wie ein erfahrener Fuhrparkleiter
+- Länge: 2–4 Sätze pro Antwort. Keine langen Erklärungen wenn nicht gefragt.
+- Bei Unklarheiten: speichere was klar ist, frage gezielt nach dem Rest
+- Bestätigung: "Fahrt am 12.03. nach München (85 km, geschäftlich) gespeichert." — immer Datum, Ziel, km, Kategorie nennen
+- Fehler: "Datum fehlt — bitte Datum angeben (z.B. gestern, 12.03., heute)"
+- Humor: gelegentlich erlaubt, aber nie auf Kosten der Genauigkeit`;
   };
 
   const sendChat = async () => {
@@ -3510,21 +4027,58 @@ REGELN:
           model:"claude-sonnet-4-6",
           max_tokens:1000,
           system: buildSystemPrompt(),
-          tools: CHAT_TOOLS,
+          tools: [...CHAT_TOOLS, {type:"web_search_20250305",name:"web_search",max_uses:3}],
           messages: apiMessages,
         });
       const data = resp;
 
-      // Tool-use verarbeiten
-      const toolResults = [];
+      // Tool-use verarbeiten — proper multi-turn flow
       let assistantText = "";
+      const toolBlocks = [];
+      const textParts = [];
 
       for(const block of (data.content||[])){
-        if(block.type==="text") assistantText += block.text;
-        if(block.type==="tool_use"){
+        if(block.type==="text") textParts.push(block.text);
+        if(block.type==="tool_use" && block.name!=="web_search") toolBlocks.push(block);
+      }
+      assistantText = textParts.join("");
+
+      if(toolBlocks.length > 0) {
+        // Execute tools locally
+        const toolResults = toolBlocks.map(block => {
           const result = execTool(block.name, block.input);
-          toolResults.push({type:"tool_result", tool_use_id:block.id, content:result});
-          assistantText += (assistantText?"\n\n":"") + "✅ " + result;
+          return {type:"tool_result", tool_use_id:block.id, content:result};
+        });
+
+        // Send tool_results back to Claude for confirmation
+        const assistantRaw = {role:"assistant", content: data.content};
+        const toolResultMsg = {role:"user", content: toolResults};
+        const followUpMsgs = [...apiMessages, assistantRaw, toolResultMsg];
+
+        try {
+          const resp2 = await callClaude({
+            model:"claude-sonnet-4-6",
+            max_tokens:600,
+            system: buildSystemPrompt(),
+            tools: CHAT_TOOLS,
+            messages: followUpMsgs,
+          });
+          // Extract final text from follow-up
+          const finalText = (resp2.content||[])
+            .filter(b=>b.type==="text").map(b=>b.text).join("");
+
+          // Handle possible chained tool calls in follow-up
+          for(const block of (resp2.content||[])){
+            if(block.type==="tool_use"){
+              const result = execTool(block.name, block.input);
+              assistantText += (assistantText?"\n":"") + "[OK] " + result;
+            }
+          }
+          if(finalText) assistantText = finalText;
+        } catch(e2) {
+          // Fallback: show stored tool results inline if follow-up fails
+          const fallbackText = toolResults.map(r => "[OK] " + r.content).join("\n");
+          if(!assistantText) assistantText = fallbackText;
         }
       }
 
@@ -3756,17 +4310,17 @@ REGELN:
     size: A4 landscape;
     margin: 10mm 8mm 12mm 8mm;
   }
-      body > * { display: none !important; }
-      body > #root { display: block !important; }
-      body > #root > * { display: none !important; }
-      body > .fahrt-print-area { display: block !important; }
-    html, body { height: auto !important; overflow: visible !important; margin: 0 !important; padding: 0 !important; }
-    .fahrt-print-area {
-    display: block !important;
-    position: static !important;
+  body * {
+    visibility: hidden !important;
+  }
+  .fahrt-print-area,
+  .fahrt-print-area * {
+    visibility: visible !important;
+  }
+  .fahrt-print-area {
+    position: absolute !important;
     top: 0 !important; left: 0 !important;
     width: 100% !important; height: auto !important;
-    z-index: 99999 !important;
     background: #fff !important;
     overflow: visible !important;
   }
@@ -3782,10 +4336,10 @@ REGELN:
     font-family: Arial, sans-serif !important;
     page-break-inside: auto;
   }
-    .fahrt-print-area table thead { display: table-header-group !important; }
-    .fahrt-print-area table tfoot { display: table-footer-group !important; }
-    .fahrt-print-area table tr { page-break-inside: avoid; }
-    .fahrt-print-area table th {
+  .fahrt-print-area table thead { display: table-header-group !important; }
+  .fahrt-print-area table tfoot { display: table-footer-group !important; }
+  .fahrt-print-area table tr { page-break-inside: avoid; }
+  .fahrt-print-area table th {
     background: #f0f0f0 !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
@@ -3873,7 +4427,7 @@ REGELN:
               <line x1="21" y1="12" x2="9" y2="12"/>
             </svg>
           </button>
-          {(()=>{const now=new Date();const nowYM=now.getFullYear()*12+now.getMonth();const alertFz=state.fahrzeuge.filter(fz=>{if(!fz.tuvDatum)return false;const[y,m]=fz.tuvDatum.split("-").map(Number);return(y*12+(m-1))-nowYM<=2;});if(!alertFz.length)return null;return(
+          {(()=>{const now=new Date();const nowYM=now.getFullYear()*12+now.getMonth();const alertFz=[aktiv].filter(fz=>{if(!fz.tuvDatum)return false;const[y,m]=fz.tuvDatum.split("-").map(Number);return(y*12+(m-1))-nowYM<=2;});if(!alertFz.length)return null;return(
               <div ref={tuvRef} style={{position:"relative"}}>
                 {/* Кнопка — только иконка + красная точка */}
                 <button onClick={()=>setTuvPopup(v=>!v)}
