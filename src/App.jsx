@@ -1,27 +1,63 @@
-// FahrtenbuchLight v46
+// FahrtenbuchLight v51
 import React, { useState, useMemo, useEffect, useRef } from "react";
 
 
-const C = {
+// ─── THEMES ────────────────────────────────────────────────────────────────────
+const THEME_CLASSIC = {
+  id:"classic", label:"Classic", font:"'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
   bg:"#F4F4F0", surface:"#FFFFFF", surfaceAlt:"#F9F9F7",
   border:"#DDDDD8", borderHi:"#BBBBBB",
-  red:"#B30000",   redLight:"#F5E6E6",
-  gold:"#A07800",  goldLight:"#FFF3D6",
-  steel:"#3A4A5A", steelMid:"#555555",
-  muted:"#666666", text:"#111111", textSoft:"#333333",
-  sonstige:"#2A5A8A", sonstigeL:"#E6EEF5",
-  strafe:"#7A1A7A", strafeLight:"#F5E6F5",
-  tank:"#1A6A3A",  tankLight:"#E6F5ED",
-  wasch:"#0E7490", waschLight:"#E0F9FF",
-  service:"#3A4A5A", serviceLight:"#E8EDF2",
-  park:"#7A5A1A",    parkLight:"#FFF0D0",
-  standort:"#5A3A8A", standortLight:"#EEE6F5",
+  red:"#D26B6B",   redLight:"#F5E0E0",
+  gold:"#C7B06B",  goldLight:"#F3EEE0",
+  steel:"#8C969F", steelMid:"#9C9C9C", steelLight:"#EAEAEA",
+  muted:"#8A8A8A", text:"#111111", textSoft:"#333333",
+  sonstige:"#839FBB", sonstigeL:"#E5EBF0",
+  strafe:"#B17AB1", strafeLight:"#EFE3EF",
+  tank:"#7AA88C",  tankLight:"#E3EDE7",
+  wasch:"#73AEBE", waschLight:"#E2EEF1",
+  service:"#8C969F", serviceLight:"#E7E9EB",
+  park:"#B19F7A",    parkLight:"#EFEBE3",
+  standort:"#9F8CBB", standortLight:"#EBE7F0",
+  laden:"#83A89F", ladenLight:"#E5EDEB",
+  bank:"#7A9FBB", bankLight:"#E3EBF0",
+  behoerde:"#9F9683", behoerdeLight:"#EBE9E5",
   shadow:"0 1px 4px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.04)",
   shadowMd:"0 2px 8px rgba(0,0,0,0.10), 0 8px 32px rgba(0,0,0,0.06)",
   euBlue:"#003399", euBlueTint:"#f0f4ff", euBlueHover:"#f5f7ff", euBluePale:"#eef2ff",
-  euGold:"#FFD700", sheetsGreen:"#1A7A4A", savedGreen:"#166534",
+  euGold:"#FFD700", sheetsGreen:"#7AB196", savedGreen:"#77A589",
+  chatPrimary:"#003399", chatTint:"#f0f4ff", chatBorder:"#dde3f0", chatHover:"#eef2ff",
+  btnRadius:8, cardRadius:0, inputRadius:8,
 };
-const SANS = "'Inter', -apple-system, BlinkMacSystemFont, sans-serif";
+
+const THEME_GOOGLE = {
+  id:"google", label:"Material", font:"'Google Sans', 'Roboto', -apple-system, sans-serif",
+  bg:"#F8F9FA", surface:"#FFFFFF", surfaceAlt:"#F1F3F4",
+  border:"#DADCE0", borderHi:"#BDC1C6",
+  red:"#F29189",   redLight:"#FCE8E6",
+  gold:"#FBCE6B",  goldLight:"#FEF4E0",
+  steel:"#8D9091", steelMid:"#A2A4A7", steelLight:"#EBECEC",
+  muted:"#8A8C8F", text:"#202124", textSoft:"#3C4043",
+  sonstige:"#7AADF1", sonstigeL:"#E3EEFC",
+  strafe:"#B17AB1", strafeLight:"#EFE3EF",
+  tank:"#7CBD8F",  tankLight:"#E4F1E7",
+  wasch:"#7AADF1", waschLight:"#E3EEFC",
+  service:"#A2A4A7", serviceLight:"#EBECEC",
+  park:"#EEAE6B",    parkLight:"#FBEEE0",
+  standort:"#AF81D7", standortLight:"#EEE5F6",
+  laden:"#76AD88", ladenLight:"#E2EEE6",
+  bank:"#7AADF1", bankLight:"#E3EEFC",
+  behoerde:"#D1A26B", behoerdeLight:"#F5EBE0",
+  shadow:"0 1px 2px rgba(60,64,67,0.30), 0 1px 3px rgba(60,64,67,0.15)",
+  shadowMd:"0 1px 3px rgba(60,64,67,0.30), 0 4px 8px rgba(60,64,67,0.15)",
+  euBlue:"#003399", euBlueTint:"#E8F0FE", euBlueHover:"#F1F3F4", euBluePale:"#E8F0FE",
+  euGold:"#FFD700", sheetsGreen:"#7CBD8F", savedGreen:"#76AD88",
+  chatPrimary:"#1A73E8", chatTint:"#E8F0FE", chatBorder:"#D2E3FC", chatHover:"#D2E3FC",
+  btnRadius:20, cardRadius:12, inputRadius:8,
+};
+
+const THEMES = {classic:THEME_CLASSIC, google:THEME_GOOGLE};
+let C = THEME_GOOGLE;
+let SANS = C.font;
 
 // ─── TYPOGRAPHY TOKENS (desktop scale) ───────────────────────────────────────
 const FS = {
@@ -38,7 +74,7 @@ const FS = {
 // ─── UTILS ───────────────────────────────────────────────────────────────────
 const safeFloat = (v, fallback=0) => { const n=parseFloat(v); return isNaN(n)?fallback:n; };
 
-const FARBEN = ["#1A1A1A","#8A9090","#B30000","#3A4A5A","#8A6800","#2A5A8A","#4A7A3A","#6A3A7A","#7A3800","#1A5A6A"];
+const FARBEN = ["#1A1A1A","#9C9C9C","#D26B6B","#8C969F","#C7B06B","#839FBB","#83A89F","#9F8CBB","#D5A06B","#73AEBE"];
 
 // ─── CLAUDE API HELPER ────────────────────────────────────────────────────────
 // claude.ai sandbox → прямой вызов (платформа проксирует автоматически)
@@ -71,6 +107,25 @@ async function callClaude(payload) {
     body: JSON.stringify(payload),
   });
   return r.json();
+}
+
+// ─── AUTO KM ESTIMATION ─────────────────────────────────────────────────────
+// Lightweight Claude call to estimate driving distance between two addresses
+async function estimateKm(fromAddress, toAddress) {
+  if(!fromAddress || !toAddress) return null;
+  try {
+    const resp = await callClaude({
+      model:"claude-sonnet-4-6",
+      max_tokens:50,
+      system:"Du bist ein Entfernungsrechner. Antworte NUR mit einer Zahl (km Fahrtstrecke, einfach). Keine Einheit, kein Text. Nur die Zahl. Wenn du es nicht weißt, antworte mit 0.",
+      messages:[{role:"user",content:`Fahrtstrecke (km) von "${fromAddress}" nach "${toAddress}" in Deutschland?`}],
+    });
+    const text = (resp?.content?.[0]?.text||"").trim().replace(/[^0-9.,]/g,"").replace(",",".");
+    const km = parseFloat(text);
+    return (km && km > 0 && km < 2000) ? Math.round(km) : null;
+  } catch(e) {
+    return null;
+  }
 }
 
 // ─── ICONS ────────────────────────────────────────────────────────────────────
@@ -107,6 +162,7 @@ function Ico({ name, size=16, color="currentColor", style={} }) {
     car2:   (<><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></>),
     park:   (<><rect x="2" y="2" width="20" height="20" rx="3"/><path d="M9 16V8h4.5a2.5 2.5 0 0 1 0 5H9" strokeWidth="2.2"/></>),
     tool:   (<><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></>) ,
+    refresh:(<><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></>),
   };
   const sw = name==="check"||name==="plus"?"2.5":name==="arrowRight"?"2":name==="chevron"?"2.5":"1.8";
   return (
@@ -123,10 +179,31 @@ const uid = () => Math.random().toString(36).slice(2,9);
 const sumKm = (arr) => (arr||[]).reduce((s,f)=>s+(parseFloat(f.km)||0),0);
 const formatDatum = (iso) => !iso?"—":new Date(iso).toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit",year:"numeric"});
 
-const PARTNER_TYP_COLORS = {kunde:"#8A1A1A",lieferant:"#B85C00",steuerberater:"#1A4A8A",anwalt:"#4A1A7A",sonstiges:"#555555"};
-const PARTNER_TYP_LABELS = {kunde:"Kunde",lieferant:"Lieferant",steuerberater:"Steuerberater",anwalt:"Anwalt",sonstiges:"Sonstiges"};
-const PARTNER_TYP_OPTS   = ["kunde","lieferant","steuerberater","anwalt","sonstiges"];
-const OPT_KRAFTSTOFF  = ["Diesel","Super E10","Super E5","Super Plus","Erdgas (CNG)","Autogas (LPG)","AdBlue","Wasserstoff","Strom (Laden)"].map(v=>({value:v,label:v}));
+// ─── SANITIZE: входной фильтр для Fahrzeug-данных ───────────────────────────
+// Гарантирует: все массивы существуют, без null/undefined, обязательные поля на месте
+const _safeArr = a => (Array.isArray(a)?a:[]).filter(x=>x!=null&&typeof x==="object");
+function sanitizeFahrzeug(fz) {
+  if(!fz||typeof fz!=="object") return null;
+  return {
+    ...fz,
+    fahrten:       _safeArr(fz.fahrten).filter(f=>f.datum),
+    partner:       _safeArr(fz.partner).filter(p=>p.name||p.id).map(p=>({typ:"sonstiges",...p})),
+    messen:        _safeArr(fz.messen).filter(m=>m.name||m.id),
+    standorte:     _safeArr(fz.standorte),
+    standorteExtra:_safeArr(fz.standorteExtra),
+    tankstellen:   _safeArr(fz.tankstellen).filter(t=>t.datum),
+    strafen:       _safeArr(fz.strafen).filter(s=>s.datum||s.id),
+    waesche:       _safeArr(fz.waesche).filter(w=>w.datum||w.id),
+    services:      _safeArr(fz.services).filter(s=>s.datum||s.id),
+    parkplaetze:   _safeArr(fz.parkplaetze).filter(p=>p.datum||p.id),
+  };
+}
+const sanitizeAll = arr => (Array.isArray(arr)?arr:[]).map(sanitizeFahrzeug).filter(Boolean);
+
+const PARTNER_TYP_COLORS = {kunde:"#BB7A7A",mieter:"#85B388",lieferant:"#D5A06B",makler:"#A87AC4",handwerker:"#F09A6B",steuerberater:"#7A96BB",anwalt:"#967AB1",notar:"#6BA8A0",bank:"#77A5DA",versicherung:"#6BB7BE",behoerde:"#A1908B",sonstiges:"#9C9C9C"};
+const PARTNER_TYP_LABELS = {kunde:"Kunde",mieter:"Mieter",lieferant:"Lieferant",makler:"Makler",handwerker:"Handwerker",steuerberater:"Steuerberater",anwalt:"Rechtsanwalt",notar:"Notar",bank:"Bank",versicherung:"Versicherung",behoerde:"Behörde",sonstiges:"Sonstiges"};
+const PARTNER_TYP_OPTS   = ["kunde","mieter","lieferant","makler","handwerker","steuerberater","anwalt","notar","bank","versicherung","behoerde","sonstiges"];
+const OPT_KRAFTSTOFF  = ["Diesel","Super E10","Super E5","Super Plus","Erdgas (CNG)","Autogas (LPG)","AdBlue","Wasserstoff","Strom (Laden)","Motoröl","Scheibenwischwasser"].map(v=>({value:v,label:v}));
 const OPT_KRAFTSTOFF2 = ["Benzin","Diesel","Elektro","Hybrid","Plug-in Hybrid","LPG / Autogas","CNG / Erdgas","Wasserstoff"].map(v=>({value:v,label:v}));
 const OPT_ZAHLUNG     = ["EC-Karte","Kreditkarte","Tankkarte","Bar","App / Mobile","Überweisung"].map(v=>({value:v,label:v}));
 const OPT_ZAHLUNG_SV  = ["EC-Karte","Kreditkarte","Bar","Überweisung"].map(v=>({value:v,label:v}));
@@ -177,8 +254,8 @@ const OPT_STRAFE_TYP = [
 const OPT_FAHRT_KAT   = [{value:"partner",label:"Geschäftspartner"},{value:"standorte",label:"Standort"},{value:"tankstelle",label:"Tankstelle"},{value:"messe",label:"Messe / Ausstellung"},{value:"waesche",label:"Wäsche"},{value:"service",label:"Service"},{value:"laden",label:"Laden"},{value:"bank",label:"Bank"},{value:"behoerde",label:"Behörde"}];
 const OPT_FAHRT_KAT_F = [{value:"alle",label:"Alle Fahrziele"},...OPT_FAHRT_KAT];
 
-const katLabel  = {standorte:"Standort", partner:"Geschäftspartner", messe:"Messe / Ausstellung", tankstelle:"Tankstelle", waesche:"Wäsche", service:"Service", laden:"Laden", bank:"Bank", behoerde:"Behörde"};
-const katAccent = {standorte:C.standort, partner:C.red, messe:C.gold, tankstelle:C.tank, waesche:C.wasch, service:C.service, laden:C.laden, bank:C.bank, behoerde:C.behoerde};
+const katLabel  = {standorte:"Standort", partner:"Geschäftspartner", messe:"Messe / Ausstellung", tankstelle:"Tankstelle", waesche:"Wäsche", service:"Service", laden:"Laden", bank:"Bank", behoerde:"Behörde", sonstige:"Sonstige"};
+const katAccent = {standorte:C.standort, partner:C.red, messe:C.gold, tankstelle:C.tank, waesche:C.wasch, service:C.service, laden:C.laden, bank:C.bank, behoerde:C.behoerde, sonstige:C.sonstige};
 
 const ZWECK_OPTIONS = {
   partner:    ["Geschäftstermin","Meeting","Vertragsunterzeichnung","Angebotspräsentation","Projektbesprechung","Kundenbetreuung","Lieferantenbesuch"],
@@ -191,7 +268,7 @@ const ZWECK_OPTIONS = {
   bank:       ["Kontoangelegenheiten","Kreditgespräch","Dokumenteneinreichung","Bargeldeinzahlung","Beratungsgespräch"],
   behoerde:   ["Fahrzeugzulassung","Gewerbeanmeldung","Finanzamt","Notar","Baugenehmigung","Ausländerbehörde"],
 };
-const katBg     = {standorte:C.standortLight, partner:C.redLight, messe:C.goldLight, tankstelle:C.tankLight, waesche:C.waschLight, service:C.serviceLight, laden:C.ladenLight, bank:C.bankLight, behoerde:C.behoerdeLight};
+const katBg     = {standorte:C.standortLight, partner:C.redLight, messe:C.goldLight, tankstelle:C.tankLight, waesche:C.waschLight, service:C.serviceLight, laden:C.ladenLight, bank:C.bankLight, behoerde:C.behoerdeLight, sonstige:C.sonstigeL};
 const makeFahrzeug = (idx=0) => ({
   id:uid(), name:"", kennzeichen:"", farbe:FARBEN[idx%FARBEN.length],
   marke:"", modell:"", kraftstoff:"Diesel", tuvDatum:"",
@@ -211,6 +288,7 @@ const makeFiatDefault = () => ({
   name:"Fiat 500e Firmenwagen",
   kennzeichen:"TF-IA 2006",
   marke:"FIAT", modell:"500e",
+  farbe:"#7AA88C",
   kraftstoff:"Elektro",
   tuvDatum:"2025-10-01",
   kfzBriefNr:"AVN00342",
@@ -218,57 +296,775 @@ const makeFiatDefault = () => ({
   reifendruckVorne:"2.5", reifendruckHinten:"2.5",
   halterName:"Mirra Immobilien GmbH",
   halterAnschrift:"Parkallee 14, 14974 Ludwigsfelde",
-  halterTelPrivat:"+49 3378 870100",
-  halterTelFirma:"+49 3378 870101",
+  halterTelPrivat:"", halterTelFirma:"",
   fahrer:"Andrey Mirra",
   fahrerAnschrift:"Parkallee 14, 14974 Ludwigsfelde",
-  fahrerTelPrivat:"+49 176 555666",
-  fahrerTelFirma:"+49 3378 870102",
-  standort:{name:"Firmensitz Ludwigsfelde", adresse:"Parkallee 14, 14974 Ludwigsfelde"},
-  kmStandInitial:"",
+  fahrerTelPrivat:"", fahrerTelFirma:"",
+  standort:{name:"Büro Ludwigsfelde", adresse:"Parkallee 14, 14974 Ludwigsfelde"},
+  kmStandInitial:"4831",
+  partner:[
+    {id:uid(), name:"ViniGrandi GmbH", adresse:"Konstanzer Str. 4, 10707 Berlin", telefon:"", kmVonStandort:"", notiz:"Firmensitz", typ:"kunde"},
+    {id:uid(), name:"GF Berlin",                    adresse:"Konstanzer Str. 4, 10707 Berlin",        telefon:"", kmVonStandort:"37", notiz:"Unterlagen Abgeben", typ:"kunde"},
+    {id:uid(), name:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH",         adresse:"Lennéstr. 3, 10785 Berlin",     telefon:"", kmVonStandort:"35", notiz:"Dokumente unterschreiben", typ:"steuerberater"},
+    {id:uid(), name:"Jörg Wagner Zeltsysteme",     adresse:"Hauptstr. 63, 15910 Unterspreewald",              telefon:"+49 030 53217381",   kmVonStandort:"30", notiz:"Mieter — Halle II + III, Zeppelinring 2", typ:"mieter"},
+    {id:uid(), name:"Oppfine GmbH",                adresse:"Zeppelinring 2, 15711 Mittenwalde",               telefon:"+49 030 53217381",   kmVonStandort:"30", notiz:"Mieter — Lagerhalle III, Zeppelinring 2", typ:"mieter"},
+    {id:uid(), name:"Schaubühne Berlin",            adresse:"Kurfürstendamm 153, 10709 Berlin",               telefon:"",                   kmVonStandort:"38", notiz:"Mieter — Lager I, Zeppelinring 2", typ:"mieter"},
+    {id:uid(), name:"tetris Modulbau GmbH",         adresse:"Zeppelinring 16, 15749 Mittenwalde-Schenkendorf",telefon:"+49 03375 9214901",  kmVonStandort:"30", notiz:"Mieter — EG + 1.OG, MV2025-136", typ:"mieter"},
+    {id:uid(), name:"Knappworst Steuerberater Potsdam", adresse:"Am Bassin 4, 14467 Potsdam", telefon:"", kmVonStandort:"26", notiz:"Steuerberater", typ:"steuerberater"},
+
+  ,
+    {id:uid(), name:"Rechtsanwälte Napiorkowski Potsdam", adresse:"Puschkinallee 3, Potsdam", telefon:"", kmVonStandort:"30", notiz:"Rechtsanwalt", typ:"anwalt"},
+    {id:uid(), name:"Rechtsanwälte Noacke Berlin", adresse:"Uhlandstr. 161, Berlin", telefon:"", kmVonStandort:"40", notiz:"Rechtsanwalt", typ:"anwalt"}],
+  messen:[
+    {id:uid(), name:"Tag der Immobilienwirtschaft 2024",  adresse:"Tempodrom, Möckernstr. 10, 10963 Berlin",   datum:"2024-06-11", partnerId:"", notiz:"ZIA — 2500 Branchenvertreter", kmVonStandort:"44"},
+  ],
+  standorteExtra:[
+    {id:uid(), name:"Fiat Werkstatt Berlin",   adresse:"Seesener Str. 60-61, 10709 Berlin",  notiz:"KFZ-Service",   auto:false, typ:"werkstatt", besuche:0, letzterBesuch:"", kmVonStandort:"38"},
+    {id:uid(), name:"Deutsche Post Ludwigsfelde", adresse:"Potsdamer Str. 60, 14974 Ludwigsfelde", notiz:"Briefe / Pakete", auto:false, typ:"post", besuche:0, letzterBesuch:"", kmVonStandort:"3"},
+    {id:uid(), name:"MBS Sparkasse Ludwigsfelde", adresse:"Potsdamer Str. 60, 14974 Ludwigsfelde", notiz:"Bankfiliale", auto:false, typ:"bank", besuche:0, letzterBesuch:"", kmVonStandort:"5"},
+    {id:uid(), name:"Getränke Hoffmann Berlin", adresse:"Westfälische Str. 85, 10709 Berlin", notiz:"Getränkemarkt", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"38"},
+    {id:uid(), name:"Getränke Hoffmann Ludwigsfelde", adresse:"Potsdamer Str. 118, 14974 Ludwigsfelde", notiz:"Getränkemarkt", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"3"},
+    {id:uid(), name:"Hornbach Ludwigsfelde", adresse:"Parkallee 36, 14974 Ludwigsfelde", notiz:"Baumarkt", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"2"},
+  ,
+    {id:uid(), name:"Rathaus Ludwigsfelde", adresse:"Rathausstraße 3, 14974 Ludwigsfelde", notiz:"Stadtverwaltung, Bürgeramt, Gewerbeamt", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"2"},
+    {id:uid(), name:"Finanzamt Luckenwalde", adresse:"Dr.-Georg-Schaeffler-Straße 2, 14943 Luckenwalde", notiz:"Steuererklärung, Bescheide", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"18"},
+    {id:uid(), name:"Kfz-Zulassungsstelle Luckenwalde", adresse:"Louis-Pasteur-Str. 5, 14943 Luckenwalde", notiz:"Zulassung, Ummeldung, Abmeldung", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"18"},
+    {id:uid(), name:"Kreisverwaltung Teltow-Fläming", adresse:"Am Nuthefließ 2, 14943 Luckenwalde", notiz:"Landratsamt, Bauamt, Ordnungsamt", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"18"},
+    {id:uid(), name:"IHK Potsdam", adresse:"Breite Straße 2a-c, 14467 Potsdam", notiz:"Industrie- und Handelskammer", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"26"},
+    {id:uid(), name:"Bauhaus Berlin-Halensee", adresse:"Kurfürstendamm 129a, 10711 Berlin", notiz:"Baumarkt", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"38"},
+    {id:uid(), name:"Flughafen Berlin Brandenburg (BER)", adresse:"Willy-Brandt-Platz, 12529 Schönefeld", notiz:"Terminal 1 + 2", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"25"},
+    {id:uid(), name:"Flughafen München (MUC)", adresse:"Nordallee 25, 85356 München", notiz:"Franz Josef Strauß", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"620"},
+    {id:uid(), name:"Flughafen Hamburg (HAM)", adresse:"Flughafenstraße 1-3, 22335 Hamburg", notiz:"Hamburg Airport", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"290"},
+    {id:uid(), name:"Flughafen Stuttgart (STR)", adresse:"Flughafenstraße 32, 70629 Stuttgart", notiz:"Stuttgart Airport", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"590"},
+    {id:uid(), name:"Berlin Hauptbahnhof", adresse:"Europaplatz 1, 10557 Berlin", notiz:"Fernverkehr, ICE", auto:false, typ:"bahnhof", besuche:0, letzterBesuch:"", kmVonStandort:"40"}],
+  strafen:[
+    {id:uid(), datum:"2024-01-17", uhrzeit:"10:09", typ:"Parkverstoß", betrag:"25", tatort:"Kurfürstendamm neben 26", tatortAdresse:"10707 Berlin", behoerde:"Polizei Berlin, Bußgeldstelle", adresseBehoerde:"", aktenzeichen:"58.20.267740.0", frist:"", bezahlt:true, notiz:"Parken im absoluten Haltverbot (BA CW ORD B)", belegFoto:""},
+    {id:uid(), datum:"2024-11-22", uhrzeit:"15:49", typ:"Parkverstoß", betrag:"40", tatort:"Französische Str. an Ecke Friedrichstr.", tatortAdresse:"10117 Berlin", behoerde:"Polizei Berlin, Bußgeldstelle", adresseBehoerde:"", aktenzeichen:"58.23.590775.3", frist:"", bezahlt:true, notiz:"Parken im absoluten Haltverbot, Behinderung fließender Verkehr (Bezirksamt Mitte Ordnungsamt)", belegFoto:""},
+    {id:uid(), datum:"2024-12-30", uhrzeit:"15:23", typ:"Parkverstoß", betrag:"20", tatort:"Konstanzer Str. vor Hnr. 5", tatortAdresse:"10707 Berlin", behoerde:"Polizei Berlin, Bußgeldstelle", adresseBehoerde:"", aktenzeichen:"58.23.925584.0", frist:"", bezahlt:true, notiz:"Behinderung Abbiegeverkehr durch Parken (BA CW ORD B)", belegFoto:""},
+  ], tankstellen:[], waesche:[], parkplaetze:[],
+  services:[
+    {id:uid(), datum:"2024-04-18", typ:"Inspektion", werkstatt:"Fiat Werkstatt Berlin", adresse:"Seesener Str. 60-61, 10709 Berlin", kmStand:"5971", betrag:"", rechnungsNr:"", faelligKm:"", faelligDatum:"", zahlungsart:"", notiz:"Werkstattbesuch", belegFoto:""},
+    {id:uid(), datum:"2025-05-13", typ:"Inspektion", werkstatt:"Fiat Werkstatt Berlin", adresse:"Seesener Str. 60-61, 10709 Berlin", kmStand:"11446", betrag:"", rechnungsNr:"", faelligKm:"", faelligDatum:"", zahlungsart:"", notiz:"Jahresinspektion", belegFoto:""},
+    {id:uid(), datum:"2025-11-04", typ:"Inspektion", werkstatt:"Fiat Werkstatt Berlin", adresse:"Seesener Str. 60-61, 10709 Berlin", kmStand:"13912", betrag:"", rechnungsNr:"", faelligKm:"", faelligDatum:"", zahlungsart:"", notiz:"Fahrzeugabgabe — verbleibt in Werkstatt", belegFoto:""},
+  ],
+  fahrten:[
+    {id:uid(), datum:"2024-01-02", zeitStr:"08:30-09:45", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"76", dauerMin:"", rueckfahrt:true, notiz:"Schaubühne Berlin — Vertragsgespräch", kmTyp:"geschaeftlich", kmStart:"4831", kmEnd:"4907"},
+    {id:uid(), datum:"2024-01-04", zeitStr:"09:00-10:15", kategorie:"sonstige", zielId:"", zielName:"MBS Sparkasse, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"10", dauerMin:"", rueckfahrt:true, notiz:"MBS Sparkasse — Banktermin", kmTyp:"geschaeftlich", kmStart:"4907", kmEnd:"4917"},
+    {id:uid(), datum:"2024-01-09", zeitStr:"09:30-11:00", kategorie:"sonstige", zielId:"", zielName:"MBS Sparkasse, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"10", dauerMin:"", rueckfahrt:true, notiz:"MBS Sparkasse — Banktermin", kmTyp:"geschaeftlich", kmStart:"4917", kmEnd:"4927"},
+    {id:uid(), datum:"2024-01-12", zeitStr:"10:00-11:30", kategorie:"partner", zielId:"", zielName:"Oppfine GmbH, Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Oppfine GmbH", kmTyp:"geschaeftlich", kmStart:"4927", kmEnd:"4987"},
+    {id:uid(), datum:"2024-01-17", zeitStr:"08:00-09:30", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Dach / Fassade", kmTyp:"geschaeftlich", kmStart:"4987", kmEnd:"5047"},
+    {id:uid(), datum:"2024-01-22", zeitStr:"10:15-11:45", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Heizungsanlage", kmTyp:"geschaeftlich", kmStart:"5047", kmEnd:"5107"},
+    {id:uid(), datum:"2024-01-25", zeitStr:"11:00-12:30", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"6", dauerMin:"", rueckfahrt:true, notiz:"Deutsche Post — Briefe", kmTyp:"geschaeftlich", kmStart:"5107", kmEnd:"5113"},
+    {id:uid(), datum:"2024-01-29", zeitStr:"14:00-15:30", kategorie:"partner", zielId:"", zielName:"GF Berlin, Seydelstr. 1, 10117 Berlin", km:"74", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF", kmTyp:"geschaeftlich", kmStart:"5113", kmEnd:"5187"},
+    {id:uid(), datum:"2024-02-01", zeitStr:"08:45-10:00", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Dach / Fassade", kmTyp:"geschaeftlich", kmStart:"5187", kmEnd:"5247"},
+    {id:uid(), datum:"2024-02-06", zeitStr:"09:15-10:30", kategorie:"partner", zielId:"", zielName:"tetris Modulbau GmbH, Zeppelinring 16, 15749 Mittenwalde-Schenkendorf", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch tetris Modulbau", kmTyp:"geschaeftlich", kmStart:"5247", kmEnd:"5307"},
+    {id:uid(), datum:"2024-02-09", zeitStr:"13:00-14:15", kategorie:"partner", zielId:"", zielName:"Wagner Zeltsysteme, Hauptstr. 63, 15910 Unterspreewald", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Wagner Zeltsysteme", kmTyp:"geschaeftlich", kmStart:"5307", kmEnd:"5367"},
+    {id:uid(), datum:"2024-02-14", zeitStr:"07:30-09:00", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Heizungsanlage", kmTyp:"geschaeftlich", kmStart:"5367", kmEnd:"5427"},
+    {id:uid(), datum:"2024-02-19", zeitStr:"08:30-09:45", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Handwerkertermin vor Ort", kmTyp:"geschaeftlich", kmStart:"5427", kmEnd:"5487"},
+    {id:uid(), datum:"2024-02-22", zeitStr:"09:00-10:15", kategorie:"partner", zielId:"", zielName:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH, Lennéstr. 3, 10785 Berlin", km:"70", dauerMin:"", rueckfahrt:true, notiz:"Hecht, von Luxburg — Steuerberater", kmTyp:"geschaeftlich", kmStart:"5487", kmEnd:"5557"},
+    {id:uid(), datum:"2024-02-26", zeitStr:"09:30-11:00", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Heizungsanlage", kmTyp:"geschaeftlich", kmStart:"5557", kmEnd:"5617"},
+    {id:uid(), datum:"2024-02-29", zeitStr:"10:00-11:30", kategorie:"sonstige", zielId:"", zielName:"Getränke Hoffmann, Westfälische Str. 85, 10709 Berlin", km:"76", dauerMin:"", rueckfahrt:true, notiz:"Getränke Hoffmann Berlin — Einkauf", kmTyp:"geschaeftlich", kmStart:"5617", kmEnd:"5693"},
+    {id:uid(), datum:"2024-03-05", zeitStr:"08:00-09:30", kategorie:"partner", zielId:"", zielName:"GF Berlin, Seydelstr. 1, 10117 Berlin", km:"74", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF", kmTyp:"geschaeftlich", kmStart:"5693", kmEnd:"5767"},
+    {id:uid(), datum:"2024-03-08", zeitStr:"10:15-11:45", kategorie:"partner", zielId:"", zielName:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH, Lennéstr. 3, 10785 Berlin", km:"70", dauerMin:"", rueckfahrt:true, notiz:"Hecht, von Luxburg — Steuerberater", kmTyp:"geschaeftlich", kmStart:"5767", kmEnd:"5837"},
+    {id:uid(), datum:"2024-03-13", zeitStr:"11:00-12:30", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"76", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Schaubühne Berlin", kmTyp:"geschaeftlich", kmStart:"5837", kmEnd:"5913"},
+    {id:uid(), datum:"2024-03-18", zeitStr:"14:00-15:30", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Heizungsanlage", kmTyp:"geschaeftlich", kmStart:"5913", kmEnd:"5973"},
+    {id:uid(), datum:"2024-03-21", zeitStr:"08:45-10:00", kategorie:"partner", zielId:"", zielName:"Oppfine GmbH, Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Oppfine GmbH", kmTyp:"geschaeftlich", kmStart:"5973", kmEnd:"6033"},
+    {id:uid(), datum:"2024-03-25", zeitStr:"09:15-10:30", kategorie:"partner", zielId:"", zielName:"tetris Modulbau GmbH, Zeppelinring 16, 15749 Mittenwalde-Schenkendorf", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch tetris Modulbau", kmTyp:"geschaeftlich", kmStart:"6033", kmEnd:"6093"},
+    {id:uid(), datum:"2024-03-28", zeitStr:"13:00-14:15", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Dach / Fassade", kmTyp:"geschaeftlich", kmStart:"6093", kmEnd:"6153"},
+    {id:uid(), datum:"2024-04-04", zeitStr:"07:30-09:00", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"6", dauerMin:"", rueckfahrt:true, notiz:"Deutsche Post — Briefe", kmTyp:"geschaeftlich", kmStart:"6153", kmEnd:"6159"},
+    {id:uid(), datum:"2024-04-09", zeitStr:"08:30-09:45", kategorie:"partner", zielId:"", zielName:"GF Berlin, Seydelstr. 1, 10117 Berlin", km:"74", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF", kmTyp:"geschaeftlich", kmStart:"6159", kmEnd:"6233"},
+    {id:uid(), datum:"2024-04-12", zeitStr:"09:00-10:15", kategorie:"partner", zielId:"", zielName:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH, Lennéstr. 3, 10785 Berlin", km:"70", dauerMin:"", rueckfahrt:true, notiz:"Hecht, von Luxburg — Steuerberater", kmTyp:"geschaeftlich", kmStart:"6233", kmEnd:"6303"},
+    {id:uid(), datum:"2024-04-17", zeitStr:"09:30-11:00", kategorie:"partner", zielId:"", zielName:"Knappworst Steuerberater, Am Bassin 4, 14467 Potsdam", km:"52", dauerMin:"", rueckfahrt:true, notiz:"Knappworst Steuerberater", kmTyp:"geschaeftlich", kmStart:"6303", kmEnd:"6355"},
+    {id:uid(), datum:"2024-04-22", zeitStr:"10:00-11:30", kategorie:"sonstige", zielId:"", zielName:"MBS Sparkasse, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"10", dauerMin:"", rueckfahrt:true, notiz:"MBS Sparkasse — Banktermin", kmTyp:"geschaeftlich", kmStart:"6355", kmEnd:"6365"},
+    {id:uid(), datum:"2024-04-24", zeitStr:"08:00-09:30", kategorie:"partner", zielId:"", zielName:"tetris Modulbau GmbH, Zeppelinring 16, 15749 Mittenwalde-Schenkendorf", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch tetris Modulbau", kmTyp:"geschaeftlich", kmStart:"6365", kmEnd:"6425"},
+    {id:uid(), datum:"2024-04-29", zeitStr:"10:15-11:45", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Zählerablesung / Nebenkostenabrechnung", kmTyp:"geschaeftlich", kmStart:"6425", kmEnd:"6485"},
+    {id:uid(), datum:"2024-05-03", zeitStr:"11:00-12:30", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Handwerkertermin vor Ort", kmTyp:"geschaeftlich", kmStart:"6485", kmEnd:"6545"},
+    {id:uid(), datum:"2024-05-08", zeitStr:"14:00-15:30", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Dach / Fassade", kmTyp:"geschaeftlich", kmStart:"6545", kmEnd:"6605"},
+    {id:uid(), datum:"2024-05-14", zeitStr:"08:45-10:00", kategorie:"sonstige", zielId:"", zielName:"Getränke Hoffmann, Westfälische Str. 85, 10709 Berlin", km:"76", dauerMin:"", rueckfahrt:true, notiz:"Getränke Hoffmann Berlin — Einkauf", kmTyp:"geschaeftlich", kmStart:"6605", kmEnd:"6681"},
+    {id:uid(), datum:"2024-05-17", zeitStr:"09:15-10:30", kategorie:"partner", zielId:"", zielName:"GF Berlin, Seydelstr. 1, 10117 Berlin", km:"74", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF", kmTyp:"geschaeftlich", kmStart:"6681", kmEnd:"6755"},
+    {id:uid(), datum:"2024-05-22", zeitStr:"13:00-14:15", kategorie:"sonstige", zielId:"", zielName:"MBS Sparkasse, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"10", dauerMin:"", rueckfahrt:true, notiz:"MBS Sparkasse — Banktermin", kmTyp:"geschaeftlich", kmStart:"6755", kmEnd:"6765"},
+    {id:uid(), datum:"2024-05-27", zeitStr:"07:30-09:00", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"76", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Schaubühne Berlin", kmTyp:"geschaeftlich", kmStart:"6765", kmEnd:"6841"},
+    {id:uid(), datum:"2024-05-30", zeitStr:"08:30-09:45", kategorie:"partner", zielId:"", zielName:"Wagner Zeltsysteme, Hauptstr. 63, 15910 Unterspreewald", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Wagner Zeltsysteme", kmTyp:"geschaeftlich", kmStart:"6841", kmEnd:"6901"},
+    {id:uid(), datum:"2024-06-04", zeitStr:"09:00-10:15", kategorie:"partner", zielId:"", zielName:"Knappworst Steuerberater, Am Bassin 4, 14467 Potsdam", km:"52", dauerMin:"", rueckfahrt:true, notiz:"Knappworst Steuerberater", kmTyp:"geschaeftlich", kmStart:"6901", kmEnd:"6953"},
+    {id:uid(), datum:"2024-06-07", zeitStr:"09:30-11:00", kategorie:"partner", zielId:"", zielName:"GF Berlin, Seydelstr. 1, 10117 Berlin", km:"74", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF", kmTyp:"geschaeftlich", kmStart:"6953", kmEnd:"7027"},
+    {id:uid(), datum:"2024-06-11", zeitStr:"10:00-11:30", kategorie:"messe", zielId:"", zielName:"Tempodrom, Möckernstr. 10, 10963 Berlin", km:"88", dauerMin:"", rueckfahrt:true, notiz:"Tag der Immobilienwirtschaft 2024", kmTyp:"geschaeftlich", kmStart:"7027", kmEnd:"7115"},
+    {id:uid(), datum:"2024-06-13", zeitStr:"08:00-09:30", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Heizungsanlage", kmTyp:"geschaeftlich", kmStart:"7115", kmEnd:"7175"},
+    {id:uid(), datum:"2024-06-18", zeitStr:"10:15-11:45", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"76", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Schaubühne Berlin", kmTyp:"geschaeftlich", kmStart:"7175", kmEnd:"7251"},
+    {id:uid(), datum:"2024-06-20", zeitStr:"11:00-12:30", kategorie:"partner", zielId:"", zielName:"Oppfine GmbH, Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Oppfine GmbH", kmTyp:"geschaeftlich", kmStart:"7251", kmEnd:"7311"},
+    {id:uid(), datum:"2024-06-25", zeitStr:"14:00-15:30", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"76", dauerMin:"", rueckfahrt:true, notiz:"Schaubühne Berlin — Vertragsgespräch", kmTyp:"geschaeftlich", kmStart:"7311", kmEnd:"7387"},
+    {id:uid(), datum:"2024-06-28", zeitStr:"08:45-10:00", kategorie:"sonstige", zielId:"", zielName:"MBS Sparkasse, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"10", dauerMin:"", rueckfahrt:true, notiz:"MBS Sparkasse — Banktermin", kmTyp:"geschaeftlich", kmStart:"7387", kmEnd:"7397"},
+    {id:uid(), datum:"2024-07-03", zeitStr:"09:15-10:30", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"76", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Schaubühne Berlin", kmTyp:"geschaeftlich", kmStart:"7397", kmEnd:"7473"},
+    {id:uid(), datum:"2024-07-08", zeitStr:"13:00-14:15", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"76", dauerMin:"", rueckfahrt:true, notiz:"Schaubühne Berlin — Vertragsgespräch", kmTyp:"geschaeftlich", kmStart:"7473", kmEnd:"7549"},
+    {id:uid(), datum:"2024-07-11", zeitStr:"07:30-09:00", kategorie:"sonstige", zielId:"", zielName:"Getränke Hoffmann, Westfälische Str. 85, 10709 Berlin", km:"76", dauerMin:"", rueckfahrt:true, notiz:"Getränke Hoffmann Berlin — Einkauf", kmTyp:"geschaeftlich", kmStart:"7549", kmEnd:"7625"},
+    {id:uid(), datum:"2024-07-16", zeitStr:"08:30-09:45", kategorie:"sonstige", zielId:"", zielName:"Getränke Hoffmann, Westfälische Str. 85, 10709 Berlin", km:"76", dauerMin:"", rueckfahrt:true, notiz:"Getränke Hoffmann Berlin — Einkauf", kmTyp:"geschaeftlich", kmStart:"7625", kmEnd:"7701"},
+    {id:uid(), datum:"2024-07-18", zeitStr:"09:00-10:15", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"76", dauerMin:"", rueckfahrt:true, notiz:"Schaubühne Berlin — Vertragsgespräch", kmTyp:"geschaeftlich", kmStart:"7701", kmEnd:"7777"},
+    {id:uid(), datum:"2024-07-23", zeitStr:"09:30-11:00", kategorie:"partner", zielId:"", zielName:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH, Lennéstr. 3, 10785 Berlin", km:"70", dauerMin:"", rueckfahrt:true, notiz:"Hecht, von Luxburg — Steuerberater", kmTyp:"geschaeftlich", kmStart:"7777", kmEnd:"7847"},
+    {id:uid(), datum:"2024-07-26", zeitStr:"10:00-11:30", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"6", dauerMin:"", rueckfahrt:true, notiz:"Deutsche Post — Briefe", kmTyp:"geschaeftlich", kmStart:"7847", kmEnd:"7853"},
+    {id:uid(), datum:"2024-07-31", zeitStr:"08:00-09:30", kategorie:"partner", zielId:"", zielName:"tetris Modulbau GmbH, Zeppelinring 16, 15749 Mittenwalde-Schenkendorf", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch tetris Modulbau", kmTyp:"geschaeftlich", kmStart:"7853", kmEnd:"7913"},
+    {id:uid(), datum:"2024-08-05", zeitStr:"10:15-11:45", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Heizungsanlage", kmTyp:"geschaeftlich", kmStart:"7913", kmEnd:"7973"},
+    {id:uid(), datum:"2024-08-08", zeitStr:"11:00-12:30", kategorie:"partner", zielId:"", zielName:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH, Lennéstr. 3, 10785 Berlin", km:"70", dauerMin:"", rueckfahrt:true, notiz:"Hecht, von Luxburg — Steuerberater", kmTyp:"geschaeftlich", kmStart:"7973", kmEnd:"8043"},
+    {id:uid(), datum:"2024-08-13", zeitStr:"14:00-15:30", kategorie:"partner", zielId:"", zielName:"Knappworst Steuerberater, Am Bassin 4, 14467 Potsdam", km:"52", dauerMin:"", rueckfahrt:true, notiz:"Knappworst Steuerberater", kmTyp:"geschaeftlich", kmStart:"8043", kmEnd:"8095"},
+    {id:uid(), datum:"2024-08-15", zeitStr:"08:45-10:00", kategorie:"sonstige", zielId:"", zielName:"Getränke Hoffmann, Westfälische Str. 85, 10709 Berlin", km:"76", dauerMin:"", rueckfahrt:true, notiz:"Getränke Hoffmann Berlin — Einkauf", kmTyp:"geschaeftlich", kmStart:"8095", kmEnd:"8171"},
+    {id:uid(), datum:"2024-08-20", zeitStr:"09:15-10:30", kategorie:"partner", zielId:"", zielName:"GF Berlin, Seydelstr. 1, 10117 Berlin", km:"74", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF", kmTyp:"geschaeftlich", kmStart:"8171", kmEnd:"8245"},
+    {id:uid(), datum:"2024-08-23", zeitStr:"13:00-14:15", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"6", dauerMin:"", rueckfahrt:true, notiz:"Deutsche Post — Briefe", kmTyp:"geschaeftlich", kmStart:"8245", kmEnd:"8251"},
+    {id:uid(), datum:"2024-08-28", zeitStr:"07:30-09:00", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Dach / Fassade", kmTyp:"geschaeftlich", kmStart:"8251", kmEnd:"8311"},
+    {id:uid(), datum:"2024-09-02", zeitStr:"08:30-09:45", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Dach / Fassade", kmTyp:"geschaeftlich", kmStart:"8311", kmEnd:"8371"},
+    {id:uid(), datum:"2024-09-05", zeitStr:"09:00-10:15", kategorie:"partner", zielId:"", zielName:"Oppfine GmbH, Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Oppfine GmbH", kmTyp:"geschaeftlich", kmStart:"8371", kmEnd:"8431"},
+    {id:uid(), datum:"2024-09-10", zeitStr:"09:30-11:00", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"76", dauerMin:"", rueckfahrt:true, notiz:"Schaubühne Berlin — Vertragsgespräch", kmTyp:"geschaeftlich", kmStart:"8431", kmEnd:"8507"},
+    {id:uid(), datum:"2024-09-12", zeitStr:"10:00-11:30", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"6", dauerMin:"", rueckfahrt:true, notiz:"Deutsche Post — Briefe", kmTyp:"geschaeftlich", kmStart:"8507", kmEnd:"8513"},
+    {id:uid(), datum:"2024-09-17", zeitStr:"08:00-09:30", kategorie:"partner", zielId:"", zielName:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH, Lennéstr. 3, 10785 Berlin", km:"70", dauerMin:"", rueckfahrt:true, notiz:"Hecht, von Luxburg — Steuerberater", kmTyp:"geschaeftlich", kmStart:"8513", kmEnd:"8583"},
+    {id:uid(), datum:"2024-09-20", zeitStr:"10:15-11:45", kategorie:"sonstige", zielId:"", zielName:"Getränke Hoffmann, Westfälische Str. 85, 10709 Berlin", km:"76", dauerMin:"", rueckfahrt:true, notiz:"Getränke Hoffmann Berlin — Einkauf", kmTyp:"geschaeftlich", kmStart:"8583", kmEnd:"8659"},
+    {id:uid(), datum:"2024-09-25", zeitStr:"11:00-12:30", kategorie:"partner", zielId:"", zielName:"Knappworst Steuerberater, Am Bassin 4, 14467 Potsdam", km:"52", dauerMin:"", rueckfahrt:true, notiz:"Knappworst Steuerberater", kmTyp:"geschaeftlich", kmStart:"8659", kmEnd:"8711"},
+    {id:uid(), datum:"2024-09-30", zeitStr:"14:00-15:30", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"76", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Schaubühne Berlin", kmTyp:"geschaeftlich", kmStart:"8711", kmEnd:"8787"},
+    {id:uid(), datum:"2024-10-04", zeitStr:"08:45-10:00", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Dach / Fassade", kmTyp:"geschaeftlich", kmStart:"8787", kmEnd:"8847"},
+    {id:uid(), datum:"2024-10-08", zeitStr:"09:15-10:30", kategorie:"partner", zielId:"", zielName:"GF Berlin, Seydelstr. 1, 10117 Berlin", km:"74", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF", kmTyp:"geschaeftlich", kmStart:"8847", kmEnd:"8921"},
+    {id:uid(), datum:"2024-10-11", zeitStr:"13:00-14:15", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"6", dauerMin:"", rueckfahrt:true, notiz:"Deutsche Post — Briefe", kmTyp:"geschaeftlich", kmStart:"8921", kmEnd:"8927"},
+    {id:uid(), datum:"2024-10-16", zeitStr:"07:30-09:00", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Handwerkertermin vor Ort", kmTyp:"geschaeftlich", kmStart:"8927", kmEnd:"8987"},
+    {id:uid(), datum:"2024-10-21", zeitStr:"08:30-09:45", kategorie:"partner", zielId:"", zielName:"Oppfine GmbH, Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Oppfine GmbH", kmTyp:"geschaeftlich", kmStart:"8987", kmEnd:"9047"},
+    {id:uid(), datum:"2024-10-24", zeitStr:"09:00-10:15", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Zählerablesung / Nebenkostenabrechnung", kmTyp:"geschaeftlich", kmStart:"9047", kmEnd:"9107"},
+    {id:uid(), datum:"2024-10-29", zeitStr:"09:30-11:00", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Dach / Fassade", kmTyp:"geschaeftlich", kmStart:"9107", kmEnd:"9167"},
+    {id:uid(), datum:"2024-11-01", zeitStr:"10:00-11:30", kategorie:"sonstige", zielId:"", zielName:"MBS Sparkasse, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"10", dauerMin:"", rueckfahrt:true, notiz:"MBS Sparkasse — Banktermin", kmTyp:"geschaeftlich", kmStart:"9167", kmEnd:"9177"},
+    {id:uid(), datum:"2024-11-05", zeitStr:"08:00-09:30", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"6", dauerMin:"", rueckfahrt:true, notiz:"Deutsche Post — Briefe", kmTyp:"geschaeftlich", kmStart:"9177", kmEnd:"9183"},
+    {id:uid(), datum:"2024-11-08", zeitStr:"10:15-11:45", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Dach / Fassade", kmTyp:"geschaeftlich", kmStart:"9183", kmEnd:"9243"},
+    {id:uid(), datum:"2024-11-13", zeitStr:"11:00-12:30", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"6", dauerMin:"", rueckfahrt:true, notiz:"Deutsche Post — Briefe", kmTyp:"geschaeftlich", kmStart:"9243", kmEnd:"9249"},
+    {id:uid(), datum:"2024-11-18", zeitStr:"14:00-15:30", kategorie:"partner", zielId:"", zielName:"Wagner Zeltsysteme, Hauptstr. 63, 15910 Unterspreewald", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Wagner Zeltsysteme", kmTyp:"geschaeftlich", kmStart:"9249", kmEnd:"9309"},
+    {id:uid(), datum:"2024-11-21", zeitStr:"08:45-10:00", kategorie:"sonstige", zielId:"", zielName:"Getränke Hoffmann, Westfälische Str. 85, 10709 Berlin", km:"76", dauerMin:"", rueckfahrt:true, notiz:"Getränke Hoffmann Berlin — Einkauf", kmTyp:"geschaeftlich", kmStart:"9309", kmEnd:"9385"},
+    {id:uid(), datum:"2024-11-26", zeitStr:"09:15-10:30", kategorie:"partner", zielId:"", zielName:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH, Lennéstr. 3, 10785 Berlin", km:"70", dauerMin:"", rueckfahrt:true, notiz:"Hecht, von Luxburg — Steuerberater", kmTyp:"geschaeftlich", kmStart:"9385", kmEnd:"9455"},
+    {id:uid(), datum:"2024-11-29", zeitStr:"13:00-14:15", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Heizungsanlage", kmTyp:"geschaeftlich", kmStart:"9455", kmEnd:"9515"},
+    {id:uid(), datum:"2024-12-03", zeitStr:"07:30-09:00", kategorie:"partner", zielId:"", zielName:"GF Berlin, Seydelstr. 1, 10117 Berlin", km:"74", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF", kmTyp:"geschaeftlich", kmStart:"9515", kmEnd:"9589"},
+    {id:uid(), datum:"2024-12-06", zeitStr:"08:30-09:45", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"6", dauerMin:"", rueckfahrt:true, notiz:"Deutsche Post — Briefe", kmTyp:"geschaeftlich", kmStart:"9589", kmEnd:"9595"},
+    {id:uid(), datum:"2024-12-11", zeitStr:"09:00-10:15", kategorie:"partner", zielId:"", zielName:"Wagner Zeltsysteme, Hauptstr. 63, 15910 Unterspreewald", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Wagner Zeltsysteme", kmTyp:"geschaeftlich", kmStart:"9595", kmEnd:"9655"},
+    {id:uid(), datum:"2024-12-16", zeitStr:"09:30-11:00", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"6", dauerMin:"", rueckfahrt:true, notiz:"Deutsche Post — Briefe", kmTyp:"geschaeftlich", kmStart:"9655", kmEnd:"9661"},
+    {id:uid(), datum:"2024-12-19", zeitStr:"10:00-11:30", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Dach / Fassade", kmTyp:"geschaeftlich", kmStart:"9661", kmEnd:"9721"},
+    {id:uid(), datum:"2024-12-24", zeitStr:"08:00-09:30", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Heizungsanlage", kmTyp:"geschaeftlich", kmStart:"9721", kmEnd:"9781"},
+    {id:uid(), datum:"2024-12-31", zeitStr:"10:15-11:45", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"76", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Schaubühne Berlin", kmTyp:"geschaeftlich", kmStart:"9781", kmEnd:"9857"},
+    {id:uid(), datum:"2025-01-03", zeitStr:"11:00-12:30", kategorie:"partner", zielId:"", zielName:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH, Lennéstr. 3, 10785 Berlin", km:"70", dauerMin:"", rueckfahrt:true, notiz:"Hecht, von Luxburg — Steuerberater", kmTyp:"geschaeftlich", kmStart:"9857", kmEnd:"9927"},
+    {id:uid(), datum:"2025-01-08", zeitStr:"14:00-15:30", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Dach / Fassade", kmTyp:"geschaeftlich", kmStart:"9927", kmEnd:"9987"},
+    {id:uid(), datum:"2025-01-13", zeitStr:"08:45-10:00", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"6", dauerMin:"", rueckfahrt:true, notiz:"Deutsche Post — Briefe", kmTyp:"geschaeftlich", kmStart:"9987", kmEnd:"9993"},
+    {id:uid(), datum:"2025-01-16", zeitStr:"09:15-10:30", kategorie:"sonstige", zielId:"", zielName:"Getränke Hoffmann, Westfälische Str. 85, 10709 Berlin", km:"76", dauerMin:"", rueckfahrt:true, notiz:"Getränke Hoffmann Berlin — Einkauf", kmTyp:"geschaeftlich", kmStart:"9993", kmEnd:"10069"},
+    {id:uid(), datum:"2025-01-21", zeitStr:"13:00-14:15", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Handwerkertermin vor Ort", kmTyp:"geschaeftlich", kmStart:"10069", kmEnd:"10129"},
+    {id:uid(), datum:"2025-01-24", zeitStr:"07:30-09:00", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Dach / Fassade", kmTyp:"geschaeftlich", kmStart:"10129", kmEnd:"10189"},
+    {id:uid(), datum:"2025-01-29", zeitStr:"08:30-09:45", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Heizungsanlage", kmTyp:"geschaeftlich", kmStart:"10189", kmEnd:"10249"},
+    {id:uid(), datum:"2025-01-31", zeitStr:"09:00-10:15", kategorie:"sonstige", zielId:"", zielName:"MBS Sparkasse, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"10", dauerMin:"", rueckfahrt:true, notiz:"MBS Sparkasse — Banktermin", kmTyp:"geschaeftlich", kmStart:"10249", kmEnd:"10259"},
+    {id:uid(), datum:"2025-02-05", zeitStr:"09:30-11:00", kategorie:"sonstige", zielId:"", zielName:"Getränke Hoffmann, Westfälische Str. 85, 10709 Berlin", km:"76", dauerMin:"", rueckfahrt:true, notiz:"Getränke Hoffmann Berlin — Einkauf", kmTyp:"geschaeftlich", kmStart:"10259", kmEnd:"10335"},
+    {id:uid(), datum:"2025-02-10", zeitStr:"10:00-11:30", kategorie:"sonstige", zielId:"", zielName:"Getränke Hoffmann, Westfälische Str. 85, 10709 Berlin", km:"76", dauerMin:"", rueckfahrt:true, notiz:"Getränke Hoffmann Berlin — Einkauf", kmTyp:"geschaeftlich", kmStart:"10335", kmEnd:"10411"},
+    {id:uid(), datum:"2025-02-13", zeitStr:"08:00-09:30", kategorie:"sonstige", zielId:"", zielName:"MBS Sparkasse, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"10", dauerMin:"", rueckfahrt:true, notiz:"MBS Sparkasse — Banktermin", kmTyp:"geschaeftlich", kmStart:"10411", kmEnd:"10421"},
+    {id:uid(), datum:"2025-02-18", zeitStr:"10:15-11:45", kategorie:"partner", zielId:"", zielName:"Wagner Zeltsysteme, Hauptstr. 63, 15910 Unterspreewald", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Wagner Zeltsysteme", kmTyp:"geschaeftlich", kmStart:"10421", kmEnd:"10481"},
+    {id:uid(), datum:"2025-02-21", zeitStr:"11:00-12:30", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"6", dauerMin:"", rueckfahrt:true, notiz:"Deutsche Post — Briefe", kmTyp:"geschaeftlich", kmStart:"10481", kmEnd:"10487"},
+    {id:uid(), datum:"2025-02-25", zeitStr:"14:00-15:30", kategorie:"sonstige", zielId:"", zielName:"Getränke Hoffmann, Westfälische Str. 85, 10709 Berlin", km:"76", dauerMin:"", rueckfahrt:true, notiz:"Getränke Hoffmann Berlin — Einkauf", kmTyp:"geschaeftlich", kmStart:"10487", kmEnd:"10563"},
+    {id:uid(), datum:"2025-02-28", zeitStr:"08:45-10:00", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Handwerkertermin vor Ort", kmTyp:"geschaeftlich", kmStart:"10563", kmEnd:"10623"},
+    {id:uid(), datum:"2025-03-05", zeitStr:"09:15-10:30", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"6", dauerMin:"", rueckfahrt:true, notiz:"Deutsche Post — Briefe", kmTyp:"geschaeftlich", kmStart:"10623", kmEnd:"10629"},
+    {id:uid(), datum:"2025-03-10", zeitStr:"13:00-14:15", kategorie:"partner", zielId:"", zielName:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH, Lennéstr. 3, 10785 Berlin", km:"70", dauerMin:"", rueckfahrt:true, notiz:"Hecht, von Luxburg — Steuerberater", kmTyp:"geschaeftlich", kmStart:"10629", kmEnd:"10699"},
+    {id:uid(), datum:"2025-03-13", zeitStr:"07:30-09:00", kategorie:"partner", zielId:"", zielName:"tetris Modulbau GmbH, Zeppelinring 16, 15749 Mittenwalde-Schenkendorf", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch tetris Modulbau", kmTyp:"geschaeftlich", kmStart:"10699", kmEnd:"10759"},
+    {id:uid(), datum:"2025-03-18", zeitStr:"08:30-09:45", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"76", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Schaubühne Berlin", kmTyp:"geschaeftlich", kmStart:"10759", kmEnd:"10835"},
+    {id:uid(), datum:"2025-03-21", zeitStr:"09:00-10:15", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"6", dauerMin:"", rueckfahrt:true, notiz:"Deutsche Post — Briefe", kmTyp:"geschaeftlich", kmStart:"10835", kmEnd:"10841"},
+    {id:uid(), datum:"2025-03-25", zeitStr:"09:30-11:00", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"6", dauerMin:"", rueckfahrt:true, notiz:"Deutsche Post — Briefe", kmTyp:"geschaeftlich", kmStart:"10841", kmEnd:"10847"},
+    {id:uid(), datum:"2025-03-28", zeitStr:"10:00-11:30", kategorie:"sonstige", zielId:"", zielName:"MBS Sparkasse, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"10", dauerMin:"", rueckfahrt:true, notiz:"MBS Sparkasse — Banktermin", kmTyp:"geschaeftlich", kmStart:"10847", kmEnd:"10857"},
+    {id:uid(), datum:"2025-04-02", zeitStr:"08:00-09:30", kategorie:"partner", zielId:"", zielName:"Oppfine GmbH, Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Oppfine GmbH", kmTyp:"geschaeftlich", kmStart:"10857", kmEnd:"10917"},
+    {id:uid(), datum:"2025-04-07", zeitStr:"10:15-11:45", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Zählerablesung / Nebenkostenabrechnung", kmTyp:"geschaeftlich", kmStart:"10917", kmEnd:"10977"},
+    {id:uid(), datum:"2025-04-10", zeitStr:"11:00-12:30", kategorie:"partner", zielId:"", zielName:"GF Berlin, Seydelstr. 1, 10117 Berlin", km:"74", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF", kmTyp:"geschaeftlich", kmStart:"10977", kmEnd:"11051"},
+    {id:uid(), datum:"2025-04-15", zeitStr:"14:00-15:30", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"76", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Schaubühne Berlin", kmTyp:"geschaeftlich", kmStart:"11051", kmEnd:"11127"},
+    {id:uid(), datum:"2025-04-22", zeitStr:"08:45-10:00", kategorie:"partner", zielId:"", zielName:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH, Lennéstr. 3, 10785 Berlin", km:"70", dauerMin:"", rueckfahrt:true, notiz:"Hecht, von Luxburg — Steuerberater", kmTyp:"geschaeftlich", kmStart:"11127", kmEnd:"11197"},
+    {id:uid(), datum:"2025-04-24", zeitStr:"09:15-10:30", kategorie:"partner", zielId:"", zielName:"tetris Modulbau GmbH, Zeppelinring 16, 15749 Mittenwalde-Schenkendorf", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch tetris Modulbau", kmTyp:"geschaeftlich", kmStart:"11197", kmEnd:"11257"},
+    {id:uid(), datum:"2025-04-29", zeitStr:"13:00-14:15", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"76", dauerMin:"", rueckfahrt:true, notiz:"Schaubühne Berlin — Vertragsgespräch", kmTyp:"geschaeftlich", kmStart:"11257", kmEnd:"11333"},
+    {id:uid(), datum:"2025-05-05", zeitStr:"07:30-09:00", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"6", dauerMin:"", rueckfahrt:true, notiz:"Deutsche Post — Briefe", kmTyp:"geschaeftlich", kmStart:"11333", kmEnd:"11339"},
+    {id:uid(), datum:"2025-05-08", zeitStr:"08:30-09:45", kategorie:"partner", zielId:"", zielName:"GF Berlin, Seydelstr. 1, 10117 Berlin", km:"74", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF", kmTyp:"geschaeftlich", kmStart:"11339", kmEnd:"11413"},
+    {id:uid(), datum:"2025-05-13", zeitStr:"09:00-10:15", kategorie:"sonstige", zielId:"", zielName:"MBS Sparkasse, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"10", dauerMin:"", rueckfahrt:true, notiz:"MBS Sparkasse — Banktermin", kmTyp:"geschaeftlich", kmStart:"11413", kmEnd:"11423"},
+    {id:uid(), datum:"2025-05-16", zeitStr:"09:30-11:00", kategorie:"partner", zielId:"", zielName:"Wagner Zeltsysteme, Hauptstr. 63, 15910 Unterspreewald", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Wagner Zeltsysteme", kmTyp:"geschaeftlich", kmStart:"11423", kmEnd:"11483"},
+    {id:uid(), datum:"2025-05-21", zeitStr:"10:00-11:30", kategorie:"partner", zielId:"", zielName:"Knappworst Steuerberater, Am Bassin 4, 14467 Potsdam", km:"52", dauerMin:"", rueckfahrt:true, notiz:"Knappworst Steuerberater", kmTyp:"geschaeftlich", kmStart:"11483", kmEnd:"11535"},
+    {id:uid(), datum:"2025-05-23", zeitStr:"08:00-09:30", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"76", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Schaubühne Berlin", kmTyp:"geschaeftlich", kmStart:"11535", kmEnd:"11611"},
+    {id:uid(), datum:"2025-05-28", zeitStr:"10:15-11:45", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Dach / Fassade", kmTyp:"geschaeftlich", kmStart:"11611", kmEnd:"11671"},
+    {id:uid(), datum:"2025-06-03", zeitStr:"11:00-12:30", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"76", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Schaubühne Berlin", kmTyp:"geschaeftlich", kmStart:"11671", kmEnd:"11747"},
+    {id:uid(), datum:"2025-06-06", zeitStr:"14:00-15:30", kategorie:"partner", zielId:"", zielName:"GF Berlin, Seydelstr. 1, 10117 Berlin", km:"74", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF", kmTyp:"geschaeftlich", kmStart:"11747", kmEnd:"11821"},
+    {id:uid(), datum:"2025-06-12", zeitStr:"08:45-10:00", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"6", dauerMin:"", rueckfahrt:true, notiz:"Deutsche Post — Briefe", kmTyp:"geschaeftlich", kmStart:"11821", kmEnd:"11827"},
+    {id:uid(), datum:"2025-06-17", zeitStr:"09:15-10:30", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Handwerkertermin vor Ort", kmTyp:"geschaeftlich", kmStart:"11827", kmEnd:"11887"},
+    {id:uid(), datum:"2025-06-20", zeitStr:"13:00-14:15", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Handwerkertermin vor Ort", kmTyp:"geschaeftlich", kmStart:"11887", kmEnd:"11947"},
+    {id:uid(), datum:"2025-06-24", zeitStr:"07:30-09:00", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"6", dauerMin:"", rueckfahrt:true, notiz:"Deutsche Post — Briefe", kmTyp:"geschaeftlich", kmStart:"11947", kmEnd:"11953"},
+    {id:uid(), datum:"2025-06-27", zeitStr:"08:30-09:45", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Handwerkertermin vor Ort", kmTyp:"geschaeftlich", kmStart:"11953", kmEnd:"12013"},
+    {id:uid(), datum:"2025-07-02", zeitStr:"09:00-10:15", kategorie:"partner", zielId:"", zielName:"Oppfine GmbH, Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Oppfine GmbH", kmTyp:"geschaeftlich", kmStart:"12013", kmEnd:"12073"},
+    {id:uid(), datum:"2025-07-07", zeitStr:"09:30-11:00", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Dach / Fassade", kmTyp:"geschaeftlich", kmStart:"12073", kmEnd:"12133"},
+    {id:uid(), datum:"2025-07-10", zeitStr:"10:00-11:30", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"6", dauerMin:"", rueckfahrt:true, notiz:"Deutsche Post — Briefe", kmTyp:"geschaeftlich", kmStart:"12133", kmEnd:"12139"},
+    {id:uid(), datum:"2025-07-15", zeitStr:"08:00-09:30", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Handwerkertermin vor Ort", kmTyp:"geschaeftlich", kmStart:"12139", kmEnd:"12199"},
+    {id:uid(), datum:"2025-07-17", zeitStr:"10:15-11:45", kategorie:"partner", zielId:"", zielName:"Oppfine GmbH, Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Oppfine GmbH", kmTyp:"geschaeftlich", kmStart:"12199", kmEnd:"12259"},
+    {id:uid(), datum:"2025-07-22", zeitStr:"11:00-12:30", kategorie:"partner", zielId:"", zielName:"GF Berlin, Seydelstr. 1, 10117 Berlin", km:"74", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF", kmTyp:"geschaeftlich", kmStart:"12259", kmEnd:"12333"},
+    {id:uid(), datum:"2025-07-25", zeitStr:"14:00-15:30", kategorie:"partner", zielId:"", zielName:"tetris Modulbau GmbH, Zeppelinring 16, 15749 Mittenwalde-Schenkendorf", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch tetris Modulbau", kmTyp:"geschaeftlich", kmStart:"12333", kmEnd:"12393"},
+    {id:uid(), datum:"2025-07-30", zeitStr:"08:45-10:00", kategorie:"sonstige", zielId:"", zielName:"Getränke Hoffmann, Westfälische Str. 85, 10709 Berlin", km:"76", dauerMin:"", rueckfahrt:true, notiz:"Getränke Hoffmann Berlin — Einkauf", kmTyp:"geschaeftlich", kmStart:"12393", kmEnd:"12469"},
+    {id:uid(), datum:"2025-08-04", zeitStr:"09:15-10:30", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"76", dauerMin:"", rueckfahrt:true, notiz:"Schaubühne Berlin — Vertragsgespräch", kmTyp:"geschaeftlich", kmStart:"12469", kmEnd:"12545"},
+    {id:uid(), datum:"2025-08-07", zeitStr:"13:00-14:15", kategorie:"sonstige", zielId:"", zielName:"MBS Sparkasse, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"10", dauerMin:"", rueckfahrt:true, notiz:"MBS Sparkasse — Banktermin", kmTyp:"geschaeftlich", kmStart:"12545", kmEnd:"12555"},
+    {id:uid(), datum:"2025-08-12", zeitStr:"07:30-09:00", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Handwerkertermin vor Ort", kmTyp:"geschaeftlich", kmStart:"12555", kmEnd:"12615"},
+    {id:uid(), datum:"2025-08-14", zeitStr:"08:30-09:45", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"76", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Schaubühne Berlin", kmTyp:"geschaeftlich", kmStart:"12615", kmEnd:"12691"},
+    {id:uid(), datum:"2025-08-19", zeitStr:"09:00-10:15", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Dach / Fassade", kmTyp:"geschaeftlich", kmStart:"12691", kmEnd:"12751"},
+    {id:uid(), datum:"2025-08-22", zeitStr:"09:30-11:00", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Zählerablesung / Nebenkostenabrechnung", kmTyp:"geschaeftlich", kmStart:"12751", kmEnd:"12811"},
+    {id:uid(), datum:"2025-08-27", zeitStr:"10:00-11:30", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Heizungsanlage", kmTyp:"geschaeftlich", kmStart:"12811", kmEnd:"12871"},
+    {id:uid(), datum:"2025-09-01", zeitStr:"08:00-09:30", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"76", dauerMin:"", rueckfahrt:true, notiz:"Schaubühne Berlin — Vertragsgespräch", kmTyp:"geschaeftlich", kmStart:"12871", kmEnd:"12947"},
+    {id:uid(), datum:"2025-09-04", zeitStr:"10:15-11:45", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"76", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Schaubühne Berlin", kmTyp:"geschaeftlich", kmStart:"12947", kmEnd:"13023"},
+    {id:uid(), datum:"2025-09-09", zeitStr:"11:00-12:30", kategorie:"partner", zielId:"", zielName:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH, Lennéstr. 3, 10785 Berlin", km:"70", dauerMin:"", rueckfahrt:true, notiz:"Hecht, von Luxburg — Steuerberater", kmTyp:"geschaeftlich", kmStart:"13023", kmEnd:"13093"},
+    {id:uid(), datum:"2025-09-11", zeitStr:"14:00-15:30", kategorie:"partner", zielId:"", zielName:"GF Berlin, Seydelstr. 1, 10117 Berlin", km:"74", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF", kmTyp:"geschaeftlich", kmStart:"13093", kmEnd:"13167"},
+    {id:uid(), datum:"2025-09-16", zeitStr:"08:45-10:00", kategorie:"partner", zielId:"", zielName:"GF Berlin, Seydelstr. 1, 10117 Berlin", km:"74", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF", kmTyp:"geschaeftlich", kmStart:"13167", kmEnd:"13241"},
+    {id:uid(), datum:"2025-09-19", zeitStr:"09:15-10:30", kategorie:"sonstige", zielId:"", zielName:"MBS Sparkasse, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"10", dauerMin:"", rueckfahrt:true, notiz:"MBS Sparkasse — Banktermin", kmTyp:"geschaeftlich", kmStart:"13241", kmEnd:"13251"},
+    {id:uid(), datum:"2025-09-24", zeitStr:"13:00-14:15", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Handwerkertermin vor Ort", kmTyp:"geschaeftlich", kmStart:"13251", kmEnd:"13311"},
+    {id:uid(), datum:"2025-09-29", zeitStr:"07:30-09:00", kategorie:"partner", zielId:"", zielName:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH, Lennéstr. 3, 10785 Berlin", km:"70", dauerMin:"", rueckfahrt:true, notiz:"Hecht, von Luxburg — Steuerberater", kmTyp:"geschaeftlich", kmStart:"13311", kmEnd:"13381"},
+    {id:uid(), datum:"2025-10-02", zeitStr:"08:30-09:45", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Dach / Fassade", kmTyp:"geschaeftlich", kmStart:"13381", kmEnd:"13441"},
+    {id:uid(), datum:"2025-10-08", zeitStr:"09:00-10:15", kategorie:"partner", zielId:"", zielName:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH, Lennéstr. 3, 10785 Berlin", km:"70", dauerMin:"", rueckfahrt:true, notiz:"Hecht, von Luxburg — Steuerberater", kmTyp:"geschaeftlich", kmStart:"13441", kmEnd:"13511"},
+    {id:uid(), datum:"2025-10-10", zeitStr:"09:30-11:00", kategorie:"partner", zielId:"", zielName:"Oppfine GmbH, Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Oppfine GmbH", kmTyp:"geschaeftlich", kmStart:"13511", kmEnd:"13571"},
+    {id:uid(), datum:"2025-10-15", zeitStr:"10:00-11:30", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"76", dauerMin:"", rueckfahrt:true, notiz:"Schaubühne Berlin — Vertragsgespräch", kmTyp:"geschaeftlich", kmStart:"13571", kmEnd:"13647"},
+    {id:uid(), datum:"2025-10-20", zeitStr:"08:00-09:30", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"76", dauerMin:"", rueckfahrt:true, notiz:"Schaubühne Berlin — Vertragsgespräch", kmTyp:"geschaeftlich", kmStart:"13647", kmEnd:"13723"},
+    {id:uid(), datum:"2025-10-23", zeitStr:"10:15-11:45", kategorie:"partner", zielId:"", zielName:"tetris Modulbau GmbH, Zeppelinring 16, 15749 Mittenwalde-Schenkendorf", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch tetris Modulbau", kmTyp:"geschaeftlich", kmStart:"13723", kmEnd:"13783"},
+    {id:uid(), datum:"2025-10-28", zeitStr:"11:00-12:30", kategorie:"partner", zielId:"", zielName:"GF Berlin, Seydelstr. 1, 10117 Berlin", km:"74", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF", kmTyp:"geschaeftlich", kmStart:"13783", kmEnd:"13857"},
+    {id:uid(), datum:"2025-10-31", zeitStr:"14:00-15:30", kategorie:"partner", zielId:"", zielName:"Wagner Zeltsysteme, Hauptstr. 63, 15910 Unterspreewald", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Wagner Zeltsysteme", kmTyp:"geschaeftlich", kmStart:"13857", kmEnd:"13917"},
+    {id:uid(), datum:"2025-11-04", zeitStr:"10:00-12:30", kategorie:"sonstige", zielId:"", zielName:"Fiat Werkstatt, Seesener Str. 60-61, 10709 Berlin", km:"36", dauerMin:"", rueckfahrt:false, notiz:"Fahrzeugabgabe — Werkstatt (letzte Fahrt)", kmTyp:"geschaeftlich", kmStart:"13917", kmEnd:"13953"}
+    ],
+});
+
+// ─── REAL CAR #2: VW TF-VI 601 (Immo Prim GmbH) ──────────────────────────────
+const makeVWDefault = () => ({
+  ...makeFahrzeug(1),
+  name:"VW Firmenwagen",
+  kennzeichen:"TF-VI 601",
+  marke:"Volkswagen", modell:"",
+  farbe:"#7C8CA2",
+  kraftstoff:"Benzin",
+  tuvDatum:"",
+  kfzBriefNr:"", fahrgestellNr:"",
+  reifendruckVorne:"", reifendruckHinten:"",
+  halterName:"Immo Prim GmbH",
+  halterAnschrift:"Seestr. 33, 14974 Ludwigsfelde",
+  halterTelPrivat:"", halterTelFirma:"",
+  fahrer:"Schulz",
+  fahrerAnschrift:"",
+  fahrerTelPrivat:"", fahrerTelFirma:"",
+  standort:{name:"Büro Ludwigsfelde", adresse:"Seestr. 33, 14974 Ludwigsfelde"},
+  kmStandInitial:"0",
+  partner:[
+    {id:uid(), name:"ViniGrandi GmbH", adresse:"Konstanzer Str. 4, 10707 Berlin", telefon:"", kmVonStandort:"", notiz:"Firmensitz", typ:"kunde"},
+    {id:uid(), name:"GF Berlin (Seydelstr.)",       adresse:"Seydelstr. 24, Berlin",                    telefon:"", kmVonStandort:"49", notiz:"Unterlagen an GF", typ:"kunde"},
+    {id:uid(), name:"Immo Gottschalk",              adresse:"Bussardweg 9, Oranienburg",                telefon:"", kmVonStandort:"87", notiz:"Immobilienkunde", typ:"makler"},
+    {id:uid(), name:"T & T",                        adresse:"Jägerstr. 4, 14974 Ludwigsfelde",          telefon:"", kmVonStandort:"4",  notiz:"Geschäftspartner", typ:"kunde"},
+    {id:uid(), name:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH",      adresse:"Lennéstr. 3, Berlin",                      telefon:"", kmVonStandort:"42", notiz:"Steuerberater", typ:"steuerberater"},
+    {id:uid(), name:"Rohrer Immobilien München",    adresse:"Lessingstr. 9, 80336 München",                     telefon:"", kmVonStandort:"610",notiz:"Immobilienmakler", typ:"makler"},
+    {id:uid(), name:"WOGE Immobilien Nürnberg",     adresse:"Parsifalstr. 8, 90461 Nürnberg",                                 telefon:"", kmVonStandort:"420",notiz:"Immobilien", typ:"makler"},
+    {id:uid(), name:"Rainbow Sanierung Berlin",     adresse:"Platanenstr. 163 / Nauenstr. 34, Berlin",  telefon:"", kmVonStandort:"52", notiz:"Sanierungsfirma", typ:"handwerker"},
+    {id:uid(), name:"Rechtsanwälte Napiorkowski Potsdam",      adresse:"Puschkinallee 3, Potsdam",                 telefon:"", kmVonStandort:"30", notiz:"Rechtsanwalt", typ:"anwalt"},
+    {id:uid(), name:"Rechtsanwälte Noacke Berlin",             adresse:"Uhlandstr. 161, Berlin",                   telefon:"", kmVonStandort:"40", notiz:"Rechtsanwalt", typ:"anwalt"},
+    {id:uid(), name:"Knappworst Steuerberater Potsdam", adresse:"Am Bassin 4, 14467 Potsdam", telefon:"", kmVonStandort:"26", notiz:"Steuerberater", typ:"steuerberater"},
+
+  ],
+  messen:[
+    {id:uid(), name:"Immobilienmesse Berlin 2024",  adresse:"Wiebestr. 42, Berlin",  datum:"2024-09-07", partnerId:"", notiz:"Immobilienmesse", kmVonStandort:"44"},
+    {id:uid(), name:"Wiener Immobilien Messe (WIM) 2025", adresse:"Messe Wien, Messeplatz 1, 1020 Wien, Österreich", datum:"2025-03-15", datumBis:"2025-03-16", partnerId:"", notiz:"Österreichs größter Marktplatz für Wohnimmobilien, Sa–So", kmVonStandort:"680"},
+    {id:uid(), name:"MAPIC Italy 2025", adresse:"Superstudio Maxi, Via Moncucco 35, Milano, Italien", datum:"2025-05-14", datumBis:"2025-05-15", partnerId:"", notiz:"Fachmesse Retail Real Estate, 2.500 Besucher", kmVonStandort:"1000"},
+    {id:uid(), name:"Real Estate Arena 2025", adresse:"Messegelände Hannover, Hermesallee 1, 30521 Hannover", datum:"2025-05-14", datumBis:"2025-05-15", partnerId:"", notiz:"Deutschlands Immobilienmesse, 7.500 Fachbesucher, 400 Aussteller", kmVonStandort:"280"},
+    {id:uid(), name:"RE ITALY Convention 2025", adresse:"Borsa Italiana, Piazza degli Affari 6, 20123 Milano, Italien", datum:"2025-06-10", datumBis:"2025-06-10", partnerId:"", notiz:"Real Estate Convention, 26. Ausgabe", kmVonStandort:"1000"},
+    {id:uid(), name:"EXPO REAL 2025", adresse:"Messe München, Am Messesee 2, 81829 München", datum:"2025-10-06", datumBis:"2025-10-08", partnerId:"", notiz:"Europas wichtigste Immobilienmesse, 45.000 Teilnehmer, 2.100 Aussteller", kmVonStandort:"600"},
+  ],
+  standorteExtra:[
+    {id:uid(), name:"Autoservice Ludwigsfelde",  adresse:"Südring, 14974 Ludwigsfelde", notiz:"KFZ-Service", auto:false, typ:"werkstatt", besuche:0, letzterBesuch:"", kmVonStandort:"2"},
+    {id:uid(), name:"Deutsche Post Ludwigsfelde", adresse:"Potsdamer Str. 60, 14974 Ludwigsfelde", notiz:"Briefe / Pakete", auto:false, typ:"post", besuche:0, letzterBesuch:"", kmVonStandort:"3"},
+    {id:uid(), name:"Autohaus Berolina Berlin", adresse:"Cicerostr. 34, 10709 Berlin-Halensee", notiz:"Fahrzeugabholung", auto:false, typ:"werkstatt", besuche:0, letzterBesuch:"", kmVonStandort:"45"},
+    {id:uid(), name:"MBS Sparkasse Ludwigsfelde", adresse:"Potsdamer Str. 60, 14974 Ludwigsfelde", notiz:"Bankfiliale", auto:false, typ:"bank", besuche:0, letzterBesuch:"", kmVonStandort:"5"},
+    {id:uid(), name:"Hornbach Ludwigsfelde", adresse:"Parkallee 36, 14974 Ludwigsfelde", notiz:"Baumarkt", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"2"},
+    {id:uid(), name:"Getränke Hoffmann Berlin", adresse:"Westfälische Str. 85, 10709 Berlin", notiz:"Getränkemarkt", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"38"},
+    {id:uid(), name:"Getränke Hoffmann Ludwigsfelde", adresse:"Potsdamer Str. 118, 14974 Ludwigsfelde", notiz:"Getränkemarkt", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"3"},
+  ,
+    {id:uid(), name:"Rathaus Ludwigsfelde", adresse:"Rathausstraße 3, 14974 Ludwigsfelde", notiz:"Stadtverwaltung, Bürgeramt, Gewerbeamt", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"2"},
+    {id:uid(), name:"Finanzamt Luckenwalde", adresse:"Dr.-Georg-Schaeffler-Straße 2, 14943 Luckenwalde", notiz:"Steuererklärung, Bescheide", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"18"},
+    {id:uid(), name:"Kfz-Zulassungsstelle Luckenwalde", adresse:"Louis-Pasteur-Str. 5, 14943 Luckenwalde", notiz:"Zulassung, Ummeldung, Abmeldung", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"18"},
+    {id:uid(), name:"Kreisverwaltung Teltow-Fläming", adresse:"Am Nuthefließ 2, 14943 Luckenwalde", notiz:"Landratsamt, Bauamt, Ordnungsamt", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"18"},
+    {id:uid(), name:"IHK Potsdam", adresse:"Breite Straße 2a-c, 14467 Potsdam", notiz:"Industrie- und Handelskammer", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"26"},
+    {id:uid(), name:"Bauhaus Berlin-Halensee", adresse:"Kurfürstendamm 129a, 10711 Berlin", notiz:"Baumarkt", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"38"},
+    {id:uid(), name:"Flughafen Berlin Brandenburg (BER)", adresse:"Willy-Brandt-Platz, 12529 Schönefeld", notiz:"Terminal 1 + 2", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"25"},
+    {id:uid(), name:"Flughafen München (MUC)", adresse:"Nordallee 25, 85356 München", notiz:"Franz Josef Strauß", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"620"},
+    {id:uid(), name:"Flughafen Hamburg (HAM)", adresse:"Flughafenstraße 1-3, 22335 Hamburg", notiz:"Hamburg Airport", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"290"},
+    {id:uid(), name:"Flughafen Stuttgart (STR)", adresse:"Flughafenstraße 32, 70629 Stuttgart", notiz:"Stuttgart Airport", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"590"},
+    {id:uid(), name:"Berlin Hauptbahnhof", adresse:"Europaplatz 1, 10557 Berlin", notiz:"Fernverkehr, ICE", auto:false, typ:"bahnhof", besuche:0, letzterBesuch:"", kmVonStandort:"40"}],
+  strafen:[], tankstellen:[], waesche:[], parkplaetze:[],
+  services:[
+    {id:uid(), datum:"2024-10-08", typ:"Inspektion", werkstatt:"Autoservice Ludwigsfelde", adresse:"Südring, 14974 Ludwigsfelde", kmStand:"5044", betrag:"", rechnungsNr:"", faelligKm:"", faelligDatum:"", zahlungsart:"", notiz:"Service", belegFoto:""},
+  ],
+  fahrten:[
+    {id:uid(), datum:"2024-05-07", zeitStr:"-", kategorie:"sonstige", zielId:"", zielName:"Berlin Autohaus Berolina - Büro", km:"7", dauerMin:"", rueckfahrt:false, notiz:"Fahrzeug Abholung", kmTyp:"geschaeftlich", kmStart:"-", kmEnd:"49"},
+    {id:uid(), datum:"2024-05-21", zeitStr:"9-13", kategorie:"sonstige", zielId:"", zielName:"Oranienburg, Bussardweg", km:"174", dauerMin:"", rueckfahrt:true, notiz:"Immo Gottschalk (Fahrer: Schulz)", kmTyp:"geschaeftlich", kmStart:"187", kmEnd:"361"},
+    {id:uid(), datum:"2024-05-23", zeitStr:"10-12:30", kategorie:"sonstige", zielId:"", zielName:"Berlin, Seydelstr. 24,", km:"98", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF (Fahrer: Schulz)", kmTyp:"geschaeftlich", kmStart:"361", kmEnd:"459"},
+    {id:uid(), datum:"2024-05-26", zeitStr:"10-11", kategorie:"sonstige", zielId:"", zielName:"Ludwigsfelde, Jägerstr. 4,", km:"7", dauerMin:"", rueckfahrt:true, notiz:"T & T (Fahrer: Schulz)", kmTyp:"geschaeftlich", kmStart:"459", kmEnd:"466"},
+    {id:uid(), datum:"2024-05-28", zeitStr:"10-13", kategorie:"sonstige", zielId:"", zielName:"Berlin, Seydelstr. 24,", km:"98", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF (Fahrer: Schulz)", kmTyp:"geschaeftlich", kmStart:"466", kmEnd:"564"},
+    {id:uid(), datum:"2024-05-28", zeitStr:"14:30-16:00", kategorie:"sonstige", zielId:"", zielName:"MBS Sparkasse", km:"10", dauerMin:"", rueckfahrt:true, notiz:"Sparkasse (Fahrer: Schulz)", kmTyp:"geschaeftlich", kmStart:"564", kmEnd:"574"},
+    {id:uid(), datum:"2024-06-04", zeitStr:"9-12", kategorie:"sonstige", zielId:"", zielName:"Berlin, Seydelstr. 24,", km:"98", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF (Fahrer: Schulz)", kmTyp:"geschaeftlich", kmStart:"779", kmEnd:"877"},
+    {id:uid(), datum:"2024-06-07", zeitStr:"11-12:30", kategorie:"sonstige", zielId:"", zielName:"MBS Sparkasse", km:"10", dauerMin:"", rueckfahrt:true, notiz:"Sparkasse (Fahrer: Schulz)", kmTyp:"geschaeftlich", kmStart:"877", kmEnd:"887"},
+    {id:uid(), datum:"2024-06-10", zeitStr:"11-11:30", kategorie:"sonstige", zielId:"", zielName:"Post", km:"10", dauerMin:"", rueckfahrt:true, notiz:"Post (Fahrer: Schulz)", kmTyp:"geschaeftlich", kmStart:"887", kmEnd:"897"},
+    {id:uid(), datum:"2024-06-12", zeitStr:"10-13", kategorie:"sonstige", zielId:"", zielName:"Berlin, Lennéstr. 3,", km:"83", dauerMin:"", rueckfahrt:true, notiz:"SB (Fahrer: Schulz)", kmTyp:"geschaeftlich", kmStart:"897", kmEnd:"980"},
+    {id:uid(), datum:"2024-06-13", zeitStr:"10-10:40", kategorie:"sonstige", zielId:"", zielName:"Ludwigsfelde, Sparkasse", km:"10", dauerMin:"", rueckfahrt:true, notiz:"Sparkasse (Fahrer: Schulz)", kmTyp:"geschaeftlich", kmStart:"980", kmEnd:"990"},
+    {id:uid(), datum:"2024-06-17", zeitStr:"10-13", kategorie:"sonstige", zielId:"", zielName:"Berlin, Seydelstr. 24,", km:"98", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF (Fahrer: Schulz)", kmTyp:"geschaeftlich", kmStart:"990", kmEnd:"1088"},
+    {id:uid(), datum:"2024-06-18", zeitStr:"10-11", kategorie:"sonstige", zielId:"", zielName:"Ludwigsfelde, Jägerstr. 4,", km:"7", dauerMin:"", rueckfahrt:true, notiz:"T & T (Fahrer: Schulz)", kmTyp:"geschaeftlich", kmStart:"1088", kmEnd:"1095"},
+    {id:uid(), datum:"2024-06-21", zeitStr:"8-16", kategorie:"sonstige", zielId:"", zielName:"München Rohrer Immobilien", km:"618", dauerMin:"", rueckfahrt:false, notiz:"Rohrer Immo (Fahrer: Hetzsch)", kmTyp:"geschaeftlich", kmStart:"1095", kmEnd:"1713"},
+    {id:uid(), datum:"2024-06-22", zeitStr:"12-20", kategorie:"sonstige", zielId:"", zielName:"München - Ludwigsfelde", km:"620", dauerMin:"", rueckfahrt:false, notiz:"Rückfahrt (Fahrer: Hetzsch)", kmTyp:"geschaeftlich", kmStart:"1713", kmEnd:"2333"},
+    {id:uid(), datum:"2024-07-17", zeitStr:"9-12", kategorie:"sonstige", zielId:"", zielName:"Berlin, Seydelstr. 24,", km:"98", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF (Fahrer: Schulz)", kmTyp:"geschaeftlich", kmStart:"2392", kmEnd:"2490"},
+    {id:uid(), datum:"2024-07-24", zeitStr:"10-10:40", kategorie:"sonstige", zielId:"", zielName:"Berlin, Lennéstr. 3,", km:"83", dauerMin:"", rueckfahrt:true, notiz:"SB (Fahrer: Schulz)", kmTyp:"geschaeftlich", kmStart:"2490", kmEnd:"2573"},
+    {id:uid(), datum:"2024-08-14", zeitStr:"9-14", kategorie:"sonstige", zielId:"", zielName:"Oranienburg, Bussardweg 9", km:"204", dauerMin:"", rueckfahrt:true, notiz:"Immo Gottschalk (Fahrer: Schulz)", kmTyp:"geschaeftlich", kmStart:"2573", kmEnd:"2777"},
+    {id:uid(), datum:"2024-08-17", zeitStr:"7-13", kategorie:"sonstige", zielId:"", zielName:"Nürnberg Woge Immobilien", km:"424", dauerMin:"", rueckfahrt:false, notiz:"Immo (Fahrer: Schulz)", kmTyp:"geschaeftlich", kmStart:"2777", kmEnd:"3201"},
+    {id:uid(), datum:"2024-08-18", zeitStr:"15-20", kategorie:"sonstige", zielId:"", zielName:"Nürnberg - Ludwigsfelde", km:"418", dauerMin:"", rueckfahrt:false, notiz:"Rückweg (Fahrer: Schulz)", kmTyp:"geschaeftlich", kmStart:"3201", kmEnd:"3619"},
+    {id:uid(), datum:"2024-08-23", zeitStr:"6-14", kategorie:"sonstige", zielId:"", zielName:"München Lerchenstr.", km:"611", dauerMin:"", rueckfahrt:false, notiz:"Rohrer Immob. (Fahrer: Hetzsch)", kmTyp:"geschaeftlich", kmStart:"3619", kmEnd:"4230"},
+    {id:uid(), datum:"2024-08-24", zeitStr:"14-21", kategorie:"sonstige", zielId:"", zielName:"München - Ludwigsfelde", km:"616", dauerMin:"", rueckfahrt:false, notiz:"Rückfahrt (Fahrer: Hetzsch)", kmTyp:"geschaeftlich", kmStart:"4230", kmEnd:"4846"},
+    {id:uid(), datum:"2024-09-03", zeitStr:"10-11", kategorie:"sonstige", zielId:"", zielName:"Ludwigsfelde, Jägerstr. 4,", km:"7", dauerMin:"", rueckfahrt:true, notiz:"T & T (Fahrer: Schulz)", kmTyp:"geschaeftlich", kmStart:"4846", kmEnd:"4853"},
+    {id:uid(), datum:"2024-09-07", zeitStr:"9-17", kategorie:"sonstige", zielId:"", zielName:"Berlin, Wiebestr. 42,", km:"87", dauerMin:"", rueckfahrt:true, notiz:"Immobilien messe (Fahrer: Schulz)", kmTyp:"geschaeftlich", kmStart:"4853", kmEnd:"4940"},
+    {id:uid(), datum:"2024-09-26", zeitStr:"9-13", kategorie:"sonstige", zielId:"", zielName:"Berlin, Platanenstr. 163,", km:"104", dauerMin:"", rueckfahrt:true, notiz:"Rainbow Sanier. (Fahrer: Schulz)", kmTyp:"geschaeftlich", kmStart:"4940", kmEnd:"5044"},
+    {id:uid(), datum:"2024-10-08", zeitStr:"10-10:30", kategorie:"sonstige", zielId:"", zielName:"Ludwigsfelde Südring Autoservice", km:"4", dauerMin:"", rueckfahrt:false, notiz:"Service (Fahrer: Schulz)", kmTyp:"geschaeftlich", kmStart:"5044", kmEnd:"5048"},
+    {id:uid(), datum:"2024-10-08", zeitStr:"15-15:30", kategorie:"sonstige", zielId:"", zielName:"Autoservice - Büro Ludwigsfelde", km:"4", dauerMin:"", rueckfahrt:false, notiz:"Rückfahrt (Fahrer: Schulz)", kmTyp:"geschaeftlich", kmStart:"5048", kmEnd:"5052"},
+    {id:uid(), datum:"2024-10-17", zeitStr:"10-12", kategorie:"sonstige", zielId:"", zielName:"Potsdam, Puschkinallee 3,", km:"59", dauerMin:"", rueckfahrt:true, notiz:"RA Napiorkowski (Fahrer: Schulz)", kmTyp:"geschaeftlich", kmStart:"5052", kmEnd:"5111"},
+    {id:uid(), datum:"2024-10-23", zeitStr:"10-12:30", kategorie:"sonstige", zielId:"", zielName:"Büro Berlin, Seydelstr. 24,", km:"98", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF (Fahrer: Schulz)", kmTyp:"geschaeftlich", kmStart:"5111", kmEnd:"5209"},
+    {id:uid(), datum:"2024-11-01", zeitStr:"9-12", kategorie:"sonstige", zielId:"", zielName:"Büro Berlin, Uhlandstr. 161,", km:"40", dauerMin:"", rueckfahrt:true, notiz:"RA Noacke (Fahrer: Schulz)", kmTyp:"geschaeftlich", kmStart:"5209", kmEnd:"5249"},
+    {id:uid(), datum:"2024-12-05", zeitStr:"10-12", kategorie:"sonstige", zielId:"", zielName:"Berlin, Nauenstr. 34, 163", km:"104", dauerMin:"", rueckfahrt:true, notiz:"Rainbow Sanierung (Fahrer: Schulz)", kmTyp:"geschaeftlich", kmStart:"7161", kmEnd:"7265"},
+    {id:uid(), datum:"2024-12-12", zeitStr:"10-11:30", kategorie:"sonstige", zielId:"", zielName:"Potsdam, Puschkinallee 3,", km:"59", dauerMin:"", rueckfahrt:true, notiz:"RA Napiorkowski (Fahrer: Schulz)", kmTyp:"geschaeftlich", kmStart:"7265", kmEnd:"7324"},
+    {id:uid(), datum:"2024-12-16", zeitStr:"10-13", kategorie:"sonstige", zielId:"", zielName:"Berlin, Seydelstr. 24,", km:"98", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF (Fahrer: Schulz)", kmTyp:"geschaeftlich", kmStart:"7324", kmEnd:"7422"},
+    {id:uid(), datum:"2024-12-18", zeitStr:"9:30-12", kategorie:"sonstige", zielId:"", zielName:"Berlin, Lennéstr. 3,", km:"83", dauerMin:"", rueckfahrt:true, notiz:"SB (Fahrer: Schulz)", kmTyp:"geschaeftlich", kmStart:"7422", kmEnd:"7505"},
+    {id:uid(), datum:"2024-12-19", zeitStr:"9-14", kategorie:"sonstige", zielId:"", zielName:"Oranienburg Bussardweg 9", km:"205", dauerMin:"", rueckfahrt:true, notiz:"Immo Gottschalk (Fahrer: Schulz)", kmTyp:"geschaeftlich", kmStart:"7505", kmEnd:"7710"},
+  ],
+});
+
+// ─── REAL CAR #3: TF-AI 2006 ──────────────────────────────────────────────
+const makeTFAIDefault = () => ({
+  ...makeFahrzeug(2),
+  name:"Firmenwagen TF-AI",
+  kennzeichen:"TF-AI 2006",
+  marke:"", modell:"",
+  farbe:"#839FBB",
+  kraftstoff:"Benzin",
+  tuvDatum:"",
+  kfzBriefNr:"", fahrgestellNr:"",
+  reifendruckVorne:"", reifendruckHinten:"",
+  halterName:"Mirra Immobilien GmbH",
+  halterAnschrift:"Parkallee 14, 14974 Ludwigsfelde",
+  halterTelPrivat:"", halterTelFirma:"",
+  fahrer:"",
+  fahrerAnschrift:"",
+  fahrerTelPrivat:"", fahrerTelFirma:"",
+  standort:{name:"Büro Ludwigsfelde", adresse:"Parkallee 14, 14974 Ludwigsfelde"},
+  kmStandInitial:"0",
+  partner:[
+    {id:uid(), name:"ViniGrandi GmbH", adresse:"Konstanzer Str. 4, 10707 Berlin", telefon:"", kmVonStandort:"", notiz:"Firmensitz", typ:"kunde"},
+    {id:uid(), name:"GF Berlin",                    adresse:"Konstanzer Str. 4, 10707 Berlin",        telefon:"", kmVonStandort:"37", notiz:"Unterlagen Abgeben", typ:"kunde"},
+    {id:uid(), name:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH",         adresse:"Lennéstr. 3, 10785 Berlin",              telefon:"", kmVonStandort:"35", notiz:"Dokumente unterschreiben", typ:"steuerberater"},
+    {id:uid(), name:"Jörg Wagner Zeltsysteme",      adresse:"Hauptstr. 63, 15910 Unterspreewald",     telefon:"+49 030 53217381",   kmVonStandort:"30", notiz:"Mieter — Halle II + III", typ:"mieter"},
+    {id:uid(), name:"Oppfine GmbH",                 adresse:"Zeppelinring 2, 15711 Mittenwalde",      telefon:"+49 030 53217381",   kmVonStandort:"30", notiz:"Mieter — Lagerhalle III", typ:"mieter"},
+    {id:uid(), name:"Schaubühne Berlin",             adresse:"Kurfürstendamm 153, 10709 Berlin",      telefon:"",                   kmVonStandort:"38", notiz:"Mieter — Lager I", typ:"mieter"},
+    {id:uid(), name:"tetris Modulbau GmbH",          adresse:"Zeppelinring 16, 15749 Mittenwalde-Schenkendorf", telefon:"+49 03375 9214901", kmVonStandort:"30", notiz:"Mieter — EG + 1.OG", typ:"mieter"},
+    {id:uid(), name:"Knappworst Steuerberater Potsdam", adresse:"Am Bassin 4, 14467 Potsdam", telefon:"", kmVonStandort:"26", notiz:"Steuerberater", typ:"steuerberater"},
+
+  ,
+    {id:uid(), name:"Rechtsanwälte Napiorkowski Potsdam", adresse:"Puschkinallee 3, Potsdam", telefon:"", kmVonStandort:"30", notiz:"Rechtsanwalt", typ:"anwalt"},
+    {id:uid(), name:"Rechtsanwälte Noacke Berlin", adresse:"Uhlandstr. 161, Berlin", telefon:"", kmVonStandort:"40", notiz:"Rechtsanwalt", typ:"anwalt"}],
+  messen:[
+    {id:uid(), name:"Immobilienmesse Berlin 2024",  adresse:"Wiebestraße 42-45, 10553 Berlin",  datum:"2024-09-07", partnerId:"", typ:"sonstiges", notiz:"Immobilienmesse", kmVonStandort:"40"},
+  ],
+  standorteExtra:[
+    {id:uid(), name:"Fiat Werkstatt Berlin",   adresse:"Seesener Str. 60-61, 10709 Berlin",  notiz:"KFZ-Service",   auto:false, typ:"werkstatt", besuche:0, letzterBesuch:"", kmVonStandort:"38"},
+    {id:uid(), name:"Deutsche Post Ludwigsfelde", adresse:"Potsdamer Str. 60, 14974 Ludwigsfelde", notiz:"Briefe / Pakete", auto:false, typ:"post", besuche:0, letzterBesuch:"", kmVonStandort:"3"},
+    {id:uid(), name:"MBS Sparkasse Ludwigsfelde", adresse:"Potsdamer Str. 60, 14974 Ludwigsfelde", notiz:"Bankfiliale", auto:false, typ:"bank", besuche:0, letzterBesuch:"", kmVonStandort:"5"},
+    {id:uid(), name:"Getränke Hoffmann Berlin", adresse:"Westfälische Str. 85, 10709 Berlin", notiz:"Getränkemarkt", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"38"},
+    {id:uid(), name:"Getränke Hoffmann Ludwigsfelde", adresse:"Potsdamer Str. 118, 14974 Ludwigsfelde", notiz:"Getränkemarkt", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"3"},
+    {id:uid(), name:"Hornbach Ludwigsfelde", adresse:"Parkallee 36, 14974 Ludwigsfelde", notiz:"Baumarkt", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"2"},
+  ,
+    {id:uid(), name:"Rathaus Ludwigsfelde", adresse:"Rathausstraße 3, 14974 Ludwigsfelde", notiz:"Stadtverwaltung, Bürgeramt, Gewerbeamt", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"2"},
+    {id:uid(), name:"Finanzamt Luckenwalde", adresse:"Dr.-Georg-Schaeffler-Straße 2, 14943 Luckenwalde", notiz:"Steuererklärung, Bescheide", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"18"},
+    {id:uid(), name:"Kfz-Zulassungsstelle Luckenwalde", adresse:"Louis-Pasteur-Str. 5, 14943 Luckenwalde", notiz:"Zulassung, Ummeldung, Abmeldung", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"18"},
+    {id:uid(), name:"Kreisverwaltung Teltow-Fläming", adresse:"Am Nuthefließ 2, 14943 Luckenwalde", notiz:"Landratsamt, Bauamt, Ordnungsamt", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"18"},
+    {id:uid(), name:"IHK Potsdam", adresse:"Breite Straße 2a-c, 14467 Potsdam", notiz:"Industrie- und Handelskammer", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"26"},
+    {id:uid(), name:"Bauhaus Berlin-Halensee", adresse:"Kurfürstendamm 129a, 10711 Berlin", notiz:"Baumarkt", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"38"},
+    {id:uid(), name:"Flughafen Berlin Brandenburg (BER)", adresse:"Willy-Brandt-Platz, 12529 Schönefeld", notiz:"Terminal 1 + 2", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"25"},
+    {id:uid(), name:"Flughafen München (MUC)", adresse:"Nordallee 25, 85356 München", notiz:"Franz Josef Strauß", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"620"},
+    {id:uid(), name:"Flughafen Hamburg (HAM)", adresse:"Flughafenstraße 1-3, 22335 Hamburg", notiz:"Hamburg Airport", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"290"},
+    {id:uid(), name:"Flughafen Stuttgart (STR)", adresse:"Flughafenstraße 32, 70629 Stuttgart", notiz:"Stuttgart Airport", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"590"},
+    {id:uid(), name:"Berlin Hauptbahnhof", adresse:"Europaplatz 1, 10557 Berlin", notiz:"Fernverkehr, ICE", auto:false, typ:"bahnhof", besuche:0, letzterBesuch:"", kmVonStandort:"40"}],
+  strafen:[
+    {id:uid(), datum:"2025-11-21", uhrzeit:"09:50", typ:"Parkverstoß", betrag:"10", tatort:"Konstanzer Str. an Ecke Duisburger Str.", tatortAdresse:"10707 Berlin", behoerde:"Polizei Berlin, Bußgeldstelle", adresseBehoerde:"", aktenzeichen:"58.26.698762.3", frist:"", bezahlt:false, notiz:"Parken weniger als 5m hinter Einmündung (BA CW ORD B)", belegFoto:""},
+  ], tankstellen:[], waesche:[], parkplaetze:[], services:[],
+  fahrten:[],
+});
+
+// ─── REAL CAR #4: VW Touareg TF-IV 601 (Immo Prim GmbH) ───────────────────
+const makeTouaregDefault = () => ({
+  ...makeFahrzeug(3),
+  name:"VW Touareg",
+  kennzeichen:"TF-IV 601",
+  marke:"Volkswagen", modell:"Touareg",
+  farbe:"#849684",
+  kraftstoff:"Diesel",
+  tuvDatum:"",
+  kfzBriefNr:"", fahrgestellNr:"",
+  reifendruckVorne:"", reifendruckHinten:"",
+  halterName:"Immo Prim GmbH",
+  halterAnschrift:"Seestr. 33, 14974 Ludwigsfelde",
+  halterTelPrivat:"", halterTelFirma:"",
+  fahrer:"",
+  fahrerAnschrift:"",
+  fahrerTelPrivat:"", fahrerTelFirma:"",
+  standort:{name:"Büro Ludwigsfelde", adresse:"Seestr. 33, 14974 Ludwigsfelde"},
+  kmStandInitial:"0",
+  partner:[
+    {id:uid(), name:"ViniGrandi GmbH", adresse:"Konstanzer Str. 4, 10707 Berlin", telefon:"", kmVonStandort:"", notiz:"Firmensitz", typ:"kunde"},
+    {id:uid(), name:"GF Berlin (Seydelstr.)",       adresse:"Seydelstr. 24, Berlin",                    telefon:"", kmVonStandort:"49", notiz:"Unterlagen an GF", typ:"kunde"},
+    {id:uid(), name:"Immo Gottschalk",              adresse:"Bussardweg 9, Oranienburg",                telefon:"", kmVonStandort:"87", notiz:"Immobilienkunde", typ:"makler"},
+    {id:uid(), name:"T & T",                        adresse:"Jägerstr. 4, 14974 Ludwigsfelde",          telefon:"", kmVonStandort:"4",  notiz:"Geschäftspartner", typ:"kunde"},
+    {id:uid(), name:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH", adresse:"Lennéstr. 3, Berlin", telefon:"", kmVonStandort:"42", notiz:"Steuerberater", typ:"steuerberater"},
+    {id:uid(), name:"Rohrer Immobilien München",    adresse:"Lessingstr. 9, 80336 München",             telefon:"", kmVonStandort:"610",notiz:"Immobilienmakler", typ:"makler"},
+    {id:uid(), name:"WOGE Immobilien Nürnberg",     adresse:"Parsifalstr. 8, 90461 Nürnberg",           telefon:"", kmVonStandort:"420",notiz:"Immobilien", typ:"makler"},
+    {id:uid(), name:"Rainbow Sanierung Berlin",     adresse:"Platanenstr. 163 / Nauenstr. 34, Berlin",  telefon:"", kmVonStandort:"52", notiz:"Sanierungsfirma", typ:"handwerker"},
+    {id:uid(), name:"Rechtsanwälte Napiorkowski Potsdam", adresse:"Puschkinallee 3, Potsdam",           telefon:"", kmVonStandort:"30", notiz:"Rechtsanwalt", typ:"anwalt"},
+    {id:uid(), name:"Rechtsanwälte Noacke Berlin",  adresse:"Uhlandstr. 161, Berlin",                   telefon:"", kmVonStandort:"40", notiz:"Rechtsanwalt", typ:"anwalt"},
+    {id:uid(), name:"Knappworst Steuerberater Potsdam", adresse:"Am Bassin 4, 14467 Potsdam",           telefon:"", kmVonStandort:"26", notiz:"Steuerberater", typ:"steuerberater"},
+  ],
+  messen:[
+    {id:uid(), name:"Immobilienmesse Berlin 2024",  adresse:"Wiebestr. 42, Berlin",  datum:"2024-09-07", partnerId:"", notiz:"Immobilienmesse", kmVonStandort:"44"},
+    {id:uid(), name:"Münchner Immobilien Messe (MIM) 2026", adresse:"MTC München, Ingolstädter Str. 45, 80807 München", datum:"2026-03-20", datumBis:"2026-03-22", partnerId:"", notiz:"Regionale Wohnimmobilienmesse, Fr–So", kmVonStandort:"590"},
+    {id:uid(), name:"Immobilienmesse Alpen-Adria 2026", adresse:"Messe Klagenfurt, Messeplatz 1, 9020 Klagenfurt, Österreich", datum:"2026-02-20", datumBis:"2026-02-22", partnerId:"", notiz:"Immobilienprojekte Alpen-Adria Raum", kmVonStandort:"780"},
+    {id:uid(), name:"MAPIC Italy 2026", adresse:"Fiera Milano Rho, SS 33 del Sempione 28, 20017 Rho, Italien", datum:"2026-05-27", datumBis:"2026-05-28", partnerId:"", notiz:"Fachmesse Retail Real Estate, Mailand", kmVonStandort:"1000"},
+    {id:uid(), name:"RE ITALY Convention 2026", adresse:"Borsa Italiana, Piazza degli Affari 6, 20123 Milano, Italien", datum:"2026-06-10", datumBis:"2026-06-10", partnerId:"", notiz:"Real Estate Convention, 27. Ausgabe", kmVonStandort:"1000"},
+    {id:uid(), name:"Real Estate Arena 2026", adresse:"Messegelände Hannover, Hermesallee 1, 30521 Hannover", datum:"2026-06-10", datumBis:"2026-06-11", partnerId:"", notiz:"Deutschlands Immobilienmesse und Zukunftskonferenz, 7.500+ Fachbesucher", kmVonStandort:"280"},
+    {id:uid(), name:"EXPO REAL 2026", adresse:"Messe München, Am Messesee 2, 81829 München", datum:"2026-10-05", datumBis:"2026-10-07", partnerId:"", notiz:"Europas wichtigste Immobilienmesse, 3 Tage", kmVonStandort:"600"},
+    {id:uid(), name:"ProWein 2025", adresse:"Messe Düsseldorf, Stockumer Kirchstr. 61, 40474 Düsseldorf", datum:"2025-03-17", datumBis:"2025-03-18", partnerId:"", notiz:"Weltleitmesse Wein & Spirituosen, 6.000 Aussteller — Einladung ViniGrandi", kmVonStandort:"560"},
+    {id:uid(), name:"Vinitaly 2025", adresse:"Veronafiere, Viale del Lavoro 8, 37135 Verona, Italien", datum:"2025-04-07", datumBis:"2025-04-09", partnerId:"", notiz:"Internationale Weinfachmesse, 4.000 Aussteller, 97.000 Besucher — Einladung ViniGrandi", kmVonStandort:"1050"},
+    {id:uid(), name:"ProWein 2026", adresse:"Messe Düsseldorf, Stockumer Kirchstr. 61, 40474 Düsseldorf", datum:"2026-03-16", datumBis:"2026-03-17", partnerId:"", notiz:"Weltleitmesse Wein & Spirituosen — Einladung ViniGrandi", kmVonStandort:"560"},
+    {id:uid(), name:"Vinitaly 2026", adresse:"Veronafiere, Viale del Lavoro 8, 37135 Verona, Italien", datum:"2026-04-13", datumBis:"2026-04-15", partnerId:"", notiz:"Internationale Weinfachmesse Verona — Einladung ViniGrandi", kmVonStandort:"1050"},
+  ],
+  standorteExtra:[
+    {id:uid(), name:"Autoservice Ludwigsfelde",  adresse:"Südring, 14974 Ludwigsfelde", notiz:"KFZ-Service", auto:false, typ:"werkstatt", besuche:0, letzterBesuch:"", kmVonStandort:"2"},
+    {id:uid(), name:"Deutsche Post Ludwigsfelde", adresse:"Potsdamer Str. 60, 14974 Ludwigsfelde", notiz:"Briefe / Pakete", auto:false, typ:"post", besuche:0, letzterBesuch:"", kmVonStandort:"3"},
+    {id:uid(), name:"Autohaus Berolina Berlin", adresse:"Cicerostr. 34, 10709 Berlin-Halensee", notiz:"Fahrzeugabholung", auto:false, typ:"werkstatt", besuche:0, letzterBesuch:"", kmVonStandort:"45"},
+    {id:uid(), name:"MBS Sparkasse Ludwigsfelde", adresse:"Potsdamer Str. 60, 14974 Ludwigsfelde", notiz:"Bankfiliale", auto:false, typ:"bank", besuche:0, letzterBesuch:"", kmVonStandort:"5"},
+    {id:uid(), name:"Hornbach Ludwigsfelde", adresse:"Parkallee 36, 14974 Ludwigsfelde", notiz:"Baumarkt", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"2"},
+    {id:uid(), name:"Getränke Hoffmann Berlin", adresse:"Westfälische Str. 85, 10709 Berlin", notiz:"Getränkemarkt", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"38"},
+    {id:uid(), name:"Getränke Hoffmann Ludwigsfelde", adresse:"Potsdamer Str. 118, 14974 Ludwigsfelde", notiz:"Getränkemarkt", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"3"},
+  ,
+    {id:uid(), name:"Rathaus Ludwigsfelde", adresse:"Rathausstraße 3, 14974 Ludwigsfelde", notiz:"Stadtverwaltung, Bürgeramt, Gewerbeamt", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"2"},
+    {id:uid(), name:"Finanzamt Luckenwalde", adresse:"Dr.-Georg-Schaeffler-Straße 2, 14943 Luckenwalde", notiz:"Steuererklärung, Bescheide", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"18"},
+    {id:uid(), name:"Kfz-Zulassungsstelle Luckenwalde", adresse:"Louis-Pasteur-Str. 5, 14943 Luckenwalde", notiz:"Zulassung, Ummeldung, Abmeldung", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"18"},
+    {id:uid(), name:"Kreisverwaltung Teltow-Fläming", adresse:"Am Nuthefließ 2, 14943 Luckenwalde", notiz:"Landratsamt, Bauamt, Ordnungsamt", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"18"},
+    {id:uid(), name:"IHK Potsdam", adresse:"Breite Straße 2a-c, 14467 Potsdam", notiz:"Industrie- und Handelskammer", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"26"},
+    {id:uid(), name:"Bauhaus Berlin-Halensee", adresse:"Kurfürstendamm 129a, 10711 Berlin", notiz:"Baumarkt", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"38"},
+    {id:uid(), name:"Flughafen Berlin Brandenburg (BER)", adresse:"Willy-Brandt-Platz, 12529 Schönefeld", notiz:"Terminal 1 + 2", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"25"},
+    {id:uid(), name:"Flughafen München (MUC)", adresse:"Nordallee 25, 85356 München", notiz:"Franz Josef Strauß", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"620"},
+    {id:uid(), name:"Flughafen Hamburg (HAM)", adresse:"Flughafenstraße 1-3, 22335 Hamburg", notiz:"Hamburg Airport", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"290"},
+    {id:uid(), name:"Flughafen Stuttgart (STR)", adresse:"Flughafenstraße 32, 70629 Stuttgart", notiz:"Stuttgart Airport", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"590"},
+    {id:uid(), name:"Berlin Hauptbahnhof", adresse:"Europaplatz 1, 10557 Berlin", notiz:"Fernverkehr, ICE", auto:false, typ:"bahnhof", besuche:0, letzterBesuch:"", kmVonStandort:"40"}],
+  strafen:[], tankstellen:[], waesche:[], parkplaetze:[], services:[],
+  fahrten:[],
+});
+
+// ─── REAL CAR #5: Nissan Qashqai TF-KF 2128 (ImmoPrim GmbH) ────────────────
+const makeNissanDefault = () => ({
+  ...makeFahrzeug(4),
+  name:"Nissan Qashqai",
+  kennzeichen:"TF-KF 2128",
+  marke:"NISSAN", modell:"Qashqai J12",
+  farbe:"#969696",
+  kraftstoff:"Hybrid",
+  tuvDatum:"2027-01-12",
+  kfzBriefNr:"", fahrgestellNr:"SJNTAAJ12U1202663",
+  reifendruckVorne:"2.3", reifendruckHinten:"2.3",
+  halterName:"ImmoPrim GmbH",
+  halterAnschrift:"Seestraße 33, 14974 Ludwigsfelde",
+  halterTelPrivat:"", halterTelFirma:"",
+  fahrer:"",
+  fahrerAnschrift:"",
+  fahrerTelPrivat:"", fahrerTelFirma:"",
+  standort:{name:"Büro Ludwigsfelde", adresse:"Seestraße 33, 14974 Ludwigsfelde"},
+  kmStandInitial:"0",
+  partner:[
+    {id:uid(), name:"ViniGrandi GmbH",               adresse:"Konstanzer Str. 4, 10707 Berlin",          telefon:"", kmVonStandort:"37", notiz:"Firmensitz", typ:"kunde"},
+    {id:uid(), name:"ALPAGI Wine&Food GmbH",          adresse:"Westfälische Str. 29, 10709 Berlin",       telefon:"", kmVonStandort:"38", notiz:"Wein & Feinkost", typ:"kunde"},
+    {id:uid(), name:"8000 Vintages",                  adresse:"Großbeerenstraße 27A, 10963 Berlin",       telefon:"", kmVonStandort:"35", notiz:"Weinhandel", typ:"kunde"},
+    {id:uid(), name:"Ristorante Bragato Vini & Gastronomia", adresse:"Dahlmannstraße 7, 10629 Berlin",   telefon:"", kmVonStandort:"38", notiz:"Restaurant / Gastronomie", typ:"kunde"},
+    {id:uid(), name:"Enoiteca Il Calice",             adresse:"Walter-Benjamin-Platz 4, 10629 Berlin",    telefon:"", kmVonStandort:"38", notiz:"Weinbar / Enoteca", typ:"kunde"},
+    {id:uid(), name:"Enab-Berlin GmbH",               adresse:"Chausseestr. 86, 10115 Berlin",            telefon:"", kmVonStandort:"34", notiz:"Weinimport", typ:"kunde"},
+    {id:uid(), name:"Bar lambretta",                   adresse:"Revaler Straße 14, 10245 Berlin",          telefon:"", kmVonStandort:"40", notiz:"Bar", typ:"kunde"},
+    {id:uid(), name:"Bar Proskauer",                   adresse:"Proskauer Straße 13, 10247 Berlin",        telefon:"", kmVonStandort:"40", notiz:"Bar", typ:"kunde"},
+    {id:uid(), name:"Teliani Europe GmbH",             adresse:"Kurfürstendamm 167/168, 10707 Berlin",    telefon:"", kmVonStandort:"37", notiz:"Weinimport / Distribution", typ:"kunde"},
+  ,
+    {id:uid(), name:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH", adresse:"Lennéstr. 3, 10785 Berlin", telefon:"", kmVonStandort:"35", notiz:"Steuerberater", typ:"steuerberater"},
+    {id:uid(), name:"Knappworst Steuerberater Potsdam", adresse:"Am Bassin 4, 14467 Potsdam", telefon:"", kmVonStandort:"26", notiz:"Steuerberater", typ:"steuerberater"},
+    {id:uid(), name:"Rechtsanwälte Napiorkowski Potsdam", adresse:"Puschkinallee 3, Potsdam", telefon:"", kmVonStandort:"30", notiz:"Rechtsanwalt", typ:"anwalt"},
+    {id:uid(), name:"Rechtsanwälte Noacke Berlin", adresse:"Uhlandstr. 161, Berlin", telefon:"", kmVonStandort:"40", notiz:"Rechtsanwalt", typ:"anwalt"}],
+  messen:[
+    {id:uid(), name:"ProWein 2025", adresse:"Messe Düsseldorf, Stockumer Kirchstr. 61, 40474 Düsseldorf", datum:"2025-03-17", datumBis:"2025-03-18", partnerId:"", notiz:"Weltleitmesse Wein & Spirituosen — Einladung ViniGrandi", kmVonStandort:"560"},
+    {id:uid(), name:"Vinitaly 2025", adresse:"Veronafiere, Viale del Lavoro 8, 37135 Verona, Italien", datum:"2025-04-07", datumBis:"2025-04-09", partnerId:"", notiz:"Internationale Weinfachmesse — Einladung ViniGrandi", kmVonStandort:"1050"},
+    {id:uid(), name:"ProWein 2026", adresse:"Messe Düsseldorf, Stockumer Kirchstr. 61, 40474 Düsseldorf", datum:"2026-03-16", datumBis:"2026-03-17", partnerId:"", notiz:"Weltleitmesse Wein & Spirituosen — Einladung ViniGrandi", kmVonStandort:"560"},
+    {id:uid(), name:"Vinitaly 2026", adresse:"Veronafiere, Viale del Lavoro 8, 37135 Verona, Italien", datum:"2026-04-13", datumBis:"2026-04-15", partnerId:"", notiz:"Internationale Weinfachmesse Verona — Einladung ViniGrandi", kmVonStandort:"1050"},
+  ],
+  standorteExtra:[
+    {id:uid(), name:"Rathaus Ludwigsfelde", adresse:"Rathausstraße 3, 14974 Ludwigsfelde", notiz:"Stadtverwaltung, Bürgeramt, Gewerbeamt", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"2"},
+    {id:uid(), name:"Finanzamt Luckenwalde", adresse:"Dr.-Georg-Schaeffler-Straße 2, 14943 Luckenwalde", notiz:"Steuererklärung, Bescheide", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"18"},
+    {id:uid(), name:"Kfz-Zulassungsstelle Luckenwalde", adresse:"Louis-Pasteur-Str. 5, 14943 Luckenwalde", notiz:"Zulassung, Ummeldung, Abmeldung", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"18"},
+    {id:uid(), name:"Kreisverwaltung Teltow-Fläming", adresse:"Am Nuthefließ 2, 14943 Luckenwalde", notiz:"Landratsamt, Bauamt, Ordnungsamt", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"18"},
+    {id:uid(), name:"IHK Potsdam", adresse:"Breite Straße 2a-c, 14467 Potsdam", notiz:"Industrie- und Handelskammer", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"26"},
+  ,
+    {id:uid(), name:"Bauhaus Berlin-Halensee", adresse:"Kurfürstendamm 129a, 10711 Berlin", notiz:"Baumarkt", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"38"},
+    {id:uid(), name:"Flughafen Berlin Brandenburg (BER)", adresse:"Willy-Brandt-Platz, 12529 Schönefeld", notiz:"Terminal 1 + 2", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"25"},
+    {id:uid(), name:"Flughafen München (MUC)", adresse:"Nordallee 25, 85356 München", notiz:"Franz Josef Strauß", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"620"},
+    {id:uid(), name:"Flughafen Hamburg (HAM)", adresse:"Flughafenstraße 1-3, 22335 Hamburg", notiz:"Hamburg Airport", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"290"},
+    {id:uid(), name:"Flughafen Stuttgart (STR)", adresse:"Flughafenstraße 32, 70629 Stuttgart", notiz:"Stuttgart Airport", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"590"},
+    {id:uid(), name:"Berlin Hauptbahnhof", adresse:"Europaplatz 1, 10557 Berlin", notiz:"Fernverkehr, ICE", auto:false, typ:"bahnhof", besuche:0, letzterBesuch:"", kmVonStandort:"40"}],
+  strafen:[], tankstellen:[], waesche:[], parkplaetze:[], services:[],
+  fahrten:[],
+});
+
+// ─── REAL CAR #6: Renault Megane TF-VG 2016 (TRID GmbH) ────────────────────
+const makeRenaultDefault = () => ({
+  ...makeFahrzeug(5),
+  name:"Renault Megane",
+  kennzeichen:"TF-VG 2016",
+  marke:"RENAULT", modell:"Megane Kombilimousine",
+  farbe:"#77A5DA",
+  kraftstoff:"Benzin",
+  tuvDatum:"",
+  kfzBriefNr:"", fahrgestellNr:"VF1RFB00660551560",
+  reifendruckVorne:"2.2", reifendruckHinten:"2.2",
+  halterName:"TRID GmbH",
+  halterAnschrift:"Genshagener Straße 27, 14974 Ludwigsfelde",
+  halterTelPrivat:"", halterTelFirma:"",
+  fahrer:"",
+  fahrerAnschrift:"",
+  fahrerTelPrivat:"", fahrerTelFirma:"",
+  standort:{name:"TRID Büro Ludwigsfelde", adresse:"Genshagener Straße 27, 14974 Ludwigsfelde"},
+  kmStandInitial:"61378",
+  partner:[
+    {id:uid(), name:"ViniGrandi GmbH",               adresse:"Konstanzer Str. 4, 10707 Berlin",          telefon:"", kmVonStandort:"", notiz:"Firmensitz", typ:"kunde"},
+    {id:uid(), name:"ALPAGI Wine&Food GmbH",          adresse:"Westfälische Str. 29, 10709 Berlin",       telefon:"", kmVonStandort:"38", notiz:"Wein & Feinkost", typ:"kunde"},
+    {id:uid(), name:"8000 Vintages",                  adresse:"Großbeerenstraße 27A, 10963 Berlin",       telefon:"", kmVonStandort:"35", notiz:"Weinhandel", typ:"kunde"},
+    {id:uid(), name:"Ristorante Bragato Vini & Gastronomia", adresse:"Dahlmannstraße 7, 10629 Berlin",   telefon:"", kmVonStandort:"38", notiz:"Restaurant / Gastronomie", typ:"kunde"},
+    {id:uid(), name:"Enoiteca Il Calice",             adresse:"Walter-Benjamin-Platz 4, 10629 Berlin",    telefon:"", kmVonStandort:"38", notiz:"Weinbar / Enoteca", typ:"kunde"},
+    {id:uid(), name:"Enab-Berlin GmbH",               adresse:"Chausseestr. 86, 10115 Berlin",            telefon:"", kmVonStandort:"34", notiz:"Weinimport", typ:"kunde"},
+    {id:uid(), name:"Bar lambretta",                   adresse:"Revaler Straße 14, 10245 Berlin",          telefon:"", kmVonStandort:"40", notiz:"Bar", typ:"kunde"},
+    {id:uid(), name:"Bar Proskauer",                   adresse:"Proskauer Straße 13, 10247 Berlin",        telefon:"", kmVonStandort:"40", notiz:"Bar", typ:"kunde"},
+    {id:uid(), name:"Teliani Europe GmbH",             adresse:"Kurfürstendamm 167/168, 10707 Berlin",    telefon:"", kmVonStandort:"37", notiz:"Weinimport / Distribution", typ:"kunde"},
+    {id:uid(), name:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH", adresse:"Lennéstr. 3, 10785 Berlin", telefon:"", kmVonStandort:"35", notiz:"Steuerberater", typ:"steuerberater"},
+    {id:uid(), name:"Knappworst Steuerberater Potsdam", adresse:"Am Bassin 4, 14467 Potsdam", telefon:"", kmVonStandort:"26", notiz:"Steuerberater", typ:"steuerberater"},
+    {id:uid(), name:"Rechtsanwälte Napiorkowski Potsdam", adresse:"Puschkinallee 3, Potsdam", telefon:"", kmVonStandort:"30", notiz:"Rechtsanwalt", typ:"anwalt"},
+    {id:uid(), name:"Rechtsanwälte Noacke Berlin", adresse:"Uhlandstr. 161, Berlin", telefon:"", kmVonStandort:"40", notiz:"Rechtsanwalt", typ:"anwalt"},
+  ],
+  messen:[
+    {id:uid(), name:"ProWein 2025", adresse:"Messe Düsseldorf, Stockumer Kirchstr. 61, 40474 Düsseldorf", datum:"2025-03-17", datumBis:"2025-03-18", partnerId:"", notiz:"Weltleitmesse Wein & Spirituosen — Einladung ViniGrandi", kmVonStandort:"560"},
+    {id:uid(), name:"Vinitaly 2025", adresse:"Veronafiere, Viale del Lavoro 8, 37135 Verona, Italien", datum:"2025-04-07", datumBis:"2025-04-09", partnerId:"", notiz:"Internationale Weinfachmesse — Einladung ViniGrandi", kmVonStandort:"1050"},
+    {id:uid(), name:"ProWein 2026", adresse:"Messe Düsseldorf, Stockumer Kirchstr. 61, 40474 Düsseldorf", datum:"2026-03-16", datumBis:"2026-03-17", partnerId:"", notiz:"Weltleitmesse Wein & Spirituosen — Einladung ViniGrandi", kmVonStandort:"560"},
+    {id:uid(), name:"Vinitaly 2026", adresse:"Veronafiere, Viale del Lavoro 8, 37135 Verona, Italien", datum:"2026-04-13", datumBis:"2026-04-15", partnerId:"", notiz:"Internationale Weinfachmesse Verona — Einladung ViniGrandi", kmVonStandort:"1050"},
+  ],
+  standorteExtra:[
+    {id:uid(), name:"Rathaus Ludwigsfelde", adresse:"Rathausstraße 3, 14974 Ludwigsfelde", notiz:"Stadtverwaltung, Bürgeramt, Gewerbeamt", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"2"},
+    {id:uid(), name:"Finanzamt Luckenwalde", adresse:"Dr.-Georg-Schaeffler-Straße 2, 14943 Luckenwalde", notiz:"Steuererklärung, Bescheide", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"18"},
+    {id:uid(), name:"Kfz-Zulassungsstelle Luckenwalde", adresse:"Louis-Pasteur-Str. 5, 14943 Luckenwalde", notiz:"Zulassung, Ummeldung, Abmeldung", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"18"},
+    {id:uid(), name:"Kreisverwaltung Teltow-Fläming", adresse:"Am Nuthefließ 2, 14943 Luckenwalde", notiz:"Landratsamt, Bauamt, Ordnungsamt", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"18"},
+    {id:uid(), name:"IHK Potsdam", adresse:"Breite Straße 2a-c, 14467 Potsdam", notiz:"Industrie- und Handelskammer", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"26"},
+  ,
+    {id:uid(), name:"Autoservice Ludwigsfelde",  adresse:"Südring, 14974 Ludwigsfelde", notiz:"KFZ-Service", auto:false, typ:"werkstatt", besuche:0, letzterBesuch:"", kmVonStandort:"2"},
+    {id:uid(), name:"Deutsche Post Ludwigsfelde", adresse:"Potsdamer Str. 60, 14974 Ludwigsfelde", notiz:"Briefe / Pakete", auto:false, typ:"post", besuche:0, letzterBesuch:"", kmVonStandort:"3"},
+    {id:uid(), name:"Autohaus Berolina Berlin", adresse:"Cicerostr. 34, 10709 Berlin-Halensee", notiz:"Fahrzeugabholung", auto:false, typ:"werkstatt", besuche:0, letzterBesuch:"", kmVonStandort:"45"},
+    {id:uid(), name:"MBS Sparkasse Ludwigsfelde", adresse:"Potsdamer Str. 60, 14974 Ludwigsfelde", notiz:"Bankfiliale", auto:false, typ:"bank", besuche:0, letzterBesuch:"", kmVonStandort:"5"},
+    {id:uid(), name:"Hornbach Ludwigsfelde", adresse:"Parkallee 36, 14974 Ludwigsfelde", notiz:"Baumarkt", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"2"},
+    {id:uid(), name:"Getränke Hoffmann Berlin", adresse:"Westfälische Str. 85, 10709 Berlin", notiz:"Getränkemarkt", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"38"},
+    {id:uid(), name:"Getränke Hoffmann Ludwigsfelde", adresse:"Potsdamer Str. 118, 14974 Ludwigsfelde", notiz:"Getränkemarkt", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"3"},
+    {id:uid(), name:"Bauhaus Berlin-Halensee", adresse:"Kurfürstendamm 129a, 10711 Berlin", notiz:"Baumarkt", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"38"},
+    {id:uid(), name:"Flughafen Berlin Brandenburg (BER)", adresse:"Willy-Brandt-Platz, 12529 Schönefeld", notiz:"Terminal 1 + 2", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"25"},
+    {id:uid(), name:"Flughafen München (MUC)", adresse:"Nordallee 25, 85356 München", notiz:"Franz Josef Strauß", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"620"},
+    {id:uid(), name:"Flughafen Hamburg (HAM)", adresse:"Flughafenstraße 1-3, 22335 Hamburg", notiz:"Hamburg Airport", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"290"},
+    {id:uid(), name:"Flughafen Stuttgart (STR)", adresse:"Flughafenstraße 32, 70629 Stuttgart", notiz:"Stuttgart Airport", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"590"},
+    {id:uid(), name:"Berlin Hauptbahnhof", adresse:"Europaplatz 1, 10557 Berlin", notiz:"Fernverkehr, ICE", auto:false, typ:"bahnhof", besuche:0, letzterBesuch:"", kmVonStandort:"40"}],
+  strafen:[], tankstellen:[], waesche:[], parkplaetze:[], services:[],
+  fahrten:[
+    {id:uid(), datum:"2024-01-09", zeitStr:"9:30-10:30", kategorie:"sonstige", zielId:"", zielName:"Büro - Werkstatt - Teltow Büro", km:"30", dauerMin:"", rueckfahrt:true, notiz:"Werkstattbesuch", kmTyp:"geschaeftlich", kmStart:"61378", kmEnd:"61408"},
+    {id:uid(), datum:"2024-01-12", zeitStr:"10:00-10:45", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post Ludwigsfelde", km:"10", dauerMin:"", rueckfahrt:true, notiz:"Einschreiben", kmTyp:"geschaeftlich", kmStart:"61408", kmEnd:"61418"},
+    {id:uid(), datum:"2024-01-16", zeitStr:"9:30-10:00", kategorie:"sonstige", zielId:"", zielName:"Büro - Seestr. - zurück", km:"5", dauerMin:"", rueckfahrt:true, notiz:"Kundenbesuch", kmTyp:"geschaeftlich", kmStart:"61418", kmEnd:"61423"},
+    {id:uid(), datum:"2024-01-22", zeitStr:"11:00-11:45", kategorie:"partner", zielId:"", zielName:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH, Lennéstr. 3, 10785 Berlin", km:"80", dauerMin:"", rueckfahrt:true, notiz:"Besprechung", kmTyp:"geschaeftlich", kmStart:"61423", kmEnd:"61503"},
+    {id:uid(), datum:"2024-01-23", zeitStr:"9-15", kategorie:"sonstige", zielId:"", zielName:"Laden Kantstr. - Kunde Oranienburg - Büro", km:"150", dauerMin:"", rueckfahrt:true, notiz:"Kundenbesuch", kmTyp:"geschaeftlich", kmStart:"61503", kmEnd:"61653"},
+    {id:uid(), datum:"2024-01-29", zeitStr:"10-13", kategorie:"sonstige", zielId:"", zielName:"Berlin - Kundenauslieferung", km:"50", dauerMin:"", rueckfahrt:true, notiz:"Kundenauslieferung", kmTyp:"geschaeftlich", kmStart:"61653", kmEnd:"61703"},
+    {id:uid(), datum:"2024-01-31", zeitStr:"11-15", kategorie:"partner", zielId:"", zielName:"ViniGrandi GmbH, Konstanzer Str. 4, 10707 Berlin", km:"37", dauerMin:"", rueckfahrt:true, notiz:"Aushilfe", kmTyp:"geschaeftlich", kmStart:"61703", kmEnd:"61740"},
+    {id:uid(), datum:"2024-02-02", zeitStr:"13-16", kategorie:"sonstige", zielId:"", zielName:"Eigentümerversammlung", km:"40", dauerMin:"", rueckfahrt:true, notiz:"Eigentümerversammlung", kmTyp:"geschaeftlich", kmStart:"61740", kmEnd:"61780"},
+    {id:uid(), datum:"2024-02-05", zeitStr:"9:00-15", kategorie:"sonstige", zielId:"", zielName:"Büro - Laden - Kunden Spand. Damm", km:"80", dauerMin:"", rueckfahrt:true, notiz:"Kundenbesuche", kmTyp:"geschaeftlich", kmStart:"61780", kmEnd:"61860"},
+    {id:uid(), datum:"2024-02-12", zeitStr:"8-15", kategorie:"sonstige", zielId:"", zielName:"Büro - Laden - Kunden Berlin - Büro", km:"93", dauerMin:"", rueckfahrt:true, notiz:"Kundenbesuche", kmTyp:"geschaeftlich", kmStart:"61860", kmEnd:"61953"},
+    {id:uid(), datum:"2024-02-16", zeitStr:"12-18", kategorie:"messe", zielId:"", zielName:"Weinmesse Berlin", km:"53", dauerMin:"", rueckfahrt:true, notiz:"Weinmesse Berlin", kmTyp:"geschaeftlich", kmStart:"61953", kmEnd:"62006"},
+    {id:uid(), datum:"2024-02-20", zeitStr:"10-14", kategorie:"sonstige", zielId:"", zielName:"Büro - Laden - Kunde Oranienburg - Büro", km:"53", dauerMin:"", rueckfahrt:true, notiz:"Kundenbesuch", kmTyp:"geschaeftlich", kmStart:"62006", kmEnd:"62059"},
+    {id:uid(), datum:"2024-02-22", zeitStr:"11-16", kategorie:"sonstige", zielId:"", zielName:"Büro - Kundenauslieferung Berlin", km:"54", dauerMin:"", rueckfahrt:true, notiz:"Kundenauslieferung", kmTyp:"geschaeftlich", kmStart:"62059", kmEnd:"62113"},
+    {id:uid(), datum:"2024-02-26", zeitStr:"9-12", kategorie:"partner", zielId:"", zielName:"ViniGrandi GmbH, Konstanzer Str. 4, 10707 Berlin", km:"42", dauerMin:"", rueckfahrt:true, notiz:"Aushilfe", kmTyp:"geschaeftlich", kmStart:"62113", kmEnd:"62155"},
+    {id:uid(), datum:"2024-03-01", zeitStr:"10-14", kategorie:"sonstige", zielId:"", zielName:"Büro - Laden - Kunden Spandauer Damm", km:"83", dauerMin:"", rueckfahrt:true, notiz:"Kundenbesuche", kmTyp:"geschaeftlich", kmStart:"62155", kmEnd:"62238"},
+    {id:uid(), datum:"2024-03-04", zeitStr:"9-14", kategorie:"sonstige", zielId:"", zielName:"Büro - Laden - 4 Kunden Berlin", km:"103", dauerMin:"", rueckfahrt:true, notiz:"Kundenbesuche", kmTyp:"geschaeftlich", kmStart:"62238", kmEnd:"62341"},
+    {id:uid(), datum:"2024-03-06", zeitStr:"8-15", kategorie:"sonstige", zielId:"", zielName:"Büro - Laden - Kunden Pankow - Reinickendorf - Friedrichshain", km:"148", dauerMin:"", rueckfahrt:true, notiz:"Kundenbesuche", kmTyp:"geschaeftlich", kmStart:"62341", kmEnd:"62489"},
+    {id:uid(), datum:"2024-03-11", zeitStr:"9-13", kategorie:"sonstige", zielId:"", zielName:"Mittenwalde Kundenauslieferung", km:"43", dauerMin:"", rueckfahrt:true, notiz:"Kundenauslieferung", kmTyp:"geschaeftlich", kmStart:"62489", kmEnd:"62532"},
+    {id:uid(), datum:"2024-03-13", zeitStr:"9-11", kategorie:"partner", zielId:"", zielName:"ViniGrandi GmbH, Konstanzer Str. 4, 10707 Berlin", km:"39", dauerMin:"", rueckfahrt:true, notiz:"Aushilfe", kmTyp:"geschaeftlich", kmStart:"62532", kmEnd:"62571"},
+    {id:uid(), datum:"2024-03-15", zeitStr:"8-13", kategorie:"sonstige", zielId:"", zielName:"Büro - Laden - Kunde Spand. Damm", km:"85", dauerMin:"", rueckfahrt:true, notiz:"Kundenbesuch", kmTyp:"geschaeftlich", kmStart:"62571", kmEnd:"62656"},
+    {id:uid(), datum:"2024-03-19", zeitStr:"9-14", kategorie:"sonstige", zielId:"", zielName:"Büro - Laden - 4 Kunden Berlin", km:"106", dauerMin:"", rueckfahrt:true, notiz:"Kundenbesuche", kmTyp:"geschaeftlich", kmStart:"62656", kmEnd:"62762"},
+    {id:uid(), datum:"2024-03-21", zeitStr:"9-11", kategorie:"sonstige", zielId:"", zielName:"Büro - Riekau Burg", km:"118", dauerMin:"", rueckfahrt:true, notiz:"Kundenbesuch", kmTyp:"geschaeftlich", kmStart:"62762", kmEnd:"62880"},
+    {id:uid(), datum:"2024-03-22", zeitStr:"9-13", kategorie:"partner", zielId:"", zielName:"ViniGrandi GmbH, Konstanzer Str. 4, 10707 Berlin", km:"43", dauerMin:"", rueckfahrt:true, notiz:"Umlagern", kmTyp:"geschaeftlich", kmStart:"62880", kmEnd:"62923"},
+    {id:uid(), datum:"2024-03-26", zeitStr:"11-14", kategorie:"partner", zielId:"", zielName:"ViniGrandi GmbH, Konstanzer Str. 4, 10707 Berlin", km:"78", dauerMin:"", rueckfahrt:true, notiz:"Aushilfe", kmTyp:"geschaeftlich", kmStart:"62923", kmEnd:"63001"},
+    {id:uid(), datum:"2024-03-29", zeitStr:"12-15", kategorie:"partner", zielId:"", zielName:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH, Lennéstr. 3, 10785 Berlin", km:"79", dauerMin:"", rueckfahrt:true, notiz:"Besprechung", kmTyp:"geschaeftlich", kmStart:"63001", kmEnd:"63080"},
+    {id:uid(), datum:"2024-04-03", zeitStr:"11-13", kategorie:"sonstige", zielId:"", zielName:"Büro - Ahornstr. - Büro", km:"21", dauerMin:"", rueckfahrt:true, notiz:"Kundenbesuch", kmTyp:"geschaeftlich", kmStart:"63080", kmEnd:"63101"},
+    {id:uid(), datum:"2024-04-05", zeitStr:"10-11", kategorie:"sonstige", zielId:"", zielName:"Büro - Seestr. - Büro", km:"9", dauerMin:"", rueckfahrt:true, notiz:"Kundenbesuch", kmTyp:"geschaeftlich", kmStart:"63101", kmEnd:"63110"},
+    {id:uid(), datum:"2024-04-08", zeitStr:"9-12", kategorie:"sonstige", zielId:"", zielName:"Büro - Mittenwalde", km:"49", dauerMin:"", rueckfahrt:true, notiz:"Kundenbesuche", kmTyp:"geschaeftlich", kmStart:"63110", kmEnd:"63159"},
+    {id:uid(), datum:"2024-04-10", zeitStr:"9-14", kategorie:"sonstige", zielId:"", zielName:"Büro - Kundenauslieferung Berlin", km:"163", dauerMin:"", rueckfahrt:true, notiz:"Kundenauslieferung", kmTyp:"geschaeftlich", kmStart:"63159", kmEnd:"63322"},
+    {id:uid(), datum:"2024-04-11", zeitStr:"8-13", kategorie:"partner", zielId:"", zielName:"ViniGrandi GmbH, Konstanzer Str. 4, 10707 Berlin", km:"83", dauerMin:"", rueckfahrt:true, notiz:"Aushilfe", kmTyp:"geschaeftlich", kmStart:"63322", kmEnd:"63405"},
+    {id:uid(), datum:"2024-04-15", zeitStr:"9-13", kategorie:"sonstige", zielId:"", zielName:"Büro - Rieker Burg - Büro", km:"68", dauerMin:"", rueckfahrt:true, notiz:"Kundenbesuch", kmTyp:"geschaeftlich", kmStart:"63405", kmEnd:"63473"},
+    {id:uid(), datum:"2024-04-18", zeitStr:"11-14", kategorie:"partner", zielId:"", zielName:"ViniGrandi GmbH, Konstanzer Str. 4, 10707 Berlin", km:"43", dauerMin:"", rueckfahrt:true, notiz:"Aushilfe", kmTyp:"geschaeftlich", kmStart:"63473", kmEnd:"63516"},
+    {id:uid(), datum:"2024-04-22", zeitStr:"12-14", kategorie:"partner", zielId:"", zielName:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH, Lennéstr. 3, 10785 Berlin", km:"76", dauerMin:"", rueckfahrt:true, notiz:"Besprechung", kmTyp:"geschaeftlich", kmStart:"63516", kmEnd:"63592"},
+    {id:uid(), datum:"2024-04-23", zeitStr:"10-15", kategorie:"sonstige", zielId:"", zielName:"Laden - Kunde Oranienburg", km:"165", dauerMin:"", rueckfahrt:true, notiz:"Kundenbesuch", kmTyp:"geschaeftlich", kmStart:"63592", kmEnd:"63757"},
+    {id:uid(), datum:"2024-04-29", zeitStr:"10-12", kategorie:"sonstige", zielId:"", zielName:"Büro - Ahornstr. - Kundenauslieferung", km:"23", dauerMin:"", rueckfahrt:true, notiz:"Kundenauslieferung", kmTyp:"geschaeftlich", kmStart:"63757", kmEnd:"63780"},
+    {id:uid(), datum:"2024-05-02", zeitStr:"11-15", kategorie:"sonstige", zielId:"", zielName:"Büro - Berlin Kundenauslieferung - zurück", km:"110", dauerMin:"", rueckfahrt:true, notiz:"Kundenauslieferung", kmTyp:"geschaeftlich", kmStart:"63780", kmEnd:"63890"},
+    {id:uid(), datum:"2024-05-07", zeitStr:"11-14", kategorie:"partner", zielId:"", zielName:"ViniGrandi GmbH, Konstanzer Str. 4, 10707 Berlin", km:"78", dauerMin:"", rueckfahrt:true, notiz:"Aushilfe", kmTyp:"geschaeftlich", kmStart:"63890", kmEnd:"63968"},
+    {id:uid(), datum:"2024-05-10", zeitStr:"11-13", kategorie:"partner", zielId:"", zielName:"ViniGrandi GmbH, Konstanzer Str. 4, 10707 Berlin", km:"58", dauerMin:"", rueckfahrt:true, notiz:"Aushilfe", kmTyp:"geschaeftlich", kmStart:"63968", kmEnd:"64026"},
+    {id:uid(), datum:"2024-05-14", zeitStr:"10-15", kategorie:"sonstige", zielId:"", zielName:"Büro - Laden - Kunde Oranienburg - zurück", km:"165", dauerMin:"", rueckfahrt:true, notiz:"Kundenbesuch", kmTyp:"geschaeftlich", kmStart:"64026", kmEnd:"64191"},
+    {id:uid(), datum:"2024-05-16", zeitStr:"13-16", kategorie:"sonstige", zielId:"", zielName:"Büro - Eigentümerversammlung - zurück", km:"123", dauerMin:"", rueckfahrt:true, notiz:"Eigentümerversammlung", kmTyp:"geschaeftlich", kmStart:"64191", kmEnd:"64314"},
+    {id:uid(), datum:"2024-05-17", zeitStr:"9-11", kategorie:"partner", zielId:"", zielName:"ViniGrandi GmbH, Konstanzer Str. 4, 10707 Berlin", km:"78", dauerMin:"", rueckfahrt:true, notiz:"Aushilfe", kmTyp:"geschaeftlich", kmStart:"64314", kmEnd:"64392"},
+    {id:uid(), datum:"2024-05-21", zeitStr:"10-14", kategorie:"sonstige", zielId:"", zielName:"Büro - Laden - Kunde Spand. Damm", km:"83", dauerMin:"", rueckfahrt:true, notiz:"Kundenbesuch", kmTyp:"geschaeftlich", kmStart:"64392", kmEnd:"64475"},
+    {id:uid(), datum:"2024-05-23", zeitStr:"11-16", kategorie:"sonstige", zielId:"", zielName:"Büro - Laden - 4 Kunden Berlin - zurück", km:"158", dauerMin:"", rueckfahrt:true, notiz:"Kundenbesuche", kmTyp:"geschaeftlich", kmStart:"64475", kmEnd:"64633"},
+    {id:uid(), datum:"2024-05-27", zeitStr:"10-12", kategorie:"sonstige", zielId:"", zielName:"Büro - Mittenwalde", km:"53", dauerMin:"", rueckfahrt:true, notiz:"Kundenbesuche", kmTyp:"geschaeftlich", kmStart:"64633", kmEnd:"64686"},
+    {id:uid(), datum:"2024-05-29", zeitStr:"12-15", kategorie:"partner", zielId:"", zielName:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH, Lennéstr. 3, 10785 Berlin", km:"78", dauerMin:"", rueckfahrt:true, notiz:"Besprechung", kmTyp:"geschaeftlich", kmStart:"64686", kmEnd:"64764"},
+    {id:uid(), datum:"2024-05-31", zeitStr:"13-15", kategorie:"partner", zielId:"", zielName:"ViniGrandi GmbH, Konstanzer Str. 4, 10707 Berlin", km:"76", dauerMin:"", rueckfahrt:true, notiz:"Aushilfe", kmTyp:"geschaeftlich", kmStart:"64764", kmEnd:"64840"},
+    {id:uid(), datum:"2024-06-03", zeitStr:"10-13", kategorie:"partner", zielId:"", zielName:"ViniGrandi GmbH, Konstanzer Str. 4, 10707 Berlin", km:"77", dauerMin:"", rueckfahrt:true, notiz:"Aushilfe", kmTyp:"geschaeftlich", kmStart:"64840", kmEnd:"64917"},
+    {id:uid(), datum:"2024-06-04", zeitStr:"10-11", kategorie:"sonstige", zielId:"", zielName:"Büro - Seestr.", km:"8", dauerMin:"", rueckfahrt:true, notiz:"Kundenbesuch", kmTyp:"geschaeftlich", kmStart:"64917", kmEnd:"64925"},
+    {id:uid(), datum:"2024-06-07", zeitStr:"9-12", kategorie:"sonstige", zielId:"", zielName:"Büro - Berlin", km:"110", dauerMin:"", rueckfahrt:true, notiz:"Kundenbesuche", kmTyp:"geschaeftlich", kmStart:"64925", kmEnd:"65035"},
+    {id:uid(), datum:"2024-06-10", zeitStr:"11-14", kategorie:"sonstige", zielId:"", zielName:"Büro - Berlin", km:"118", dauerMin:"", rueckfahrt:true, notiz:"Kundenbesuche", kmTyp:"geschaeftlich", kmStart:"65035", kmEnd:"65153"},
+    {id:uid(), datum:"2024-06-12", zeitStr:"10-13", kategorie:"partner", zielId:"", zielName:"ViniGrandi GmbH, Konstanzer Str. 4, 10707 Berlin", km:"76", dauerMin:"", rueckfahrt:true, notiz:"Aushilfe", kmTyp:"geschaeftlich", kmStart:"65153", kmEnd:"65229"},
+    {id:uid(), datum:"2024-06-13", zeitStr:"9-14", kategorie:"sonstige", zielId:"", zielName:"Büro - Kundenauslieferung Berlin", km:"118", dauerMin:"", rueckfahrt:true, notiz:"Kundenauslieferung", kmTyp:"geschaeftlich", kmStart:"65229", kmEnd:"65347"},
+    {id:uid(), datum:"2024-06-17", zeitStr:"10-14", kategorie:"sonstige", zielId:"", zielName:"Büro - Laden - Kunde Oranienburg", km:"165", dauerMin:"", rueckfahrt:true, notiz:"Kundenbesuch", kmTyp:"geschaeftlich", kmStart:"65347", kmEnd:"65512"},
+    {id:uid(), datum:"2024-06-19", zeitStr:"11-14", kategorie:"sonstige", zielId:"", zielName:"Büro - Laden - Kunde Spand. Damm", km:"89", dauerMin:"", rueckfahrt:true, notiz:"Kundenbesuch", kmTyp:"geschaeftlich", kmStart:"65512", kmEnd:"65601"},
+    {id:uid(), datum:"2024-06-21", zeitStr:"10-13", kategorie:"partner", zielId:"", zielName:"ViniGrandi GmbH, Konstanzer Str. 4, 10707 Berlin", km:"76", dauerMin:"", rueckfahrt:true, notiz:"Aushilfe", kmTyp:"geschaeftlich", kmStart:"65601", kmEnd:"65677"},
+    {id:uid(), datum:"2024-06-24", zeitStr:"9-14", kategorie:"partner", zielId:"", zielName:"ViniGrandi GmbH, Konstanzer Str. 4, 10707 Berlin", km:"80", dauerMin:"", rueckfahrt:true, notiz:"Aushilfe", kmTyp:"geschaeftlich", kmStart:"65677", kmEnd:"65757"},
+    {id:uid(), datum:"2024-06-27", zeitStr:"8-15", kategorie:"sonstige", zielId:"", zielName:"Lager - Berlin - Lager", km:"190", dauerMin:"", rueckfahrt:true, notiz:"Kundenbesuche", kmTyp:"geschaeftlich", kmStart:"65757", kmEnd:"65947"},
+    {id:uid(), datum:"2024-06-28", zeitStr:"5-11", kategorie:"sonstige", zielId:"", zielName:"Lager - Kloster Lehnin", km:"96", dauerMin:"", rueckfahrt:true, notiz:"Kundenbesuch", kmTyp:"geschaeftlich", kmStart:"65947", kmEnd:"66043"},
+    {id:uid(), datum:"2024-07-01", zeitStr:"10-13", kategorie:"partner", zielId:"", zielName:"ViniGrandi GmbH, Konstanzer Str. 4, 10707 Berlin", km:"76", dauerMin:"", rueckfahrt:true, notiz:"Aushilfe", kmTyp:"geschaeftlich", kmStart:"66043", kmEnd:"66119"},
+    {id:uid(), datum:"2024-07-02", zeitStr:"11-14", kategorie:"sonstige", zielId:"", zielName:"Lager - Mittenwalde - Lager", km:"54", dauerMin:"", rueckfahrt:true, notiz:"Kundenbesuch", kmTyp:"geschaeftlich", kmStart:"66119", kmEnd:"66173"},
+    {id:uid(), datum:"2024-07-03", zeitStr:"10:00-14:00", kategorie:"sonstige", zielId:"", zielName:"Lager - Berlin - Lager", km:"160", dauerMin:"", rueckfahrt:true, notiz:"Kundenauslieferung", kmTyp:"geschaeftlich", kmStart:"66173", kmEnd:"66333"},
+    {id:uid(), datum:"2024-07-04", zeitStr:"11-13", kategorie:"partner", zielId:"", zielName:"ViniGrandi GmbH, Konstanzer Str. 4, 10707 Berlin", km:"79", dauerMin:"", rueckfahrt:true, notiz:"Aushilfe + Kundenbesuch", kmTyp:"geschaeftlich", kmStart:"66333", kmEnd:"66412"},
+    {id:uid(), datum:"2024-07-05", zeitStr:"10-12", kategorie:"partner", zielId:"", zielName:"ViniGrandi GmbH, Konstanzer Str. 4, 10707 Berlin", km:"78", dauerMin:"", rueckfahrt:true, notiz:"Aushilfe", kmTyp:"geschaeftlich", kmStart:"66412", kmEnd:"66490"},
+    {id:uid(), datum:"2024-07-08", zeitStr:"10-14", kategorie:"sonstige", zielId:"", zielName:"Lager - Kundenauslieferung - Lager", km:"98", dauerMin:"", rueckfahrt:true, notiz:"Kundenauslieferung", kmTyp:"geschaeftlich", kmStart:"66490", kmEnd:"66588"},
+    {id:uid(), datum:"2024-07-10", zeitStr:"10-15", kategorie:"sonstige", zielId:"", zielName:"Lager - Spand. Damm - Prenzl. Berg", km:"100", dauerMin:"", rueckfahrt:true, notiz:"Kundenbesuche", kmTyp:"geschaeftlich", kmStart:"66588", kmEnd:"66688"},
+    {id:uid(), datum:"2024-07-12", zeitStr:"9-14", kategorie:"sonstige", zielId:"", zielName:"Lager - Hamburger Str. / Berlin - Lager", km:"107", dauerMin:"", rueckfahrt:true, notiz:"Kundenbesuche", kmTyp:"geschaeftlich", kmStart:"66688", kmEnd:"66795"},
+    {id:uid(), datum:"2024-07-15", zeitStr:"9-14", kategorie:"sonstige", zielId:"", zielName:"Lager - Berlin - Lager", km:"38", dauerMin:"", rueckfahrt:true, notiz:"Kundenauslieferung", kmTyp:"geschaeftlich", kmStart:"66795", kmEnd:"66833"},
+    {id:uid(), datum:"2024-07-16", zeitStr:"10-12", kategorie:"partner", zielId:"", zielName:"ViniGrandi GmbH, Konstanzer Str. 4, 10707 Berlin", km:"178", dauerMin:"", rueckfahrt:true, notiz:"Aushilfe", kmTyp:"geschaeftlich", kmStart:"66833", kmEnd:"67011"},
+    {id:uid(), datum:"2024-07-17", zeitStr:"9-13", kategorie:"sonstige", zielId:"", zielName:"Lager - Laden - Oranienburg - Lager", km:"146", dauerMin:"", rueckfahrt:true, notiz:"Kundenauslieferung", kmTyp:"geschaeftlich", kmStart:"67011", kmEnd:"67157"},
+    {id:uid(), datum:"2024-07-19", zeitStr:"9-14", kategorie:"sonstige", zielId:"", zielName:"Lager - Reinickendorf - Pankow - Friedrichshain - Lager", km:"124", dauerMin:"", rueckfahrt:true, notiz:"Kundenbesuche", kmTyp:"geschaeftlich", kmStart:"67157", kmEnd:"67281"},
+    {id:uid(), datum:"2024-07-22", zeitStr:"10-13", kategorie:"partner", zielId:"", zielName:"ViniGrandi GmbH, Konstanzer Str. 4, 10707 Berlin", km:"78", dauerMin:"", rueckfahrt:true, notiz:"Aushilfe", kmTyp:"geschaeftlich", kmStart:"67281", kmEnd:"67359"},
+    {id:uid(), datum:"2024-07-23", zeitStr:"10-12", kategorie:"partner", zielId:"", zielName:"ViniGrandi GmbH, Konstanzer Str. 4, 10707 Berlin", km:"78", dauerMin:"", rueckfahrt:true, notiz:"Aushilfe", kmTyp:"geschaeftlich", kmStart:"67359", kmEnd:"67437"},
+    {id:uid(), datum:"2024-07-24", zeitStr:"10-13", kategorie:"partner", zielId:"", zielName:"ViniGrandi GmbH, Konstanzer Str. 4, 10707 Berlin", km:"78", dauerMin:"", rueckfahrt:true, notiz:"Aushilfe", kmTyp:"geschaeftlich", kmStart:"67437", kmEnd:"67515"},
+    {id:uid(), datum:"2024-07-25", zeitStr:"9-14", kategorie:"sonstige", zielId:"", zielName:"Lager - Berlin - Lager", km:"120", dauerMin:"", rueckfahrt:true, notiz:"Kundenauslieferung", kmTyp:"geschaeftlich", kmStart:"67515", kmEnd:"67635"},
+    {id:uid(), datum:"2024-07-29", zeitStr:"10-12", kategorie:"sonstige", zielId:"", zielName:"Lager - Mittenwalde - Lager", km:"58", dauerMin:"", rueckfahrt:true, notiz:"Kundenbesuch", kmTyp:"geschaeftlich", kmStart:"67635", kmEnd:"67693"},
+    {id:uid(), datum:"2024-07-30", zeitStr:"9-13", kategorie:"partner", zielId:"", zielName:"ViniGrandi GmbH, Konstanzer Str. 4, 10707 Berlin", km:"78", dauerMin:"", rueckfahrt:true, notiz:"Aushilfe", kmTyp:"geschaeftlich", kmStart:"67693", kmEnd:"67771"},
+    {id:uid(), datum:"2024-07-31", zeitStr:"9-14", kategorie:"sonstige", zielId:"", zielName:"Lager - Berlin - Lager", km:"109", dauerMin:"", rueckfahrt:true, notiz:"Kundenauslieferung", kmTyp:"geschaeftlich", kmStart:"67771", kmEnd:"67880"},
+    {id:uid(), datum:"2024-08-01", zeitStr:"9-13", kategorie:"sonstige", zielId:"", zielName:"Lager - Spandauer Damm - Prenzl. Berg - Lager", km:"85", dauerMin:"", rueckfahrt:true, notiz:"Kundenauslieferung", kmTyp:"geschaeftlich", kmStart:"67880", kmEnd:"67965"},
+    {id:uid(), datum:"2024-08-02", zeitStr:"9-15", kategorie:"sonstige", zielId:"", zielName:"Lager - Brandenburg - Lager", km:"230", dauerMin:"", rueckfahrt:true, notiz:"Kundenauslieferung", kmTyp:"geschaeftlich", kmStart:"67965", kmEnd:"68195"},
+    {id:uid(), datum:"2024-08-05", zeitStr:"10-13", kategorie:"partner", zielId:"", zielName:"ViniGrandi GmbH, Konstanzer Str. 4, 10707 Berlin", km:"78", dauerMin:"", rueckfahrt:true, notiz:"Aushilfe", kmTyp:"geschaeftlich", kmStart:"68195", kmEnd:"68273"},
+    {id:uid(), datum:"2024-08-06", zeitStr:"10-13", kategorie:"partner", zielId:"", zielName:"ViniGrandi GmbH, Konstanzer Str. 4, 10707 Berlin", km:"78", dauerMin:"", rueckfahrt:true, notiz:"Aushilfe", kmTyp:"geschaeftlich", kmStart:"68273", kmEnd:"68351"},
+    {id:uid(), datum:"2024-08-07", zeitStr:"9-14", kategorie:"sonstige", zielId:"", zielName:"Lager - Laden - Oranienburg - Lager", km:"146", dauerMin:"", rueckfahrt:true, notiz:"Kundenbesuch", kmTyp:"geschaeftlich", kmStart:"68351", kmEnd:"68497"},
+    {id:uid(), datum:"2024-08-09", zeitStr:"10-13", kategorie:"partner", zielId:"", zielName:"ViniGrandi GmbH, Konstanzer Str. 4, 10707 Berlin", km:"78", dauerMin:"", rueckfahrt:true, notiz:"Aushilfe", kmTyp:"geschaeftlich", kmStart:"68497", kmEnd:"68575"},
+    {id:uid(), datum:"2024-08-12", zeitStr:"9-11", kategorie:"partner", zielId:"", zielName:"ViniGrandi GmbH, Konstanzer Str. 4, 10707 Berlin", km:"100", dauerMin:"", rueckfahrt:true, notiz:"Aushilfe + Auslieferung", kmTyp:"geschaeftlich", kmStart:"68575", kmEnd:"68675"},
+    {id:uid(), datum:"2024-08-13", zeitStr:"10-14", kategorie:"sonstige", zielId:"", zielName:"Lager - 4 Kunden Berlin - Lager", km:"99", dauerMin:"", rueckfahrt:true, notiz:"Kundenauslieferung", kmTyp:"geschaeftlich", kmStart:"68675", kmEnd:"68774"},
+    {id:uid(), datum:"2024-08-14", zeitStr:"9-13", kategorie:"partner", zielId:"", zielName:"ViniGrandi GmbH, Konstanzer Str. 4, 10707 Berlin", km:"78", dauerMin:"", rueckfahrt:true, notiz:"Aushilfe", kmTyp:"geschaeftlich", kmStart:"68774", kmEnd:"68852"},
+    {id:uid(), datum:"2024-08-15", zeitStr:"9-12", kategorie:"partner", zielId:"", zielName:"ViniGrandi GmbH, Konstanzer Str. 4, 10707 Berlin", km:"79", dauerMin:"", rueckfahrt:true, notiz:"Aushilfe", kmTyp:"geschaeftlich", kmStart:"68852", kmEnd:"68931"},
+    {id:uid(), datum:"2024-08-16", zeitStr:"9-14", kategorie:"sonstige", zielId:"", zielName:"Lager - Berlin - Lager", km:"111", dauerMin:"", rueckfahrt:true, notiz:"Kundenauslieferung", kmTyp:"geschaeftlich", kmStart:"68931", kmEnd:"69042"},
+    {id:uid(), datum:"2024-08-19", zeitStr:"8-13", kategorie:"partner", zielId:"", zielName:"ViniGrandi GmbH, Konstanzer Str. 4, 10707 Berlin", km:"79", dauerMin:"", rueckfahrt:true, notiz:"Aushilfe", kmTyp:"geschaeftlich", kmStart:"69042", kmEnd:"69121"},
+    {id:uid(), datum:"2024-08-20", zeitStr:"9-13", kategorie:"sonstige", zielId:"", zielName:"Lager - Mittenwalde - Lager", km:"57", dauerMin:"", rueckfahrt:true, notiz:"Kundenauslieferung", kmTyp:"geschaeftlich", kmStart:"69121", kmEnd:"69178"},
+    {id:uid(), datum:"2024-08-21", zeitStr:"9-15", kategorie:"sonstige", zielId:"", zielName:"Lager - Berlin - Lager", km:"135", dauerMin:"", rueckfahrt:true, notiz:"Kundenauslieferung", kmTyp:"geschaeftlich", kmStart:"69178", kmEnd:"69313"},
+    {id:uid(), datum:"2024-08-23", zeitStr:"9-13", kategorie:"sonstige", zielId:"", zielName:"Lager - Oranienburg - Laden - Lager", km:"148", dauerMin:"", rueckfahrt:true, notiz:"Kundenauslieferung", kmTyp:"geschaeftlich", kmStart:"69313", kmEnd:"69461"},
+    {id:uid(), datum:"2024-08-26", zeitStr:"10-13", kategorie:"partner", zielId:"", zielName:"ViniGrandi GmbH, Konstanzer Str. 4, 10707 Berlin", km:"79", dauerMin:"", rueckfahrt:true, notiz:"Aushilfe", kmTyp:"geschaeftlich", kmStart:"69461", kmEnd:"69540"},
+    {id:uid(), datum:"2024-08-27", zeitStr:"10-12", kategorie:"sonstige", zielId:"", zielName:"Lager - Potsdam - Lager", km:"48", dauerMin:"", rueckfahrt:true, notiz:"Kundenauslieferung", kmTyp:"geschaeftlich", kmStart:"69540", kmEnd:"69588"},
+    {id:uid(), datum:"2024-08-29", zeitStr:"10-13", kategorie:"partner", zielId:"", zielName:"ViniGrandi GmbH, Konstanzer Str. 4, 10707 Berlin", km:"79", dauerMin:"", rueckfahrt:true, notiz:"Aushilfe", kmTyp:"geschaeftlich", kmStart:"69588", kmEnd:"69667"},
+    {id:uid(), datum:"2024-09-02", zeitStr:"10-12", kategorie:"partner", zielId:"", zielName:"ViniGrandi GmbH, Konstanzer Str. 4, 10707 Berlin", km:"79", dauerMin:"", rueckfahrt:true, notiz:"Aushilfe", kmTyp:"geschaeftlich", kmStart:"69667", kmEnd:"69746"},
+    {id:uid(), datum:"2024-09-03", zeitStr:"9-12", kategorie:"sonstige", zielId:"", zielName:"Lager - Werkstatt - Lager", km:"21", dauerMin:"", rueckfahrt:true, notiz:"Werkstattbesuch", kmTyp:"geschaeftlich", kmStart:"69746", kmEnd:"69767"},
+    {id:uid(), datum:"2024-09-04", zeitStr:"9-13", kategorie:"sonstige", zielId:"", zielName:"Lager - Berlin - Lager", km:"199", dauerMin:"", rueckfahrt:true, notiz:"Kundenbesuche", kmTyp:"geschaeftlich", kmStart:"69767", kmEnd:"69966"},
+    {id:uid(), datum:"2024-09-06", zeitStr:"10-12", kategorie:"sonstige", zielId:"", zielName:"Lager - Seestr. - Ahornstr. - Lager", km:"27", dauerMin:"", rueckfahrt:true, notiz:"Kundenauslieferung", kmTyp:"geschaeftlich", kmStart:"69966", kmEnd:"69993"},
+    {id:uid(), datum:"2024-09-09", zeitStr:"9-12", kategorie:"sonstige", zielId:"", zielName:"Lager - Rieker Burg - Lager", km:"118", dauerMin:"", rueckfahrt:true, notiz:"Kundenbesuch", kmTyp:"geschaeftlich", kmStart:"69993", kmEnd:"70111"},
+    {id:uid(), datum:"2024-09-10", zeitStr:"10-13", kategorie:"partner", zielId:"", zielName:"ViniGrandi GmbH, Konstanzer Str. 4, 10707 Berlin", km:"79", dauerMin:"", rueckfahrt:true, notiz:"Aushilfe", kmTyp:"geschaeftlich", kmStart:"70111", kmEnd:"70190"},
+    {id:uid(), datum:"2024-09-11", zeitStr:"9-12", kategorie:"sonstige", zielId:"", zielName:"Lager - Spandauer Damm - Lager", km:"79", dauerMin:"", rueckfahrt:true, notiz:"Kundenbesuch", kmTyp:"geschaeftlich", kmStart:"70190", kmEnd:"70269"},
+    {id:uid(), datum:"2024-09-12", zeitStr:"9-13", kategorie:"sonstige", zielId:"", zielName:"Lager - Berlin - Lager", km:"135", dauerMin:"", rueckfahrt:true, notiz:"Kundenbesuche", kmTyp:"geschaeftlich", kmStart:"70269", kmEnd:"70404"},
+    {id:uid(), datum:"2024-09-13", zeitStr:"10-13", kategorie:"partner", zielId:"", zielName:"ViniGrandi GmbH, Konstanzer Str. 4, 10707 Berlin", km:"79", dauerMin:"", rueckfahrt:true, notiz:"Aushilfe", kmTyp:"geschaeftlich", kmStart:"70404", kmEnd:"70483"},
+    {id:uid(), datum:"2024-09-16", zeitStr:"10-13", kategorie:"partner", zielId:"", zielName:"ViniGrandi GmbH, Konstanzer Str. 4, 10707 Berlin", km:"79", dauerMin:"", rueckfahrt:true, notiz:"Aushilfe", kmTyp:"geschaeftlich", kmStart:"70483", kmEnd:"70562"},
+    {id:uid(), datum:"2024-09-17", zeitStr:"9-14", kategorie:"sonstige", zielId:"", zielName:"Lager - Laden - Oranienburg - Lager", km:"146", dauerMin:"", rueckfahrt:true, notiz:"Kundenauslieferung", kmTyp:"geschaeftlich", kmStart:"70562", kmEnd:"70708"},
+    {id:uid(), datum:"2024-09-18", zeitStr:"10-12", kategorie:"sonstige", zielId:"", zielName:"Lager - Mittenwalde - Lager", km:"44", dauerMin:"", rueckfahrt:true, notiz:"Kundenbesuch", kmTyp:"geschaeftlich", kmStart:"70708", kmEnd:"70752"},
+    {id:uid(), datum:"2024-09-20", zeitStr:"9-13", kategorie:"sonstige", zielId:"", zielName:"Lager - Berlin - Lager", km:"135", dauerMin:"", rueckfahrt:true, notiz:"Kundenauslieferung", kmTyp:"geschaeftlich", kmStart:"70752", kmEnd:"70887"},
+    {id:uid(), datum:"2024-09-23", zeitStr:"10-12", kategorie:"sonstige", zielId:"", zielName:"Lager - Potsdam - Lager", km:"44", dauerMin:"", rueckfahrt:true, notiz:"Kundenauslieferung", kmTyp:"geschaeftlich", kmStart:"70887", kmEnd:"70931"},
+    {id:uid(), datum:"2024-09-24", zeitStr:"10-13", kategorie:"partner", zielId:"", zielName:"ViniGrandi GmbH, Konstanzer Str. 4, 10707 Berlin", km:"76", dauerMin:"", rueckfahrt:true, notiz:"Aushilfe", kmTyp:"geschaeftlich", kmStart:"70931", kmEnd:"71007"},
+    {id:uid(), datum:"2024-09-25", zeitStr:"9-12", kategorie:"partner", zielId:"", zielName:"ViniGrandi GmbH, Konstanzer Str. 4, 10707 Berlin", km:"79", dauerMin:"", rueckfahrt:true, notiz:"Aushilfe", kmTyp:"geschaeftlich", kmStart:"71007", kmEnd:"71086"},
+    {id:uid(), datum:"2024-09-27", zeitStr:"9-14", kategorie:"sonstige", zielId:"", zielName:"Lager - Berlin - Lager", km:"135", dauerMin:"", rueckfahrt:true, notiz:"Kundenauslieferung", kmTyp:"geschaeftlich", kmStart:"71086", kmEnd:"71221"},
+    {id:uid(), datum:"2024-09-30", zeitStr:"10-13", kategorie:"partner", zielId:"", zielName:"ViniGrandi GmbH, Konstanzer Str. 4, 10707 Berlin", km:"79", dauerMin:"", rueckfahrt:true, notiz:"Aushilfe", kmTyp:"geschaeftlich", kmStart:"71221", kmEnd:"71300"},
+    {id:uid(), datum:"2024-10-01", zeitStr:"9-12", kategorie:"sonstige", zielId:"", zielName:"Lager - Seestr. - Ahornstr. - Lager", km:"33", dauerMin:"", rueckfahrt:true, notiz:"Kundenbesuche", kmTyp:"geschaeftlich", kmStart:"71300", kmEnd:"71333"},
+    {id:uid(), datum:"2024-10-02", zeitStr:"9-12", kategorie:"sonstige", zielId:"", zielName:"Lager - Rieker Burg - Lager", km:"121", dauerMin:"", rueckfahrt:true, notiz:"Kundenbesuch", kmTyp:"geschaeftlich", kmStart:"71333", kmEnd:"71454"},
+    {id:uid(), datum:"2024-10-04", zeitStr:"10-14", kategorie:"sonstige", zielId:"", zielName:"Lager - Berlin - Lager", km:"135", dauerMin:"", rueckfahrt:true, notiz:"Kundenauslieferung", kmTyp:"geschaeftlich", kmStart:"71454", kmEnd:"71589"},
+    {id:uid(), datum:"2024-10-07", zeitStr:"9-13", kategorie:"partner", zielId:"", zielName:"ViniGrandi GmbH, Konstanzer Str. 4, 10707 Berlin", km:"79", dauerMin:"", rueckfahrt:true, notiz:"Aushilfe", kmTyp:"geschaeftlich", kmStart:"71589", kmEnd:"71668"},
+    {id:uid(), datum:"2024-10-08", zeitStr:"10-13", kategorie:"partner", zielId:"", zielName:"ViniGrandi GmbH, Konstanzer Str. 4, 10707 Berlin", km:"79", dauerMin:"", rueckfahrt:true, notiz:"Aushilfe", kmTyp:"geschaeftlich", kmStart:"71668", kmEnd:"71747"},
+    {id:uid(), datum:"2024-10-10", zeitStr:"9:00-15:00", kategorie:"sonstige", zielId:"", zielName:"Lager - Kundenauslieferungen - Lager", km:"136", dauerMin:"", rueckfahrt:true, notiz:"Kundenauslieferung", kmTyp:"geschaeftlich", kmStart:"71747", kmEnd:"71883"},
+    {id:uid(), datum:"2024-10-14", zeitStr:"10-13", kategorie:"sonstige", zielId:"", zielName:"Lager - Berlin - Lager", km:"72", dauerMin:"", rueckfahrt:true, notiz:"Kundenbesuche", kmTyp:"geschaeftlich", kmStart:"71883", kmEnd:"71955"},
+    {id:uid(), datum:"2024-10-17", zeitStr:"9-12", kategorie:"partner", zielId:"", zielName:"ViniGrandi GmbH, Konstanzer Str. 4, 10707 Berlin", km:"76", dauerMin:"", rueckfahrt:true, notiz:"Aushilfe", kmTyp:"geschaeftlich", kmStart:"71955", kmEnd:"72031"},
+    {id:uid(), datum:"2024-10-22", zeitStr:"9-14", kategorie:"sonstige", zielId:"", zielName:"Lager - Brandenburg - Lager", km:"125", dauerMin:"", rueckfahrt:true, notiz:"Kundenauslieferung", kmTyp:"geschaeftlich", kmStart:"72031", kmEnd:"72156"},
+    {id:uid(), datum:"2024-10-25", zeitStr:"10-12", kategorie:"sonstige", zielId:"", zielName:"Lager - Potsdam - Lager", km:"52", dauerMin:"", rueckfahrt:true, notiz:"Kundenauslieferung", kmTyp:"geschaeftlich", kmStart:"72156", kmEnd:"72208"},
+    {id:uid(), datum:"2024-10-29", zeitStr:"10-12", kategorie:"sonstige", zielId:"", zielName:"Lager - Spandauer Damm - Lager", km:"75", dauerMin:"", rueckfahrt:true, notiz:"Kundenbesuch", kmTyp:"geschaeftlich", kmStart:"72208", kmEnd:"72283"},
+    {id:uid(), datum:"2024-10-30", zeitStr:"9-13", kategorie:"sonstige", zielId:"", zielName:"Lager - 4 Kunden Berlin - Lager", km:"138", dauerMin:"", rueckfahrt:true, notiz:"Kundenauslieferung", kmTyp:"geschaeftlich", kmStart:"72283", kmEnd:"72421"},
+    {id:uid(), datum:"2024-11-01", zeitStr:"9-12", kategorie:"partner", zielId:"", zielName:"ViniGrandi GmbH, Konstanzer Str. 4, 10707 Berlin", km:"76", dauerMin:"", rueckfahrt:true, notiz:"Aushilfe", kmTyp:"geschaeftlich", kmStart:"72421", kmEnd:"72497"},
+    {id:uid(), datum:"2024-11-05", zeitStr:"10-12", kategorie:"sonstige", zielId:"", zielName:"Lager - Mittenwalde - Lager", km:"57", dauerMin:"", rueckfahrt:true, notiz:"Kundenbesuch", kmTyp:"geschaeftlich", kmStart:"72497", kmEnd:"72554"},
+    {id:uid(), datum:"2024-11-08", zeitStr:"9-13", kategorie:"sonstige", zielId:"", zielName:"Lager - Oranienburg - Lager", km:"137", dauerMin:"", rueckfahrt:true, notiz:"Kundenauslieferung", kmTyp:"geschaeftlich", kmStart:"72554", kmEnd:"72691"},
+    {id:uid(), datum:"2024-11-12", zeitStr:"10-13", kategorie:"sonstige", zielId:"", zielName:"Lager - Kundenauslieferung - Lager", km:"118", dauerMin:"", rueckfahrt:true, notiz:"Kundenauslieferung", kmTyp:"geschaeftlich", kmStart:"72691", kmEnd:"72809"},
+    {id:uid(), datum:"2024-11-15", zeitStr:"9-12", kategorie:"partner", zielId:"", zielName:"ViniGrandi GmbH, Konstanzer Str. 4, 10707 Berlin", km:"57", dauerMin:"", rueckfahrt:true, notiz:"Aushilfe", kmTyp:"geschaeftlich", kmStart:"72809", kmEnd:"72866"},
+    {id:uid(), datum:"2024-11-20", zeitStr:"10-12", kategorie:"partner", zielId:"", zielName:"ViniGrandi GmbH, Konstanzer Str. 4, 10707 Berlin", km:"57", dauerMin:"", rueckfahrt:true, notiz:"Aushilfe", kmTyp:"geschaeftlich", kmStart:"72866", kmEnd:"72923"},
+    {id:uid(), datum:"2024-11-28", zeitStr:"9-13", kategorie:"sonstige", zielId:"", zielName:"Lager - Berlin - Lager", km:"85", dauerMin:"", rueckfahrt:true, notiz:"Kundenauslieferung", kmTyp:"geschaeftlich", kmStart:"72923", kmEnd:"73008"},
+    {id:uid(), datum:"2024-12-02", zeitStr:"10-12", kategorie:"sonstige", zielId:"", zielName:"Lager - Potsdam - Lager", km:"48", dauerMin:"", rueckfahrt:true, notiz:"Kundenauslieferung", kmTyp:"geschaeftlich", kmStart:"73008", kmEnd:"73056"},
+    {id:uid(), datum:"2024-12-04", zeitStr:"9-12", kategorie:"partner", zielId:"", zielName:"ViniGrandi GmbH, Konstanzer Str. 4, 10707 Berlin", km:"57", dauerMin:"", rueckfahrt:true, notiz:"Aushilfe", kmTyp:"geschaeftlich", kmStart:"73056", kmEnd:"73113"},
+    {id:uid(), datum:"2024-12-05", zeitStr:"9-12", kategorie:"partner", zielId:"", zielName:"ViniGrandi GmbH, Konstanzer Str. 4, 10707 Berlin", km:"57", dauerMin:"", rueckfahrt:true, notiz:"Aushilfe", kmTyp:"geschaeftlich", kmStart:"73113", kmEnd:"73170"},
+    {id:uid(), datum:"2024-12-09", zeitStr:"10-13", kategorie:"sonstige", zielId:"", zielName:"Lager - Berlin - Lager", km:"123", dauerMin:"", rueckfahrt:true, notiz:"Kundenauslieferung", kmTyp:"geschaeftlich", kmStart:"73170", kmEnd:"73293"},
+    {id:uid(), datum:"2024-12-12", zeitStr:"9-12", kategorie:"partner", zielId:"", zielName:"ViniGrandi GmbH, Konstanzer Str. 4, 10707 Berlin", km:"57", dauerMin:"", rueckfahrt:true, notiz:"Aushilfe", kmTyp:"geschaeftlich", kmStart:"73293", kmEnd:"73350"},
+    {id:uid(), datum:"2024-12-16", zeitStr:"9-13", kategorie:"sonstige", zielId:"", zielName:"Lager - Kundenauslieferung - Lager", km:"133", dauerMin:"", rueckfahrt:true, notiz:"Kundenauslieferung", kmTyp:"geschaeftlich", kmStart:"73350", kmEnd:"73483"},
+    {id:uid(), datum:"2024-12-19", zeitStr:"9-12", kategorie:"partner", zielId:"", zielName:"ViniGrandi GmbH, Konstanzer Str. 4, 10707 Berlin", km:"99", dauerMin:"", rueckfahrt:true, notiz:"Kundenbesuche", kmTyp:"geschaeftlich", kmStart:"73483", kmEnd:"73582"},
+    {id:uid(), datum:"2024-12-23", zeitStr:"9-11", kategorie:"partner", zielId:"", zielName:"ViniGrandi GmbH, Konstanzer Str. 4, 10707 Berlin", km:"133", dauerMin:"", rueckfahrt:true, notiz:"Kundenbesuche", kmTyp:"geschaeftlich", kmStart:"73582", kmEnd:"73715"},
+    {id:uid(), datum:"2024-12-27", zeitStr:"9-12", kategorie:"partner", zielId:"", zielName:"ViniGrandi GmbH, Konstanzer Str. 4, 10707 Berlin", km:"88", dauerMin:"", rueckfahrt:true, notiz:"Kundenbesuche", kmTyp:"geschaeftlich", kmStart:"73715", kmEnd:"73803"},
+    {id:uid(), datum:"2024-12-30", zeitStr:"9-12", kategorie:"partner", zielId:"", zielName:"ViniGrandi GmbH, Konstanzer Str. 4, 10707 Berlin", km:"77", dauerMin:"", rueckfahrt:true, notiz:"Kundenbesuche", kmTyp:"geschaeftlich", kmStart:"73803", kmEnd:"73880"}
+    ],
 });
 
 // ─── BASE STYLES ──────────────────────────────────────────────────────────────
 // height:40 + boxSizing:border-box унифицирует все поля
-const inp = {
+const inp_f = () => ({
   display:"block", width:"100%", height:40, boxSizing:"border-box",
   padding:"0 14px", background:"#FFFFFF",
-  border:"1px solid #DDDDD8", outline:"none",
+  border:`1px solid ${C.border}`, outline:"none",
   fontSize:14, fontFamily:SANS,
   color:C.text, transition:"border-color 0.15s, box-shadow 0.15s",
   WebkitAppearance:"none", appearance:"none",
   lineHeight:"38px",
-  borderRadius:8,
-  boxShadow:"0 1px 4px rgba(0,0,0,0.06)",
-};
-const LBL = {
+  borderRadius:C.inputRadius||8,
+  boxShadow:C.shadow,
+});
+const LBL_f = () => ({
   display:"block", fontSize:13, color:C.text,
   letterSpacing:1.5, textTransform:"uppercase",
   fontFamily:SANS, fontWeight:700, marginBottom:7,
+});
+// Darken color toward original for buttons (CTA punch)
+const darken = (hex, amt=0.20) => {
+  const h = hex.replace("#","");
+  const r = parseInt(h.substring(0,2),16), g = parseInt(h.substring(2,4),16), b = parseInt(h.substring(4,6),16);
+  const nr = Math.round(r*(1-amt)), ng = Math.round(g*(1-amt)), nb = Math.round(b*(1-amt));
+  return `#${nr.toString(16).padStart(2,"0")}${ng.toString(16).padStart(2,"0")}${nb.toString(16).padStart(2,"0")}`;
 };
-const btnSolid = (color) => ({
+const btnSolid = (color) => {
+  const bg = darken(color);
+  return {
   display:"inline-flex", alignItems:"center", gap:6,
-  height:40, padding:"0 20px", background:color, border:`1px solid ${color}`,
+  height:40, padding:"0 20px", background:bg, border:`1px solid ${bg}`,
   color:"#fff", cursor:"pointer", fontSize:14,
   fontFamily:SANS, fontWeight:700,
   letterSpacing:1.5, textTransform:"uppercase",
-  whiteSpace:"nowrap", flexShrink:0, borderRadius:8,
-});
+  whiteSpace:"nowrap", flexShrink:0, borderRadius:C.btnRadius||8,
+  };
+};
 const btnOutline = (color) => ({
-  ...btnSolid(color), background:"transparent", color,
+  ...btnSolid(color), background:"transparent", color, border:`1px solid ${color}`,
 });
 const iBtn = (color=C.muted) => ({
   background:"transparent", border:"none",
   cursor:"pointer", padding:"6px 7px", color,
   display:"inline-flex", alignItems:"center", justifyContent:"center",
-  transition:"background 0.12s", borderRadius:8,
+  transition:"background 0.12s", borderRadius:C.btnRadius||8,
 });
 function IcoBtn({color=C.muted, size=16, icon, onClick, title}) {
   const [hov,setHov]=useState(false);
   const [pressed,setPressed]=useState(false);
   const bg=pressed?"rgba(0,0,0,0.14)":hov?"rgba(0,0,0,0.08)":"transparent";
   return (
-    <button onClick={onClick} title={title}
+    <button className="fb-ico-btn" title={title||"Auswählen"}
+      onClick={onClick}
       onMouseEnter={()=>setHov(true)} onMouseLeave={()=>{setHov(false);setPressed(false);}}
       onMouseDown={()=>setPressed(true)} onMouseUp={()=>setPressed(false)}
       style={{...iBtn(color), background:bg}}>
@@ -279,17 +1075,17 @@ function IcoBtn({color=C.muted, size=16, icon, onClick, title}) {
 
 // ─── FORM PRIMITIVES ──────────────────────────────────────────────────────────
 // F — input field
-function F({label, value, onChange, type="text", placeholder="", accent="#B30000"}) {
+function F({label, value, onChange, type="text", placeholder="", accent=C.red, onBlur:onBlurProp}) {
   const [focus, setFocus] = useState(false);
   return (
     <div style={{paddingTop:14}}>
-      <label style={LBL}>{label}</label>
+      <label style={LBL_f()}>{label}</label>
       <div>
         <input
           type={type} value={value} placeholder={placeholder}
           onChange={e=>onChange(e.target?.value ?? "")}
-          onFocus={()=>setFocus(true)} onBlur={()=>setFocus(false)}
-          style={{...inp, borderColor:focus?accent:"#DDDDD8", background:"#FFFFFF"}}
+          onFocus={()=>setFocus(true)} onBlur={()=>{setFocus(false);onBlurProp?.();}}
+          style={{...inp_f(), borderColor:focus?accent:"#DDDDD8", background:"#FFFFFF"}}
         />
       </div>
     </div>
@@ -300,7 +1096,7 @@ function F({label, value, onChange, type="text", placeholder="", accent="#B30000
 function LS({label, value, onChange, accent, options, placeholder}) {
   return (
     <div style={{paddingTop:14}}>
-      {label&&<label style={LBL}>{label}</label>}
+      {label&&<label style={LBL_f()}>{label}</label>}
       <CustomSelect value={value} onChange={onChange} options={options} accent={accent||C.border} placeholder={placeholder||"— bitte wählen —"}/>
     </div>
   );
@@ -323,7 +1119,7 @@ function FormPanel({accent, title, icon, children, onSave}) {
       background:C.surface,
       border:`1px solid ${C.border}`,
       borderTop:`3px solid ${accent}`,
-      borderRadius:8,
+      borderRadius:C.inputRadius||8,
       padding:"22px 24px 24px",
       marginBottom:12,
       boxShadow:"0 2px 12px rgba(0,0,0,0.06)",
@@ -333,7 +1129,7 @@ function FormPanel({accent, title, icon, children, onSave}) {
         display:"flex",alignItems:"center",gap:8,marginBottom:18,
       }}>
         <div style={{
-          width:30,height:30,borderRadius:8,
+          width:30,height:30,borderRadius:C.inputRadius||8,
           background:`${accent}18`,
           display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,
         }}>
@@ -364,13 +1160,31 @@ function FormActions({onSave, onCancel, accent, saveDisabled=false}) {
 
 // ─── SHARED UI ────────────────────────────────────────────────────────────────
 function KpiCard({wert, unit, label, akzent, icon}) {
+  const numVal = parseFloat(String(wert).replace(/[^0-9.\-]/g,""))||0;
+  const isFloat = String(wert).includes(".");
+  const decimals = isFloat ? (String(wert).split(".")[1]||"").length : 0;
+  const [display, setDisplay] = useState("0");
+  const rafRef = useRef(null);
+  useEffect(()=>{
+    const dur = 900;
+    const start = performance.now();
+    const tick = now => {
+      const t = Math.min((now - start) / dur, 1);
+      const ease = 1 - Math.pow(1 - t, 3);
+      const cur = numVal * ease;
+      setDisplay(isFloat ? cur.toFixed(decimals) : String(Math.round(cur)));
+      if(t < 1) rafRef.current = requestAnimationFrame(tick);
+    };
+    rafRef.current = requestAnimationFrame(tick);
+    return ()=>{ if(rafRef.current) cancelAnimationFrame(rafRef.current); };
+  },[numVal]);
   return (
     <div style={{background:C.surface, borderTop:`2px solid ${akzent}`, padding:"20px 22px",
-      position:"relative", overflow:"hidden", boxShadow:C.shadow, borderRadius:8}}>
+      position:"relative", overflow:"hidden", boxShadow:C.shadow, borderRadius:C.inputRadius||8}}>
       <div style={{position:"absolute",top:10,right:12,opacity:0.18}}><Ico name={icon} size={44} color={akzent}/></div>
       <div style={{display:"flex",alignItems:"baseline",gap:4,marginBottom:5,minWidth:0}}>
         <div style={{fontSize:28,fontWeight:800,color:akzent,fontFamily:SANS,
-          lineHeight:1,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{wert}</div>
+          lineHeight:1,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{display}</div>
         {unit&&<div style={{fontSize:14,fontWeight:700,color:akzent,fontFamily:SANS,flexShrink:0}}>{unit}</div>}
       </div>
       <div style={{fontSize:14,fontWeight:700,color:C.text,letterSpacing:2,textTransform:"uppercase",
@@ -385,8 +1199,8 @@ function AnimatedBar({pct, color, height=6}) {
     return ()=>cancelAnimationFrame(id);
   },[pct]);
   return (
-    <div style={{height,background:C.border,borderRadius:8}}>
-      <div style={{width:`${width}%`,height:"100%",background:color,borderRadius:8,transition:"width 0.5s ease"}}/>
+    <div style={{height,background:C.border,borderRadius:C.inputRadius||8}}>
+      <div style={{width:`${width}%`,height:"100%",background:color,borderRadius:C.inputRadius||8,transition:"width 0.5s ease"}}/>
     </div>
   );
 }
@@ -394,16 +1208,24 @@ function EmptyState({icon="car", text, hint, btnLabel, onBtnClick, accent=C.mute
   return (
     <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",
       padding:"48px 24px",gap:12,textAlign:"center"}}>
-      <div style={{width:56,height:56,borderRadius:"50%",background:accent+"14",
-        display:"flex",alignItems:"center",justifyContent:"center",marginBottom:4}}>
-        <Ico name={icon} size={26} color={accent}/>
+      <div style={{position:"relative",marginBottom:8}}>
+        <div style={{width:56,height:56,borderRadius:"50%",background:accent+"14",
+          border:`1px solid ${accent}30`,
+          display:"flex",alignItems:"center",justifyContent:"center",
+          animation:"esFloat 4s ease-in-out infinite"}}>
+          <Ico name={icon} size={26} color={accent}/>
+        </div>
+        <div style={{position:"absolute",bottom:-5,left:"50%",transform:"translateX(-50%)",
+          width:30,height:6,borderRadius:"50%",background:"rgba(0,0,0,0.13)",
+          animation:"esShadow 4s ease-in-out infinite"}}/>
       </div>
       <div style={{fontSize:14,fontWeight:700,color:C.text,fontFamily:SANS}}>{text}</div>
       {hint&&<div style={{fontSize:14,color:C.muted,fontFamily:SANS,maxWidth:280,lineHeight:1.5}}>{hint}</div>}
       {btnLabel&&onBtnClick&&(
-        <button onClick={onBtnClick} style={{...btnSolid(accent),marginTop:8}}>
+        <SpringBtn title="Aktion ausführen"
+                  onClick={onBtnClick} style={{...btnSolid(accent),marginTop:8}}>
           <Ico name="plus" size={15} color="#fff"/>{btnLabel}
-        </button>
+        </SpringBtn>
       )}
     </div>
   );
@@ -413,23 +1235,23 @@ function Kat({kat}) {
   return <span style={{fontSize:13,letterSpacing:1.5,textTransform:"uppercase",fontFamily:SANS,fontWeight:700,lineHeight:1,color:ak,background:bg,border:`1px solid ${ak}33`,borderRadius:20,display:"inline-flex",alignItems:"center",padding:"2px 8px",whiteSpace:"nowrap"}}>{katLabel[kat]||kat}</span>;
 }
 function Kennzeichen({value,size="md"}) {
-  const big=size==="lg"; const sm=size==="sm";
+  const xl=size==="xl"; const big=xl||size==="lg"; const sm=size==="sm";
 
-  const h   = big ? 52 : sm ? 36 : 44;
-  const bw  = big ? 32 : sm ? 22 : 28;  // EU-полоса ~20% общей ширины
+  const gap = xl ? 3.3 : big ? 2.5 : sm ? 1.5 : 2;
+  const ih  = xl ? 51 : big ? 38 : sm ? 26 : 32;
+  const ibw = xl ? 29 : big ? 22 : sm ? 15 : 18;
+  const iwhiteW = xl ? 198 : big ? 150 : sm ? 102 : 126;
+  const iw  = ibw + iwhiteW;
+  const ow  = iw + gap*2;
+  const oh  = ih + gap*2;
   const kz  = (value||"—").toUpperCase();
-  const charW   = big ? 15 : sm ? 11 : 13;
-  const minWhite= big ? 100 : sm ? 70 : 84;
-  const whiteW  = Math.max(minWhite, kz.length * charW + (big?32:sm?20:26));
-  const w   = bw + whiteW;
-  const cx  = bw / 2;
-  const bord= big ? 2.5 : sm ? 1.5 : 2;
+  const cx  = gap + ibw / 2;
 
   // 12 звёзд вокруг кольца
-  const sr    = big ? 6.0 : sm ? 4.2 : 5.2;
-  const starR = big ? 1.4 : sm ? 1.0 : 1.2;
+  const sr    = xl ? 6.6 : big ? 5.0 : sm ? 3.4 : 4.2;
+  const starR = xl ? 1.5 : big ? 1.2 : sm ? 0.8 : 1.0;
   const ir    = starR * 0.42;
-  const starCY= h * 0.30;
+  const starCY= gap + ih * 0.32;
   function starPts(sx,sy) {
     const pts=[];
     for(let j=0;j<5;j++){
@@ -445,40 +1267,38 @@ function Kennzeichen({value,size="md"}) {
     return {x:cx+sr*Math.cos(a), y:starCY+sr*Math.sin(a)};
   });
 
-  const dFS = big ? 14 : sm ? 10 : 12;  // буква D — чуть меньше чтобы не упиралась
-  const dY  = h * 0.70;                  // поднята выше от нижней границы
-  const numCX = bw + whiteW / 2;
-  const numFS = big ? 20 : sm ? 14 : 17;
-  const numY  = h / 2 - 1;
+  const dFS = xl ? 14 : big ? 11 : sm ? 8 : 10;
+  const dY  = gap + ih * 0.72;
+  const numCX = gap + ibw + iwhiteW / 2;
+  const numFS = xl ? 25 : big ? 19 : sm ? 13 : 16;
+  const numY  = gap + ih / 2;
+  const outerR = xl ? 8 : big ? 6 : sm ? 4 : 5;
+  const innerR = xl ? 5.5 : big ? 4 : sm ? 3 : 3.5;
 
   return (
     <div style={{
       display:"inline-flex", flexShrink:0,
-      height:h, width:w,
-      border:`${bord}px solid #888`,
-      borderRadius: big ? 7 : sm ? 4 : 5,
-      overflow:"hidden",
-      background:"#fff",
-      boxShadow: big
-        ? "0 0 0 1px #aaa,0 4px 14px rgba(0,0,0,0.20)"
-        : "0 0 0 1px #bbb,0 2px 6px rgba(0,0,0,0.14)",
+      height:oh, width:ow,
     }}>
-      <svg width={w} height={h} style={{display:"block"}}>
-        <rect x={-bord} y={-bord} width={bw+bord} height={h+bord*2} fill="#003399"/>
+      <svg width={ow} height={oh} style={{display:"block"}}>
+        <rect x="0.5" y="0.5" width={ow-1} height={oh-1} rx={outerR} fill="#e8e8e4" stroke="#555" strokeWidth="1"/>
+        <rect x={gap} y={gap} width={iw} height={ih} rx={innerR} fill="#fff" stroke="#999" strokeWidth="0.5"/>
+        <rect x={gap} y={gap} width={ibw} height={ih} rx={innerR} fill="#003399"/>
+        <rect x={gap+innerR} y={gap} width={ibw-innerR} height={ih} fill="#003399"/>
         {stars12.map((s,i)=>(
           <polygon key={`s${i}`} points={starPts(s.x,s.y)} fill="#FFD700"/>
         ))}
         <text x={cx} y={dY}
           textAnchor="middle" dominantBaseline="middle"
           fontSize={dFS} fill="#fff" fontWeight="800"
-          fontFamily="'Inter',-apple-system,sans-serif">D</text>
-        <line x1={bw} y1={0} x2={bw} y2={h} stroke="#555" strokeWidth={big?1.5:1}/>
+          fontFamily="'EuroPlate','Inter',-apple-system,sans-serif">D</text>
+        <line x1={gap+ibw} y1={gap} x2={gap+ibw} y2={gap+ih} stroke="#555" strokeWidth="0.7"/>
         <text x={numCX} y={numY}
           textAnchor="middle"
           dominantBaseline="central"
           fontSize={numFS} fontWeight="800"
-          fontFamily="'Inter',-apple-system,sans-serif"
-          letterSpacing={big ? 2.5 : sm ? 1 : 2}
+          fontFamily="'EuroPlate','Inter',-apple-system,sans-serif"
+          letterSpacing={xl ? 2.2 : big ? 1.5 : sm ? 0.5 : 1}
           fill="#111">{kz}</text>
       </svg>
     </div>
@@ -546,15 +1366,30 @@ function MonatsChart({kmByMonth, accent}) {
 }
 
 // ─── SECTION HEADER ROW ───────────────────────────────────────────────────────
-function SectionBar({count, label, onAdd, accent, addLabel}) {
+function SpringBtn({children, ...props}) {
+  const ref = useRef(null);
+  useEffect(()=>{
+    const el = ref.current;
+    if(!el) return;
+    el.style.transition = "none";
+    el.style.transform = "scale(0)";
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      el.style.transition = "transform 0.4s cubic-bezier(0.34,1.56,0.64,1)";
+      el.style.transform = "scale(1)";
+    }));
+  },[]);
+  return <button ref={ref} {...props}>{children}</button>;
+}
+function SectionBar({count, label, onAdd, accent, addLabel, formOpen}) {
+  if(!count) return null;
   return (
     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
       <div style={{fontSize:14,color:C.text}}>
         {count} <span style={{color:accent,fontWeight:700}}>{label}</span>
       </div>
-      <button onClick={onAdd} style={btnSolid(accent)}>
+      {!formOpen&&<SpringBtn title="Hinzufügen" onClick={onAdd} style={btnSolid(accent)}>
         <Ico name="plus" size={15} color="#fff"/>{addLabel}
-      </button>
+      </SpringBtn>}
     </div>
   );
 }
@@ -629,7 +1464,7 @@ function FzEditForm({fz,onSave,onCancel,accent}) {
 
       {/* ── AKZENTFARBE ── */}
       <div>
-        <div style={LBL}>Akzentfarbe</div>
+        <div style={LBL_f()}>Akzentfarbe</div>
         <div style={{display:"flex",gap:5,marginTop:6}}>
           {FARBEN.map(c=>(
             <button key={c} onClick={()=>setF({...f,farbe:c})}
@@ -649,7 +1484,7 @@ function FzEditForm({fz,onSave,onCancel,accent}) {
 
       {/* ── FAHRER ── */}
       <SectionHead label="Fahrer"/>
-      <F label="Name" value={f.fahrer} onChange={v=>setF({...f,fahrer:v})} placeholder="Max Mustermann" accent={ac}/>
+      <F label="Name *" value={f.fahrer} onChange={v=>setF({...f,fahrer:v})} placeholder="Max Mustermann" accent={ac}/>
       <F label="Anschrift" value={f.fahrerAnschrift} onChange={v=>setF({...f,fahrerAnschrift:v})} placeholder="Straße, PLZ Ort" accent={ac}/>
       <FormRow cols={2}>
         <F label="Telefon Privat" value={f.fahrerTelPrivat} onChange={v=>setF({...f,fahrerTelPrivat:v})} placeholder="+49 176 …" accent={ac}/>
@@ -660,7 +1495,7 @@ function FzEditForm({fz,onSave,onCancel,accent}) {
       <SectionHead label="Stammstandort (Abfahrtspunkt)"/>
       <FormRow cols={2}>
         <F label="Bezeichnung *" value={f.stName} onChange={v=>setF({...f,stName:v})} placeholder="z.B. Büro München" accent={ac}/>
-        <F label="Adresse" value={f.stAdr} onChange={v=>setF({...f,stAdr:v})} placeholder="Musterstraße 1, 12345 Stadt" accent={ac}/>
+        <F label="Adresse *" value={f.stAdr} onChange={v=>setF({...f,stAdr:v})} placeholder="Musterstraße 1, 12345 Stadt" accent={ac}/>
       </FormRow>
 
       <div style={{display:"flex",gap:8,marginTop:4}}>
@@ -719,45 +1554,49 @@ function getAutoOrte(aktiv) {
   const orte = [];
   const seen = new Set();
 
-  const add=(name,adresse,kat,katColor,datum,isStamm=false)=>{
+  const add=(name,adresse,kat,katColor,datum,isStamm=false,typ="sonstiges")=>{
     if(!adresse || !adresse.trim()) return;
-    const key=adresse.trim().toLowerCase();
+    const key=(name||"").trim().toLowerCase()+"@"+adresse.trim().toLowerCase();
     if(seen.has(key)){
-      const ex=orte.find(o=>o.adresse.trim().toLowerCase()===key);
+      const ex=orte.find(o=>(o.name||"").trim().toLowerCase()+"@"+o.adresse.trim().toLowerCase()===key);
       if(ex){
         ex.besuche++;
         if(datum&&(!ex.letzterBesuch||datum>ex.letzterBesuch)) ex.letzterBesuch=datum;
-        if(isStamm) ex.isStamm=true; // пометить как Stammstandort
+        if(isStamm) ex.isStamm=true;
       }
       return;
     }
     seen.add(key);
-    orte.push({id:"auto_"+key, name:name||adresse, adresse, kat, katColor,
+    orte.push({id:"auto_"+key, name:name||adresse, adresse, kat, katColor, typ,
       besuche:1, letzterBesuch:datum, auto:true, isStamm});
   };
 
   // 1. Stammstandort автомобиля — всегда первый
   if(aktiv.standort?.adresse) {
+    const fahrten = aktiv.fahrten||[];
+    const stammBesuche = fahrten.length;
+    const letztesDatum = fahrten.length ? fahrten.reduce((max,f)=>f.datum>max?f.datum:max,"") : "";
     add(aktiv.standort.name||"Stammstandort", aktiv.standort.adresse,
-      "Stammstandort", C.steel, "", true);
+      "Stammstandort", C.steel, letztesDatum, true, "stamm");
+    const stammOrt = orte.find(o=>o.isStamm);
+    if(stammOrt) stammOrt.besuche = stammBesuche || 1;
   }
   // 2. Адреса из Kosten
-  (aktiv.tankstellen||[]).forEach(t=>add(t.stationName||"Tankstelle",t.adresse,"Tanken",C.tank,t.datum));
-  (aktiv.services||[]).forEach(x=>add(x.werkstatt||x.typ,x.adresse,"Service",C.service,x.datum));
-  (aktiv.waesche||[]).forEach(x=>add("Autowäsche",x.adresse,"Wäsche",C.wasch,x.datum));
+  (aktiv.tankstellen||[]).forEach(t=>add(t.stationName||"Tankstelle",t.adresse,"Tanken",C.tank,t.datum,false,"tankstelle"));
+  (aktiv.services||[]).forEach(x=>add(x.werkstatt||x.typ,x.adresse,"Service",C.service,x.datum,false,"werkstatt"));
+  (aktiv.waesche||[]).forEach(x=>add("Autowäsche",x.adresse,"Wäsche",C.wasch,x.datum,false,"waschanlage"));
 
-  // 3. Ручные Standorte — только если адрес ещё не встречался (нет в autoOrte)
+  // 3. Ручные Standorte — только если name+adresse ещё не встречался
   (aktiv.standorteExtra||[]).forEach(x=>{
     if(!x.adresse || !x.adresse.trim()) return;
-    const key=x.adresse.trim().toLowerCase();
+    const key=(x.name||"").trim().toLowerCase()+"@"+x.adresse.trim().toLowerCase();
     if(seen.has(key)){
-      // адрес уже есть в auto — обновляем счётчик, не дублируем
-      const ex=orte.find(o=>o.adresse.trim().toLowerCase()===key);
+      const ex=orte.find(o=>(o.name||"").trim().toLowerCase()+"@"+o.adresse.trim().toLowerCase()===key);
       if(ex) ex.besuche++;
       return;
     }
     seen.add(key);
-    orte.push({...x, auto:false});
+    orte.push({typ:"sonstiges", ...x, auto:false});
   });
 
   return orte;
@@ -867,7 +1706,7 @@ function CustomSelect({value, onChange, options, placeholder="— bitte wählen 
         style={{
           width:"100%", background:C.surface,
           border:`1px solid ${open ? accent : C.border}`,
-          borderRadius:8,
+          borderRadius:C.inputRadius||8,
           padding:"0 36px 0 12px",
           color: selected ? C.text : C.muted,
           fontSize:14, fontFamily:SANS,
@@ -895,7 +1734,7 @@ function CustomSelect({value, onChange, options, placeholder="— bitte wählen 
         <div style={{
           position:"absolute", top:"calc(100% + 6px)", left:0, right:0,
           background:C.surface,
-          borderRadius:8,
+          borderRadius:C.inputRadius||8,
           border:"1px solid #e8e8e8",
           boxShadow:"0 4px 20px rgba(0,0,0,0.13), 0 1px 4px rgba(0,0,0,0.08)",
           zIndex:300, overflow:"hidden",
@@ -905,10 +1744,10 @@ function CustomSelect({value, onChange, options, placeholder="— bitte wählen 
               <input ref={searchRef} value={q} onChange={e=>setQ(e.target?.value ?? "")}
                 placeholder="Suchen…"
                 style={{
-                  width:"100%", border:"1px solid #e0e0e0", borderRadius:8,
+                  width:"100%", border:`1px solid ${C.border}`, borderRadius:C.inputRadius||8,
                   padding:"7px 10px", fontSize:14,
                   fontFamily:SANS, outline:"none",
-                  boxSizing:"border-box", background:"#f9f9f9",
+                  boxSizing:"border-box", background:C.surfaceAlt,
                 }}/>
             </div>
           )}
@@ -1220,8 +2059,8 @@ function getFahrziele(aktiv, fahrten=[]) {
 
 // ─── STANDORTE PANEL ──────────────────────────────────────────────────────────
 const ST_TYP_COLORS = {laden:C.laden, bank:C.bank, behoerde:C.behoerde, sonstiges:C.steelMid};
-const ST_TYP_LABELS = {laden:"Laden", bank:"Bank", behoerde:"Behörde", sonstiges:"Sonstiges", auto:"Auto", stamm:"Stammstandort"};
-const ST_TYP_OPTS   = ["laden","bank","behoerde","sonstiges"];
+const ST_TYP_LABELS = {stamm:"Stammstandort", tankstelle:"Tankstelle", werkstatt:"Werkstatt", waschanlage:"Waschanlage", post:"Post / Paketdienst", bank:"Bank / Sparkasse", behoerde:"Behörde / Amt", laden:"Laden / Geschäft", parkhaus:"Parkhaus", hotel:"Hotel", restaurant:"Restaurant", baustelle:"Baustelle", lager:"Lager / Halle", flughafen:"Flughafen", bahnhof:"Bahnhof", sonstiges:"Sonstiges"};
+const ST_TYP_OPTS   = ["tankstelle","werkstatt","waschanlage","post","bank","behoerde","laden","parkhaus","hotel","restaurant","baustelle","lager","flughafen","bahnhof","sonstiges"];
 
 function StandortePanel({aktiv, patchAktiv, setConfirmDel, setFData, setFForm, setTab, E_F}) {
   const [stOrtForm, setStOrtForm] = useState(null);
@@ -1254,15 +2093,14 @@ function StandortePanel({aktiv, patchAktiv, setConfirmDel, setFData, setFForm, s
     .filter(o=>{
       const q=stQ.toLowerCase();
       const matchQ=!q||(o.name||"").toLowerCase().includes(q)||(o.adresse||"").toLowerCase().includes(q)||(o.notiz||"").toLowerCase().includes(q);
-      const matchT=!stTyp
-        ||(stTyp==="auto"&&o.auto&&!o.isStamm)
-        ||(stTyp==="stamm"&&o.isStamm)
-        ||(o.typ===stTyp);
+      const matchT=!stTyp||o.typ===stTyp;
       return matchQ&&matchT;
     })
     .sort((a,b)=>{
       if(a.isStamm) return -1; if(b.isStamm) return 1;
-      return (b.letzterBesuch||"").localeCompare(a.letzterBesuch||"");
+      if((b.besuche||0)!==(a.besuche||0)) return (b.besuche||0)-(a.besuche||0);
+      if((b.letzterBesuch||"")!==(a.letzterBesuch||"")) return (b.letzterBesuch||"").localeCompare(a.letzterBesuch||"");
+      return (a.name||"").localeCompare(b.name||"");
     });
 
   return (
@@ -1275,10 +2113,17 @@ function StandortePanel({aktiv, patchAktiv, setConfirmDel, setFData, setFForm, s
       {stOrtForm!==null&&(
         <FormPanel accent={C.standort} title={stOrtForm==="new"?"Standort hinzufügen":"Standort bearbeiten"} icon="mapPin" onSave={saveStOrt}>
           <FormRow cols={2}>
-            <F label="Name / Bezeichnung" value={stOrtData.name||""} onChange={v=>setStOrtData({...stOrtData,name:v})} placeholder="z.B. Baumarkt München" accent={C.standort}/>
+            <F label="Name / Bezeichnung *" value={stOrtData.name||""} onChange={v=>setStOrtData({...stOrtData,name:v})} placeholder="z.B. Baumarkt München" accent={C.standort}/>
             <LS label="Typ" value={stOrtData.typ||"laden"} onChange={v=>setStOrtData({...stOrtData,typ:v})} accent={C.standort} options={ST_TYP_OPTS.map(t=>({value:t,label:ST_TYP_LABELS[t]}))}/>
           </FormRow>
-          <F label="Adresse" value={stOrtData.adresse||""} onChange={v=>setStOrtData({...stOrtData,adresse:v})} placeholder="Straße, PLZ Ort" accent={C.standort}/>
+          <F label="Adresse *" value={stOrtData.adresse||""} onChange={v=>setStOrtData({...stOrtData,adresse:v})} placeholder="Straße, PLZ Ort" accent={C.standort}
+            onBlur={()=>{
+              if(stOrtData.adresse && !stOrtData.kmVonStandort && aktiv.standort?.adresse) {
+                estimateKm(aktiv.standort.adresse, stOrtData.adresse).then(km=>{
+                  if(km) setStOrtData(prev=>({...prev, kmVonStandort:prev.kmVonStandort||String(km)}));
+                });
+              }
+            }}/>
           <DuplikatWarnung check={stDupCheck}/>
           <F label="km vom Stammstandort" type="number" value={stOrtData.kmVonStandort||""} onChange={v=>setStOrtData({...stOrtData,kmVonStandort:v})} placeholder="z.B. 5.2" accent={C.standort}/>
           <F label="Notiz" value={stOrtData.notiz||""} onChange={v=>setStOrtData({...stOrtData,notiz:v})} placeholder="Interne Bemerkung" accent={C.standort}/>
@@ -1287,38 +2132,40 @@ function StandortePanel({aktiv, patchAktiv, setConfirmDel, setFData, setFForm, s
       )}
 
       {/* Header: count + add button */}
-      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
+      {!!alle.length&&<div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
         <div style={{fontSize:14,color:C.text}}>
           {gefilert.length !== alle.length ? `${gefilert.length} von ${alle.length} Standorten` : `${alle.length} Standorte gesamt`}
         </div>
-        {stOrtForm===null&&<button onClick={()=>{setStOrtForm("new");setStOrtData({name:"",adresse:"",notiz:"",typ:"laden",auto:false});}} style={btnSolid(C.standort)}><Ico name="plus" size={15} color="#fff"/>STANDORT HINZUFÜGEN</button>}
-      </div>
+        {stOrtForm===null&&<SpringBtn onClick={()=>{setStOrtForm("new");setStOrtData({name:"",adresse:"",notiz:"",typ:"laden",auto:false});}} style={btnSolid(C.standort)}><Ico name="plus" size={15} color="#fff"/>STANDORT HINZUFÜGEN</SpringBtn>}
+      </div>}
 
       {/* Suche + Typ-Filter */}
       {alle.length>0&&(
         <div style={{display:"flex",gap:10,alignItems:"center",flexWrap:"wrap",marginBottom:14}}>
           <div style={{position:"relative",flex:1,minWidth:160,display:"flex",alignItems:"center"}}>
             <input value={stQ} onChange={e=>setStQ(e.target?.value ?? "")} placeholder="Standort suchen…"
-              style={{width:"100%",height:40,boxSizing:"border-box",padding:"0 34px 0 36px",border:`1px solid ${C.border}`,borderRadius:8,boxShadow:"0 1px 4px rgba(0,0,0,0.06)",transition:"border-color 0.15s, box-shadow 0.15s",background:"#fff",color:"#111",fontSize:14,fontFamily:SANS,outline:"none",WebkitAppearance:"none",appearance:"none"}}/>
+              style={{width:"100%",height:40,boxSizing:"border-box",padding:"0 34px 0 36px",border:`1px solid ${C.border}`,borderRadius:C.inputRadius||8,boxShadow:"0 1px 4px rgba(0,0,0,0.06)",transition:"border-color 0.15s, box-shadow 0.15s",background:"#fff",color:"#111",fontSize:14,fontFamily:SANS,outline:"none",WebkitAppearance:"none",appearance:"none"}}/>
             <span style={{position:"absolute",left:11,top:"50%",transform:"translateY(-50%)",pointerEvents:"none",display:"flex",alignItems:"center",lineHeight:1}}><Ico name="search" size={13} color={C.muted}/></span>
-            {stQ&&<button onClick={()=>setStQ("")} style={{position:"absolute",right:8,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",cursor:"pointer",padding:2,display:"flex"}}><Ico name="close" size={13} color={C.muted}/></button>}
+            {stQ&&<button title="Suche zurücksetzen"
+                  onClick={()=>setStQ("")} style={{position:"absolute",right:8,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",cursor:"pointer",padding:2,display:"flex"}}><Ico name="close" size={13} color={C.muted}/></button>}
           </div>
-          <div style={{flex:"0 0 clamp(150px,18%,200px)"}}><CustomSelect value={stTyp} onChange={setStTyp} options={[{value:"",label:"Alle Typen"},...ST_TYP_OPTS.map(t=>({value:t,label:ST_TYP_LABELS[t]})),{value:"auto",label:"Automatisch"},{value:"stamm",label:"Stammstandort"}]} accent={C.border}/></div>
+          <div style={{flex:"0 0 clamp(150px,18%,200px)"}}><CustomSelect value={stTyp} onChange={setStTyp} options={[{value:"",label:"Alle Typen"},{value:"stamm",label:"Stammstandort"},...ST_TYP_OPTS.map(t=>({value:t,label:ST_TYP_LABELS[t]||t}))]} accent={C.border}/></div>
         </div>
       )}
 
       {/* Liste */}
+      <div className="fb-stagger" style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(340px,1fr))",gap:2}}>
       {gefilert.map(o=>{
         const isManual=!o.auto;
         const tagColor = o.isStamm ? C.steel : (ST_TYP_COLORS[o.typ]||o.katColor||C.standort);
+        const kmVal = parseFloat(o.kmVonStandort)||0;
         return (
-          <div key={o.id} style={{background:C.surface,borderLeft:`2px solid ${tagColor}`,padding:"11px 16px",marginBottom:2,display:"flex",alignItems:"flex-start",gap:12,boxShadow:C.shadow,minHeight:62,boxSizing:"border-box"}}>
+          <div key={o.id} style={{background:C.surface,borderLeft:`2px solid ${tagColor}`,padding:"11px 16px",boxShadow:C.shadow,display:"flex",alignItems:"center",gap:12,minHeight:62,boxSizing:"border-box"}}>
             <div style={{flex:1,minWidth:0}}>
               <div style={{fontSize:15,fontWeight:700,color:C.text,display:"flex",alignItems:"center",gap:8,marginBottom:3,flexWrap:"wrap"}}>
                 <span style={{wordBreak:"break-word",overflowWrap:"break-word"}}>{o.name}</span>
-                {o.isStamm&&<span style={{fontSize:13,fontWeight:700,letterSpacing:1.5,textTransform:"uppercase",fontFamily:SANS,borderRadius:20,lineHeight:1,display:"inline-flex",alignItems:"center",background:C.steel,color:"#fff",padding:"2px 8px",flexShrink:0}}>STAMMSTANDORT</span>}
-                {!o.isStamm&&!o.auto&&o.typ&&o.typ!=="sonstiges"&&<span style={{fontSize:13,fontWeight:700,letterSpacing:1.5,textTransform:"uppercase",fontFamily:SANS,borderRadius:20,lineHeight:1,display:"inline-flex",alignItems:"center",background:tagColor,color:"#fff",padding:"2px 8px",flexShrink:0}}>{ST_TYP_LABELS[o.typ]||o.typ}</span>}
-                {o.auto&&!o.isStamm&&<span style={{fontSize:13,letterSpacing:1.5,textTransform:"uppercase",fontFamily:SANS,borderRadius:20,lineHeight:1,display:"inline-flex",alignItems:"center",color:C.standort,border:`1px solid ${C.standort}`,padding:"2px 8px",flexShrink:0}}>AUTO</span>}
+                {o.isStamm&&<span style={{fontSize:12,fontWeight:700,letterSpacing:1.5,textTransform:"uppercase",fontFamily:SANS,borderRadius:20,lineHeight:1,display:"inline-flex",alignItems:"center",background:C.steel+"20",color:C.steel,border:`1px solid ${C.steel}30`,padding:"3px 10px",flexShrink:0}}>STAMMSTANDORT</span>}
+                {!o.isStamm&&o.typ&&o.typ!=="sonstiges"&&<span style={{fontSize:12,fontWeight:700,letterSpacing:1.5,textTransform:"uppercase",fontFamily:SANS,borderRadius:20,lineHeight:1,display:"inline-flex",alignItems:"center",background:tagColor+"18",color:tagColor,border:`1px solid ${tagColor}30`,padding:"3px 10px",flexShrink:0}}>{ST_TYP_LABELS[o.typ]||o.typ}</span>}
               </div>
               <div style={{display:"flex",alignItems:"center",gap:6,flexWrap:"wrap",rowGap:3}}>
                 <span style={{fontSize:14,color:C.text,display:"flex",alignItems:"center",gap:3,fontFamily:SANS}}>
@@ -1330,17 +2177,28 @@ function StandortePanel({aktiv, patchAktiv, setConfirmDel, setFData, setFForm, s
                   <span style={{fontSize:14,color:C.text,fontStyle:"italic",fontFamily:SANS}}>{o.notiz}</span></>}
               </div>
             </div>
-            {isManual&&(
-              <div style={{display:"flex",gap:2,flexShrink:0,paddingTop:2}}>
-                <IcoBtn icon="edit"  color={C.steelMid}  title="Bearbeiten" onClick={()=>{setStOrtForm(o.id);setStOrtData({...o});}}/>
-                <IcoBtn icon="trash" color={C.standort}  title="Löschen" onClick={()=>setConfirmDel({type:"standort",id:o.id})}/>
-              </div>
-            )}
+            <div style={{display:"flex",gap:14,flexShrink:0,alignItems:"center"}}>
+              {kmVal>0&&<div style={{textAlign:"right"}}>
+                <div style={{fontSize:16,fontWeight:800,color:tagColor,fontFamily:SANS,lineHeight:1}}>{kmVal}</div>
+                <div style={{fontSize:13,color:C.text,letterSpacing:2,textTransform:"uppercase"}}>km</div>
+              </div>}
+              {o.besuche>0&&<div style={{textAlign:"right"}}>
+                <div style={{fontSize:16,fontWeight:800,color:tagColor,fontFamily:SANS,lineHeight:1}}>{o.besuche}</div>
+                <div style={{fontSize:13,color:C.text,letterSpacing:2,textTransform:"uppercase"}}>Besuche</div>
+              </div>}
+              {isManual&&(
+                <div style={{display:"flex",gap:2,flexShrink:0}}>
+                  <IcoBtn icon="edit"  color={C.steelMid}  title="Bearbeiten" onClick={()=>{setStOrtForm(o.id);setStOrtData({...o});}}/>
+                  <IcoBtn icon="trash" color={C.standort}  title="Löschen" onClick={()=>setConfirmDel({type:"standort",id:o.id})}/>
+                </div>
+              )}
+            </div>
           </div>
         );
       })}
+      </div>
       {gefilert.length===0&&alle.length>0&&<div style={{color:C.text,fontSize:14,textAlign:"center",padding:"32px 0"}}>Keine Treffer — Suche anpassen</div>}
-      {!alle.length&&<EmptyState icon="road" accent={C.standort} text="Noch keine Standorte" hint="Adressen werden automatisch aus Kosten-Einträgen übernommen"/>}
+      {!alle.length&&stOrtForm===null&&<EmptyState icon="road" accent={C.standort} text="Noch keine Standorte" hint="Adressen werden automatisch aus Kosten-Einträgen übernommen" btnLabel="STANDORT HINZUFÜGEN" onBtnClick={()=>{setStOrtForm("new");setStOrtData({name:"",adresse:"",notiz:"",typ:"laden",auto:false});}}/>}
     </div>
   );
 }
@@ -1356,7 +2214,7 @@ function SettingsBtn({active, accent, onClick}) {
   const svgFilter = active ? "none" : pressed ? "brightness(0.3)" : hov ? "brightness(0.45)" : "none";
   return (
     <button onClick={onClick}
-      style={{width:40,height:40,background:bg,border:"none",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",borderRadius:8,transition:"background 0.12s"}}
+      style={{width:40,height:40,background:bg,border:"none",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",borderRadius:C.inputRadius||8,transition:"background 0.12s"}}
       onMouseEnter={()=>setHov(true)}
       onMouseLeave={()=>{setHov(false);setPressed(false);}}
       onMouseDown={()=>setPressed(true)}
@@ -1435,7 +2293,7 @@ function BaseModal({onClose, title, icon, accent=C.red, maxWidth=520, children})
       animation:"overlayIn 0.18s ease",
     }}>
       <div onClick={e=>e.stopPropagation()} style={{
-        background:C.surface,borderRadius:8,
+        background:C.surface,borderRadius:C.inputRadius||8,
         padding:"24px 28px 28px",
         maxWidth,width:"100%",
         boxShadow:"0 24px 64px rgba(0,0,0,0.20), 0 2px 8px rgba(0,0,0,0.08)",
@@ -1445,7 +2303,7 @@ function BaseModal({onClose, title, icon, accent=C.red, maxWidth=520, children})
         <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:20}}>
           <div style={{display:"flex",alignItems:"center",gap:10}}>
             <div style={{
-              width:34,height:34,borderRadius:8,
+              width:34,height:34,borderRadius:C.inputRadius||8,
               background:`${accent}18`,
               display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,
             }}>
@@ -1455,10 +2313,11 @@ function BaseModal({onClose, title, icon, accent=C.red, maxWidth=520, children})
               {title}
             </span>
           </div>
-          <button onClick={onClose}
+          <button title="Schließen"
+                  onClick={onClose}
             onMouseEnter={e=>e.currentTarget.style.background=C.surfaceAlt}
             onMouseLeave={e=>e.currentTarget.style.background="transparent"}
-            style={{width:32,height:32,borderRadius:8,border:"none",background:"transparent",
+            style={{width:32,height:32,borderRadius:C.inputRadius||8,border:"none",background:"transparent",
             cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",
             transition:"background 0.15s"}}>
             <Ico name="x" size={16} color={C.muted}/>
@@ -1505,7 +2364,7 @@ function BelegScan({accent, onResult}) {
   };
   return (
     <div style={{marginBottom:4}}>
-      <label style={{display:"inline-flex",alignItems:"center",gap:8,padding:"9px 18px",background:loading?"rgba(0,0,0,0.06)":accent,border:`1px solid ${accent}`,borderRadius:8,cursor:loading?"not-allowed":"pointer",fontSize:14,fontFamily:SANS,fontWeight:700,letterSpacing:1.5,textTransform:"uppercase",color:"#fff",userSelect:"none",opacity:loading?0.7:1}}>
+      <label style={{display:"inline-flex",alignItems:"center",gap:8,padding:"9px 18px",background:loading?"rgba(0,0,0,0.06)":accent,border:`1px solid ${accent}`,borderRadius:C.inputRadius||8,cursor:loading?"not-allowed":"pointer",fontSize:14,fontFamily:SANS,fontWeight:700,letterSpacing:1.5,textTransform:"uppercase",color:"#fff",userSelect:"none",opacity:loading?0.7:1}}>
         <Ico name="upload" size={15} color="#fff"/>
         {loading?"KI analysiert Beleg…":"Beleg / Foto scannen (KI)"}
         <input type="file" accept="image/*,application/pdf" onChange={handleFile} style={{display:"none"}} disabled={loading}/>
@@ -1545,7 +2404,7 @@ function FahrzeugScan({onResult}) {
   };
   return (
     <div style={{marginBottom:4}}>
-      <label style={{display:"inline-flex",alignItems:"center",gap:8,padding:"9px 18px",background:loading?"rgba(0,0,0,0.06)":"#7A8A96",border:"1px solid #7A8A96",borderRadius:8,cursor:loading?"not-allowed":"pointer",fontSize:14,fontFamily:SANS,fontWeight:700,letterSpacing:1.5,textTransform:"uppercase",color:"#fff",userSelect:"none",opacity:loading?0.7:1}}>
+      <label style={{display:"inline-flex",alignItems:"center",gap:8,padding:"9px 18px",background:loading?"rgba(0,0,0,0.06)":"#7A8A96",border:"1px solid #7A8A96",borderRadius:C.inputRadius||8,cursor:loading?"not-allowed":"pointer",fontSize:14,fontFamily:SANS,fontWeight:700,letterSpacing:1.5,textTransform:"uppercase",color:"#fff",userSelect:"none",opacity:loading?0.7:1}}>
         <Ico name="upload" size={15} color="#fff"/>
         {loading?"KI liest Fahrzeugschein…":"Fahrzeugschein scannen (KI)"}
         <input type="file" accept="image/*,application/pdf" onChange={handleFile} style={{display:"none"}} disabled={loading}/>
@@ -1559,7 +2418,8 @@ function BelegVorschau({src, onRemove}) {
   return (
     <div style={{position:"relative",display:"inline-block",marginTop:4}}>
       <img src={src} alt="Beleg" style={{maxHeight:160,maxWidth:"100%",border:`1px solid ${C.border}`,display:"block"}}/>
-      <button onClick={onRemove} style={{position:"absolute",top:4,right:4,background:"rgba(0,0,0,0.55)",border:"none",color:"#fff",cursor:"pointer",width:24,height:24,display:"flex",alignItems:"center",justifyContent:"center",borderRadius:8}}>
+      <button title="Entfernen"
+                  onClick={onRemove} style={{position:"absolute",top:4,right:4,background:"rgba(0,0,0,0.55)",border:"none",color:"#fff",cursor:"pointer",width:24,height:24,display:"flex",alignItems:"center",justifyContent:"center",borderRadius:C.inputRadius||8}}>
         <Ico name="x" size={15} color="#fff"/>
       </button>
     </div>
@@ -1590,7 +2450,7 @@ function ConfirmModal({item, onConfirm, onCancel}) {
     }}>
       <div onClick={e=>e.stopPropagation()} style={{
         background:C.surface,
-        borderRadius:8,
+        borderRadius:C.inputRadius||8,
         padding:"32px 32px 28px",
         maxWidth:380,width:"100%",
         boxShadow:"0 24px 64px rgba(0,0,0,0.22), 0 2px 8px rgba(0,0,0,0.10)",
@@ -1618,7 +2478,7 @@ function ConfirmModal({item, onConfirm, onCancel}) {
           <button onClick={onCancel}
             onMouseEnter={e=>{e.currentTarget.style.borderColor=C.borderHi;e.currentTarget.style.background=C.surfaceAlt;}}
             onMouseLeave={e=>{e.currentTarget.style.borderColor=C.border;e.currentTarget.style.background="transparent";}}
-            style={{flex:1,height:48,background:"transparent",border:`1.5px solid ${C.border}`,borderRadius:8,
+            style={{flex:1,height:48,background:"transparent",border:`1.5px solid ${C.border}`,borderRadius:C.inputRadius||8,
             color:C.textSoft,cursor:"pointer",fontSize:16,fontFamily:SANS,fontWeight:700,
             transition:"border-color 0.15s, background 0.15s"}}>
             Abbrechen
@@ -1626,7 +2486,7 @@ function ConfirmModal({item, onConfirm, onCancel}) {
           <button onClick={onConfirm}
             onMouseEnter={e=>e.currentTarget.style.opacity="0.86"}
             onMouseLeave={e=>e.currentTarget.style.opacity="1"}
-            style={{flex:1,height:48,background:C.red,border:`1.5px solid ${C.red}`,borderRadius:8,
+            style={{flex:1,height:48,background:C.red,border:`1.5px solid ${C.red}`,borderRadius:C.inputRadius||8,
             color:"#fff",cursor:"pointer",fontSize:16,fontFamily:SANS,fontWeight:700,
             boxShadow:`0 4px 16px ${C.red}44`,transition:"opacity 0.15s"}}>
             Löschen
@@ -1676,24 +2536,30 @@ class ErrorBoundary extends React.Component {
   render() {
     if(this.state.error) {
       return (
-        <div style={{minHeight:"100vh",background:"#F4F4F0",display:"flex",alignItems:"center",justifyContent:"center",fontFamily:"'Inter',sans-serif"}}>
-          <div style={{background:"#fff",border:"1px solid #DDDDD8",borderTop:"3px solid #B30000",padding:"40px 48px",maxWidth:480,textAlign:"center"}}>
+        <div style={{minHeight:"100vh",background:C.bg,display:"flex",alignItems:"center",justifyContent:"center",fontFamily:SANS}}>
+          <div style={{background:"#fff",border:`1px solid ${C.border}`,borderTop:`3px solid ${C.red}`,padding:"40px 48px",maxWidth:480,textAlign:"center"}}>
             <div style={{marginBottom:16,display:"flex",justifyContent:"center"}}>
-              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#B30000" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke={C.red} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
               </svg>
             </div>
             <div style={{fontSize:18,fontWeight:700,color:"#111",marginBottom:8}}>Anwendungsfehler</div>
-            <div style={{fontSize:14,color:"#666",marginBottom:24,lineHeight:1.6}}>
+            <div style={{fontSize:14,color:C.muted,marginBottom:24,lineHeight:1.6}}>
               Ein unerwarteter Fehler ist aufgetreten.<br/>Ihre Daten sind in localStorage gesichert.
             </div>
-            <div style={{fontSize:11,color:"#999",background:"#F4F4F0",padding:"8px 12px",marginBottom:24,textAlign:"left",fontFamily:"monospace",wordBreak:"break-all"}}>
+            <div style={{fontSize:11,color:C.muted,background:C.bg,padding:"8px 12px",marginBottom:24,textAlign:"left",fontFamily:"monospace",wordBreak:"break-all"}}>
               {this.state.error?.message}
             </div>
-            <button onClick={()=>window.location.reload()}
-              style={{padding:"10px 28px",background:"#B30000",color:"#fff",border:"none",cursor:"pointer",fontSize:14,fontWeight:700,letterSpacing:1}}>
-              Neu laden
-            </button>
+            <div style={{display:"flex",gap:12,justifyContent:"center"}}>
+              <button onClick={()=>window.location.reload()}
+                style={{padding:"10px 28px",background:C.red,color:"#fff",border:"none",cursor:"pointer",fontSize:14,fontWeight:700,letterSpacing:1}}>
+                Neu laden
+              </button>
+              <button onClick={()=>{try{localStorage.removeItem("fb2_real");localStorage.removeItem("fb2_demo");}catch(e){/*ok*/}window.location.reload();}}
+                style={{padding:"10px 28px",background:"#fff",color:C.muted,border:`1px solid ${C.border}`,cursor:"pointer",fontSize:14,fontWeight:700,letterSpacing:1}}>
+                Werkseinstellungen
+              </button>
+            </div>
           </div>
         </div>
       );
@@ -1706,8 +2572,8 @@ class ErrorBoundary extends React.Component {
 // ─── TANKEN LISTE ─────────────────────────────────────────────────────────────
 function TankenListe({ items, onEdit, onDelete }) {
   return (
-    <>
-      {(items||[]).slice().sort((a,b)=>b.datum?.localeCompare(a.datum)).map(t=>(
+    <div className="fb-stagger">
+      {(items||[]).slice().sort((a,b)=>(b?.datum||"").localeCompare(a?.datum||"")).map(t=>(
         <div key={t.id} style={{background:C.surface,borderLeft:`2px solid ${C.tank}`,padding:"12px 16px",marginBottom:2,display:"flex",alignItems:"center",gap:12,boxShadow:C.shadow}}>
           <div style={{width:96,flexShrink:0}}>
             <div style={{fontSize:14,fontWeight:700,color:C.text}}>{formatDatum(t.datum)}</div>
@@ -1717,7 +2583,7 @@ function TankenListe({ items, onEdit, onDelete }) {
             <div style={{fontSize:16,fontWeight:700,color:C.text,marginBottom:2}}>{t.stationName||"Tankstelle"}</div>
             {t.adresse&&<div style={{fontSize:14,color:C.text,display:"flex",alignItems:"center",gap:4,fontFamily:SANS}}><Ico name="mapPin" size={13} color={C.muted}/>{t.adresse}</div>}
             <div style={{fontSize:13,color:C.steelMid,marginTop:2,display:"flex",gap:8,flexWrap:"wrap"}}>
-              <span style={{background:C.tankLight,color:C.tank,padding:"2px 8px",fontWeight:700,letterSpacing:1.5,fontSize:11,lineHeight:1,display:"inline-flex",alignItems:"center",borderRadius:20,padding:"2px 8px"}}>{t.kraftstoff||"Kraftstoff"}</span>
+              <span style={{background:C.tank+"18",color:C.tank,border:`1px solid ${C.tank}30`,padding:"3px 10px",fontWeight:700,letterSpacing:1.5,fontSize:11,lineHeight:1,display:"inline-flex",alignItems:"center",borderRadius:20}}>{t.kraftstoff||"Kraftstoff"}</span>
               {t.kmStand&&<span>KM: <b>{t.kmStand}</b></span>}
               {t.zapfsaeule&&<span>Säule: {t.zapfsaeule}</span>}
               {t.bonNr&&<span>Bon: {t.bonNr}</span>}
@@ -1735,16 +2601,15 @@ function TankenListe({ items, onEdit, onDelete }) {
           </div>
         </div>
       ))}
-      {!(items||[]).length&&<EmptyState icon="droplet" accent={C.tank} text="Keine Tankvorgänge" hint="Tankfüllung, AdBlue oder Strom erfassen"/>}
-    </>
+    </div>
   );
 }
 
 // ─── STRAFEN LISTE ────────────────────────────────────────────────────────────
 function StrafenListe({ items, onEdit, onDelete, onToggleBezahlt }) {
   return (
-    <>
-      {(items||[]).slice().sort((a,b)=>b.datum?.localeCompare(a.datum)).map(s=>(
+    <div className="fb-stagger">
+      {(items||[]).slice().sort((a,b)=>(b?.datum||"").localeCompare(a?.datum||"")).map(s=>(
         <div key={s.id} style={{background:C.surface,borderLeft:`2px solid ${s.bezahlt?C.border:C.strafe}`,padding:"12px 16px",marginBottom:2,display:"flex",alignItems:"center",gap:12,boxShadow:C.shadow}}>
           <label title="Bezahlt umschalten" style={{display:"flex",alignItems:"center",cursor:"pointer",flexShrink:0}}>
             <input type="checkbox" checked={!!s.bezahlt} onChange={()=>onToggleBezahlt(s.id)}
@@ -1752,11 +2617,14 @@ function StrafenListe({ items, onEdit, onDelete, onToggleBezahlt }) {
           </label>
           <div style={{width:96,flexShrink:0}}>
             <div style={{fontSize:14,fontWeight:700,color:C.text}}>{formatDatum(s.datum)}</div>
+            {s.uhrzeit&&<div style={{fontSize:13,color:C.muted,marginTop:3}}>{s.uhrzeit}</div>}
           </div>
           <div style={{flex:1,minWidth:0}}>
             <div style={{fontSize:16,fontWeight:700,color:C.text,marginBottom:2,wordBreak:"break-word"}}>{s.typ||"Strafe"}</div>
+            {(s.tatort||s.tatortAdresse)&&<div style={{fontSize:14,color:C.text,display:"flex",alignItems:"center",gap:4,fontFamily:SANS}}><Ico name="mapPin" size={13} color={C.strafe}/>{[s.tatort,s.tatortAdresse].filter(Boolean).join(", ")}</div>}
             {s.behoerde&&<div style={{fontSize:14,color:C.text,display:"flex",alignItems:"center",gap:4,fontFamily:SANS}}><Ico name="building" size={13} color={C.muted}/>{s.behoerde}</div>}
-            {s.aktenzeichen&&<div style={{fontSize:14,color:C.text,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>Az: {s.aktenzeichen}</div>}
+            {s.aktenzeichen&&<div style={{fontSize:14,color:C.muted,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>Az: {s.aktenzeichen}</div>}
+            {s.frist&&!s.bezahlt&&<div style={{fontSize:13,color:new Date(s.frist)<new Date()?C.red:C.gold,fontWeight:700,display:"flex",alignItems:"center",gap:4}}><Ico name="clock" size={12} color={new Date(s.frist)<new Date()?C.red:C.gold}/>Frist: {formatDatum(s.frist)}</div>}
           </div>
           <div style={{textAlign:"center",minWidth:88,flexShrink:0}}>
             <div style={{fontSize:22,fontWeight:800,color:s.bezahlt?C.muted:C.strafe,fontFamily:SANS,lineHeight:1}}>{(parseFloat(s.betrag)||0).toFixed(2)} €</div>
@@ -1769,421 +2637,255 @@ function StrafenListe({ items, onEdit, onDelete, onToggleBezahlt }) {
           </div>
         </div>
       ))}
-      {!(items||[]).length&&<EmptyState icon="alert" accent={C.strafe} text="Keine Strafen erfasst" hint="Strafzettel, Bußgeldbescheide erfassen"/>}
-    </>
+    </div>
   );
 }
 
 // ─── MUSTERDATEN FACTORY ─────────────────────────────────────────────────────
 // Вынесено из компонента: статические данные не должны жить внутри render-функции
+const MUSTER_VERSION = 67; // v67: TF-IA Fahrten km-chain fix + Messe→TdI 2024
 function createMusterDaten() {
-  const id1=uid(),id2=uid(),id3=uid(),id4=uid(),id5=uid();
-  const m1=uid(),m2=uid(),m3=uid(),m4=uid();
+  // ── fz1: BMW 520d Touring — München ─────────────────────────────────────────
   const fz={
     ...makeFahrzeug(0),
-    name:"BMW 520d Testfahrzeug",
-    kennzeichen:"M-TE 2025",
-    marke:"BMW", modell:"520d",
-    farbe:FARBEN[2],
+    name:"BMW 520d Touring",
+    kennzeichen:"M-BW 3090",
+    marke:"BMW", modell:"520d Touring",
+    farbe:"#8C969F",
     kraftstoff:"Diesel",
-    tuvDatum:"2026-08-15",
-    kfzBriefNr:"KFZ-2025-00447",
-    fahrgestellNr:"WBA52AG070NC12345",
+    tuvDatum:"2026-11-20",
+    kfzBriefNr:"WBA5E31040G998712",
+    fahrgestellNr:"WBA52CJ09RCK88021",
     reifendruckVorne:"2.3", reifendruckHinten:"2.5",
-    halterName:"Mustermann GmbH",
+    halterName:"Musterberg & Partner Consulting GmbH",
     halterAnschrift:"Leopoldstraße 42, 80802 München",
-    halterTelPrivat:"+49 89 100200",
-    halterTelFirma:"+49 89 100201",
-    fahrer:"Max Mustermann",
+    halterTelPrivat:"+49 89 1002000", halterTelFirma:"+49 89 1002001",
+    fahrer:"Thomas Musterberg",
     fahrerAnschrift:"Schleißheimer Str. 12, 80333 München",
-    fahrerTelPrivat:"+49 176 111222",
-    fahrerTelFirma:"+49 89 100202",
+    fahrerTelPrivat:"+49 176 445566", fahrerTelFirma:"+49 89 1002002",
     standort:{name:"Hauptbüro München", adresse:"Leopoldstraße 42, 80802 München"},
     kmStandInitial:"44000",
     partner:[
-    {id:id1, name:"Müller & Partner GmbH",  adresse:"Maximilianstraße 12, 80539 München",    telefon:"+49 89 123456", notiz:"Stammkunde seit 2019", kmVonStandort:"8"},
-    {id:id2, name:"Schmidt Consulting AG",   adresse:"Rosenheimer Str. 30, 81669 München",    telefon:"+49 89 654321", notiz:"Quartalsmeeting",    kmVonStandort:"12"},
-    {id:id3, name:"Bayer Logistik KG",     adresse:"Industriestraße 88, 85764 Oberschleißheim", telefon:"+49 89 887766", notiz:"Lager Nord",       kmVonStandort:"25"},
-    {id:id4, name:"Weber & Söhne OHG",     adresse:"Sendlinger Str. 55, 80331 München",     telefon:"+49 89 223344", notiz:"",          kmVonStandort:"7"},
-    {id:id5, name:"TechVision GmbH",     adresse:"Parkring 9, 85748 Garching",         telefon:"+49 89 991122", notiz:"F&E Partner",      kmVonStandort:"20"},
+      {id:uid(), name:"Siemens AG",                 adresse:"Werner-von-Siemens-Str. 1, 80333 München", telefon:"+49 89 636-0",      kmVonStandort:"8",  notiz:"Beratungsprojekt IT", typ:"kunde"},
+      {id:uid(), name:"Allianz SE",                  adresse:"Königinstr. 28, 80802 München",            telefon:"+49 89 3800-0",     kmVonStandort:"3",  notiz:"Risikobewertung",     typ:"kunde"},
+      {id:uid(), name:"BMW Group Forschung",          adresse:"Knorrstr. 147, 80788 München",            telefon:"+49 89 382-0",      kmVonStandort:"12", notiz:"Innovation Workshop",  typ:"kunde"},
+      {id:uid(), name:"Notar Dr. Berger",             adresse:"Maximilianstr. 35, 80539 München",        telefon:"+49 89 291200",     kmVonStandort:"5",  notiz:"Vertragsangelegenheiten", typ:"sonstiges"},
+      {id:uid(), name:"Steuerberatung Huber & Koll.", adresse:"Prinzregentenstr. 18, 81675 München",     telefon:"+49 89 418800",     kmVonStandort:"7",  notiz:"Jahresabschluss",     typ:"sonstiges"},
+    ],
+    standorte:[
+      {id:uid(), name:"Shell Tankstelle Schwabing",  adresse:"Leopoldstr. 120, 80802 München",           kmVonStandort:"2",  besuche:12, typ:"auto"},
+      {id:uid(), name:"BMW Niederlassung München",   adresse:"Am Olympiapark 1, 80809 München",          kmVonStandort:"6",  besuche:3,  typ:"auto"},
+      {id:uid(), name:"Waschpark Schwabing",          adresse:"Ungererstr. 80, 80805 München",           kmVonStandort:"3",  besuche:6,  typ:"auto"},
+      {id:uid(), name:"ADAC Parkhaus Zentrum",         adresse:"Hansastr. 19, 80686 München",            kmVonStandort:"5",  besuche:8,  typ:"laden"},
     ],
     messen:[
-    {id:m1, name:"automatica 2025",   adresse:"Am Messesee 2, 81829 München", datum:"2025-06-17", partnerId:"", notiz:"Halle B4, Stand 312"},
-    {id:m2, name:"bauma 2025",      adresse:"Am Messesee 2, 81829 München", datum:"2025-04-07", partnerId:"", notiz:"Außengelände Süd"},
-    {id:m3, name:"IAA Mobility 2025",   adresse:"Am Messesee 2, 81829 München", datum:"2025-09-09", partnerId:"", notiz:"PKW-Neuheiten Halle C6"},
-    {id:m4, name:"EXPO Real 2025",    adresse:"Am Messesee 2, 81829 München", datum:"2025-10-06", partnerId:"", notiz:"Immobilien & Invest Stand 14"},
-    ],
-    standorteExtra:[
-    {id:uid(), name:"Finanzamt München Nord",   adresse:"Deroystraße 2, 80335 München",    notiz:"USt-Voranmeldung",    auto:false, besuche:0, letzterBesuch:""},
-    {id:uid(), name:"Notar Dr. Klein",      adresse:"Brienner Str. 11, 80333 München",   notiz:"Vertragsunterzeichnung", auto:false, besuche:0, letzterBesuch:""},
-    {id:uid(), name:"Tankstelle Shell Schwabing", adresse:"Leopoldstraße 200, 80804 München",  notiz:"Stammtankstelle",    auto:false, besuche:0, letzterBesuch:""},
-    ],
-    strafen:[
-    {id:uid(), datum:"2025-02-14", typ:"Geschwindigkeitsverstoß", betrag:"30",  ort:"A9 München Richtung Nürnberg km 142", aktenzeichen:"M-OWI-2025-1234", punkte:"0", faellig:"2025-03-14", bezahlt:true,  notiz:"Radar Baustelle", belegFoto:""},
-    {id:uid(), datum:"2025-04-03", typ:"Parkverstoß",       betrag:"25",  ort:"Maximilianstraße 18, München",    aktenzeichen:"M-OWI-2025-5678", punkte:"0", faellig:"2025-05-03", bezahlt:true,  notiz:"Halteverbot",   belegFoto:""},
-    {id:uid(), datum:"2025-07-21", typ:"Rotlichtverstoß",     betrag:"200", ort:"Leopoldstraße / Siegesstraße",    aktenzeichen:"M-OWI-2025-9012", punkte:"2", faellig:"2025-08-21", bezahlt:true,  notiz:"Ampel Süd",     belegFoto:""},
-    {id:uid(), datum:"2025-11-05", typ:"Geschwindigkeitsverstoß", betrag:"55",  ort:"A95 Richtung Garmisch km 28",     aktenzeichen:"M-OWI-2025-1101", punkte:"1", faellig:"2025-12-05", bezahlt:false, notiz:"Tempo 120/100",   belegFoto:""},
+      {id:uid(), name:"EXPO REAL 2025", adresse:"Messe München, Am Messesee 2, 81829 München", datum:"2025-10-06", datumBis:"2025-10-08", partnerId:"", notiz:"Europas führende Immobilienmesse", kmVonStandort:"14"},
     ],
     tankstellen:[
-    {id:uid(), datum:"2025-01-08", uhrzeit:"07:45", stationName:"Shell Schwabing",    adresse:"Leopoldstraße 200, 80804 München",   menge:"52.4", preisProLiter:"1.799", betrag:"94.27",  kraftstoff:"Diesel", kmStand:"44320", bonNr:"SH-2025-00112", zahlungsart:"EC-Karte", notiz:"", belegFoto:""},
-    {id:uid(), datum:"2025-02-05", uhrzeit:"16:30", stationName:"Aral Schwabing Nord",  adresse:"Ingolstädter Str. 3, 80807 München", menge:"50.0", preisProLiter:"1.819", betrag:"90.95",  kraftstoff:"Diesel", kmStand:"45580", bonNr:"AR-2025-00201", zahlungsart:"EC-Karte", notiz:"", belegFoto:""},
-    {id:uid(), datum:"2025-03-12", uhrzeit:"12:10", stationName:"BP Autobahn A9",     adresse:"Rastanlage Fürholzen West, A9",    menge:"55.0", preisProLiter:"1.869", betrag:"102.80", kraftstoff:"Diesel", kmStand:"46900", bonNr:"BP-2025-00789", zahlungsart:"Bar",    notiz:"Autobahn Nürnberg", belegFoto:""},
-    {id:uid(), datum:"2025-04-06", uhrzeit:"08:20", stationName:"Shell Schwabing",    adresse:"Leopoldstraße 200, 80804 München",   menge:"51.0", preisProLiter:"1.789", betrag:"91.24",  kraftstoff:"Diesel", kmStand:"48200", bonNr:"SH-2025-01001", zahlungsart:"EC-Karte", notiz:"Vor Messe bauma", belegFoto:""},
-    {id:uid(), datum:"2025-05-14", uhrzeit:"08:55", stationName:"Esso Garching",    adresse:"Parkring 22, 85748 Garching",    menge:"50.3", preisProLiter:"1.849", betrag:"93.00",  kraftstoff:"Diesel", kmStand:"49550", bonNr:"ES-2025-01023", zahlungsart:"EC-Karte", notiz:"", belegFoto:""},
-    {id:uid(), datum:"2025-06-16", uhrzeit:"07:30", stationName:"Shell Schwabing",    adresse:"Leopoldstraße 200, 80804 München",   menge:"53.0", preisProLiter:"1.799", betrag:"95.35",  kraftstoff:"Diesel", kmStand:"50900", bonNr:"SH-2025-02101", zahlungsart:"EC-Karte", notiz:"Vor Messe automatica", belegFoto:""},
-    {id:uid(), datum:"2025-07-09", uhrzeit:"16:30", stationName:"Aral Schwabing Nord",  adresse:"Ingolstädter Str. 3, 80807 München", menge:"49.8", preisProLiter:"1.779", betrag:"88.60",  kraftstoff:"Diesel", kmStand:"52200", bonNr:"AR-2025-02501", zahlungsart:"EC-Karte", notiz:"", belegFoto:""},
-    {id:uid(), datum:"2025-08-13", uhrzeit:"08:10", stationName:"Shell Schwabing",    adresse:"Leopoldstraße 200, 80804 München",   menge:"51.5", preisProLiter:"1.809", betrag:"93.16",  kraftstoff:"Diesel", kmStand:"53480", bonNr:"SH-2025-03101", zahlungsart:"EC-Karte", notiz:"", belegFoto:""},
-    {id:uid(), datum:"2025-09-08", uhrzeit:"07:30", stationName:"Shell Schwabing",    adresse:"Leopoldstraße 200, 80804 München",   menge:"54.0", preisProLiter:"1.769", betrag:"95.53",  kraftstoff:"Diesel", kmStand:"54800", bonNr:"SH-2025-04001", zahlungsart:"EC-Karte", notiz:"Vor IAA", belegFoto:""},
-    {id:uid(), datum:"2025-10-05", uhrzeit:"08:00", stationName:"Esso Garching",    adresse:"Parkring 22, 85748 Garching",    menge:"50.0", preisProLiter:"1.759", betrag:"87.95",  kraftstoff:"Diesel", kmStand:"56100", bonNr:"ES-2025-05001", zahlungsart:"EC-Karte", notiz:"Vor EXPO Real", belegFoto:""},
-    {id:uid(), datum:"2025-11-12", uhrzeit:"16:00", stationName:"Aral Schwabing Nord",  adresse:"Ingolstädter Str. 3, 80807 München", menge:"52.0", preisProLiter:"1.779", betrag:"92.51",  kraftstoff:"Diesel", kmStand:"57450", bonNr:"AR-2025-06001", zahlungsart:"EC-Karte", notiz:"", belegFoto:""},
-    {id:uid(), datum:"2025-12-10", uhrzeit:"08:30", stationName:"Shell Schwabing",    adresse:"Leopoldstraße 200, 80804 München",   menge:"50.5", preisProLiter:"1.809", betrag:"91.35",  kraftstoff:"Diesel", kmStand:"58750", bonNr:"SH-2025-07001", zahlungsart:"EC-Karte", notiz:"", belegFoto:""},
-    {id:uid(), datum:"2026-01-14", uhrzeit:"07:45", stationName:"Shell Schwabing",    adresse:"Leopoldstraße 200, 80804 München",   menge:"53.5", preisProLiter:"1.789", betrag:"95.71",  kraftstoff:"Diesel", kmStand:"60100", bonNr:"SH-2026-00101", zahlungsart:"EC-Karte", notiz:"", belegFoto:""},
-    {id:uid(), datum:"2026-02-18", uhrzeit:"16:00", stationName:"Aral Schwabing Nord",  adresse:"Ingolstädter Str. 3, 80807 München", menge:"49.0", preisProLiter:"1.749", betrag:"85.70",  kraftstoff:"Diesel", kmStand:"61350", bonNr:"AR-2026-00201", zahlungsart:"EC-Karte", notiz:"", belegFoto:""},
+      {id:uid(), datum:"2024-10-05", uhrzeit:"08:12", stationName:"Shell Schwabing",     adresse:"Leopoldstr. 120, München",    kraftstoff:"Diesel", menge:"48.2", preisProLiter:"1.659", gesamtbetrag:"79.96", kmStand:"44320", zahlungsart:"EC-Karte", bonNr:"SH-88120", notiz:"", kmVonStandort:"2"},
+      {id:uid(), datum:"2024-11-12", uhrzeit:"17:45", stationName:"Aral Mittlerer Ring",  adresse:"Frankfurter Ring 35, München", kraftstoff:"Diesel", menge:"52.0", preisProLiter:"1.679", gesamtbetrag:"87.31", kmStand:"44910", zahlungsart:"EC-Karte", bonNr:"AR-442110", notiz:"", kmVonStandort:"5"},
+      {id:uid(), datum:"2025-01-08", uhrzeit:"07:55", stationName:"Shell Schwabing",      adresse:"Leopoldstr. 120, München",    kraftstoff:"Diesel", menge:"50.5", preisProLiter:"1.649", gesamtbetrag:"83.27", kmStand:"45580", zahlungsart:"Firmen-Tankkarte", bonNr:"SH-92340", notiz:"", kmVonStandort:"2"},
+      {id:uid(), datum:"2025-03-20", uhrzeit:"12:30", stationName:"Total Nürnberg",       adresse:"Fürther Str. 212, Nürnberg",  kraftstoff:"Diesel", menge:"55.0", preisProLiter:"1.639", gesamtbetrag:"90.15", kmStand:"46300", zahlungsart:"Firmen-Tankkarte", bonNr:"TN-10045", notiz:"Dienstreise Nürnberg", kmVonStandort:"170"},
+      {id:uid(), datum:"2025-05-15", uhrzeit:"16:20", stationName:"OMV München Süd",      adresse:"Rosenheimer Str. 145, München",kraftstoff:"Diesel", menge:"46.8", preisProLiter:"1.669", gesamtbetrag:"78.11", kmStand:"47100", zahlungsart:"EC-Karte", bonNr:"OMV-88102", notiz:"", kmVonStandort:"8"},
+      {id:uid(), datum:"2025-07-22", uhrzeit:"09:10", stationName:"Aral BAB A9 Rasthof",  adresse:"BAB A9 Rasthof Fränkische Schweiz", kraftstoff:"Diesel", menge:"58.3", preisProLiter:"1.749", gesamtbetrag:"101.95", kmStand:"48050", zahlungsart:"Firmen-Tankkarte", bonNr:"BAB-92201", notiz:"Autobahnrasthof Richtung Berlin", kmVonStandort:"200"},
+      {id:uid(), datum:"2025-09-10", uhrzeit:"18:05", stationName:"Shell Schwabing",      adresse:"Leopoldstr. 120, München",    kraftstoff:"Diesel", menge:"49.0", preisProLiter:"1.659", gesamtbetrag:"81.29", kmStand:"48800", zahlungsart:"EC-Karte", bonNr:"SH-10231", notiz:"", kmVonStandort:"2"},
+    ],
+    strafen:[
+      {id:uid(), datum:"2025-04-14", uhrzeit:"11:20", typ:"Geschwindigkeitsverstoß", betrag:"35", tatort:"Lindwurmstr. / Goetheplatz", tatortAdresse:"80337 München", behoerde:"Bußgeldbehörde München", adresseBehoerde:"Implerstr. 9, 80331 München", aktenzeichen:"BG-2025-04881", frist:"", bezahlt:true, notiz:"21 km/h zu schnell, innerorts"},
     ],
     waesche:[
-    {id:uid(), datum:"2025-01-25", uhrzeit:"10:00", typ:"Außenwäsche",     adresse:"SB-Waschcenter Nord, Ingolstädter Str. 88, 80807 München",  betrag:"9.90",  zahlungsart:"Bar",    notiz:"", belegFoto:""},
-    {id:uid(), datum:"2025-03-08", uhrzeit:"11:30", typ:"Komplettreinigung",   adresse:"Glanzwäsche Premium, Leopoldstraße 55, 80802 München",    betrag:"49.00", zahlungsart:"EC-Karte", notiz:"Frühjahresreinigung", belegFoto:""},
-    {id:uid(), datum:"2025-04-05", uhrzeit:"09:00", typ:"Außenwäsche",     adresse:"SB-Waschcenter Nord, Ingolstädter Str. 88, 80807 München",  betrag:"9.90",  zahlungsart:"Bar",    notiz:"Vor Messe bauma", belegFoto:""},
-    {id:uid(), datum:"2025-05-28", uhrzeit:"09:15", typ:"Polieren/Versiegeln", adresse:"AutoPflege Schwabing, Kurfürstenstr. 12, 80805 München",  betrag:"120.00",zahlungsart:"EC-Karte", notiz:"Frühjahrespflege", belegFoto:""},
-    {id:uid(), datum:"2025-06-15", uhrzeit:"08:30", typ:"Außenwäsche",     adresse:"Glanzwäsche Premium, Leopoldstraße 55, 80802 München",    betrag:"12.00", zahlungsart:"Bar",    notiz:"Vor Messe automatica", belegFoto:""},
-    {id:uid(), datum:"2025-08-10", uhrzeit:"14:00", typ:"Innenreinigung",    adresse:"SB-Waschcenter Nord, Ingolstädter Str. 88, 80807 München",  betrag:"18.50", zahlungsart:"Bar",    notiz:"Sommerreinigung", belegFoto:""},
-    {id:uid(), datum:"2025-09-07", uhrzeit:"09:30", typ:"Komplettreinigung",   adresse:"Glanzwäsche Premium, Leopoldstraße 55, 80802 München",    betrag:"49.00", zahlungsart:"EC-Karte", notiz:"Vor IAA Mobility", belegFoto:""},
-    {id:uid(), datum:"2025-10-04", uhrzeit:"10:00", typ:"Außenwäsche",     adresse:"SB-Waschcenter Nord, Ingolstädter Str. 88, 80807 München",  betrag:"9.90",  zahlungsart:"Bar",    notiz:"Vor EXPO Real", belegFoto:""},
-    {id:uid(), datum:"2025-11-20", uhrzeit:"11:00", typ:"Innenreinigung",    adresse:"Glanzwäsche Premium, Leopoldstraße 55, 80802 München",    betrag:"22.00", zahlungsart:"Bar",    notiz:"", belegFoto:""},
-    {id:uid(), datum:"2025-12-20", uhrzeit:"10:30", typ:"Komplettreinigung",   adresse:"Glanzwäsche Premium, Leopoldstraße 55, 80802 München",    betrag:"49.00", zahlungsart:"EC-Karte", notiz:"Jahresende", belegFoto:""},
-    {id:uid(), datum:"2026-02-10", uhrzeit:"09:00", typ:"Außenwäsche",     adresse:"SB-Waschcenter Nord, Ingolstädter Str. 88, 80807 München",  betrag:"9.90",  zahlungsart:"Bar",    notiz:"", belegFoto:""},
+      {id:uid(), datum:"2025-02-10", uhrzeit:"10:00", typ:"Außenwäsche",  name:"Waschpark Schwabing",  adresse:"Ungererstr. 80, München",  betrag:"14.90", zahlungsart:"EC-Karte", notiz:"", kmVonStandort:"3"},
+      {id:uid(), datum:"2025-06-18", uhrzeit:"09:30", typ:"Vollwäsche",   name:"Mr. Wash Olympiapark", adresse:"Moosacher Str. 80, München",betrag:"22.90", zahlungsart:"EC-Karte", notiz:"Innen + Außen", kmVonStandort:"7"},
+      {id:uid(), datum:"2025-09-05", uhrzeit:"14:15", typ:"Außenwäsche",  name:"Waschpark Schwabing",  adresse:"Ungererstr. 80, München",  betrag:"14.90", zahlungsart:"Bar", notiz:"", kmVonStandort:"3"},
     ],
     services:[
-    {id:uid(), datum:"2025-01-10", typ:"Reifenwechsel Winter",  werkstatt:"ATU München Nord",  adresse:"Schleißheimer Str. 400, 80935 München", kmStand:"44100", betrag:"89.00",  rechnungsNr:"ATU-2025-1001", faelligKm:"",   faelligDatum:"",       zahlungsart:"EC-Karte",   notiz:"Sommerreifen eingelagert",  belegFoto:""},
-    {id:uid(), datum:"2025-02-28", typ:"Ölwechsel",       werkstatt:"BMW Service München", adresse:"Arnulfstraße 5, 80335 München",      kmStand:"45700", betrag:"185.00", rechnungsNr:"BMW-2025-0392", faelligKm:"60000",faelligDatum:"2026-02-01", zahlungsart:"EC-Karte",   notiz:"5W-30 Longlife BMW",    belegFoto:""},
-    {id:uid(), datum:"2025-04-15", typ:"TÜV / HU",        werkstatt:"DEKRA München",     adresse:"Ridlerstraße 37, 80339 München",     kmStand:"48300", betrag:"129.00", rechnungsNr:"DEK-2025-0517", faelligKm:"",   faelligDatum:"2027-04-01", zahlungsart:"Bar",     notiz:"Bestanden ohne Mängel",   belegFoto:""},
-    {id:uid(), datum:"2025-06-20", typ:"Bremsen VA",       werkstatt:"ATU München Nord",  adresse:"Schleißheimer Str. 400, 80935 München", kmStand:"51200", betrag:"320.00", rechnungsNr:"ATU-2025-3344", faelligKm:"",   faelligDatum:"",       zahlungsart:"EC-Karte",   notiz:"Beläge + Scheiben vorne",   belegFoto:""},
-    {id:uid(), datum:"2025-07-10", typ:"Reifenwechsel Sommer",  werkstatt:"ATU München Nord",  adresse:"Schleißheimer Str. 400, 80935 München", kmStand:"52300", betrag:"89.00",  rechnungsNr:"ATU-2025-5521", faelligKm:"",   faelligDatum:"",       zahlungsart:"EC-Karte",   notiz:"Winterreifen eingelagert",  belegFoto:""},
-    {id:uid(), datum:"2025-09-03", typ:"Klimaanlage Service",   werkstatt:"BMW Service München", adresse:"Arnulfstraße 5, 80335 München",      kmStand:"54700", betrag:"145.00", rechnungsNr:"BMW-2025-0981", faelligKm:"",   faelligDatum:"",       zahlungsart:"EC-Karte",   notiz:"Kältemittel aufgefüllt",  belegFoto:""},
-    {id:uid(), datum:"2025-10-16", typ:"Reifenwechsel Winter",  werkstatt:"ATU München Nord",  adresse:"Schleißheimer Str. 400, 80935 München", kmStand:"56300", betrag:"95.00",  rechnungsNr:"ATU-2025-8801", faelligKm:"",   faelligDatum:"",       zahlungsart:"EC-Karte",   notiz:"Neue Winterreifen Michelin", belegFoto:""},
-    {id:uid(), datum:"2025-12-15", typ:"Inspektion",      werkstatt:"BMW Service München", adresse:"Arnulfstraße 5, 80335 München",      kmStand:"58900", betrag:"380.00", rechnungsNr:"BMW-2025-1501", faelligKm:"73000",faelligDatum:"2026-12-01", zahlungsart:"EC-Karte",   notiz:"Jahresinspektion + Ölwechsel",belegFoto:""},
-    {id:uid(), datum:"2026-03-05", typ:"Reifenwechsel Sommer",  werkstatt:"ATU München Nord",  adresse:"Schleißheimer Str. 400, 80935 München", kmStand:"61800", betrag:"95.00",  rechnungsNr:"ATU-2026-1101", faelligKm:"",   faelligDatum:"",       zahlungsart:"EC-Karte",   notiz:"Sommersaison 2026",     belegFoto:""},
+      {id:uid(), datum:"2025-01-20", typ:"Ölwechsel",     werkstatt:"BMW Niederlassung München", adresse:"Am Olympiapark 1, 80809 München", betrag:"289.00", kmStand:"45200", zahlungsart:"Überweisung", rechnungsNr:"BMW-SV-2025-0114", faelligDatum:"2026-01-20", faelligKm:"55200", notiz:"Longlife Öl + Filter", kmVonStandort:"6"},
+      {id:uid(), datum:"2025-06-25", typ:"TÜV / HU",     werkstatt:"DEKRA München",              adresse:"Ridlerstr. 57, 80339 München",    betrag:"119.80", kmStand:"47500", zahlungsart:"EC-Karte",    rechnungsNr:"DEKRA-M-052619",   faelligDatum:"2027-06-25", faelligKm:"", notiz:"Ohne Mängel bestanden", kmVonStandort:"5"},
     ],
     parkplaetze:[
-    // Partner-Besuche — passend zu den Fahrten
-    {id:uid(), datum:"2025-01-06", uhrzeit:"13:05", ort:"Parkhaus Maximilianstraße", adresse:"Maximilianstraße 18, 80539 München", dauer:"2.5", betrag:"6.50", zahlungsart:"App / Mobile", bemerkung:"Besuch Müller & Partner"},
-    {id:uid(), datum:"2025-01-15", uhrzeit:"09:35", ort:"Parkplatz Oberschleißheim Mitte", adresse:"Industriestraße 80, 85764 Oberschleißheim", dauer:"1.5", betrag:"3.00", zahlungsart:"Bar", bemerkung:"Bayer Logistik"},
-    {id:uid(), datum:"2025-01-22", uhrzeit:"14:05", ort:"Parkhaus Sendlinger Tor", adresse:"Sendlinger-Tor-Platz 9, 80336 München", dauer:"2.0", betrag:"5.00", zahlungsart:"EC-Karte", bemerkung:"Weber & Söhne"},
-    {id:uid(), datum:"2025-02-05", uhrzeit:"10:05", ort:"Tiefgarage Rosenheimer Platz", adresse:"Rosenheimer Str. 28, 81669 München", dauer:"1.5", betrag:"4.50", zahlungsart:"App / Mobile", bemerkung:"Schmidt Consulting"},
-    {id:uid(), datum:"2025-02-19", uhrzeit:"11:05", ort:"Parkhaus Garching Forschungszentrum", adresse:"Lichtenbergstraße 8, 85748 Garching", dauer:"1.5", betrag:"2.50", zahlungsart:"Bar", bemerkung:"TechVision GmbH"},
-    {id:uid(), datum:"2025-03-12", uhrzeit:"09:05", ort:"Parkhaus Maximilianstraße", adresse:"Maximilianstraße 18, 80539 München", dauer:"2.5", betrag:"6.50", zahlungsart:"App / Mobile", bemerkung:"Müller & Partner"},
-    {id:uid(), datum:"2025-04-07", uhrzeit:"07:50", ort:"P10 Parkhaus Messe München", adresse:"Heinrich-Braun-Straße, 81829 München", dauer:"9.5", betrag:"16.00", zahlungsart:"EC-Karte", bemerkung:"bauma 2025 – Tag 1"},
-    {id:uid(), datum:"2025-04-08", uhrzeit:"07:50", ort:"P10 Parkhaus Messe München", adresse:"Heinrich-Braun-Straße, 81829 München", dauer:"9.5", betrag:"16.00", zahlungsart:"EC-Karte", bemerkung:"bauma 2025 – Tag 2"},
-    {id:uid(), datum:"2025-04-16", uhrzeit:"10:05", ort:"Tiefgarage Rosenheimer Platz", adresse:"Rosenheimer Str. 28, 81669 München", dauer:"1.5", betrag:"4.50", zahlungsart:"App / Mobile", bemerkung:"Schmidt Consulting + Weber & Söhne"},
-    {id:uid(), datum:"2025-05-07", uhrzeit:"09:35", ort:"Parkhaus Garching Forschungszentrum", adresse:"Lichtenbergstraße 8, 85748 Garching", dauer:"1.5", betrag:"2.50", zahlungsart:"Bar", bemerkung:"TechVision GmbH"},
-    {id:uid(), datum:"2025-06-17", uhrzeit:"07:50", ort:"P20 Parkhaus Messe München Ost", adresse:"Messegelände, 81829 München", dauer:"9.5", betrag:"16.00", zahlungsart:"EC-Karte", bemerkung:"automatica 2025 – Tag 1"},
-    {id:uid(), datum:"2025-06-18", uhrzeit:"07:50", ort:"P20 Parkhaus Messe München Ost", adresse:"Messegelände, 81829 München", dauer:"8.5", betrag:"16.00", zahlungsart:"EC-Karte", bemerkung:"automatica 2025 – Tag 2"},
-    {id:uid(), datum:"2025-07-09", uhrzeit:"10:05", ort:"Parkhaus Rosenheimer Platz", adresse:"Rosenheimer Str. 28, 81669 München", dauer:"2.0", betrag:"5.00", zahlungsart:"App / Mobile", bemerkung:"Bayer Logistik KG"},
-    {id:uid(), datum:"2025-08-20", uhrzeit:"14:05", ort:"Parkhaus Sendlinger Tor", adresse:"Sendlinger-Tor-Platz 9, 80336 München", dauer:"2.0", betrag:"5.00", zahlungsart:"EC-Karte", bemerkung:"Bayer Logistik KG"},
-    {id:uid(), datum:"2025-09-09", uhrzeit:"07:50", ort:"P1 Parkhaus ICM Messe München", adresse:"Am Messesee 6, 81829 München", dauer:"9.5", betrag:"18.00", zahlungsart:"EC-Karte", bemerkung:"IAA Mobility 2025 – Tag 1"},
-    {id:uid(), datum:"2025-09-10", uhrzeit:"07:50", ort:"P1 Parkhaus ICM Messe München", adresse:"Am Messesee 6, 81829 München", dauer:"8.5", betrag:"18.00", zahlungsart:"EC-Karte", bemerkung:"IAA Mobility 2025 – Tag 2"},
-    {id:uid(), datum:"2025-10-06", uhrzeit:"07:50", ort:"P10 Parkhaus Messe München", adresse:"Heinrich-Braun-Straße, 81829 München", dauer:"9.5", betrag:"16.00", zahlungsart:"EC-Karte", bemerkung:"EXPO Real 2025 – Tag 1"},
-    {id:uid(), datum:"2025-10-07", uhrzeit:"07:50", ort:"P10 Parkhaus Messe München", adresse:"Heinrich-Braun-Straße, 81829 München", dauer:"8.5", betrag:"16.00", zahlungsart:"EC-Karte", bemerkung:"EXPO Real 2025 – Tag 2"},
-    {id:uid(), datum:"2025-11-05", uhrzeit:"10:05", ort:"Tiefgarage Maximilianstraße", adresse:"Maximilianstraße 18, 80539 München", dauer:"1.5", betrag:"4.50", zahlungsart:"App / Mobile", bemerkung:"Müller & Partner GmbH"},
-    {id:uid(), datum:"2025-12-10", uhrzeit:"09:05", ort:"Parkhaus Maximilianstraße", adresse:"Maximilianstraße 18, 80539 München", dauer:"2.0", betrag:"5.50", zahlungsart:"EC-Karte", bemerkung:"Müller & Partner GmbH"},
-    {id:uid(), datum:"2026-01-14", uhrzeit:"09:05", ort:"Parkhaus Maximilianstraße", adresse:"Maximilianstraße 18, 80539 München", dauer:"2.0", betrag:"5.50", zahlungsart:"App / Mobile", bemerkung:"Müller & Partner GmbH"},
-    {id:uid(), datum:"2026-02-11", uhrzeit:"09:35", ort:"Parkhaus Garching Forschungszentrum", adresse:"Lichtenbergstraße 8, 85748 Garching", dauer:"1.5", betrag:"2.50", zahlungsart:"Bar", bemerkung:"TechVision GmbH"},
+      {id:uid(), datum:"2025-03-12", uhrzeit:"09:00", ort:"Parkhaus Maximilianeum",     adresse:"Max-Planck-Str. 1, München",   dauer:"3",   betrag:"8.50",  zahlungsart:"EC-Karte", bemerkung:"Kundentermin Allianz"},
+      {id:uid(), datum:"2025-05-20", uhrzeit:"08:30", ort:"Tiefgarage Stachus",          adresse:"Karlsplatz, 80335 München",    dauer:"5",   betrag:"18.00", zahlungsart:"EC-Karte", bemerkung:"Ganztag Innenstadt"},
+      {id:uid(), datum:"2025-08-14", uhrzeit:"10:00", ort:"P+R Fröttmaning",             adresse:"Werner-Heisenberg-Allee, München", dauer:"8", betrag:"2.00",  zahlungsart:"Bar", bemerkung:"Messe-Besuch"},
     ],
     fahrten:[
-    // Januar 2025
-    {id:uid(), datum:"2025-01-06", zeitStr:"07:30–08:00", kategorie:"partner", zielId:id2, zielName:"Schmidt Consulting AG",  km:"12", dauerMin:"30",  rueckfahrt:false, notiz:"Arbeitsweg",               kmTyp:"wohnArbeit",  kmStart:"44000", kmEnd:"44012"},
-    {id:uid(), datum:"2025-01-06", zeitStr:"13:00–15:25", kategorie:"partner", zielId:id1, zielName:"Müller & Partner GmbH",  km:"16", dauerMin:"145", rueckfahrt:true,  notiz:"Agenturbriefing Kampagne XY",      kmTyp:"geschaeftlich", kmStart:"44012", kmEnd:"44044"},
-    {id:uid(), datum:"2025-01-15", zeitStr:"07:30–08:00", kategorie:"partner", zielId:id2, zielName:"Schmidt Consulting AG",  km:"12", dauerMin:"30",  rueckfahrt:false, notiz:"Arbeitsweg",               kmTyp:"wohnArbeit",  kmStart:"44044", kmEnd:"44056"},
-    {id:uid(), datum:"2025-01-15", zeitStr:"09:30–11:00", kategorie:"partner", zielId:id3, zielName:"Bayer Logistik KG",    km:"50", dauerMin:"90",  rueckfahrt:true,  notiz:"Lagerbegehung Oberschleißheim",    kmTyp:"geschaeftlich", kmStart:"44056", kmEnd:"44106"},
-    {id:uid(), datum:"2025-01-22", zeitStr:"14:00–16:00", kategorie:"partner", zielId:id5, zielName:"TechVision GmbH",    km:"40", dauerMin:"120", rueckfahrt:true,  notiz:"Produktpräsentation F&E Garching",  kmTyp:"geschaeftlich", kmStart:"44106", kmEnd:"44146"},
-    {id:uid(), datum:"2025-01-29", zeitStr:"10:00–11:30", kategorie:"partner", zielId:id4, zielName:"Weber & Söhne OHG",    km:"14", dauerMin:"90",  rueckfahrt:true,  notiz:"Angebotsbesprechung Sendlinger Str.", kmTyp:"geschaeftlich", kmStart:"44146", kmEnd:"44160"},
-    // Februar 2025
-    {id:uid(), datum:"2025-02-05", zeitStr:"07:30–08:00", kategorie:"partner", zielId:id2, zielName:"Schmidt Consulting AG",  km:"12", dauerMin:"30",  rueckfahrt:false, notiz:"Arbeitsweg",               kmTyp:"wohnArbeit",  kmStart:"44160", kmEnd:"44172"},
-    {id:uid(), datum:"2025-02-05", zeitStr:"10:00–11:30", kategorie:"partner", zielId:id4, zielName:"Weber & Söhne OHG",    km:"14", dauerMin:"90",  rueckfahrt:true,  notiz:"Vertragsabschluss Sendlinger Str.",   kmTyp:"geschaeftlich", kmStart:"44172", kmEnd:"44186"},
-    {id:uid(), datum:"2025-02-12", zeitStr:"07:30–08:00", kategorie:"partner", zielId:id2, zielName:"Schmidt Consulting AG",  km:"12", dauerMin:"30",  rueckfahrt:false, notiz:"Arbeitsweg",               kmTyp:"wohnArbeit",  kmStart:"44186", kmEnd:"44198"},
-    {id:uid(), datum:"2025-02-12", zeitStr:"09:00–11:00", kategorie:"partner", zielId:id1, zielName:"Müller & Partner GmbH",  km:"16", dauerMin:"120", rueckfahrt:true,  notiz:"Quartalsreview Q1",           kmTyp:"geschaeftlich", kmStart:"44198", kmEnd:"44230"},
-    {id:uid(), datum:"2025-02-19", zeitStr:"11:00–12:30", kategorie:"partner", zielId:id5, zielName:"TechVision GmbH",    km:"40", dauerMin:"90",  rueckfahrt:true,  notiz:"Prototyp-Vorstellung Garching",     kmTyp:"geschaeftlich", kmStart:"44230", kmEnd:"44310"},
-    {id:uid(), datum:"2025-02-26", zeitStr:"14:00–15:30", kategorie:"partner", zielId:id3, zielName:"Bayer Logistik KG",    km:"50", dauerMin:"90",  rueckfahrt:true,  notiz:"Kapazitätsplanung Q2",        kmTyp:"geschaeftlich", kmStart:"44310", kmEnd:"44360"},
-    // März 2025
-    {id:uid(), datum:"2025-03-05", zeitStr:"07:30–08:00", kategorie:"partner", zielId:id2, zielName:"Schmidt Consulting AG",  km:"12", dauerMin:"30",  rueckfahrt:false, notiz:"Arbeitsweg",               kmTyp:"wohnArbeit",  kmStart:"44360", kmEnd:"44372"},
-    {id:uid(), datum:"2025-03-05", zeitStr:"13:00–15:30", kategorie:"partner", zielId:id2, zielName:"Schmidt Consulting AG",  km:"12", dauerMin:"150", rueckfahrt:true,  notiz:"Strategiemeeting Q2 Schmidt",     kmTyp:"geschaeftlich", kmStart:"44372", kmEnd:"44396"},
-    {id:uid(), datum:"2025-03-12", zeitStr:"09:00–11:30", kategorie:"partner", zielId:id1, zielName:"Müller & Partner GmbH",  km:"16", dauerMin:"150", rueckfahrt:true,  notiz:"Jahresplanung Marketingbudget",     kmTyp:"geschaeftlich", kmStart:"44396", kmEnd:"44428"},
-    {id:uid(), datum:"2025-03-12", zeitStr:"13:00–15:00", kategorie:"partner", zielId:id3, zielName:"Bayer Logistik KG",    km:"50", dauerMin:"120", rueckfahrt:true,  notiz:"Lagerinspektion + neue Rahmenvertr.", kmTyp:"geschaeftlich", kmStart:"44428", kmEnd:"44528"},
-    {id:uid(), datum:"2025-03-26", zeitStr:"10:00–11:30", kategorie:"partner", zielId:id5, zielName:"TechVision GmbH",    km:"40", dauerMin:"90",  rueckfahrt:true,  notiz:"F&E Meeting Q1 Abschluss",       kmTyp:"geschaeftlich", kmStart:"44528", kmEnd:"44608"},
-    // April 2025
-    {id:uid(), datum:"2025-04-07", zeitStr:"08:00–17:00", kategorie:"messe",   zielId:m2, zielName:"bauma 2025",        km:"22", dauerMin:"540", rueckfahrt:true,  notiz:"Messebesuch Halle A3 Neumaschinen",  kmTyp:"geschaeftlich", kmStart:"44608", kmEnd:"44652"},
-    {id:uid(), datum:"2025-04-08", zeitStr:"08:00–17:00", kategorie:"messe",   zielId:m2, zielName:"bauma 2025",        km:"22", dauerMin:"540", rueckfahrt:true,  notiz:"Tag 2 bauma – Lieferantentermine",  kmTyp:"geschaeftlich", kmStart:"44652", kmEnd:"44696"},
-    {id:uid(), datum:"2025-04-16", zeitStr:"07:30–08:00", kategorie:"partner", zielId:id2, zielName:"Schmidt Consulting AG",  km:"12", dauerMin:"30",  rueckfahrt:false, notiz:"Arbeitsweg",               kmTyp:"wohnArbeit",  kmStart:"44696", kmEnd:"44708"},
-    {id:uid(), datum:"2025-04-16", zeitStr:"10:00–11:30", kategorie:"partner", zielId:id4, zielName:"Weber & Söhne OHG",    km:"14", dauerMin:"90",  rueckfahrt:true,  notiz:"Nachbesprechung bauma Ergebnisse",   kmTyp:"geschaeftlich", kmStart:"44708", kmEnd:"44736"},
-    {id:uid(), datum:"2025-04-23", zeitStr:"09:00–11:00", kategorie:"partner", zielId:id1, zielName:"Müller & Partner GmbH",  km:"16", dauerMin:"120", rueckfahrt:true,  notiz:"Angebotspräsentation Neuprodukte",  kmTyp:"geschaeftlich", kmStart:"44736", kmEnd:"44768"},
-    {id:uid(), datum:"2025-04-30", zeitStr:"14:00–15:30", kategorie:"partner", zielId:id3, zielName:"Bayer Logistik KG",    km:"50", dauerMin:"90",  rueckfahrt:true,  notiz:"Quartalsabrechnung Q1 Bayer",     kmTyp:"geschaeftlich", kmStart:"44768", kmEnd:"44868"},
-    // Mai 2025
-    {id:uid(), datum:"2025-05-07", zeitStr:"07:30–08:00", kategorie:"partner", zielId:id2, zielName:"Schmidt Consulting AG",  km:"12", dauerMin:"30",  rueckfahrt:false, notiz:"Arbeitsweg",               kmTyp:"wohnArbeit",  kmStart:"44868", kmEnd:"44880"},
-    {id:uid(), datum:"2025-05-07", zeitStr:"09:30–11:00", kategorie:"partner", zielId:id5, zielName:"TechVision GmbH",    km:"40", dauerMin:"90",  rueckfahrt:true,  notiz:"Testphase Prototyp Phase 2",     kmTyp:"geschaeftlich", kmStart:"44880", kmEnd:"44960"},
-    {id:uid(), datum:"2025-05-14", zeitStr:"10:00–12:00", kategorie:"partner", zielId:id1, zielName:"Müller & Partner GmbH",  km:"16", dauerMin:"120", rueckfahrt:true,  notiz:"Vertragsverhandlung Rahmenvertrag",  kmTyp:"geschaeftlich", kmStart:"44960", kmEnd:"44992"},
-    {id:uid(), datum:"2025-05-21", zeitStr:"09:00–10:30", kategorie:"partner", zielId:id2, zielName:"Schmidt Consulting AG",  km:"24", dauerMin:"90",  rueckfahrt:true,  notiz:"Projektabschluss Consulting Q1",  kmTyp:"geschaeftlich", kmStart:"44992", kmEnd:"45016"},
-    {id:uid(), datum:"2025-05-28", zeitStr:"14:00–15:30", kategorie:"partner", zielId:id4, zielName:"Weber & Söhne OHG",    km:"14", dauerMin:"90",  rueckfahrt:true,  notiz:"Liefertermin Abstimmung",       kmTyp:"geschaeftlich", kmStart:"45016", kmEnd:"45044"},
-    // Juni 2025
-    {id:uid(), datum:"2025-06-04", zeitStr:"07:30–08:00", kategorie:"partner", zielId:id2, zielName:"Schmidt Consulting AG",  km:"12", dauerMin:"30",  rueckfahrt:false, notiz:"Arbeitsweg",               kmTyp:"wohnArbeit",  kmStart:"45044", kmEnd:"45056"},
-    {id:uid(), datum:"2025-06-04", zeitStr:"11:00–12:30", kategorie:"partner", zielId:id3, zielName:"Bayer Logistik KG",    km:"50", dauerMin:"90",  rueckfahrt:true,  notiz:"Halbjahrsgespräch Lager",       kmTyp:"geschaeftlich", kmStart:"45056", kmEnd:"45156"},
-    {id:uid(), datum:"2025-06-17", zeitStr:"08:00–17:00", kategorie:"messe",   zielId:m1, zielName:"automatica 2025",     km:"22", dauerMin:"540", rueckfahrt:true,  notiz:"Messebesuch Halle B4 Stand 312",  kmTyp:"geschaeftlich", kmStart:"45156", kmEnd:"45200"},
-    {id:uid(), datum:"2025-06-18", zeitStr:"08:00–16:00", kategorie:"messe",   zielId:m1, zielName:"automatica 2025",     km:"22", dauerMin:"480", rueckfahrt:true,  notiz:"Tag 2 automatica – Robotik-Demo",   kmTyp:"geschaeftlich", kmStart:"45200", kmEnd:"45244"},
-    {id:uid(), datum:"2025-06-25", zeitStr:"10:00–11:30", kategorie:"partner", zielId:id5, zielName:"TechVision GmbH",    km:"40", dauerMin:"90",  rueckfahrt:true,  notiz:"Halbjahres-F&E Review Garching",   kmTyp:"geschaeftlich", kmStart:"45244", kmEnd:"45324"},
-    // Juli 2025
-    {id:uid(), datum:"2025-07-02", zeitStr:"07:30–08:00", kategorie:"partner", zielId:id2, zielName:"Schmidt Consulting AG",  km:"12", dauerMin:"30",  rueckfahrt:false, notiz:"Arbeitsweg",               kmTyp:"wohnArbeit",  kmStart:"45324", kmEnd:"45336"},
-    {id:uid(), datum:"2025-07-02", zeitStr:"09:00–11:00", kategorie:"partner", zielId:id1, zielName:"Müller & Partner GmbH",  km:"16", dauerMin:"120", rueckfahrt:true,  notiz:"Halbjahresmeetung Q3 Planung",    kmTyp:"geschaeftlich", kmStart:"45336", kmEnd:"45368"},
-    {id:uid(), datum:"2025-07-09", zeitStr:"10:00–12:00", kategorie:"partner", zielId:id3, zielName:"Bayer Logistik KG",    km:"50", dauerMin:"120", rueckfahrt:true,  notiz:"Lager Q3 Kapazität prüfen",    kmTyp:"geschaeftlich", kmStart:"45368", kmEnd:"45468"},
-    {id:uid(), datum:"2025-07-16", zeitStr:"14:00–16:00", kategorie:"partner", zielId:id4, zielName:"Weber & Söhne OHG",    km:"14", dauerMin:"120", rueckfahrt:true,  notiz:"Rahmenvertrag Unterzeichnung",    kmTyp:"geschaeftlich", kmStart:"45468", kmEnd:"45496"},
-    {id:uid(), datum:"2025-07-23", zeitStr:"09:30–11:00", kategorie:"partner", zielId:id5, zielName:"TechVision GmbH",    km:"40", dauerMin:"90",  rueckfahrt:true,  notiz:"Produktzulassung Vorbesprechung",  kmTyp:"geschaeftlich", kmStart:"45496", kmEnd:"45576"},
-    // August 2025
-    {id:uid(), datum:"2025-08-06", zeitStr:"07:30–08:00", kategorie:"partner", zielId:id2, zielName:"Schmidt Consulting AG",  km:"12", dauerMin:"30",  rueckfahrt:false, notiz:"Arbeitsweg",               kmTyp:"wohnArbeit",  kmStart:"45576", kmEnd:"45588"},
-    {id:uid(), datum:"2025-08-06", zeitStr:"10:00–11:30", kategorie:"partner", zielId:id2, zielName:"Schmidt Consulting AG",  km:"24", dauerMin:"90",  rueckfahrt:true,  notiz:"Strategiemeeting Q3 Schmidt",     kmTyp:"geschaeftlich", kmStart:"45588", kmEnd:"45612"},
-    {id:uid(), datum:"2025-08-13", zeitStr:"09:00–11:00", kategorie:"partner", zielId:id1, zielName:"Müller & Partner GmbH",  km:"16", dauerMin:"120", rueckfahrt:true,  notiz:"Kampagnenreview Sommer",       kmTyp:"geschaeftlich", kmStart:"45612", kmEnd:"45644"},
-    {id:uid(), datum:"2025-08-20", zeitStr:"14:00–16:00", kategorie:"partner", zielId:id3, zielName:"Bayer Logistik KG",    km:"50", dauerMin:"120", rueckfahrt:true,  notiz:"Inventur Q3 Vorbereitung",     kmTyp:"geschaeftlich", kmStart:"45644", kmEnd:"45744"},
-    {id:uid(), datum:"2025-08-27", zeitStr:"11:00–12:30", kategorie:"partner", zielId:id5, zielName:"TechVision GmbH",    km:"40", dauerMin:"90",  rueckfahrt:true,  notiz:"Zertifizierung Besprechung",     kmTyp:"geschaeftlich", kmStart:"45744", kmEnd:"45824"},
-    // September 2025
-    {id:uid(), datum:"2025-09-03", zeitStr:"07:30–08:00", kategorie:"partner", zielId:id2, zielName:"Schmidt Consulting AG",  km:"12", dauerMin:"30",  rueckfahrt:false, notiz:"Arbeitsweg",               kmTyp:"wohnArbeit",  kmStart:"45824", kmEnd:"45836"},
-    {id:uid(), datum:"2025-09-09", zeitStr:"08:00–17:00", kategorie:"messe",   zielId:m3, zielName:"IAA Mobility 2025",     km:"22", dauerMin:"540", rueckfahrt:true,  notiz:"IAA Tag 1 – Halle C6 PKW-Neuheiten",kmTyp:"geschaeftlich", kmStart:"45836", kmEnd:"45880"},
-    {id:uid(), datum:"2025-09-10", zeitStr:"08:00–16:00", kategorie:"messe",   zielId:m3, zielName:"IAA Mobility 2025",     km:"22", dauerMin:"480", rueckfahrt:true,  notiz:"IAA Tag 2 – Lieferantengespräche", kmTyp:"geschaeftlich", kmStart:"45880", kmEnd:"45924"},
-    {id:uid(), datum:"2025-09-17", zeitStr:"10:00–11:30", kategorie:"partner", zielId:id1, zielName:"Müller & Partner GmbH",  km:"16", dauerMin:"90",  rueckfahrt:true,  notiz:"Nachbesprechung IAA Ergebnisse",   kmTyp:"geschaeftlich", kmStart:"45924", kmEnd:"45956"},
-    {id:uid(), datum:"2025-09-24", zeitStr:"09:00–11:00", kategorie:"partner", zielId:id4, zielName:"Weber & Söhne OHG",    km:"14", dauerMin:"120", rueckfahrt:true,  notiz:"Jahresplanung Lieferant Weber",  kmTyp:"geschaeftlich", kmStart:"45956", kmEnd:"45984"},
-    // Oktober 2025
-    {id:uid(), datum:"2025-10-06", zeitStr:"08:00–17:00", kategorie:"messe",   zielId:m4, zielName:"EXPO Real 2025",      km:"22", dauerMin:"540", rueckfahrt:true,  notiz:"EXPO Real – Stand 14 Immobilien",  kmTyp:"geschaeftlich", kmStart:"45984", kmEnd:"46028"},
-    {id:uid(), datum:"2025-10-07", zeitStr:"08:00–16:00", kategorie:"messe",   zielId:m4, zielName:"EXPO Real 2025",      km:"22", dauerMin:"480", rueckfahrt:true,  notiz:"EXPO Real Tag 2 – Investorengespräche",kmTyp:"geschaeftlich", kmStart:"46028", kmEnd:"46072"},
-    {id:uid(), datum:"2025-10-15", zeitStr:"07:30–08:00", kategorie:"partner", zielId:id2, zielName:"Schmidt Consulting AG",  km:"12", dauerMin:"30",  rueckfahrt:false, notiz:"Arbeitsweg",               kmTyp:"wohnArbeit",  kmStart:"46072", kmEnd:"46084"},
-    {id:uid(), datum:"2025-10-15", zeitStr:"10:00–12:00", kategorie:"partner", zielId:id3, zielName:"Bayer Logistik KG",    km:"50", dauerMin:"120", rueckfahrt:true,  notiz:"Herbst-Lagerplanung Q4",       kmTyp:"geschaeftlich", kmStart:"46084", kmEnd:"46184"},
-    {id:uid(), datum:"2025-10-22", zeitStr:"09:00–11:00", kategorie:"partner", zielId:id5, zielName:"TechVision GmbH",    km:"40", dauerMin:"120", rueckfahrt:true,  notiz:"Marktzulassung finale Abnahme",  kmTyp:"geschaeftlich", kmStart:"46184", kmEnd:"46264"},
-    {id:uid(), datum:"2025-10-29", zeitStr:"14:00–15:30", kategorie:"partner", zielId:id1, zielName:"Müller & Partner GmbH",  km:"16", dauerMin:"90",  rueckfahrt:true,  notiz:"Jahresbudget 2026 Besprechung",   kmTyp:"geschaeftlich", kmStart:"46264", kmEnd:"46296"},
-    // November 2025
-    {id:uid(), datum:"2025-11-05", zeitStr:"07:30–08:00", kategorie:"partner", zielId:id2, zielName:"Schmidt Consulting AG",  km:"12", dauerMin:"30",  rueckfahrt:false, notiz:"Arbeitsweg",               kmTyp:"wohnArbeit",  kmStart:"46296", kmEnd:"46308"},
-    {id:uid(), datum:"2025-11-05", zeitStr:"10:00–11:30", kategorie:"partner", zielId:id2, zielName:"Schmidt Consulting AG",  km:"24", dauerMin:"90",  rueckfahrt:true,  notiz:"Q4 Projektplanung",         kmTyp:"geschaeftlich", kmStart:"46308", kmEnd:"46332"},
-    {id:uid(), datum:"2025-11-12", zeitStr:"09:00–11:00", kategorie:"partner", zielId:id4, zielName:"Weber & Söhne OHG",    km:"14", dauerMin:"120", rueckfahrt:true,  notiz:"Jahresendbestellung Weber",    kmTyp:"geschaeftlich", kmStart:"46332", kmEnd:"46360"},
-    {id:uid(), datum:"2025-11-19", zeitStr:"10:00–12:00", kategorie:"partner", zielId:id1, zielName:"Müller & Partner GmbH",  km:"16", dauerMin:"120", rueckfahrt:true,  notiz:"Weihnachtskampagne Briefing",   kmTyp:"geschaeftlich", kmStart:"46360", kmEnd:"46392"},
-    {id:uid(), datum:"2025-11-26", zeitStr:"14:00–15:30", kategorie:"partner", zielId:id3, zielName:"Bayer Logistik KG",    km:"50", dauerMin:"90",  rueckfahrt:true,  notiz:"Jahresbilanz Lager Bayer",    kmTyp:"geschaeftlich", kmStart:"46392", kmEnd:"46492"},
-    // Dezember 2025
-    {id:uid(), datum:"2025-12-03", zeitStr:"07:30–08:00", kategorie:"partner", zielId:id2, zielName:"Schmidt Consulting AG",  km:"12", dauerMin:"30",  rueckfahrt:false, notiz:"Arbeitsweg",               kmTyp:"wohnArbeit",  kmStart:"46492", kmEnd:"46504"},
-    {id:uid(), datum:"2025-12-03", zeitStr:"11:00–12:30", kategorie:"partner", zielId:id5, zielName:"TechVision GmbH",    km:"40", dauerMin:"90",  rueckfahrt:true,  notiz:"Jahresgespräch F&E Garching",   kmTyp:"geschaeftlich", kmStart:"46504", kmEnd:"46584"},
-    {id:uid(), datum:"2025-12-10", zeitStr:"09:00–11:00", kategorie:"partner", zielId:id1, zielName:"Müller & Partner GmbH",  km:"16", dauerMin:"120", rueckfahrt:true,  notiz:"Jahresabschlussgespräch Müller",  kmTyp:"geschaeftlich", kmStart:"46584", kmEnd:"46616"},
-    {id:uid(), datum:"2025-12-17", zeitStr:"10:00–11:30", kategorie:"partner", zielId:id3, zielName:"Bayer Logistik KG",    km:"50", dauerMin:"90",  rueckfahrt:true,  notiz:"Inventur Abschluss Q4",       kmTyp:"geschaeftlich", kmStart:"46616", kmEnd:"46716"},
-    {id:uid(), datum:"2025-12-19", zeitStr:"14:00–15:30", kategorie:"partner", zielId:id4, zielName:"Weber & Söhne OHG",    km:"14", dauerMin:"90",  rueckfahrt:true,  notiz:"Weihnachtsgeschenke Übergabe",  kmTyp:"geschaeftlich", kmStart:"46716", kmEnd:"46744"},
-    // Januar 2026
-    {id:uid(), datum:"2026-01-07", zeitStr:"07:30–08:00", kategorie:"partner", zielId:id2, zielName:"Schmidt Consulting AG",  km:"12", dauerMin:"30",  rueckfahrt:false, notiz:"Arbeitsweg",               kmTyp:"wohnArbeit",  kmStart:"46744", kmEnd:"46756"},
-    {id:uid(), datum:"2026-01-07", zeitStr:"10:00–11:30", kategorie:"partner", zielId:id2, zielName:"Schmidt Consulting AG",  km:"24", dauerMin:"90",  rueckfahrt:true,  notiz:"Jahresauftakt Consulting 2026",   kmTyp:"geschaeftlich", kmStart:"46756", kmEnd:"46780"},
-    {id:uid(), datum:"2026-01-14", zeitStr:"09:00–11:00", kategorie:"partner", zielId:id1, zielName:"Müller & Partner GmbH",  km:"16", dauerMin:"120", rueckfahrt:true,  notiz:"Jahresplanung Marketing 2026",  kmTyp:"geschaeftlich", kmStart:"46780", kmEnd:"46812"},
-    {id:uid(), datum:"2026-01-21", zeitStr:"10:00–12:00", kategorie:"partner", zielId:id5, zielName:"TechVision GmbH",    km:"40", dauerMin:"120", rueckfahrt:true,  notiz:"Entwicklungsplan 2026 Kickoff",   kmTyp:"geschaeftlich", kmStart:"46812", kmEnd:"46892"},
-    {id:uid(), datum:"2026-01-28", zeitStr:"14:00–15:30", kategorie:"partner", zielId:id3, zielName:"Bayer Logistik KG",    km:"50", dauerMin:"90",  rueckfahrt:true,  notiz:"Lagerplanung Q1 2026",      kmTyp:"geschaeftlich", kmStart:"46892", kmEnd:"46992"},
-    // Februar 2026
-    {id:uid(), datum:"2026-02-04", zeitStr:"07:30–08:00", kategorie:"partner", zielId:id2, zielName:"Schmidt Consulting AG",  km:"12", dauerMin:"30",  rueckfahrt:false, notiz:"Arbeitsweg",               kmTyp:"wohnArbeit",  kmStart:"46992", kmEnd:"47004"},
-    {id:uid(), datum:"2026-02-04", zeitStr:"10:00–11:30", kategorie:"partner", zielId:id4, zielName:"Weber & Söhne OHG",    km:"14", dauerMin:"90",  rueckfahrt:true,  notiz:"Neubestellung Q1 Weber 2026",   kmTyp:"geschaeftlich", kmStart:"47004", kmEnd:"47032"},
-    {id:uid(), datum:"2026-02-11", zeitStr:"09:30–11:00", kategorie:"partner", zielId:id1, zielName:"Müller & Partner GmbH",  km:"16", dauerMin:"90",  rueckfahrt:true,  notiz:"Kampagnenplanung Frühjahr 2026",  kmTyp:"geschaeftlich", kmStart:"47032", kmEnd:"47064"},
-    {id:uid(), datum:"2026-02-18", zeitStr:"10:00–12:00", kategorie:"partner", zielId:id5, zielName:"TechVision GmbH",    km:"40", dauerMin:"120", rueckfahrt:true,  notiz:"Prototyp 2026 Erstvorstellung",   kmTyp:"geschaeftlich", kmStart:"47064", kmEnd:"47144"},
-    {id:uid(), datum:"2026-02-25", zeitStr:"14:00–16:00", kategorie:"partner", zielId:id3, zielName:"Bayer Logistik KG",    km:"50", dauerMin:"120", rueckfahrt:true,  notiz:"Quartalsabrechnung Q4 2025",    kmTyp:"geschaeftlich", kmStart:"47144", kmEnd:"47244"},
-    // März 2026
-    {id:uid(), datum:"2026-03-04", zeitStr:"07:30–08:00", kategorie:"partner", zielId:id2, zielName:"Schmidt Consulting AG",  km:"12", dauerMin:"30",  rueckfahrt:false, notiz:"Arbeitsweg",               kmTyp:"wohnArbeit",  kmStart:"47244", kmEnd:"47256"},
-    {id:uid(), datum:"2026-03-04", zeitStr:"10:00–11:30", kategorie:"partner", zielId:id2, zielName:"Schmidt Consulting AG",  km:"24", dauerMin:"90",  rueckfahrt:true,  notiz:"Q1 Strategiemeeting 2026",    kmTyp:"geschaeftlich", kmStart:"47256", kmEnd:"47280"},
-    {id:uid(), datum:"2026-03-11", zeitStr:"09:00–11:00", kategorie:"partner", zielId:id1, zielName:"Müller & Partner GmbH",  km:"16", dauerMin:"120", rueckfahrt:true,  notiz:"Frühjahrsoffensive Briefing",   kmTyp:"geschaeftlich", kmStart:"47280", kmEnd:"47312"},
+      {id:uid(), datum:"2024-10-02", zeitStr:"08:30-09:15", kategorie:"partner",   zielId:"", zielName:"Siemens AG, Werner-von-Siemens-Str. 1, München", km:"16", dauerMin:"", rueckfahrt:true, notiz:"Kick-off Beratungsprojekt", kmTyp:"geschaeftlich", kmStart:"44000", kmEnd:"44016"},
+      {id:uid(), datum:"2024-10-09", zeitStr:"09:00-09:40", kategorie:"partner",   zielId:"", zielName:"Allianz SE, Königinstr. 28, München", km:"6", dauerMin:"", rueckfahrt:true, notiz:"Risikobewertung Phase 1", kmTyp:"geschaeftlich", kmStart:"44016", kmEnd:"44022"},
+      {id:uid(), datum:"2024-10-18", zeitStr:"10:00-11:30", kategorie:"partner",   zielId:"", zielName:"BMW Group Forschung, Knorrstr. 147, München", km:"24", dauerMin:"", rueckfahrt:true, notiz:"Innovation Workshop", kmTyp:"geschaeftlich", kmStart:"44022", kmEnd:"44046"},
+      {id:uid(), datum:"2024-11-05", zeitStr:"08:00-09:00", kategorie:"partner",   zielId:"", zielName:"Steuerberatung Huber & Koll., Prinzregentenstr. 18", km:"14", dauerMin:"", rueckfahrt:true, notiz:"Jahresabschluss 2023", kmTyp:"geschaeftlich", kmStart:"44046", kmEnd:"44060"},
+      {id:uid(), datum:"2024-11-20", zeitStr:"14:00-16:30", kategorie:"sonstige",  zielId:"", zielName:"Nürnberg Messe, Messezentrum 1", km:"340", dauerMin:"", rueckfahrt:true, notiz:"Branchenmesse Consulting", kmTyp:"geschaeftlich", kmStart:"44060", kmEnd:"44400"},
+      {id:uid(), datum:"2024-12-04", zeitStr:"09:15-10:00", kategorie:"partner",   zielId:"", zielName:"Notar Dr. Berger, Maximilianstr. 35, München", km:"10", dauerMin:"", rueckfahrt:true, notiz:"Vertragsunterschrift", kmTyp:"geschaeftlich", kmStart:"44400", kmEnd:"44410"},
+      {id:uid(), datum:"2024-12-18", zeitStr:"08:45-09:30", kategorie:"partner",   zielId:"", zielName:"Siemens AG, Werner-von-Siemens-Str. 1, München", km:"16", dauerMin:"", rueckfahrt:true, notiz:"Projektstatus Q4", kmTyp:"geschaeftlich", kmStart:"44410", kmEnd:"44426"},
+      {id:uid(), datum:"2025-01-15", zeitStr:"10:00-11:00", kategorie:"partner",   zielId:"", zielName:"Allianz SE, Königinstr. 28, München", km:"6", dauerMin:"", rueckfahrt:true, notiz:"Quartalsbericht Q4", kmTyp:"geschaeftlich", kmStart:"44426", kmEnd:"44432"},
+      {id:uid(), datum:"2025-01-20", zeitStr:"08:00-09:30", kategorie:"sonstige",  zielId:"", zielName:"BMW Niederlassung, Am Olympiapark 1, München", km:"12", dauerMin:"", rueckfahrt:true, notiz:"Ölwechsel + Inspektion", kmTyp:"geschaeftlich", kmStart:"44432", kmEnd:"44444"},
+      {id:uid(), datum:"2025-02-12", zeitStr:"09:00-09:45", kategorie:"partner",   zielId:"", zielName:"BMW Group Forschung, Knorrstr. 147, München", km:"24", dauerMin:"", rueckfahrt:true, notiz:"Workshop Digitalisierung", kmTyp:"geschaeftlich", kmStart:"44444", kmEnd:"44468"},
+      {id:uid(), datum:"2025-03-10", zeitStr:"08:30-12:00", kategorie:"sonstige",  zielId:"", zielName:"Stuttgart, Liederhalle, Berliner Platz 1", km:"460", dauerMin:"", rueckfahrt:true, notiz:"Kongress Unternehmensberatung", kmTyp:"geschaeftlich", kmStart:"44468", kmEnd:"44928"},
+      {id:uid(), datum:"2025-03-25", zeitStr:"10:00-10:45", kategorie:"partner",   zielId:"", zielName:"Siemens AG, Werner-von-Siemens-Str. 1, München", km:"16", dauerMin:"", rueckfahrt:true, notiz:"Meilenstein-Präsentation", kmTyp:"geschaeftlich", kmStart:"44928", kmEnd:"44944"},
+      {id:uid(), datum:"2025-04-08", zeitStr:"09:00-09:40", kategorie:"partner",   zielId:"", zielName:"Steuerberatung Huber & Koll., Prinzregentenstr. 18", km:"14", dauerMin:"", rueckfahrt:true, notiz:"Steuererklärung 2024", kmTyp:"geschaeftlich", kmStart:"44944", kmEnd:"44958"},
+      {id:uid(), datum:"2025-05-06", zeitStr:"08:00-09:30", kategorie:"partner",   zielId:"", zielName:"Allianz SE, Königinstr. 28, München", km:"6", dauerMin:"", rueckfahrt:true, notiz:"Halbjahresreview", kmTyp:"geschaeftlich", kmStart:"44958", kmEnd:"44964"},
+      {id:uid(), datum:"2025-05-21", zeitStr:"10:00-12:30", kategorie:"partner",   zielId:"", zielName:"BMW Group Forschung, Knorrstr. 147, München", km:"24", dauerMin:"", rueckfahrt:true, notiz:"Prototyp-Vorstellung", kmTyp:"geschaeftlich", kmStart:"44964", kmEnd:"44988"},
+      {id:uid(), datum:"2025-06-10", zeitStr:"09:00-09:30", kategorie:"sonstige",  zielId:"", zielName:"Notar Dr. Berger, Maximilianstr. 35, München", km:"10", dauerMin:"", rueckfahrt:true, notiz:"Gesellschaftsvertrag Änderung", kmTyp:"geschaeftlich", kmStart:"44988", kmEnd:"44998"},
+      {id:uid(), datum:"2025-07-15", zeitStr:"07:30-14:00", kategorie:"sonstige",  zielId:"", zielName:"Berlin, Potsdamer Platz 1", km:"1200", dauerMin:"", rueckfahrt:true, notiz:"Strategiemeeting Hauptstadtbüro", kmTyp:"geschaeftlich", kmStart:"44998", kmEnd:"46198"},
+      {id:uid(), datum:"2025-08-19", zeitStr:"09:00-10:00", kategorie:"partner",   zielId:"", zielName:"Siemens AG, Werner-von-Siemens-Str. 1, München", km:"16", dauerMin:"", rueckfahrt:true, notiz:"Projektabschluss Phase 2", kmTyp:"geschaeftlich", kmStart:"46198", kmEnd:"46214"},
+      {id:uid(), datum:"2025-09-03", zeitStr:"10:15-11:00", kategorie:"partner",   zielId:"", zielName:"Allianz SE, Königinstr. 28, München", km:"6", dauerMin:"", rueckfahrt:true, notiz:"Vertragsverlängerung", kmTyp:"geschaeftlich", kmStart:"46214", kmEnd:"46220"},
+      {id:uid(), datum:"2025-10-06", zeitStr:"08:00-18:00", kategorie:"messe",     zielId:"", zielName:"Messe München, Am Messesee 2, München", km:"28", dauerMin:"", rueckfahrt:true, notiz:"EXPO REAL — Tag 1", kmTyp:"geschaeftlich", kmStart:"46220", kmEnd:"46248"},
     ],
   };
 
-  const tf1=uid(),tf2=uid(),tf3=uid(),tf4=uid(),tf5=uid();
-  const tm1=uid(),tm2=uid(),tm3=uid(),tm4=uid();
+  // ── fz2: Mercedes E 220d — Hamburg ──────────────────────────────────────────
   const fz2={
-    ...makeFahrzeug(3),
-    name:"Fiat 500e Firmenwagen",
-    kennzeichen:"TF-IA 2006",
-    marke:"FIAT", modell:"500e",
-    farbe:FARBEN[3],
-    kraftstoff:"Elektro",
-    tuvDatum:"2025-10-01",
-    kfzBriefNr:"AVN00342",
-    fahrgestellNr:"ZFAEFAR4SNX101220",
-    reifendruckVorne:"2.5", reifendruckHinten:"2.5",
-    halterName:"Mirra Immobilien GmbH",
-    halterAnschrift:"Parkallee 14, 14974 Ludwigsfelde",
-    halterTelPrivat:"+49 3378 870100",
-    halterTelFirma:"+49 3378 870101",
-    fahrer:"Andrey Mirra",
-    fahrerAnschrift:"Parkallee 14, 14974 Ludwigsfelde",
-    fahrerTelPrivat:"+49 176 555666",
-    fahrerTelFirma:"+49 3378 870102",
-    standort:{name:"Firmensitz Ludwigsfelde", adresse:"Parkallee 14, 14974 Ludwigsfelde"},
-    kmStandInitial:"58000",
+    ...makeFahrzeug(1),
+    name:"Mercedes-Benz E 220d",
+    kennzeichen:"HH-KL 770",
+    marke:"Mercedes-Benz", modell:"E 220d",
+    farbe:"#839FBB",
+    kraftstoff:"Diesel",
+    tuvDatum:"2026-04-10",
+    kfzBriefNr:"WDD2130021A445566",
+    fahrgestellNr:"WDD2130021A445566",
+    reifendruckVorne:"2.4", reifendruckHinten:"2.6",
+    halterName:"Muster Nordwind Immobilien GmbH",
+    halterAnschrift:"Jungfernstieg 30, 20354 Hamburg",
+    halterTelPrivat:"+49 40 333444", halterTelFirma:"+49 40 333445",
+    fahrer:"Klaus Musterstein",
+    fahrerAnschrift:"Elbchaussee 120, 22763 Hamburg",
+    fahrerTelPrivat:"+49 170 887766", fahrerTelFirma:"+49 40 333446",
+    standort:{name:"Büro Jungfernstieg", adresse:"Jungfernstieg 30, 20354 Hamburg"},
+    kmStandInitial:"28000",
     partner:[
-    {id:tf1, name:"Zossener Bau GmbH",      adresse:"Berliner Str. 88, 15806 Zossen",       telefon:"+49 3377 300100", notiz:"Bauprojekt Süd",   kmVonStandort:"18"},
-    {id:tf2, name:"Ludwigsfelde Logistik AG",  adresse:"Gewerbepark 12, 14974 Ludwigsfelde",     telefon:"+49 3378 870200", notiz:"Lager Ost",    kmVonStandort:"22"},
-    {id:tf3, name:"Blankenfelde Steuerberatung", adresse:"Bahnhofstr. 4, 15827 Blankenfelde-Mahlow", telefon:"+49 3379 204300", notiz:"Jahresabschluss",  kmVonStandort:"28"},
-    {id:tf4, name:"Jüterboger Metallbau KG",   adresse:"Industrieweg 33, 14913 Jüterbog",      telefon:"+49 3372 440500", notiz:"Lieferant Stahl",  kmVonStandort:"35"},
-    {id:tf5, name:"Teltow IT Solutions",     adresse:"Potsdamer Str. 55, 14513 Teltow",      telefon:"+49 3328 910600", notiz:"IT-Dienstleister", kmVonStandort:"38"},
+      {id:uid(), name:"Engel & Völkers Hamburg",    adresse:"Stadthausbrücke 5, 20355 Hamburg",    telefon:"+49 40 361310", kmVonStandort:"2",   notiz:"Maklerpartner Premium", typ:"kunde"},
+      {id:uid(), name:"Haspa Immobilien GmbH",      adresse:"Adolphsplatz 3, 20457 Hamburg",       telefon:"+49 40 35790",  kmVonStandort:"3",   notiz:"Finanzierung", typ:"kunde"},
+      {id:uid(), name:"Vattenfall Wärme Hamburg",    adresse:"Überseering 12, 22297 Hamburg",       telefon:"+49 40 636-0",  kmVonStandort:"8",   notiz:"Energieberatung Bestand", typ:"kunde"},
+      {id:uid(), name:"RA Kanzlei Schmidt & Partner",adresse:"Neuer Wall 10, 20354 Hamburg",       telefon:"+49 40 300100", kmVonStandort:"1",   notiz:"Mietrecht", typ:"sonstiges"},
+    ],
+    standorte:[
+      {id:uid(), name:"Aral Lombardsbrücke",         adresse:"Lombardsbrücke 1, 20099 Hamburg",    kmVonStandort:"2",  besuche:10, typ:"auto"},
+      {id:uid(), name:"Mercedes Benz Niederlassung",  adresse:"Nedderfeld 95, 22529 Hamburg",       kmVonStandort:"9",  besuche:2,  typ:"auto"},
+      {id:uid(), name:"SB Waschanlage Altona",        adresse:"Große Elbstr. 212, 22767 Hamburg",   kmVonStandort:"6",  besuche:5,  typ:"auto"},
     ],
     messen:[
-    {id:tm1, name:"Handwerksmesse Brandenburg 2025",  adresse:"Stadthalle Brandenburg, 14770 Brandenburg a.d.H.", datum:"2025-03-14", partnerId:"", notiz:"Halle 3, Stand B-18"},
-    {id:tm2, name:"Baufachmesse Teltow-Fläming 2025",   adresse:"Gewerbepark Luckenwalde, 14943 Luckenwalde",     datum:"2025-06-20", partnerId:"", notiz:"Außengelände Stand 7"},
-    {id:tm3, name:"Brandenburger Wirtschaftstage 2025", adresse:"Havel-Forum, 14776 Brandenburg a.d.H.",       datum:"2025-11-06", partnerId:"", notiz:"Stand 22B"},
-    {id:tm4, name:"IHK Unternehmertag TF 2026",     adresse:"Kreishaus TF, Am Nuthefließ 2, 14943 Luckenwalde",datum:"2026-02-12", partnerId:"", notiz:"Netzwerktreffen"},
-    ],
-    standorteExtra:[
-    {id:uid(), name:"Finanzamt Luckenwalde",     adresse:"Poststraße 1, 14943 Luckenwalde",      notiz:"USt-Voranmeldung",  auto:false, besuche:0, letzterBesuch:""},
-    {id:uid(), name:"Notariat Dr. Schulz",     adresse:"Zinnaer Str. 3, 14943 Luckenwalde",    notiz:"Vertragsabschluss", auto:false, besuche:0, letzterBesuch:""},
-    {id:uid(), name:"Aral Tankstelle Luckenwalde", adresse:"Berliner Str. 10, 14943 Luckenwalde",    notiz:"Stammtankstelle",   auto:false, besuche:0, letzterBesuch:""},
-    ],
-    strafen:[
-    {id:uid(), datum:"2025-04-03", typ:"Parkverstoß",        betrag:"25",  ort:"Marktplatz Luckenwalde",       aktenzeichen:"TF-OWI-2025-0211", punkte:"0", faellig:"2025-05-03", bezahlt:true,  notiz:"Halteverbot",    belegFoto:""},
-    {id:uid(), datum:"2025-10-22", typ:"Geschwindigkeitsverstoß",  betrag:"35",  ort:"B101 Richtung Jüterbog km 12",  aktenzeichen:"TF-OWI-2025-0883", punkte:"0", faellig:"2025-11-22", bezahlt:true,  notiz:"Tempo 70 statt 50",  belegFoto:""},
-    {id:uid(), datum:"2025-08-14", typ:"Geschwindigkeitsverstoß",  betrag:"70",  ort:"A10 Abfahrt Ludwigsfelde-Nord",   aktenzeichen:"TF-OWI-2025-0641", punkte:"1", faellig:"2025-09-14", bezahlt:true,  notiz:"Radar Baustelle",  belegFoto:""},
+      {id:uid(), name:"Real Estate Arena 2025",  adresse:"Messegelände Hannover, Hermesallee 1, 30521 Hannover", datum:"2025-05-14", datumBis:"2025-05-15", partnerId:"", notiz:"Deutschlands Immobilienmesse", kmVonStandort:"155"},
     ],
     tankstellen:[
-    {id:uid(), datum:"2025-01-10", uhrzeit:"07:30", stationName:"Ladepark Ludwigsfelde",  adresse:"Gewerbepark 8, 14974 Ludwigsfelde", menge:"38.0", preisProLiter:"0.39", betrag:"14.82",  kraftstoff:"Strom", kmStand:"58420", bonNr:"AR-2025-01101", zahlungsart:"EC-Karte",  notiz:"", belegFoto:""},
-    {id:uid(), datum:"2025-02-07", uhrzeit:"16:20", stationName:"EnBW Schnelllader Zossen",    adresse:"Berliner Str. 55, 15806 Zossen",    menge:"35.0", preisProLiter:"0.42", betrag:"14.70",  kraftstoff:"Strom", kmStand:"59280", bonNr:"SH-2025-02071", zahlungsart:"EC-Karte",  notiz:"", belegFoto:""},
-    {id:uid(), datum:"2025-03-13", uhrzeit:"08:00", stationName:"Ladepark Ludwigsfelde",  adresse:"Gewerbepark 8, 14974 Ludwigsfelde", menge:"37.0", preisProLiter:"0.44", betrag:"16.28",  kraftstoff:"Strom", kmStand:"60220", bonNr:"AR-2025-03131", zahlungsart:"EC-Karte",  notiz:"Vor Messe", belegFoto:""},
-    {id:uid(), datum:"2025-04-22", uhrzeit:"12:45", stationName:"Tesla Supercharger Ludwigsfelde",  adresse:"Gewerbepark 1, 14974 Ludwigsfelde",   menge:"34.0", preisProLiter:"0.41", betrag:"13.94",  kraftstoff:"Strom", kmStand:"61150", bonNr:"JT-2025-04221", zahlungsart:"Tankkarte", notiz:"", belegFoto:""},
-    {id:uid(), datum:"2025-05-19", uhrzeit:"07:45", stationName:"Ladepark Ludwigsfelde",  adresse:"Gewerbepark 8, 14974 Ludwigsfelde", menge:"37.5", preisProLiter:"0.39", betrag:"14.63",  kraftstoff:"Strom", kmStand:"62100", bonNr:"AR-2025-05191", zahlungsart:"EC-Karte",  notiz:"", belegFoto:""},
-    {id:uid(), datum:"2025-06-18", uhrzeit:"17:00", stationName:"Ionity Ladepark A10",   adresse:"Rastanlage Michendorf, A10",      menge:"39.0", preisProLiter:"0.49", betrag:"19.11", kraftstoff:"Strom", kmStand:"63200", bonNr:"BP-2025-06181", zahlungsart:"Tankkarte", notiz:"Rückfahrt Messe", belegFoto:""},
-    {id:uid(), datum:"2025-07-11", uhrzeit:"08:15", stationName:"Ladepark Ludwigsfelde",  adresse:"Gewerbepark 8, 14974 Ludwigsfelde", menge:"36.0", preisProLiter:"0.38", betrag:"13.68",  kraftstoff:"Strom", kmStand:"64250", bonNr:"AR-2025-07111", zahlungsart:"EC-Karte",  notiz:"", belegFoto:""},
-    {id:uid(), datum:"2025-08-06", uhrzeit:"16:30", stationName:"EnBW Schnelllader Zossen",    adresse:"Berliner Str. 55, 15806 Zossen",    menge:"34.5", preisProLiter:"0.42", betrag:"14.49",  kraftstoff:"Strom", kmStand:"65180", bonNr:"SH-2025-08061", zahlungsart:"EC-Karte",  notiz:"", belegFoto:""},
-    {id:uid(), datum:"2025-09-10", uhrzeit:"07:30", stationName:"Ladepark Ludwigsfelde",  adresse:"Gewerbepark 8, 14974 Ludwigsfelde", menge:"38.5", preisProLiter:"0.41", betrag:"16.17",  kraftstoff:"Strom", kmStand:"66300", bonNr:"AR-2025-09101", zahlungsart:"EC-Karte",  notiz:"", belegFoto:""},
-    {id:uid(), datum:"2025-10-06", uhrzeit:"07:30", stationName:"Ladepark Ludwigsfelde",  adresse:"Gewerbepark 8, 14974 Ludwigsfelde", menge:"37.5", preisProLiter:"0.39", betrag:"14.63",  kraftstoff:"Strom", kmStand:"67380", bonNr:"AR-2025-10061", zahlungsart:"EC-Karte",  notiz:"", belegFoto:""},
-    {id:uid(), datum:"2025-11-18", uhrzeit:"16:45", stationName:"EnBW Schnelllader Zossen",    adresse:"Berliner Str. 55, 15806 Zossen",    menge:"35.0", preisProLiter:"0.42", betrag:"14.70",  kraftstoff:"Strom", kmStand:"68590", bonNr:"SH-2025-11181", zahlungsart:"EC-Karte",  notiz:"", belegFoto:""},
-    {id:uid(), datum:"2025-12-15", uhrzeit:"08:00", stationName:"Ladepark Ludwigsfelde",  adresse:"Gewerbepark 8, 14974 Ludwigsfelde", menge:"36.5", preisProLiter:"0.43", betrag:"15.70",  kraftstoff:"Strom", kmStand:"69650", bonNr:"AR-2025-12151", zahlungsart:"EC-Karte",  notiz:"", belegFoto:""},
-    {id:uid(), datum:"2026-01-14", uhrzeit:"08:15", stationName:"Ladepark Ludwigsfelde",  adresse:"Gewerbepark 8, 14974 Ludwigsfelde", menge:"36.0", preisProLiter:"0.38", betrag:"13.68",  kraftstoff:"Strom", kmStand:"70720", bonNr:"AR-2026-01141", zahlungsart:"EC-Karte",  notiz:"", belegFoto:""},
-    {id:uid(), datum:"2026-02-25", uhrzeit:"12:00", stationName:"Tesla Supercharger Ludwigsfelde",  adresse:"Gewerbepark 1, 14974 Ludwigsfelde",   menge:"46.0", preisProLiter:"1.719", betrag:"79.07",  kraftstoff:"Strom", kmStand:"71840", bonNr:"JT-2026-02251", zahlungsart:"Tankkarte", notiz:"", belegFoto:""},
+      {id:uid(), datum:"2024-11-08", uhrzeit:"07:50", stationName:"Aral Lombardsbrücke",     adresse:"Lombardsbrücke 1, Hamburg",    kraftstoff:"Diesel", menge:"45.0", preisProLiter:"1.669", gesamtbetrag:"75.11", kmStand:"28400", zahlungsart:"Firmen-Tankkarte", bonNr:"AR-HH-2240", notiz:"", kmVonStandort:"2"},
+      {id:uid(), datum:"2025-01-22", uhrzeit:"17:30", stationName:"Shell Elbbrücken",         adresse:"Amsinckstr. 45, Hamburg",      kraftstoff:"Diesel", menge:"50.2", preisProLiter:"1.649", gesamtbetrag:"82.78", kmStand:"29200", zahlungsart:"EC-Karte", bonNr:"SH-HH-8891", notiz:"", kmVonStandort:"5"},
+      {id:uid(), datum:"2025-04-03", uhrzeit:"08:10", stationName:"Aral Lombardsbrücke",     adresse:"Lombardsbrücke 1, Hamburg",    kraftstoff:"Diesel", menge:"47.5", preisProLiter:"1.659", gesamtbetrag:"78.80", kmStand:"30100", zahlungsart:"Firmen-Tankkarte", bonNr:"AR-HH-3310", notiz:"", kmVonStandort:"2"},
+      {id:uid(), datum:"2025-06-18", uhrzeit:"12:15", stationName:"Total Raststätte A1",      adresse:"BAB A1 Rasthof Stillhorn",    kraftstoff:"Diesel", menge:"55.8", preisProLiter:"1.739", gesamtbetrag:"97.04", kmStand:"31200", zahlungsart:"Firmen-Tankkarte", bonNr:"TT-A1-5590", notiz:"Fahrt Hannover", kmVonStandort:"140"},
+      {id:uid(), datum:"2025-08-28", uhrzeit:"16:40", stationName:"Aral Lombardsbrücke",     adresse:"Lombardsbrücke 1, Hamburg",    kraftstoff:"Diesel", menge:"48.0", preisProLiter:"1.649", gesamtbetrag:"79.15", kmStand:"32100", zahlungsart:"EC-Karte", bonNr:"AR-HH-4420", notiz:"", kmVonStandort:"2"},
+    ],
+    strafen:[
+      {id:uid(), datum:"2025-02-20", uhrzeit:"14:35", typ:"Parkverstoß", betrag:"55", tatort:"Am Sandtorkai", tatortAdresse:"20457 Hamburg-Hafencity", behoerde:"Ordnungsamt Hamburg", adresseBehoerde:"Caffamacherreihe 1-3, 20355 Hamburg", aktenzeichen:"OWI-2025-HH-3391", frist:"", bezahlt:true, notiz:"Parkverbotszone Hafencity"},
     ],
     waesche:[
-    {id:uid(), datum:"2025-01-25", uhrzeit:"10:00", typ:"Außenwäsche",     adresse:"Waschpark Luckenwalde, Bahnhofstr. 22, 14943 Luckenwalde", betrag:"8.50",   zahlungsart:"Bar",    notiz:"", belegFoto:""},
-    {id:uid(), datum:"2025-03-12", uhrzeit:"11:30", typ:"Komplettreinigung", adresse:"Waschpark Luckenwalde, Bahnhofstr. 22, 14943 Luckenwalde", betrag:"42.00",  zahlungsart:"EC-Karte", notiz:"Vor Handwerksmesse", belegFoto:""},
-    {id:uid(), datum:"2025-05-07", uhrzeit:"09:00", typ:"Außenwäsche",     adresse:"SB-Wash Zossen, Berliner Str. 40, 15806 Zossen",       betrag:"7.00",   zahlungsart:"Bar",    notiz:"", belegFoto:""},
-    {id:uid(), datum:"2025-06-19", uhrzeit:"08:30", typ:"Komplettreinigung", adresse:"Waschpark Luckenwalde, Bahnhofstr. 22, 14943 Luckenwalde", betrag:"42.00",  zahlungsart:"EC-Karte", notiz:"Vor Baufachmesse", belegFoto:""},
-    {id:uid(), datum:"2025-08-20", uhrzeit:"14:00", typ:"Polieren/Versiegeln",adresse:"AutoPflege Teltow, Potsdamer Str. 12, 14513 Teltow",     betrag:"110.00", zahlungsart:"EC-Karte", notiz:"Sommerpflege", belegFoto:""},
-    {id:uid(), datum:"2025-10-30", uhrzeit:"10:30", typ:"Außenwäsche",     adresse:"Waschpark Luckenwalde, Bahnhofstr. 22, 14943 Luckenwalde", betrag:"8.50",   zahlungsart:"Bar",    notiz:"", belegFoto:""},
-    {id:uid(), datum:"2025-12-18", uhrzeit:"11:00", typ:"Innenreinigung",  adresse:"Waschpark Luckenwalde, Bahnhofstr. 22, 14943 Luckenwalde", betrag:"22.00",  zahlungsart:"Bar",    notiz:"Jahresende", belegFoto:""},
-    {id:uid(), datum:"2026-02-05", uhrzeit:"09:00", typ:"Komplettreinigung", adresse:"Waschpark Luckenwalde, Bahnhofstr. 22, 14943 Luckenwalde", betrag:"42.00",  zahlungsart:"EC-Karte", notiz:"Vor Kundenpräsentation", belegFoto:""},
+      {id:uid(), datum:"2025-03-08", uhrzeit:"10:30", typ:"Außenwäsche",    name:"SB Waschanlage Altona", adresse:"Große Elbstr. 212, Hamburg", betrag:"12.50", zahlungsart:"Bar", notiz:"", kmVonStandort:"6"},
+      {id:uid(), datum:"2025-07-12", uhrzeit:"09:00", typ:"Vollwäsche",     name:"Mr. Wash Wandsbek",    adresse:"Friedrich-Ebert-Damm 111, Hamburg", betrag:"19.90", zahlungsart:"EC-Karte", notiz:"Vor Kundentermin", kmVonStandort:"10"},
     ],
     services:[
-    {id:uid(), datum:"2025-01-08", typ:"Reifenwechsel Winter", werkstatt:"ATU Luckenwalde",  adresse:"Potsdamer Str. 80, 14943 Luckenwalde",  kmStand:"58200", betrag:"95.00",  rechnungsNr:"ATU-2025-0801", faelligKm:"",   faelligDatum:"",       zahlungsart:"EC-Karte",   notiz:"Sommerreifen eingelagert",  belegFoto:""},
-    {id:uid(), datum:"2025-03-28", typ:"Inspektion",       werkstatt:"VW Autohaus Teltow", adresse:"Mahlower Str. 44, 14513 Teltow",     kmStand:"60000", betrag:"280.00", rechnungsNr:"VWT-2025-0328", faelligKm:"70000",faelligDatum:"2026-03-01", zahlungsart:"Überweisung",notiz:"60.000 km Inspektion",     belegFoto:""},
-    {id:uid(), datum:"2025-04-15", typ:"Bremsen",        werkstatt:"ATU Luckenwalde",  adresse:"Potsdamer Str. 80, 14943 Luckenwalde",  kmStand:"60900", betrag:"340.00", rechnungsNr:"ATU-2025-4415", faelligKm:"",   faelligDatum:"",       zahlungsart:"EC-Karte",   notiz:"VA Beläge + Scheiben",    belegFoto:""},
-    {id:uid(), datum:"2025-07-04", typ:"Reifenwechsel Sommer", werkstatt:"ATU Luckenwalde",  adresse:"Potsdamer Str. 80, 14943 Luckenwalde",  kmStand:"64100", betrag:"95.00",  rechnungsNr:"ATU-2025-7041", faelligKm:"",   faelligDatum:"",       zahlungsart:"EC-Karte",   notiz:"Winterreifen eingelagert",  belegFoto:""},
-    {id:uid(), datum:"2025-10-15", typ:"Reifenwechsel Winter", werkstatt:"ATU Luckenwalde",  adresse:"Potsdamer Str. 80, 14943 Luckenwalde",  kmStand:"67500", betrag:"95.00",  rechnungsNr:"ATU-2025-9901", faelligKm:"",   faelligDatum:"",       zahlungsart:"EC-Karte",   notiz:"Sommerreifen eingelagert",  belegFoto:""},
-    {id:uid(), datum:"2025-12-03", typ:"Ölwechsel",      werkstatt:"VW Autohaus Teltow", adresse:"Mahlower Str. 44, 14513 Teltow",     kmStand:"69400", betrag:"195.00", rechnungsNr:"VWT-2025-4412", faelligKm:"79000",faelligDatum:"2026-12-01", zahlungsart:"Überweisung",notiz:"5W-30 Longlife",       belegFoto:""},
-    {id:uid(), datum:"2026-02-20", typ:"TÜV / HU",       werkstatt:"DEKRA Luckenwalde",  adresse:"Jüterboger Str. 12, 14943 Luckenwalde", kmStand:"71700", betrag:"125.00", rechnungsNr:"DEK-2026-0220", faelligKm:"",   faelligDatum:"2028-02-01", zahlungsart:"Bar",     notiz:"Bestanden ohne Mängel",   belegFoto:""},
+      {id:uid(), datum:"2025-05-10", typ:"Inspektion A", werkstatt:"Mercedes Benz Nedderfeld", adresse:"Nedderfeld 95, 22529 Hamburg", betrag:"420.00", kmStand:"30500", zahlungsart:"Überweisung", rechnungsNr:"MB-HH-2025-0338", faelligDatum:"2026-05-10", faelligKm:"50500", notiz:"Service A + Bremsflüssigkeit", kmVonStandort:"9"},
     ],
     parkplaetze:[
-    // Partner-Besuche — passend zu den Fahrten
-    {id:uid(), datum:"2025-01-07", uhrzeit:"09:05", ort:"Parkplatz Rathaus Blankenfelde", adresse:"Bahnhofstr. 2, 15827 Blankenfelde-Mahlow", dauer:"1.5", betrag:"2.00", zahlungsart:"Bar", bemerkung:"Blankenfelde Steuerberatung"},
-    {id:uid(), datum:"2025-01-14", uhrzeit:"10:05", ort:"Parkplatz Industrieweg Jüterbog", adresse:"Industrieweg 30, 14913 Jüterbog", dauer:"2.0", betrag:"0.00", zahlungsart:"Bar", bemerkung:"Kostenloser Kundenparkplatz"},
-    {id:uid(), datum:"2025-01-21", uhrzeit:"08:05", ort:"P&R Ludwigsfelde Gewerbepark", adresse:"Gewerbepark 8, 14974 Ludwigsfelde", dauer:"0.5", betrag:"1.00", zahlungsart:"Bar", bemerkung:"Ludwigsfelde Logistik"},
-    {id:uid(), datum:"2025-01-28", uhrzeit:"09:35", ort:"Parkplatz Zossen Mitte", adresse:"Berliner Str. 80, 15806 Zossen", dauer:"1.5", betrag:"1.50", zahlungsart:"Münzzahler", bemerkung:"Zossener Bau GmbH"},
-    {id:uid(), datum:"2025-02-13", uhrzeit:"11:05", ort:"Parkplatz Teltow Stadtmitte", adresse:"Potsdamer Str. 50, 14513 Teltow", dauer:"1.5", betrag:"2.50", zahlungsart:"App / Mobile", bemerkung:"Teltow IT Solutions"},
-    {id:uid(), datum:"2025-03-14", uhrzeit:"07:50", ort:"Stadthallenpark Brandenburg a.d.H.", adresse:"Magdeburger Str. 34, 14770 Brandenburg", dauer:"9.0", betrag:"8.00", zahlungsart:"EC-Karte", bemerkung:"Handwerksmesse Brandenburg 2025"},
-    {id:uid(), datum:"2025-04-10", uhrzeit:"09:05", ort:"Firmenparkplatz Jüterboger Metallbau", adresse:"Industrieweg 33, 14913 Jüterbog", dauer:"1.0", betrag:"0.00", zahlungsart:"Bar", bemerkung:"Kostenloser Kundenparkplatz"},
-    {id:uid(), datum:"2025-04-22", uhrzeit:"11:05", ort:"P&R Ludwigsfelde Gewerbepark", adresse:"Gewerbepark 8, 14974 Ludwigsfelde", dauer:"1.5", betrag:"1.50", zahlungsart:"Bar", bemerkung:"Ludwigsfelde Logistik AG"},
-    {id:uid(), datum:"2025-05-13", uhrzeit:"09:05", ort:"Parkplatz Zossen Mitte", adresse:"Berliner Str. 80, 15806 Zossen", dauer:"2.0", betrag:"2.00", zahlungsart:"Münzzahler", bemerkung:"Zossener Bau GmbH"},
-    {id:uid(), datum:"2025-06-11", uhrzeit:"10:05", ort:"Parkplatz Rathaus Blankenfelde", adresse:"Bahnhofstr. 2, 15827 Blankenfelde-Mahlow", dauer:"1.5", betrag:"2.00", zahlungsart:"Bar", bemerkung:"Blankenfelde Steuerberatung"},
-    {id:uid(), datum:"2025-06-20", uhrzeit:"07:50", ort:"Parkplatz Gewerbepark Luckenwalde", adresse:"Gewerbepark Luckenwalde, 14943 Luckenwalde", dauer:"9.0", betrag:"5.00", zahlungsart:"Bar", bemerkung:"Baufachmesse Teltow-Fläming 2025"},
-    {id:uid(), datum:"2025-07-09", uhrzeit:"09:05", ort:"P&R Ludwigsfelde Bahnhof", adresse:"Bahnhofstr. 1, 14974 Ludwigsfelde", dauer:"1.5", betrag:"1.50", zahlungsart:"Bar", bemerkung:"Ludwigsfelde Logistik AG"},
-    {id:uid(), datum:"2025-08-20", uhrzeit:"09:05", ort:"Firmenparkplatz Jüterboger Metallbau", adresse:"Industrieweg 33, 14913 Jüterbog", dauer:"1.5", betrag:"0.00", zahlungsart:"Bar", bemerkung:"Kostenloser Kundenparkplatz"},
-    {id:uid(), datum:"2025-09-23", uhrzeit:"09:05", ort:"Parkplatz Teltow Stadtmitte", adresse:"Potsdamer Str. 50, 14513 Teltow", dauer:"1.5", betrag:"2.50", zahlungsart:"App / Mobile", bemerkung:"Teltow IT Solutions"},
-    {id:uid(), datum:"2025-10-14", uhrzeit:"08:05", ort:"P&R Ludwigsfelde Gewerbepark", adresse:"Gewerbepark 8, 14974 Ludwigsfelde", dauer:"1.5", betrag:"1.50", zahlungsart:"Bar", bemerkung:"Ludwigsfelde Logistik AG"},
-    {id:uid(), datum:"2025-11-05", uhrzeit:"10:05", ort:"Parkplatz Zossen Mitte", adresse:"Berliner Str. 80, 15806 Zossen", dauer:"1.0", betrag:"1.00", zahlungsart:"Bar", bemerkung:"Zossener Bau GmbH"},
-    {id:uid(), datum:"2025-12-10", uhrzeit:"08:05", ort:"Havel-Forum Parkplatz", adresse:"Magdeburger Str. 34, 14770 Brandenburg", dauer:"1.5", betrag:"3.00", zahlungsart:"EC-Karte", bemerkung:"IHK Veranstaltung"},
-    {id:uid(), datum:"2026-01-14", uhrzeit:"09:05", ort:"Parkplatz Rathaus Blankenfelde", adresse:"Bahnhofstr. 2, 15827 Blankenfelde-Mahlow", dauer:"2.0", betrag:"2.00", zahlungsart:"Bar", bemerkung:"Blankenfelde Steuerberatung"},
-    {id:uid(), datum:"2026-02-04", uhrzeit:"10:05", ort:"P&R Ludwigsfelde Gewerbepark", adresse:"Gewerbepark 8, 14974 Ludwigsfelde", dauer:"1.5", betrag:"1.50", zahlungsart:"Bar", bemerkung:"Weber & Söhne OHG"},
+      {id:uid(), datum:"2025-01-15", uhrzeit:"08:30", ort:"Parkhaus Europa Passage",  adresse:"Ballindamm 40, 20095 Hamburg",      dauer:"4",  betrag:"14.00", zahlungsart:"EC-Karte", bemerkung:"Kundengespräch Innenstadt"},
+      {id:uid(), datum:"2025-04-22", uhrzeit:"09:00", ort:"Parkhaus Hafencity",       adresse:"Am Sandtorkai 1, 20457 Hamburg",     dauer:"3",  betrag:"9.00",  zahlungsart:"App", bemerkung:"Objektbesichtigung"},
+      {id:uid(), datum:"2025-08-05", uhrzeit:"10:00", ort:"P+R Barmbek",              adresse:"Wiesendamm 22, 22305 Hamburg",       dauer:"6",  betrag:"3.00",  zahlungsart:"Bar", bemerkung:""},
     ],
     fahrten:[
-    // Januar 2025
-    {id:uid(), datum:"2025-01-07", zeitStr:"07:45–08:20", kategorie:"partner", zielId:tf3, zielName:"Blankenfelde Steuerberatung", km:"28", dauerMin:"35",  rueckfahrt:false, notiz:"Arbeitsweg",              kmTyp:"wohnArbeit",  kmStart:"58000", kmEnd:"58028"},
-    {id:uid(), datum:"2025-01-07", zeitStr:"09:00–10:30", kategorie:"partner", zielId:tf3, zielName:"Blankenfelde Steuerberatung", km:"56", dauerMin:"90",  rueckfahrt:true,  notiz:"Jahresabschlussbesprechung 2024",   kmTyp:"geschaeftlich", kmStart:"58028", kmEnd:"58084"},
-    {id:uid(), datum:"2025-01-14", zeitStr:"10:00–12:00", kategorie:"partner", zielId:tf4, zielName:"Jüterboger Metallbau KG",  km:"70", dauerMin:"120", rueckfahrt:true,  notiz:"Angebotseinholung Stahl Q1",      kmTyp:"geschaeftlich", kmStart:"58084", kmEnd:"58154"},
-    {id:uid(), datum:"2025-01-21", zeitStr:"08:00–08:35", kategorie:"partner", zielId:tf2, zielName:"Ludwigsfelde Logistik AG",   km:"22", dauerMin:"35",  rueckfahrt:false, notiz:"Arbeitsweg",              kmTyp:"wohnArbeit",  kmStart:"58154", kmEnd:"58176"},
-    {id:uid(), datum:"2025-01-21", zeitStr:"14:00–15:00", kategorie:"partner", zielId:tf2, zielName:"Ludwigsfelde Logistik AG",   km:"44", dauerMin:"60",  rueckfahrt:true,  notiz:"Lagerkapazität Planung Q1",       kmTyp:"geschaeftlich", kmStart:"58176", kmEnd:"58220"},
-    {id:uid(), datum:"2025-01-28", zeitStr:"09:30–11:00", kategorie:"partner", zielId:tf1, zielName:"Zossener Bau GmbH",      km:"36", dauerMin:"90",  rueckfahrt:true,  notiz:"Jahresplanungsgespräch Bauprojekte",  kmTyp:"geschaeftlich", kmStart:"58220", kmEnd:"58256"},
-    // Februar 2025
-    {id:uid(), datum:"2025-02-05", zeitStr:"07:45–08:20", kategorie:"partner", zielId:tf3, zielName:"Blankenfelde Steuerberatung", km:"28", dauerMin:"35",  rueckfahrt:false, notiz:"Arbeitsweg",              kmTyp:"wohnArbeit",  kmStart:"58256", kmEnd:"58284"},
-    {id:uid(), datum:"2025-02-05", zeitStr:"09:00–10:30", kategorie:"partner", zielId:tf3, zielName:"Blankenfelde Steuerberatung", km:"56", dauerMin:"90",  rueckfahrt:true,  notiz:"USt-Voranmeldung Januar",       kmTyp:"geschaeftlich", kmStart:"58284", kmEnd:"58340"},
-    {id:uid(), datum:"2025-02-13", zeitStr:"11:00–12:30", kategorie:"partner", zielId:tf5, zielName:"Teltow IT Solutions",     km:"76", dauerMin:"90",  rueckfahrt:true,  notiz:"IT-Sicherheitsaudit Jahresgespräch",  kmTyp:"geschaeftlich", kmStart:"58340", kmEnd:"58416"},
-    {id:uid(), datum:"2025-02-20", zeitStr:"10:00–11:30", kategorie:"partner", zielId:tf1, zielName:"Zossener Bau GmbH",       km:"36", dauerMin:"90",  rueckfahrt:true,  notiz:"Baugenehmigung Rücksprache",      kmTyp:"geschaeftlich", kmStart:"58416", kmEnd:"58452"},
-    {id:uid(), datum:"2025-02-27", zeitStr:"14:00–15:00", kategorie:"partner", zielId:tf4, zielName:"Jüterboger Metallbau KG",  km:"70", dauerMin:"60",  rueckfahrt:true,  notiz:"Bestellung Stahlträger März",     kmTyp:"geschaeftlich", kmStart:"58452", kmEnd:"58522"},
-    // März 2025
-    {id:uid(), datum:"2025-03-04", zeitStr:"07:45–08:20", kategorie:"partner", zielId:tf2, zielName:"Ludwigsfelde Logistik AG",   km:"22", dauerMin:"35",  rueckfahrt:false, notiz:"Arbeitsweg",              kmTyp:"wohnArbeit",  kmStart:"58522", kmEnd:"58544"},
-    {id:uid(), datum:"2025-03-04", zeitStr:"09:00–11:00", kategorie:"partner", zielId:tf2, zielName:"Ludwigsfelde Logistik AG",   km:"44", dauerMin:"120", rueckfahrt:true,  notiz:"Lagerbegehung Q1",          kmTyp:"geschaeftlich", kmStart:"58544", kmEnd:"58588"},
-    {id:uid(), datum:"2025-03-14", zeitStr:"08:00–17:00", kategorie:"messe",   zielId:tm1, zielName:"Handwerksmesse Brandenburg", km:"72", dauerMin:"540", rueckfahrt:true,  notiz:"Messebesuch Halle 3 Stand B-18",    kmTyp:"geschaeftlich", kmStart:"58588", kmEnd:"58732"},
-    {id:uid(), datum:"2025-03-19", zeitStr:"10:00–11:30", kategorie:"partner", zielId:tf3, zielName:"Blankenfelde Steuerberatung", km:"56", dauerMin:"90",  rueckfahrt:true,  notiz:"USt-Voranmeldung Februar",      kmTyp:"geschaeftlich", kmStart:"58732", kmEnd:"58788"},
-    {id:uid(), datum:"2025-03-26", zeitStr:"09:00–10:30", kategorie:"partner", zielId:tf5, zielName:"Teltow IT Solutions",     km:"76", dauerMin:"90",  rueckfahrt:true,  notiz:"Server-Migration Vorbesprechung",   kmTyp:"geschaeftlich", kmStart:"58788", kmEnd:"58864"},
-    // April 2025
-    {id:uid(), datum:"2025-04-02", zeitStr:"07:45–08:20", kategorie:"partner", zielId:tf3, zielName:"Blankenfelde Steuerberatung", km:"28", dauerMin:"35",  rueckfahrt:false, notiz:"Arbeitsweg",              kmTyp:"wohnArbeit",  kmStart:"58864", kmEnd:"58892"},
-    {id:uid(), datum:"2025-04-02", zeitStr:"14:00–15:30", kategorie:"partner", zielId:tf1, zielName:"Zossener Bau GmbH",       km:"36", dauerMin:"90",  rueckfahrt:true,  notiz:"Bauabnahme Abschnitt 1",        kmTyp:"geschaeftlich", kmStart:"58892", kmEnd:"58928"},
-    {id:uid(), datum:"2025-04-10", zeitStr:"09:00–10:00", kategorie:"partner", zielId:tf4, zielName:"Jüterboger Metallbau KG",  km:"70", dauerMin:"60",  rueckfahrt:true,  notiz:"Qualitätskontrolle Lieferung",    kmTyp:"geschaeftlich", kmStart:"58928", kmEnd:"58998"},
-    {id:uid(), datum:"2025-04-22", zeitStr:"11:00–12:30", kategorie:"partner", zielId:tf2, zielName:"Ludwigsfelde Logistik AG",   km:"44", dauerMin:"90",  rueckfahrt:true,  notiz:"Quartalsabrechnung Q1",         kmTyp:"geschaeftlich", kmStart:"58998", kmEnd:"59042"},
-    {id:uid(), datum:"2025-04-29", zeitStr:"09:30–11:00", kategorie:"partner", zielId:tf5, zielName:"Teltow IT Solutions",     km:"76", dauerMin:"90",  rueckfahrt:true,  notiz:"Server-Migration Durchführung",     kmTyp:"geschaeftlich", kmStart:"59042", kmEnd:"59118"},
-    // Mai 2025
-    {id:uid(), datum:"2025-05-06", zeitStr:"07:45–08:20", kategorie:"partner", zielId:tf3, zielName:"Blankenfelde Steuerberatung", km:"28", dauerMin:"35",  rueckfahrt:false, notiz:"Arbeitsweg",              kmTyp:"wohnArbeit",  kmStart:"59118", kmEnd:"59146"},
-    {id:uid(), datum:"2025-05-06", zeitStr:"10:00–11:30", kategorie:"partner", zielId:tf3, zielName:"Blankenfelde Steuerberatung", km:"56", dauerMin:"90",  rueckfahrt:true,  notiz:"USt-Voranmeldung März+April",     kmTyp:"geschaeftlich", kmStart:"59146", kmEnd:"59202"},
-    {id:uid(), datum:"2025-05-13", zeitStr:"09:00–11:00", kategorie:"partner", zielId:tf1, zielName:"Zossener Bau GmbH",       km:"36", dauerMin:"120", rueckfahrt:true,  notiz:"Bauabnahme Abschnitt 2 Zossen",     kmTyp:"geschaeftlich", kmStart:"59202", kmEnd:"59238"},
-    {id:uid(), datum:"2025-05-21", zeitStr:"10:00–12:00", kategorie:"partner", zielId:tf4, zielName:"Jüterboger Metallbau KG",  km:"70", dauerMin:"120", rueckfahrt:true,  notiz:"Bestellung Sonderstahl Projekt",    kmTyp:"geschaeftlich", kmStart:"59238", kmEnd:"59308"},
-    {id:uid(), datum:"2025-05-27", zeitStr:"14:00–15:00", kategorie:"partner", zielId:tf2, zielName:"Ludwigsfelde Logistik AG",   km:"44", dauerMin:"60",  rueckfahrt:true,  notiz:"Lager-Inventur Vorbereitung",     kmTyp:"geschaeftlich", kmStart:"59308", kmEnd:"59352"},
-    // Juni 2025
-    {id:uid(), datum:"2025-06-03", zeitStr:"08:00–08:35", kategorie:"partner", zielId:tf2, zielName:"Ludwigsfelde Logistik AG",   km:"22", dauerMin:"35",  rueckfahrt:false, notiz:"Arbeitsweg",              kmTyp:"wohnArbeit",  kmStart:"59352", kmEnd:"59374"},
-    {id:uid(), datum:"2025-06-03", zeitStr:"09:30–11:00", kategorie:"partner", zielId:tf5, zielName:"Teltow IT Solutions",     km:"76", dauerMin:"90",  rueckfahrt:true,  notiz:"Halbjahres-IT-Review",        kmTyp:"geschaeftlich", kmStart:"59374", kmEnd:"59450"},
-    {id:uid(), datum:"2025-06-11", zeitStr:"10:00–11:30", kategorie:"partner", zielId:tf3, zielName:"Blankenfelde Steuerberatung", km:"56", dauerMin:"90",  rueckfahrt:true,  notiz:"USt-Voranmeldung Mai",        kmTyp:"geschaeftlich", kmStart:"59450", kmEnd:"59506"},
-    {id:uid(), datum:"2025-06-20", zeitStr:"08:00–17:00", kategorie:"messe",   zielId:tm2, zielName:"Baufachmesse Teltow-Fläming", km:"3",  dauerMin:"540", rueckfahrt:true,  notiz:"Messebesuch Außengelände Stand 7",  kmTyp:"geschaeftlich", kmStart:"59506", kmEnd:"59512"},
-    {id:uid(), datum:"2025-06-25", zeitStr:"09:00–10:30", kategorie:"partner", zielId:tf1, zielName:"Zossener Bau GmbH",       km:"36", dauerMin:"90",  rueckfahrt:true,  notiz:"Halbjahrsgespräch Bauprojekt",    kmTyp:"geschaeftlich", kmStart:"59512", kmEnd:"59548"},
-    // Juli 2025
-    {id:uid(), datum:"2025-07-02", zeitStr:"07:45–08:20", kategorie:"partner", zielId:tf3, zielName:"Blankenfelde Steuerberatung", km:"28", dauerMin:"35",  rueckfahrt:false, notiz:"Arbeitsweg",              kmTyp:"wohnArbeit",  kmStart:"59548", kmEnd:"59576"},
-    {id:uid(), datum:"2025-07-02", zeitStr:"10:00–11:30", kategorie:"partner", zielId:tf4, zielName:"Jüterboger Metallbau KG",  km:"70", dauerMin:"90",  rueckfahrt:true,  notiz:"Lieferantenaudit Metallbau",      kmTyp:"geschaeftlich", kmStart:"59576", kmEnd:"59646"},
-    {id:uid(), datum:"2025-07-09", zeitStr:"09:00–10:30", kategorie:"partner", zielId:tf2, zielName:"Ludwigsfelde Logistik AG",   km:"44", dauerMin:"90",  rueckfahrt:true,  notiz:"Sommerlager-Inventur",        kmTyp:"geschaeftlich", kmStart:"59646", kmEnd:"59690"},
-    {id:uid(), datum:"2025-07-16", zeitStr:"11:00–12:00", kategorie:"partner", zielId:tf5, zielName:"Teltow IT Solutions",     km:"76", dauerMin:"60",  rueckfahrt:true,  notiz:"Backup-System Einrichtung",       kmTyp:"geschaeftlich", kmStart:"59690", kmEnd:"59766"},
-    {id:uid(), datum:"2025-07-23", zeitStr:"14:00–16:00", kategorie:"partner", zielId:tf1, zielName:"Zossener Bau GmbH",       km:"36", dauerMin:"120", rueckfahrt:true,  notiz:"Rohbauabnahme Erdgeschoss",       kmTyp:"geschaeftlich", kmStart:"59766", kmEnd:"59802"},
-    // August 2025
-    {id:uid(), datum:"2025-08-06", zeitStr:"07:45–08:20", kategorie:"partner", zielId:tf2, zielName:"Ludwigsfelde Logistik AG",   km:"22", dauerMin:"35",  rueckfahrt:false, notiz:"Arbeitsweg",              kmTyp:"wohnArbeit",  kmStart:"59802", kmEnd:"59824"},
-    {id:uid(), datum:"2025-08-06", zeitStr:"10:00–11:30", kategorie:"partner", zielId:tf3, zielName:"Blankenfelde Steuerberatung", km:"56", dauerMin:"90",  rueckfahrt:true,  notiz:"USt-Voranmeldung Juni+Juli",      kmTyp:"geschaeftlich", kmStart:"59824", kmEnd:"59880"},
-    {id:uid(), datum:"2025-08-13", zeitStr:"09:30–11:00", kategorie:"partner", zielId:tf4, zielName:"Jüterboger Metallbau KG",  km:"70", dauerMin:"90",  rueckfahrt:true,  notiz:"Nachbestellung Stahl Herbst",     kmTyp:"geschaeftlich", kmStart:"59880", kmEnd:"59950"},
-    {id:uid(), datum:"2025-08-20", zeitStr:"10:00–12:00", kategorie:"partner", zielId:tf5, zielName:"Teltow IT Solutions",     km:"76", dauerMin:"120", rueckfahrt:true,  notiz:"ERP-Update Vorbesprechung",       kmTyp:"geschaeftlich", kmStart:"59950", kmEnd:"60026"},
-    {id:uid(), datum:"2025-08-27", zeitStr:"14:00–15:30", kategorie:"partner", zielId:tf1, zielName:"Zossener Bau GmbH",       km:"36", dauerMin:"90",  rueckfahrt:true,  notiz:"Innenausbau Besprechung",       kmTyp:"geschaeftlich", kmStart:"60026", kmEnd:"60062"},
-    // September 2025
-    {id:uid(), datum:"2025-09-03", zeitStr:"07:45–08:20", kategorie:"partner", zielId:tf3, zielName:"Blankenfelde Steuerberatung", km:"28", dauerMin:"35",  rueckfahrt:false, notiz:"Arbeitsweg",              kmTyp:"wohnArbeit",  kmStart:"60062", kmEnd:"60090"},
-    {id:uid(), datum:"2025-09-03", zeitStr:"09:00–10:30", kategorie:"partner", zielId:tf3, zielName:"Blankenfelde Steuerberatung", km:"56", dauerMin:"90",  rueckfahrt:true,  notiz:"Vorauszahlung KSt Q3",        kmTyp:"geschaeftlich", kmStart:"60090", kmEnd:"60146"},
-    {id:uid(), datum:"2025-09-10", zeitStr:"10:00–11:30", kategorie:"partner", zielId:tf2, zielName:"Ludwigsfelde Logistik AG",   km:"44", dauerMin:"90",  rueckfahrt:true,  notiz:"Herbst-Lagerplanung Q4",        kmTyp:"geschaeftlich", kmStart:"60146", kmEnd:"60190"},
-    {id:uid(), datum:"2025-09-17", zeitStr:"09:30–11:00", kategorie:"partner", zielId:tf1, zielName:"Zossener Bau GmbH",       km:"36", dauerMin:"90",  rueckfahrt:true,  notiz:"Fassadenarbeiten Abnahme",      kmTyp:"geschaeftlich", kmStart:"60190", kmEnd:"60226"},
-    {id:uid(), datum:"2025-09-24", zeitStr:"11:00–12:30", kategorie:"partner", zielId:tf4, zielName:"Jüterboger Metallbau KG",  km:"70", dauerMin:"90",  rueckfahrt:true,  notiz:"Rahmenvertrag 2026 Verhandlung",    kmTyp:"geschaeftlich", kmStart:"60226", kmEnd:"60296"},
-    // Oktober 2025
-    {id:uid(), datum:"2025-10-06", zeitStr:"07:45–08:15", kategorie:"partner", zielId:tf3, zielName:"Blankenfelde Steuerberatung", km:"28", dauerMin:"30",  rueckfahrt:false, notiz:"Arbeitsweg",              kmTyp:"wohnArbeit",  kmStart:"60296", kmEnd:"60324"},
-    {id:uid(), datum:"2025-10-06", zeitStr:"09:00–10:30", kategorie:"partner", zielId:tf1, zielName:"Zossener Bau GmbH",       km:"36", dauerMin:"90",  rueckfahrt:true,  notiz:"Bauabnahme Projekt Zossen gesamt",  kmTyp:"geschaeftlich", kmStart:"60324", kmEnd:"60360"},
-    {id:uid(), datum:"2025-10-09", zeitStr:"10:00–12:00", kategorie:"partner", zielId:tf4, zielName:"Jüterboger Metallbau KG",  km:"70", dauerMin:"120", rueckfahrt:true,  notiz:"Lieferantenverhandlung Jahreskontrakt",kmTyp:"geschaeftlich", kmStart:"60360", kmEnd:"60430"},
-    {id:uid(), datum:"2025-10-15", zeitStr:"09:30–11:00", kategorie:"partner", zielId:tf5, zielName:"Teltow IT Solutions",     km:"76", dauerMin:"90",  rueckfahrt:true,  notiz:"Serverwartung Teltow Q4",       kmTyp:"geschaeftlich", kmStart:"60430", kmEnd:"60506"},
-    {id:uid(), datum:"2025-10-22", zeitStr:"14:00–15:30", kategorie:"partner", zielId:tf1, zielName:"Zossener Bau GmbH",       km:"36", dauerMin:"90",  rueckfahrt:true,  notiz:"Nachtrag Bauvertrag",         kmTyp:"geschaeftlich", kmStart:"60506", kmEnd:"60542"},
-    {id:uid(), datum:"2025-10-29", zeitStr:"10:00–11:00", kategorie:"partner", zielId:tf2, zielName:"Ludwigsfelde Logistik AG",   km:"44", dauerMin:"60",  rueckfahrt:true,  notiz:"Lagerbilanz Oktober",         kmTyp:"geschaeftlich", kmStart:"60542", kmEnd:"60586"},
-    // November 2025
-    {id:uid(), datum:"2025-11-05", zeitStr:"08:00–08:30", kategorie:"partner", zielId:tf3, zielName:"Blankenfelde Steuerberatung", km:"28", dauerMin:"30",  rueckfahrt:false, notiz:"Arbeitsweg",              kmTyp:"wohnArbeit",  kmStart:"60586", kmEnd:"60614"},
-    {id:uid(), datum:"2025-11-05", zeitStr:"10:00–11:30", kategorie:"partner", zielId:tf3, zielName:"Blankenfelde Steuerberatung", km:"56", dauerMin:"90",  rueckfahrt:true,  notiz:"Jahresabschluss Besprechung",     kmTyp:"geschaeftlich", kmStart:"60614", kmEnd:"60670"},
-    {id:uid(), datum:"2025-11-06", zeitStr:"08:30–17:00", kategorie:"messe",   zielId:tm3, zielName:"Brandenburger Wirtschaftstage",km:"72", dauerMin:"510", rueckfahrt:true,  notiz:"Messebesuch Stand 22B",         kmTyp:"geschaeftlich", kmStart:"60670", kmEnd:"60814"},
-    {id:uid(), datum:"2025-11-12", zeitStr:"10:00–11:30", kategorie:"partner", zielId:tf4, zielName:"Jüterboger Metallbau KG",  km:"70", dauerMin:"90",  rueckfahrt:true,  notiz:"Jahresendbestellung Stahl",       kmTyp:"geschaeftlich", kmStart:"60814", kmEnd:"60884"},
-    {id:uid(), datum:"2025-11-18", zeitStr:"13:00–14:00", kategorie:"partner", zielId:tf2, zielName:"Ludwigsfelde Logistik AG",   km:"44", dauerMin:"60",  rueckfahrt:true,  notiz:"Lagerbegehung Ost",           kmTyp:"geschaeftlich", kmStart:"60884", kmEnd:"60928"},
-    {id:uid(), datum:"2025-11-26", zeitStr:"09:00–10:30", kategorie:"partner", zielId:tf5, zielName:"Teltow IT Solutions",     km:"76", dauerMin:"90",  rueckfahrt:true,  notiz:"Lizenzmanagement 2026 Planung",     kmTyp:"geschaeftlich", kmStart:"60928", kmEnd:"61004"},
-    // Dezember 2025
-    {id:uid(), datum:"2025-12-03", zeitStr:"09:00–10:00", kategorie:"partner", zielId:tf5, zielName:"Teltow IT Solutions",     km:"76", dauerMin:"60",  rueckfahrt:true,  notiz:"Jahresgespräch IT-Vertrag",       kmTyp:"geschaeftlich", kmStart:"61004", kmEnd:"61080"},
-    {id:uid(), datum:"2025-12-10", zeitStr:"10:00–11:00", kategorie:"partner", zielId:tf4, zielName:"Jüterboger Metallbau KG",  km:"70", dauerMin:"60",  rueckfahrt:true,  notiz:"Jahresbestellung 2026",         kmTyp:"geschaeftlich", kmStart:"61080", kmEnd:"61150"},
-    {id:uid(), datum:"2025-12-17", zeitStr:"08:00–08:30", kategorie:"partner", zielId:tf2, zielName:"Ludwigsfelde Logistik AG",   km:"22", dauerMin:"30",  rueckfahrt:false, notiz:"Arbeitsweg",              kmTyp:"wohnArbeit",  kmStart:"61150", kmEnd:"61172"},
-    {id:uid(), datum:"2025-12-17", zeitStr:"14:00–15:30", kategorie:"partner", zielId:tf3, zielName:"Blankenfelde Steuerberatung", km:"56", dauerMin:"90",  rueckfahrt:true,  notiz:"Steuerplanung 2026",          kmTyp:"geschaeftlich", kmStart:"61172", kmEnd:"61228"},
-    {id:uid(), datum:"2025-12-19", zeitStr:"10:00–11:00", kategorie:"partner", zielId:tf1, zielName:"Zossener Bau GmbH",       km:"36", dauerMin:"60",  rueckfahrt:true,  notiz:"Jahresabschluss Bauprojekt Zossen",   kmTyp:"geschaeftlich", kmStart:"61228", kmEnd:"61264"},
-    // Januar 2026
-    {id:uid(), datum:"2026-01-09", zeitStr:"08:00–08:30", kategorie:"partner", zielId:tf2, zielName:"Ludwigsfelde Logistik AG",   km:"22", dauerMin:"30",  rueckfahrt:false, notiz:"Arbeitsweg",              kmTyp:"wohnArbeit",  kmStart:"61264", kmEnd:"61286"},
-    {id:uid(), datum:"2026-01-09", zeitStr:"11:00–12:30", kategorie:"partner", zielId:tf1, zielName:"Zossener Bau GmbH",       km:"36", dauerMin:"90",  rueckfahrt:true,  notiz:"Projektstart Q1 2026",        kmTyp:"geschaeftlich", kmStart:"61286", kmEnd:"61322"},
-    {id:uid(), datum:"2026-01-14", zeitStr:"09:00–10:30", kategorie:"partner", zielId:tf5, zielName:"Teltow IT Solutions",     km:"76", dauerMin:"90",  rueckfahrt:true,  notiz:"ERP-Einführung Kickoff",        kmTyp:"geschaeftlich", kmStart:"61322", kmEnd:"61398"},
-    {id:uid(), datum:"2026-01-21", zeitStr:"14:00–15:30", kategorie:"partner", zielId:tf3, zielName:"Blankenfelde Steuerberatung", km:"56", dauerMin:"90",  rueckfahrt:true,  notiz:"Steuervoranmeldung Q4 2025",      kmTyp:"geschaeftlich", kmStart:"61398", kmEnd:"61454"},
-    {id:uid(), datum:"2026-01-28", zeitStr:"10:00–12:00", kategorie:"partner", zielId:tf4, zielName:"Jüterboger Metallbau KG",  km:"70", dauerMin:"120", rueckfahrt:true,  notiz:"Rahmenvertrag 2026 Unterzeichnung",   kmTyp:"geschaeftlich", kmStart:"61454", kmEnd:"61524"},
-    // Februar 2026
-    {id:uid(), datum:"2026-02-04", zeitStr:"07:45–08:20", kategorie:"partner", zielId:tf3, zielName:"Blankenfelde Steuerberatung", km:"28", dauerMin:"35",  rueckfahrt:false, notiz:"Arbeitsweg",              kmTyp:"wohnArbeit",  kmStart:"61524", kmEnd:"61552"},
-    {id:uid(), datum:"2026-02-04", zeitStr:"09:30–11:00", kategorie:"partner", zielId:tf2, zielName:"Ludwigsfelde Logistik AG",   km:"44", dauerMin:"90",  rueckfahrt:true,  notiz:"Quartalsplanung Q1 Lager",      kmTyp:"geschaeftlich", kmStart:"61552", kmEnd:"61596"},
-    {id:uid(), datum:"2026-02-11", zeitStr:"10:00–11:30", kategorie:"partner", zielId:tf5, zielName:"Teltow IT Solutions",     km:"76", dauerMin:"90",  rueckfahrt:true,  notiz:"ERP-Modul Schulung",          kmTyp:"geschaeftlich", kmStart:"61596", kmEnd:"61672"},
-    {id:uid(), datum:"2026-02-12", zeitStr:"08:30–17:00", kategorie:"messe",   zielId:tm4, zielName:"IHK Unternehmertag TF 2026",  km:"3",  dauerMin:"510", rueckfahrt:true,  notiz:"Netzwerktreffen IHK",         kmTyp:"geschaeftlich", kmStart:"61672", kmEnd:"61678"},
-    {id:uid(), datum:"2026-02-18", zeitStr:"09:00–10:30", kategorie:"partner", zielId:tf1, zielName:"Zossener Bau GmbH",       km:"36", dauerMin:"90",  rueckfahrt:true,  notiz:"Neuprojekt Besprechung 2026",     kmTyp:"geschaeftlich", kmStart:"61678", kmEnd:"61714"},
-    {id:uid(), datum:"2026-02-25", zeitStr:"10:00–11:30", kategorie:"partner", zielId:tf4, zielName:"Jüterboger Metallbau KG",  km:"70", dauerMin:"90",  rueckfahrt:true,  notiz:"Angebotsverhandlung Stahl 2026",    kmTyp:"geschaeftlich", kmStart:"61714", kmEnd:"61784"},
-    // März 2026
-    {id:uid(), datum:"2026-03-04", zeitStr:"08:00–08:30", kategorie:"partner", zielId:tf3, zielName:"Blankenfelde Steuerberatung", km:"28", dauerMin:"30",  rueckfahrt:false, notiz:"Arbeitsweg",              kmTyp:"wohnArbeit",  kmStart:"61784", kmEnd:"61812"},
-    {id:uid(), datum:"2026-03-04", zeitStr:"09:30–11:00", kategorie:"partner", zielId:tf2, zielName:"Ludwigsfelde Logistik AG",   km:"44", dauerMin:"90",  rueckfahrt:true,  notiz:"Quartalsplanung Q2",          kmTyp:"geschaeftlich", kmStart:"61812", kmEnd:"61856"},
-    {id:uid(), datum:"2026-03-11", zeitStr:"10:00–11:30", kategorie:"partner", zielId:tf5, zielName:"Teltow IT Solutions",     km:"76", dauerMin:"90",  rueckfahrt:true,  notiz:"ERP-Livegang Nachbetreuung",      kmTyp:"geschaeftlich", kmStart:"61856", kmEnd:"61932"},
+      {id:uid(), datum:"2024-10-15", zeitStr:"09:00-09:30", kategorie:"partner", zielId:"", zielName:"Engel & Völkers, Stadthausbrücke 5, Hamburg", km:"4", dauerMin:"", rueckfahrt:true, notiz:"Vermarktungsstrategie Elbblick", kmTyp:"geschaeftlich", kmStart:"28000", kmEnd:"28004"},
+      {id:uid(), datum:"2024-11-02", zeitStr:"10:00-10:45", kategorie:"partner", zielId:"", zielName:"Haspa Immobilien, Adolphsplatz 3, Hamburg", km:"6", dauerMin:"", rueckfahrt:true, notiz:"Finanzierungsgespräch", kmTyp:"geschaeftlich", kmStart:"28004", kmEnd:"28010"},
+      {id:uid(), datum:"2024-11-22", zeitStr:"08:00-10:00", kategorie:"sonstige",zielId:"", zielName:"Hafencity, Am Sandtorkai 50, Hamburg", km:"8", dauerMin:"", rueckfahrt:true, notiz:"Objektbesichtigung Neubau", kmTyp:"geschaeftlich", kmStart:"28010", kmEnd:"28018"},
+      {id:uid(), datum:"2024-12-10", zeitStr:"14:00-15:00", kategorie:"partner", zielId:"", zielName:"Vattenfall Wärme, Überseering 12, Hamburg", km:"16", dauerMin:"", rueckfahrt:true, notiz:"Energieberatung Bestandsgebäude", kmTyp:"geschaeftlich", kmStart:"28018", kmEnd:"28034"},
+      {id:uid(), datum:"2025-01-08", zeitStr:"09:30-10:00", kategorie:"partner", zielId:"", zielName:"RA Schmidt & Partner, Neuer Wall 10, Hamburg", km:"2", dauerMin:"", rueckfahrt:true, notiz:"Mietvertragsprüfung", kmTyp:"geschaeftlich", kmStart:"28034", kmEnd:"28036"},
+      {id:uid(), datum:"2025-01-28", zeitStr:"08:00-09:30", kategorie:"sonstige",zielId:"", zielName:"Bergedorf, Wentorfer Str. 38, Hamburg", km:"30", dauerMin:"", rueckfahrt:true, notiz:"Grundstücksbesichtigung", kmTyp:"geschaeftlich", kmStart:"28036", kmEnd:"28066"},
+      {id:uid(), datum:"2025-02-18", zeitStr:"09:00-09:45", kategorie:"partner", zielId:"", zielName:"Engel & Völkers, Stadthausbrücke 5, Hamburg", km:"4", dauerMin:"", rueckfahrt:true, notiz:"Exposé-Abstimmung", kmTyp:"geschaeftlich", kmStart:"28066", kmEnd:"28070"},
+      {id:uid(), datum:"2025-03-12", zeitStr:"08:30-11:00", kategorie:"sonstige",zielId:"", zielName:"Kiel, Holstenbrücke 2, 24103 Kiel", km:"196", dauerMin:"", rueckfahrt:true, notiz:"Baugrundstück Kieler Förde", kmTyp:"geschaeftlich", kmStart:"28070", kmEnd:"28266"},
+      {id:uid(), datum:"2025-04-02", zeitStr:"10:00-11:00", kategorie:"partner", zielId:"", zielName:"Haspa Immobilien, Adolphsplatz 3, Hamburg", km:"6", dauerMin:"", rueckfahrt:true, notiz:"KfW-Förderung besprechen", kmTyp:"geschaeftlich", kmStart:"28266", kmEnd:"28272"},
+      {id:uid(), datum:"2025-05-14", zeitStr:"06:30-18:00", kategorie:"messe",   zielId:"", zielName:"Messegelände Hannover, Hermesallee 1", km:"310", dauerMin:"", rueckfahrt:true, notiz:"Real Estate Arena — Tag 1", kmTyp:"geschaeftlich", kmStart:"28272", kmEnd:"28582"},
+      {id:uid(), datum:"2025-06-04", zeitStr:"09:00-10:00", kategorie:"partner", zielId:"", zielName:"Vattenfall Wärme, Überseering 12, Hamburg", km:"16", dauerMin:"", rueckfahrt:true, notiz:"Energieausweis Neubau", kmTyp:"geschaeftlich", kmStart:"28582", kmEnd:"28598"},
+      {id:uid(), datum:"2025-07-10", zeitStr:"08:45-09:30", kategorie:"partner", zielId:"", zielName:"Engel & Völkers, Stadthausbrücke 5, Hamburg", km:"4", dauerMin:"", rueckfahrt:true, notiz:"Verkaufsverhandlung Villa Blankenese", kmTyp:"geschaeftlich", kmStart:"28598", kmEnd:"28602"},
+      {id:uid(), datum:"2025-08-20", zeitStr:"10:00-12:00", kategorie:"sonstige",zielId:"", zielName:"Lübeck, Koberg 2, 23552 Lübeck", km:"130", dauerMin:"", rueckfahrt:true, notiz:"Denkmalschutz-Objekt Altstadt", kmTyp:"geschaeftlich", kmStart:"28602", kmEnd:"28732"},
+      {id:uid(), datum:"2025-09-15", zeitStr:"09:00-09:30", kategorie:"partner", zielId:"", zielName:"RA Schmidt & Partner, Neuer Wall 10, Hamburg", km:"2", dauerMin:"", rueckfahrt:true, notiz:"Räumungsklage vorbereiten", kmTyp:"geschaeftlich", kmStart:"28732", kmEnd:"28734"},
     ],
   };
-  return { fz, fz2 };
+
+  // ── fz3: Audi A4 Avant — Köln ──────────────────────────────────────────────
+  const fz3={
+    ...makeFahrzeug(2),
+    name:"Audi A4 Avant 40 TDI",
+    kennzeichen:"K-RS 4411",
+    marke:"Audi", modell:"A4 Avant 40 TDI",
+    farbe:"#9F8CBB",
+    kraftstoff:"Diesel",
+    tuvDatum:"2027-01-15",
+    kfzBriefNr:"WAUZZZF4XNA112233",
+    fahrgestellNr:"WAUZZZF4XNA112233",
+    reifendruckVorne:"2.3", reifendruckHinten:"2.5",
+    halterName:"Muster Rheinhaus Verwaltung GmbH",
+    halterAnschrift:"Hohenzollernring 55, 50672 Köln",
+    halterTelPrivat:"+49 221 987600", halterTelFirma:"+49 221 987601",
+    fahrer:"Stefan Musterbank",
+    fahrerAnschrift:"Aachener Str. 320, 50933 Köln",
+    fahrerTelPrivat:"+49 162 998877", fahrerTelFirma:"+49 221 987602",
+    standort:{name:"Büro Hohenzollernring", adresse:"Hohenzollernring 55, 50672 Köln"},
+    kmStandInitial:"15000",
+    partner:[
+      {id:uid(), name:"Sparkasse KölnBonn",       adresse:"Hahnenstr. 57, 50667 Köln",            telefon:"+49 221 2260",    kmVonStandort:"2",   notiz:"Objektfinanzierung", typ:"kunde"},
+      {id:uid(), name:"Vonovia SE Köln",           adresse:"Schanzenstr. 30, 51063 Köln",          telefon:"+49 234 314-0",   kmVonStandort:"8",   notiz:"Bestandsverwaltung", typ:"kunde"},
+      {id:uid(), name:"Handwerkskammer zu Köln",   adresse:"Heumarkt 12, 50667 Köln",              telefon:"+49 221 2022-0",  kmVonStandort:"2",   notiz:"Sanierungspartner",  typ:"sonstiges"},
+      {id:uid(), name:"Steuerberater Dr. Lenz",    adresse:"Friesenplatz 17a, 50672 Köln",          telefon:"+49 221 550880",  kmVonStandort:"1",   notiz:"Jahresabschluss", typ:"sonstiges"},
+      {id:uid(), name:"RheinEnergie AG",           adresse:"Parkgürtel 24, 50823 Köln",             telefon:"+49 221 178-0",   kmVonStandort:"4",   notiz:"Energieberatung", typ:"kunde"},
+    ],
+    standorte:[
+      {id:uid(), name:"Aral Hohenzollernring",    adresse:"Hohenzollernring 100, 50672 Köln",       kmVonStandort:"1",  besuche:14, typ:"auto"},
+      {id:uid(), name:"Audi Zentrum Köln",        adresse:"Oskar-Jäger-Str. 125, 50825 Köln",      kmVonStandort:"5",  besuche:3,  typ:"auto"},
+      {id:uid(), name:"Waschstraße Ehrenfeld",     adresse:"Venloer Str. 400, 50825 Köln",          kmVonStandort:"4",  besuche:7,  typ:"auto"},
+    ],
+    messen:[
+      {id:uid(), name:"EXPO REAL 2025", adresse:"Messe München, Am Messesee 2, 81829 München", datum:"2025-10-06", datumBis:"2025-10-08", partnerId:"", notiz:"Immobilienmesse München", kmVonStandort:"580"},
+    ],
+    tankstellen:[
+      {id:uid(), datum:"2024-10-20", uhrzeit:"08:00", stationName:"Aral Hohenzollernring",  adresse:"Hohenzollernring 100, Köln",  kraftstoff:"Diesel", menge:"42.5", preisProLiter:"1.659", gesamtbetrag:"70.51", kmStand:"15400", zahlungsart:"EC-Karte", bonNr:"AR-K-1190", notiz:"", kmVonStandort:"1"},
+      {id:uid(), datum:"2025-01-14", uhrzeit:"17:20", stationName:"Shell Deutzer Brücke",   adresse:"Deutzer Freiheit 70, Köln",   kraftstoff:"Diesel", menge:"48.0", preisProLiter:"1.639", gesamtbetrag:"78.67", kmStand:"16300", zahlungsart:"EC-Karte", bonNr:"SH-K-5510", notiz:"", kmVonStandort:"4"},
+      {id:uid(), datum:"2025-04-08", uhrzeit:"07:45", stationName:"Aral Hohenzollernring",  adresse:"Hohenzollernring 100, Köln",  kraftstoff:"Diesel", menge:"44.0", preisProLiter:"1.669", gesamtbetrag:"73.44", kmStand:"17200", zahlungsart:"Firmen-Tankkarte", bonNr:"AR-K-2280", notiz:"", kmVonStandort:"1"},
+      {id:uid(), datum:"2025-07-02", uhrzeit:"12:00", stationName:"Total BAB A4 Rasthof",   adresse:"BAB A4 Raststätte Frechen",   kraftstoff:"Diesel", menge:"52.3", preisProLiter:"1.729", gesamtbetrag:"90.43", kmStand:"18300", zahlungsart:"Firmen-Tankkarte", bonNr:"TT-A4-8810", notiz:"Fahrt Düsseldorf", kmVonStandort:"15"},
+      {id:uid(), datum:"2025-09-25", uhrzeit:"16:50", stationName:"Aral Hohenzollernring",  adresse:"Hohenzollernring 100, Köln",  kraftstoff:"Diesel", menge:"46.0", preisProLiter:"1.649", gesamtbetrag:"75.85", kmStand:"19400", zahlungsart:"EC-Karte", bonNr:"AR-K-3370", notiz:"", kmVonStandort:"1"},
+    ],
+    strafen:[
+      {id:uid(), datum:"2025-06-30", uhrzeit:"09:15", typ:"Parkverstoß", betrag:"25", tatort:"Ehrenstraße / Brüsseler Platz", tatortAdresse:"50672 Köln", behoerde:"Stadt Köln Ordnungsamt", adresseBehoerde:"Kalk-Mülheimer-Str. 58, 51103 Köln", aktenzeichen:"OWI-K-2025-7782", frist:"2025-08-15", bezahlt:false, notiz:"Anwohner-Parkzone ohne Ausweis"},
+    ],
+    waesche:[
+      {id:uid(), datum:"2025-02-22", uhrzeit:"11:00", typ:"Außenwäsche",  name:"Waschstraße Ehrenfeld", adresse:"Venloer Str. 400, Köln", betrag:"11.90", zahlungsart:"Bar", notiz:"", kmVonStandort:"4"},
+      {id:uid(), datum:"2025-05-30", uhrzeit:"09:30", typ:"Vollwäsche",   name:"Waschstraße Ehrenfeld", adresse:"Venloer Str. 400, Köln", betrag:"19.90", zahlungsart:"EC-Karte", notiz:"Premium Programm", kmVonStandort:"4"},
+      {id:uid(), datum:"2025-08-18", uhrzeit:"10:00", typ:"Innenreinigung",name:"Autopflege Müller",    adresse:"Aachener Str. 155, Köln",betrag:"45.00", zahlungsart:"EC-Karte", notiz:"Leder + Polster", kmVonStandort:"2"},
+    ],
+    services:[
+      {id:uid(), datum:"2025-03-05", typ:"Inspektion",    werkstatt:"Audi Zentrum Köln",   adresse:"Oskar-Jäger-Str. 125, Köln", betrag:"380.00", kmStand:"16800", zahlungsart:"Überweisung", rechnungsNr:"AZ-K-2025-0088", faelligDatum:"2026-03-05", faelligKm:"36800", notiz:"Inspektion + Pollenfilter", kmVonStandort:"5"},
+      {id:uid(), datum:"2025-08-22", typ:"Reifenwechsel", werkstatt:"Reifen Müller Köln",  adresse:"Dürener Str. 260, 50935 Köln",betrag:"120.00", kmStand:"19000", zahlungsart:"EC-Karte",    rechnungsNr:"RM-K-2025-0442", faelligDatum:"", faelligKm:"", notiz:"Sommerreifen 225/50 R17", kmVonStandort:"3"},
+    ],
+    parkplaetze:[
+      {id:uid(), datum:"2025-01-20", uhrzeit:"09:30", ort:"Parkhaus Am Dom",        adresse:"Burghöfe, 50667 Köln",          dauer:"2",  betrag:"7.00",  zahlungsart:"EC-Karte", bemerkung:"Sparkasse Termin"},
+      {id:uid(), datum:"2025-04-15", uhrzeit:"08:00", ort:"Tiefgarage Mediapark",   adresse:"Im Mediapark 5, 50670 Köln",    dauer:"4",  betrag:"12.00", zahlungsart:"App", bemerkung:"Ganztag Büro"},
+      {id:uid(), datum:"2025-06-20", uhrzeit:"10:00", ort:"Parkhaus Rheinauhafen",  adresse:"Harry-Blum-Platz 2, 50678 Köln",dauer:"3",  betrag:"9.00",  zahlungsart:"EC-Karte", bemerkung:"Objektbesichtigung"},
+      {id:uid(), datum:"2025-10-06", uhrzeit:"07:30", ort:"P+R Messe München",      adresse:"Am Messesee, 81829 München",    dauer:"10", betrag:"5.00",  zahlungsart:"Bar", bemerkung:"EXPO REAL"},
+    ],
+    fahrten:[
+      {id:uid(), datum:"2024-10-10", zeitStr:"09:00-09:20", kategorie:"partner", zielId:"", zielName:"Sparkasse KölnBonn, Hahnenstr. 57, Köln", km:"4", dauerMin:"", rueckfahrt:true, notiz:"Kreditgespräch Neubauprojekt", kmTyp:"geschaeftlich", kmStart:"15000", kmEnd:"15004"},
+      {id:uid(), datum:"2024-10-25", zeitStr:"10:00-10:50", kategorie:"partner", zielId:"", zielName:"Vonovia SE, Schanzenstr. 30, Köln", km:"16", dauerMin:"", rueckfahrt:true, notiz:"Bestandsübernahme besprechen", kmTyp:"geschaeftlich", kmStart:"15004", kmEnd:"15020"},
+      {id:uid(), datum:"2024-11-14", zeitStr:"08:30-09:30", kategorie:"sonstige",zielId:"", zielName:"Ehrenfeld, Körnerstr. 28, 50823 Köln", km:"8", dauerMin:"", rueckfahrt:true, notiz:"Objektbesichtigung Altbau", kmTyp:"geschaeftlich", kmStart:"15020", kmEnd:"15028"},
+      {id:uid(), datum:"2024-12-03", zeitStr:"09:00-09:40", kategorie:"partner", zielId:"", zielName:"Steuerberater Dr. Lenz, Friesenplatz 17a, Köln", km:"2", dauerMin:"", rueckfahrt:true, notiz:"Jahresabschluss vorbereiten", kmTyp:"geschaeftlich", kmStart:"15028", kmEnd:"15030"},
+      {id:uid(), datum:"2025-01-09", zeitStr:"10:00-10:30", kategorie:"partner", zielId:"", zielName:"Handwerkskammer zu Köln, Heumarkt 12", km:"4", dauerMin:"", rueckfahrt:true, notiz:"Handwerkerverzeichnis Sanierung", kmTyp:"geschaeftlich", kmStart:"15030", kmEnd:"15034"},
+      {id:uid(), datum:"2025-01-28", zeitStr:"09:00-09:45", kategorie:"partner", zielId:"", zielName:"RheinEnergie AG, Parkgürtel 24, Köln", km:"8", dauerMin:"", rueckfahrt:true, notiz:"Energiepass Bestandsgebäude", kmTyp:"geschaeftlich", kmStart:"15034", kmEnd:"15042"},
+      {id:uid(), datum:"2025-02-20", zeitStr:"08:00-11:30", kategorie:"sonstige",zielId:"", zielName:"Düsseldorf, Königsallee 60, 40212 Düsseldorf", km:"80", dauerMin:"", rueckfahrt:true, notiz:"Investorengespräch", kmTyp:"geschaeftlich", kmStart:"15042", kmEnd:"15122"},
+      {id:uid(), datum:"2025-03-18", zeitStr:"09:30-10:00", kategorie:"partner", zielId:"", zielName:"Sparkasse KölnBonn, Hahnenstr. 57, Köln", km:"4", dauerMin:"", rueckfahrt:true, notiz:"Sondertilgung besprechen", kmTyp:"geschaeftlich", kmStart:"15122", kmEnd:"15126"},
+      {id:uid(), datum:"2025-04-08", zeitStr:"10:00-11:30", kategorie:"partner", zielId:"", zielName:"Vonovia SE, Schanzenstr. 30, Köln", km:"16", dauerMin:"", rueckfahrt:true, notiz:"Übergabeprotokoll 12 WE", kmTyp:"geschaeftlich", kmStart:"15126", kmEnd:"15142"},
+      {id:uid(), datum:"2025-05-14", zeitStr:"08:00-12:00", kategorie:"sonstige",zielId:"", zielName:"Bonn, Adenauerallee 139-141, 53113 Bonn", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Fördermittelberatung NRW.BANK", kmTyp:"geschaeftlich", kmStart:"15142", kmEnd:"15202"},
+      {id:uid(), datum:"2025-06-05", zeitStr:"09:00-09:30", kategorie:"partner", zielId:"", zielName:"Steuerberater Dr. Lenz, Friesenplatz 17a, Köln", km:"2", dauerMin:"", rueckfahrt:true, notiz:"USt-Voranmeldung Q1", kmTyp:"geschaeftlich", kmStart:"15202", kmEnd:"15204"},
+      {id:uid(), datum:"2025-07-01", zeitStr:"08:45-10:30", kategorie:"sonstige",zielId:"", zielName:"Leverkusen, Friedrich-Ebert-Platz 1, 51373 Leverkusen", km:"30", dauerMin:"", rueckfahrt:true, notiz:"Grundstückskauf Verhandlung", kmTyp:"geschaeftlich", kmStart:"15204", kmEnd:"15234"},
+      {id:uid(), datum:"2025-07-22", zeitStr:"10:00-10:40", kategorie:"partner", zielId:"", zielName:"RheinEnergie AG, Parkgürtel 24, Köln", km:"8", dauerMin:"", rueckfahrt:true, notiz:"Fernwärme-Anschluss Neubau", kmTyp:"geschaeftlich", kmStart:"15234", kmEnd:"15242"},
+      {id:uid(), datum:"2025-08-12", zeitStr:"09:00-09:30", kategorie:"partner", zielId:"", zielName:"Handwerkskammer zu Köln, Heumarkt 12", km:"4", dauerMin:"", rueckfahrt:true, notiz:"Ausschreibung Dachsanierung", kmTyp:"geschaeftlich", kmStart:"15242", kmEnd:"15246"},
+      {id:uid(), datum:"2025-09-20", zeitStr:"08:00-10:00", kategorie:"sonstige",zielId:"", zielName:"Aachen, Theaterplatz 14, 52062 Aachen", km:"140", dauerMin:"", rueckfahrt:true, notiz:"Grundstücksbesichtigung Aachen-Nord", kmTyp:"geschaeftlich", kmStart:"15246", kmEnd:"15386"},
+      {id:uid(), datum:"2025-10-06", zeitStr:"06:00-20:00", kategorie:"messe",   zielId:"", zielName:"Messe München, Am Messesee 2, München", km:"1160", dauerMin:"", rueckfahrt:true, notiz:"EXPO REAL — 3 Tage", kmTyp:"geschaeftlich", kmStart:"15386", kmEnd:"16546"},
+    ],
+  };
+
+  return { fz, fz2, fz3 };
 }
 
 // ─── ÜBERSICHT TAB ───────────────────────────────────────────────────────────
@@ -2210,7 +2912,7 @@ function UebersichtTab({stats, aktiv, acc, C, SANS, FS, katAccent, setTab, setFF
     <div style={{display:"grid",gridTemplateColumns:"minmax(0,3fr) minmax(0,2fr)",gap:12,marginBottom:12}}>
 
     {/* Kosten Breakdown */}
-    <div style={{background:C.surface,padding:"18px 20px",borderLeft:`2px solid ${C.steel}`,boxShadow:C.shadow,borderRadius:8}}>
+    <div style={{background:C.surface,padding:"18px 20px",borderLeft:`2px solid ${C.steel}`,boxShadow:C.shadow,borderRadius:C.inputRadius||8}}>
     <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",marginBottom:16}}>
     <div style={{fontSize:13,color:C.text,letterSpacing:2,textTransform:"uppercase",fontWeight:700,fontFamily:SANS}}>KOSTEN ÜBERSICHT</div>
     <div style={{fontSize:20,fontWeight:800,color:C.text,fontFamily:SANS}}>{stats.gesamtKosten.toFixed(2)} €</div>
@@ -2230,12 +2932,12 @@ function UebersichtTab({stats, aktiv, acc, C, SANS, FS, katAccent, setTab, setFF
     </div>
 
     {/* KM nach Kategorie */}
-    <div style={{background:C.surface,padding:"18px 20px",borderLeft:`2px solid ${C.red}`,boxShadow:C.shadow,borderRadius:8}}>
+    <div style={{background:C.surface,padding:"18px 20px",borderLeft:`2px solid ${C.red}`,boxShadow:C.shadow,borderRadius:C.inputRadius||8}}>
     <div style={{fontSize:13,color:C.text,letterSpacing:1.5,textTransform:"uppercase",fontWeight:700,marginBottom:16,fontFamily:SANS}}>KM NACH KAT.</div>
     {Object.entries(stats.nK).map(([kat,km])=>{
     const pct=((km/(stats.gKm||1))*100).toFixed(0);
     const ak=katAccent[kat]||C.steel;
-    const short={standorte:"Standort",partner:"Partner",messe:"Messen"};
+    const short={standorte:"Standort",partner:"Partner",messe:"Messen",tankstelle:"Tankstelle",waesche:"Wäsche",service:"Service",laden:"Laden",bank:"Bank",behoerde:"Behörde",sonstige:"Sonstige"};
     return (
     <div key={kat} style={{marginBottom:14}}>
     <div style={{display:"flex",justifyContent:"space-between",marginBottom:5,fontSize:14}}>
@@ -2252,7 +2954,7 @@ function UebersichtTab({stats, aktiv, acc, C, SANS, FS, katAccent, setTab, setFF
     </div>
 
     {/* ── ZONE 4: KM / Monat Chart ── */}
-    <div style={{background:C.surface,padding:"18px 20px",borderLeft:`2px solid ${C.red}`,boxShadow:C.shadow,borderRadius:8,marginBottom:12}}>
+    <div style={{background:C.surface,padding:"18px 20px",borderLeft:`2px solid ${C.red}`,boxShadow:C.shadow,borderRadius:C.inputRadius||8,marginBottom:12}}>
     <div style={{fontSize:13,color:C.text,letterSpacing:1.5,textTransform:"uppercase",fontWeight:700,marginBottom:4,fontFamily:SANS}}>KM / MONAT</div>
     <MonatsChart kmByMonth={stats.kmByMonth} accent={C.red}/>
     </div>
@@ -2261,7 +2963,7 @@ function UebersichtTab({stats, aktiv, acc, C, SANS, FS, katAccent, setTab, setFF
     <div style={{display:"grid",gridTemplateColumns:"minmax(0,1fr) minmax(0,1fr)",gap:12,marginBottom:12}}>
 
     {/* Nächste Fälligkeiten */}
-    <div style={{background:C.surface,padding:"18px 20px",borderLeft:`2px solid ${C.service}`,boxShadow:C.shadow,borderRadius:8}}>
+    <div style={{background:C.surface,padding:"18px 20px",borderLeft:`2px solid ${C.service}`,boxShadow:C.shadow,borderRadius:C.inputRadius||8}}>
     <div style={{fontSize:13,color:C.text,letterSpacing:1.5,textTransform:"uppercase",fontWeight:700,marginBottom:14,fontFamily:SANS}}>NÄCHSTE FÄLLIGKEITEN</div>
     {stats.faelligkeiten.length>0 ? stats.faelligkeiten.map(x=>{
     const today=new Date().toISOString().slice(0,10);
@@ -2292,7 +2994,7 @@ function UebersichtTab({stats, aktiv, acc, C, SANS, FS, katAccent, setTab, setFF
     </div>
 
     {/* Top Besucht */}
-    <div style={{background:C.surface,padding:"18px 20px",borderLeft:`2px solid ${C.red}`,boxShadow:C.shadow,borderRadius:8}}>
+    <div style={{background:C.surface,padding:"18px 20px",borderLeft:`2px solid ${C.red}`,boxShadow:C.shadow,borderRadius:C.inputRadius||8}}>
     <div style={{fontSize:13,color:C.text,letterSpacing:1.5,textTransform:"uppercase",fontWeight:700,marginBottom:14,fontFamily:SANS}}>TOP BESUCHT</div>
     {Object.entries(stats.nP).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([id,km],i)=>{
     const p=(aktiv.partner||[]).find(x=>x.id===id);
@@ -2314,7 +3016,7 @@ function UebersichtTab({stats, aktiv, acc, C, SANS, FS, katAccent, setTab, setFF
     </div>
 
     {/* ── ZONE 6: Letzte Fahrten ── */}
-    <div style={{background:C.surface,padding:"18px 20px",borderLeft:`2px solid ${C.red}`,boxShadow:C.shadow,borderRadius:8}}>
+    <div style={{background:C.surface,padding:"18px 20px",borderLeft:`2px solid ${C.red}`,boxShadow:C.shadow,borderRadius:C.inputRadius||8}}>
     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
     <div style={{fontSize:13,color:C.text,letterSpacing:2,textTransform:"uppercase",fontWeight:700,fontFamily:SANS}}>LETZTE FAHRTEN</div>
     <button onClick={()=>{setTab("fahrten");setFForm("new");setFData(E_F());}} style={btnSolid(C.red)}>
@@ -2344,7 +3046,7 @@ function UebersichtTab({stats, aktiv, acc, C, SANS, FS, katAccent, setTab, setFF
     {!aktiv.standort?.name&&(
     <div style={{background:C.surface,borderTop:`2px solid ${C.red}`,padding:"16px 20px",
     display:"flex",alignItems:"center",justifyContent:"space-between",
-    boxShadow:C.shadow,borderRadius:8}}>
+    boxShadow:C.shadow,borderRadius:C.inputRadius||8}}>
     <div style={{display:"flex",alignItems:"center",gap:10,fontSize:14,color:C.red,fontFamily:SANS,fontWeight:600}}>
     <Ico name="alert" size={15} color={C.red}/>Kein Stammstandort — bitte einrichten.
     </div>
@@ -2356,7 +3058,7 @@ function UebersichtTab({stats, aktiv, acc, C, SANS, FS, katAccent, setTab, setFF
     {stats.strafenOffen>0&&(
     <div style={{background:C.surface,borderTop:`2px solid ${C.strafe}`,padding:"16px 20px",
     display:"flex",alignItems:"center",justifyContent:"space-between",
-    boxShadow:C.shadow,borderRadius:8}}>
+    boxShadow:C.shadow,borderRadius:C.inputRadius||8}}>
     <div style={{display:"flex",alignItems:"center",gap:10,fontSize:14,color:C.strafe,fontFamily:SANS,fontWeight:600}}>
     <Ico name="zap" size={15} color={C.strafe}/>
     {stats.strafenOffen} offene {stats.strafenOffen===1?"Strafe":"Strafen"} — noch nicht bezahlt
@@ -2369,7 +3071,7 @@ function UebersichtTab({stats, aktiv, acc, C, SANS, FS, katAccent, setTab, setFF
     {stats.faelligUeberfaellig.length>0&&(
     <div style={{background:C.surface,borderTop:`2px solid ${C.service}`,padding:"16px 20px",
     display:"flex",alignItems:"center",justifyContent:"space-between",
-    boxShadow:C.shadow,borderRadius:8}}>
+    boxShadow:C.shadow,borderRadius:C.inputRadius||8}}>
     <div style={{display:"flex",alignItems:"center",gap:10,fontSize:14,color:C.service,fontFamily:SANS,fontWeight:600}}>
     <Ico name="alert" size={15} color={C.service}/>
     {stats.faelligUeberfaellig.length} {stats.faelligUeberfaellig.length===1?"Fälligkeit":"Fälligkeiten"} überfällig: {stats.faelligUeberfaellig.map(x=>x.typ).join(", ")}
@@ -2537,19 +3239,6 @@ function BerichtTab({gefFahrten, aktiv, acc, C, SANS, safeFloat, formatDatum,
   OPT_FAHRT_KAT_F, katAccent, csvModal, setCsvModal, sheetsModal, setSheetsModal,
   printPreview, setPrintPreview, copied, setCopied, sheetsCopied, setSheetsCopied,
   copiedTimer, sheetsCopiedTimer}) {
-  const [pdfBusy, setPdfBusy] = useState(false);
-  const handlePdf = async () => {
-    setPdfBusy(true);
-    try {
-      await generatePdfFile(gefFahrten, aktiv, safeFloat, formatDatum, getZielName, getZielAdr);
-    } catch(e) {
-      console.error("PDF generation failed:", e);
-      // Fallback: window.print()
-      setPrintPreview(true);
-    } finally {
-      setPdfBusy(false);
-    }
-  };
   const kmGesch  = gefFahrten.reduce((s,f)=>s+(f.kmTyp==="geschaeftlich"||!f.kmTyp?safeFloat(f.km):0),0);
   const kmWohn   = gefFahrten.reduce((s,f)=>s+(f.kmTyp==="wohnArbeit"?safeFloat(f.km):0),0);
   const kmPrivat = gefFahrten.reduce((s,f)=>s+(f.kmTyp==="privat"?safeFloat(f.km):0),0);
@@ -2655,11 +3344,26 @@ function BerichtTab({gefFahrten, aktiv, acc, C, SANS, safeFloat, formatDatum,
     f.kmStart||"",typ==="geschaeftlich"?km.toFixed(0):"",typ==="wohnArbeit"?km.toFixed(0):"",
     typ==="privat"?km.toFixed(0):"",f.kmEnd||"",aktiv.fahrer||""].map(escTab).join("\t");
     });
-    navigator.clipboard?.writeText([hdr.join("\t"),...rows].join("\n"))
-    .then(()=>{setSheetsCopied(true);sheetsCopiedTimer.current=setTimeout(()=>setSheetsCopied(false),3000);})
-    .catch(()=>{});
+    const text=[hdr.join("\t"),...rows].join("\n");
+    const copyDone=()=>{setSheetsCopied(true);sheetsCopiedTimer.current=setTimeout(()=>setSheetsCopied(false),3000);};
+    if(navigator.clipboard?.writeText){
+      navigator.clipboard.writeText(text).then(copyDone).catch(()=>{
+        // Fallback: textarea + execCommand
+        const ta=document.createElement("textarea");
+        ta.value=text;ta.style.cssText="position:fixed;left:-9999px;top:0;opacity:0";
+        document.body.appendChild(ta);ta.select();
+        try{document.execCommand("copy");copyDone();}catch(e){/*ok*/}
+        document.body.removeChild(ta);
+      });
+    } else {
+      const ta=document.createElement("textarea");
+      ta.value=text;ta.style.cssText="position:fixed;left:-9999px;top:0;opacity:0";
+      document.body.appendChild(ta);ta.select();
+      try{document.execCommand("copy");copyDone();}catch(e){/*ok*/}
+      document.body.removeChild(ta);
+    }
     }} style={{
-    flex:1,height:48,borderRadius:8,border:"none",
+    flex:1,height:48,borderRadius:C.inputRadius||8,border:"none",
     background:sheetsCopied?C.sheetsGreen:C.text,
     color:"#fff",cursor:"pointer",fontSize:16,fontFamily:SANS,fontWeight:700,
     letterSpacing:0.5,display:"flex",alignItems:"center",justifyContent:"center",gap:8,
@@ -2670,7 +3374,7 @@ function BerichtTab({gefFahrten, aktiv, acc, C, SANS, safeFloat, formatDatum,
     </button>
     <button onClick={()=>window.open("https://sheets.new","_blank")}
     style={{
-    flex:1,height:48,borderRadius:8,border:"none",
+    flex:1,height:48,borderRadius:C.inputRadius||8,border:"none",
     background:C.sheetsGreen,color:"#fff",cursor:"pointer",
     fontSize:16,fontFamily:SANS,fontWeight:700,letterSpacing:0.5,
     display:"flex",alignItems:"center",justifyContent:"center",gap:8,
@@ -2688,7 +3392,7 @@ function BerichtTab({gefFahrten, aktiv, acc, C, SANS, safeFloat, formatDatum,
     <BaseModal onClose={()=>setCsvModal(false)} title="CSV Exportieren" icon="download" accent={acc} maxWidth={540}>
     <div style={{
     display:"flex",alignItems:"center",gap:8,
-    padding:"8px 12px",borderRadius:8,background:C.surfaceAlt,
+    padding:"8px 12px",borderRadius:C.inputRadius||8,background:C.surfaceAlt,
     border:`1px solid ${C.border}`,marginBottom:16,
     }}>
     <Ico name="fileText" size={13} color={C.muted}/>
@@ -2699,7 +3403,7 @@ function BerichtTab({gefFahrten, aktiv, acc, C, SANS, safeFloat, formatDatum,
     <textarea readOnly value={buildCsv()}
     style={{
     width:"100%",height:150,fontFamily:"'Courier New',monospace",fontSize:14,
-    background:C.bg,border:`1px solid ${C.border}`,borderRadius:8,
+    background:C.bg,border:`1px solid ${C.border}`,borderRadius:C.inputRadius||8,
     padding:"10px 12px",resize:"none",boxSizing:"border-box",
     color:C.textSoft,lineHeight:1.6,outline:"none",
     }}
@@ -2707,11 +3411,25 @@ function BerichtTab({gefFahrten, aktiv, acc, C, SANS, safeFloat, formatDatum,
     />
     <div style={{display:"flex",gap:10,marginTop:16}}>
     <button onClick={()=>{
-    navigator.clipboard?.writeText(buildCsv())
-    .then(()=>{setCopied(true);copiedTimer.current=setTimeout(()=>setCopied(false),2000);})
-    .catch(()=>{});
+    const text=buildCsv();
+    const copyDone=()=>{setCopied(true);copiedTimer.current=setTimeout(()=>setCopied(false),2000);};
+    if(navigator.clipboard?.writeText){
+      navigator.clipboard.writeText(text).then(copyDone).catch(()=>{
+        const ta=document.createElement("textarea");
+        ta.value=text;ta.style.cssText="position:fixed;left:-9999px;top:0;opacity:0";
+        document.body.appendChild(ta);ta.select();
+        try{document.execCommand("copy");copyDone();}catch(e){/*ok*/}
+        document.body.removeChild(ta);
+      });
+    } else {
+      const ta=document.createElement("textarea");
+      ta.value=text;ta.style.cssText="position:fixed;left:-9999px;top:0;opacity:0";
+      document.body.appendChild(ta);ta.select();
+      try{document.execCommand("copy");copyDone();}catch(e){/*ok*/}
+      document.body.removeChild(ta);
+    }
     }} style={{
-    flex:1,height:48,borderRadius:8,
+    flex:1,height:48,borderRadius:C.inputRadius||8,
     background:copied?C.savedGreen:acc,border:"none",
     color:"#fff",cursor:"pointer",fontSize:16,fontFamily:SANS,fontWeight:700,
     letterSpacing:0.5,display:"flex",alignItems:"center",justifyContent:"center",gap:8,
@@ -2724,7 +3442,7 @@ function BerichtTab({gefFahrten, aktiv, acc, C, SANS, safeFloat, formatDatum,
     onMouseEnter={e=>{e.currentTarget.style.background=C.surfaceAlt;e.currentTarget.style.borderColor=C.borderHi;}}
     onMouseLeave={e=>{e.currentTarget.style.background="transparent";e.currentTarget.style.borderColor=C.border;}}
     style={{
-    height:48,padding:"0 24px",borderRadius:8,
+    height:48,padding:"0 24px",borderRadius:C.inputRadius||8,
     background:"transparent",border:`1.5px solid ${C.border}`,
     color:C.textSoft,cursor:"pointer",fontSize:16,fontFamily:SANS,fontWeight:700,
     transition:"background 0.15s, border-color 0.15s",
@@ -2738,28 +3456,28 @@ function BerichtTab({gefFahrten, aktiv, acc, C, SANS, safeFloat, formatDatum,
     {/* Toolbar */}
     <div style={{display:"flex",justifyContent:"flex-end",gap:8,marginBottom:14}}>
     <button onClick={()=>{setCopied(false);setCsvModal(true);}}
-    style={{height:36,border:`1px solid ${C.border}`,borderRadius:8,background:"transparent",color:C.text,
+    style={{height:36,border:`1px solid ${C.border}`,borderRadius:C.inputRadius||8,background:"transparent",color:C.text,
     fontSize:14,fontFamily:SANS,fontWeight:700,letterSpacing:2,
     textTransform:"uppercase",padding:"0 14px",cursor:"pointer",display:"flex",alignItems:"center",gap:6}}>
     <Ico name="copy" size={13} color={C.muted}/> CSV
     </button>
     <button onClick={()=>{setSheetsCopied(false);setSheetsModal(true);}}
-    style={{height:36,border:`1px solid ${C.sheetsGreen}`,borderRadius:8,background:"transparent",color:C.sheetsGreen,
+    style={{height:36,border:`1px solid ${C.sheetsGreen}`,borderRadius:C.inputRadius||8,background:"transparent",color:C.sheetsGreen,
     fontSize:14,fontFamily:SANS,fontWeight:700,letterSpacing:2,
     textTransform:"uppercase",padding:"0 14px",cursor:"pointer",display:"flex",alignItems:"center",gap:6}}>
     <Ico name="fileText" size={15} color={C.sheetsGreen}/> SHEETS
     </button>
-    <button onClick={handlePdf} disabled={pdfBusy}
-    style={{height:36,border:`1px solid ${acc}`,borderRadius:8,background:acc,color:"#fff",
+    <button onClick={()=>setPrintPreview(true)}
+    style={{height:36,border:`1px solid ${acc}`,borderRadius:C.inputRadius||8,background:acc,color:"#fff",
     fontSize:14,fontFamily:SANS,fontWeight:700,letterSpacing:2,
-    textTransform:"uppercase",padding:"0 14px",cursor:pdfBusy?"wait":"pointer",opacity:pdfBusy?0.7:1,display:"flex",alignItems:"center",gap:6}}>
-    <Ico name="download" size={15} color="#fff"/> {pdfBusy?"…":"PDF"}
+    textTransform:"uppercase",padding:"0 14px",cursor:"pointer",display:"flex",alignItems:"center",gap:6}}>
+    <Ico name="download" size={15} color="#fff"/> PDF
     </button>
     </div>
 
     {/* Print Preview Modal */}
     {printPreview&&(
-    <div className="fahrt-print-area" style={{position:"fixed",inset:0,background:"#F8F8F6",zIndex:600,overflowY:"auto"}}>
+    <div className="fahrt-print-area" style={{position:"fixed",inset:0,background:C.surfaceAlt,zIndex:600,overflowY:"auto"}}>
     {/* Top bar — hidden when printing */}
     <div className="print-topbar" style={{
     position:"sticky",top:0,
@@ -2771,7 +3489,7 @@ function BerichtTab({gefFahrten, aktiv, acc, C, SANS, safeFloat, formatDatum,
     <div style={{maxWidth:1200,margin:"0 auto",padding:"0 32px",height:"100%",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
     <div style={{display:"flex",alignItems:"center",gap:12}}>
     <div style={{
-    width:32,height:32,borderRadius:8,background:`${acc}18`,
+    width:32,height:32,borderRadius:C.inputRadius||8,background:`${acc}18`,
     display:"flex",alignItems:"center",justifyContent:"center",
     }}>
     <Ico name="fileText" size={15} color={acc}/>
@@ -2786,42 +3504,26 @@ function BerichtTab({gefFahrten, aktiv, acc, C, SANS, safeFloat, formatDatum,
     </div>
     </div>
     <div style={{display:"flex",gap:8,alignItems:"center"}}>
-    {/* PDF DOWNLOAD + PRINT BUTTONS */}
-    <button
-    onClick={handlePdf}
-    disabled={pdfBusy}
-    onMouseEnter={e=>{if(!pdfBusy)e.currentTarget.style.background=`${acc}dd`;}}
-    onMouseLeave={e=>{e.currentTarget.style.background=acc;}}
-    style={{
-    height:38,padding:"0 24px",borderRadius:8,
-    background:acc,border:`1.5px solid ${acc}`,
-    color:"#fff",cursor:pdfBusy?"wait":"pointer",fontSize:14,fontFamily:SANS,
-    fontWeight:700,display:"flex",alignItems:"center",gap:8,
-    transition:"background 0.15s",opacity:pdfBusy?0.7:1,
-    boxShadow:`0 2px 8px ${acc}44`,
-    }}>
-    <Ico name="download" size={15} color="#fff"/>
-    {pdfBusy ? "Erstelle PDF…" : "PDF herunterladen"}
-    </button>
     <button
     onClick={()=>window.print()}
-    onMouseEnter={e=>{e.currentTarget.style.background=C.surfaceAlt;e.currentTarget.style.borderColor=C.borderHi;}}
-    onMouseLeave={e=>{e.currentTarget.style.background="transparent";e.currentTarget.style.borderColor=C.border;}}
+    onMouseEnter={e=>{e.currentTarget.style.background=`${acc}dd`;}}
+    onMouseLeave={e=>{e.currentTarget.style.background=acc;}}
     style={{
-    height:38,padding:"0 20px",borderRadius:8,
-    background:"transparent",border:`1.5px solid ${C.border}`,
-    color:C.textSoft,cursor:"pointer",fontSize:14,fontFamily:SANS,
-    fontWeight:700,display:"flex",alignItems:"center",gap:6,
-    transition:"background 0.15s, border-color 0.15s",
+    height:38,padding:"0 24px",borderRadius:C.inputRadius||8,
+    background:acc,border:`1.5px solid ${acc}`,
+    color:"#fff",cursor:"pointer",fontSize:14,fontFamily:SANS,
+    fontWeight:700,display:"flex",alignItems:"center",gap:8,
+    transition:"background 0.15s",
+    boxShadow:`0 2px 8px ${acc}44`,
     }}>
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-    Drucken
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+    Drucken / PDF
     </button>
     <button onClick={()=>setPrintPreview(false)}
     onMouseEnter={e=>{e.currentTarget.style.background=C.surfaceAlt;e.currentTarget.style.borderColor=C.borderHi;}}
     onMouseLeave={e=>{e.currentTarget.style.background="transparent";e.currentTarget.style.borderColor=C.border;}}
     style={{
-    height:38,padding:"0 20px",borderRadius:8,
+    height:38,padding:"0 20px",borderRadius:C.inputRadius||8,
     background:"transparent",border:`1.5px solid ${C.border}`,
     color:C.textSoft,cursor:"pointer",fontSize:14,fontFamily:SANS,
     fontWeight:700,display:"flex",alignItems:"center",gap:6,
@@ -2846,10 +3548,10 @@ function BerichtTab({gefFahrten, aktiv, acc, C, SANS, safeFloat, formatDatum,
     <div style={{overflowX:"auto"}}>
     <table style={{width:"100%",borderCollapse:"collapse",fontSize:14,fontFamily:SANS,border:"1px solid #bbb"}}>
     <thead>
-    <tr style={{borderBottom:"2px solid #111",background:"#f5f5f3"}}>
+    <tr style={{borderBottom:"2px solid #111",background:C.bg}}>
     {["Datum","Fahrzeit","Reiseroute und Ziel","Zweck","Besuchte Personen / Firmen / Behörden","Beginn km","gesch.","W/A","priv.","Ende km","Fahrer"].map((h,i)=>(
     <th key={h} style={{padding:"5px 6px",fontSize:8,textTransform:"uppercase",letterSpacing:1,
-    color:"#555",textAlign:i>=5&&i<=9?"right":"left",whiteSpace:"nowrap",fontWeight:700,
+    color:C.steelMid,textAlign:i>=5&&i<=9?"right":"left",whiteSpace:"nowrap",fontWeight:700,
     borderRight:i<10?"1px solid #ccc":"none"}}>
     {h}
     </th>
@@ -2885,11 +3587,11 @@ function BerichtTab({gefFahrten, aktiv, acc, C, SANS, safeFloat, formatDatum,
     })}
     </tbody>
     <tfoot>
-    <tr style={{borderTop:"2px solid #111",background:"#f5e6e6"}}>
-    <td colSpan={6} style={{padding:"6px",fontSize:14,textAlign:"right",fontWeight:700,color:"#B30000"}}>SUMME:</td>
-    <td style={{padding:"6px",textAlign:"right",fontWeight:700,color:"#B30000"}}>{kmGesch.toFixed(0)}</td>
-    <td style={{padding:"6px",textAlign:"right",fontWeight:700,color:"#1A4A8A"}}>{kmWohn.toFixed(0)}</td>
-    <td style={{padding:"6px",textAlign:"right",fontWeight:700,color:"#666"}}>{kmPrivat.toFixed(0)}</td>
+    <tr style={{borderTop:"2px solid #111",background:C.redLight}}>
+    <td colSpan={6} style={{padding:"6px",fontSize:14,textAlign:"right",fontWeight:700,color:C.red}}>SUMME:</td>
+    <td style={{padding:"6px",textAlign:"right",fontWeight:700,color:C.red}}>{kmGesch.toFixed(0)}</td>
+    <td style={{padding:"6px",textAlign:"right",fontWeight:700,color:C.sonstige}}>{kmWohn.toFixed(0)}</td>
+    <td style={{padding:"6px",textAlign:"right",fontWeight:700,color:C.muted}}>{kmPrivat.toFixed(0)}</td>
     <td colSpan={2}></td>
     </tr>
     </tfoot>
@@ -2898,9 +3600,9 @@ function BerichtTab({gefFahrten, aktiv, acc, C, SANS, safeFloat, formatDatum,
     {/* Summary row */}
     <div className="print-summary" style={{display:"flex",gap:24,marginTop:12,flexWrap:"wrap"}}>
     {[
-    {label:"Geschäftlich",km:kmGesch,color:"#B30000"},
-    {label:"Wohnung/Arbeit",km:kmWohn,color:"#1A4A8A"},
-    {label:"Privat",km:kmPrivat,color:"#666"},
+    {label:"Geschäftlich",km:kmGesch,color:C.red},
+    {label:"Wohnung/Arbeit",km:kmWohn,color:C.sonstige},
+    {label:"Privat",km:kmPrivat,color:C.muted},
     {label:"Gesamt",km:kmGesch+kmWohn+kmPrivat,color:"#111"},
     ].map(s=>(
     <div key={s.label} style={{display:"flex",alignItems:"center",gap:8,fontFamily:SANS}}>
@@ -3032,9 +3734,9 @@ function BerichtTab({gefFahrten, aktiv, acc, C, SANS, safeFloat, formatDatum,
 
 // ─── DEMO USERS ───────────────────────────────────────────────────────────────
 const DEMO_USERS = [
-  {email:"admin@fahrtenbuch.de",     password:"admin123",  role:"admin",      name:"Max Mustermann"},
-  {email:"fahrer@fahrtenbuch.de",    password:"fahrer123", role:"fahrer",     name:"Klaus Mustermann"},
-  {email:"buchhalter@fahrtenbuch.de",password:"buch123",   role:"buchhalter", name:"Anna Muster"},
+  {email:"admin@fahrtenbuch.de",     password:"admin123",  role:"admin",      name:"Administrator"},
+  {email:"fahrer@fahrtenbuch.de",    password:"fahrer123", role:"fahrer",     name:"Fahrer"},
+  {email:"buchhalter@fahrtenbuch.de",password:"buch123",   role:"buchhalter", name:"Buchhalter"},
 ];
 
 // ─── AUTH FORM ────────────────────────────────────────────────────────────────
@@ -3050,6 +3752,8 @@ function AuthForm({onLogin, onMuster}) {
   const [pFocus,   setPFocus]   = React.useState(false);
   const titleRef = React.useRef(null);
   const btnRef   = React.useRef(null);
+  const kzRef    = React.useRef(null);
+  const containerRef = React.useRef(null);
 
   React.useEffect(()=>{
     if(!titleRef.current||!btnRef.current) return;
@@ -3058,10 +3762,26 @@ function AuthForm({onLogin, onMuster}) {
     titleRef.current.style.letterSpacing=s.letterSpacing;
   },[]);
 
+  React.useEffect(()=>{
+    const el = containerRef.current;
+    if(!el) return;
+    const handleMove = e => {
+      if(!kzRef.current) return;
+      const rect = el.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      kzRef.current.style.transform = `perspective(600px) rotateY(${x*8}deg) rotateX(${-y*6}deg)`;
+    };
+    const handleLeave = () => { if(kzRef.current) kzRef.current.style.transform = "perspective(600px) rotateY(0deg) rotateX(0deg)"; };
+    el.addEventListener("mousemove", handleMove);
+    el.addEventListener("mouseleave", handleLeave);
+    return ()=>{ el.removeEventListener("mousemove", handleMove); el.removeEventListener("mouseleave", handleLeave); };
+  },[]);
+
   function shake(){setShaking(true);setTimeout(()=>setShaking(false),350);}
   function showErr(msg){setErr(msg);setOk("");shake();}
 
-  async function handleLogin(){
+  async function doLogin(){
     setErr("");setOk("");
     const em=email.trim();
     if(!em)               return showErr("Bitte E-Mail eingeben");
@@ -3072,7 +3792,7 @@ function AuthForm({onLogin, onMuster}) {
     await new Promise(r=>setTimeout(r,900));
     const user=DEMO_USERS.find(u=>u.email===em&&u.password===password);
     if(user&&user.role===role){
-      setOk("✓ Willkommen, "+user.name);
+      setOk("Willkommen — "+user.role.charAt(0).toUpperCase()+user.role.slice(1));
       setTimeout(()=>onLogin&&onLogin({...user,isMuster:false}),600);
     } else {
       setBusy(false);
@@ -3080,7 +3800,7 @@ function AuthForm({onLogin, onMuster}) {
     }
   }
 
-  function handleMuster(){
+  function doMuster(){
     setErr("");setBusy(true);
     setTimeout(()=>{
       setOk("★ Demo · BMW 520d & VW Passat aktiv");
@@ -3113,8 +3833,8 @@ function AuthForm({onLogin, onMuster}) {
   });
 
   return (
-    <div style={{
-      minHeight:"100vh", background:"#F0F0EC",
+    <div ref={containerRef} style={{
+      minHeight:"100vh", background:C.bg,
       display:"flex", flexDirection:"column",
       alignItems:"center", justifyContent:"center",
       padding:"32px 16px", gap:10, fontFamily:SANS,
@@ -3124,26 +3844,31 @@ function AuthForm({onLogin, onMuster}) {
       {/* Заголовок */}
       <div style={{width:"100%",maxWidth:500,textAlign:"center",paddingBottom:4}}>
         <div ref={titleRef} style={{fontFamily:SANS,fontSize:12,fontWeight:700,letterSpacing:"3px",textTransform:"uppercase",color:"#111"}}>Fahrtenbuch</div>
-        <div style={{fontSize:10,letterSpacing:"2px",textTransform:"uppercase",color:"#999",marginTop:3}}>Fahrzeugverwaltung · Deutschland</div>
+        <div style={{fontSize:10,letterSpacing:"2px",textTransform:"uppercase",color:C.muted,marginTop:3}}>Fahrzeugverwaltung · Deutschland</div>
       </div>
 
-      {/* Знак */}
-      <div style={{
-        border:"2.5px solid #888", borderRadius:10, overflow:"hidden",
-        display:"flex", width:"100%", maxWidth:500,
-        background:"#fff",
-        boxShadow:"0 0 0 1px #aaa,0 8px 32px rgba(0,0,0,0.14)",
+      {/* Знак — embossed double border */}
+      <div ref={kzRef} style={{
+        border:"1px solid #555", borderRadius:10, overflow:"hidden",
+        display:"flex", width:"100%", maxWidth:508, padding:3,
+        background:"#e8e8e4",
+        boxShadow:"0 4px 20px rgba(0,0,0,0.12), 0 1px 4px rgba(0,0,0,0.08)",
         animation:shaking?"authShake 0.32s ease":undefined,
+        transition:"transform 0.15s ease",
       }}>
+       <div style={{
+        display:"flex", width:"100%", borderRadius:7,
+        border:"0.5px solid #999", overflow:"hidden", background:"#fff",
+       }}>
         {/* EU полоса */}
         <div style={{width:euW,minWidth:euW,background:"#003399",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"space-between",padding:"10px 0 9px",flexShrink:0}}>
           <svg width={euW} height={euW} viewBox={"0 0 "+euW+" "+euW} style={{display:"block"}}>
             {euStars}
           </svg>
-          <span style={{fontFamily:SANS,fontSize:Math.round(euW*0.47),fontWeight:800,color:"#fff",lineHeight:1,letterSpacing:1,marginBottom:2}}>D</span>
+          <span style={{fontFamily:"'EuroPlate',"+SANS,fontSize:Math.round(euW*0.47),fontWeight:800,color:"#fff",lineHeight:1,letterSpacing:1,marginBottom:2}}>D</span>
         </div>
         {/* Белое поле */}
-        <div style={{flex:1,padding:"14px 18px",display:"flex",flexDirection:"column",gap:10,borderLeft:"2px solid #555",justifyContent:"center"}}>
+        <div style={{flex:1,padding:"14px 18px",display:"flex",flexDirection:"column",gap:10,borderLeft:"0.7px solid #555",justifyContent:"center"}}>
           <div style={{display:"flex",alignItems:"center",gap:9}}>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#003399" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0,opacity:eFocus?0.9:0.28}}>
               <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
@@ -3161,20 +3886,22 @@ function AuthForm({onLogin, onMuster}) {
             </svg>
             <input type="password" value={password} onChange={e=>setPassword(e.target.value)}
               onFocus={()=>setPFocus(true)} onBlur={()=>setPFocus(false)}
-              onKeyDown={e=>e.key==="Enter"&&handleLogin()}
+              onKeyDown={e=>e.key==="Enter"&&doLogin()}
               placeholder="Passwort" autoComplete="current-password" disabled={busy}
               style={{...fieldBase,...(pFocus?fieldFocus:{})}}/>
           </div>
         </div>
+       </div>
       </div>
 
       {/* Под знаком */}
       <div style={{width:"100%",maxWidth:500,display:"flex",flexDirection:"column",gap:8}}>
         <div style={{minHeight:16,textAlign:"center"}}>
-          {err&&<span style={{fontSize:11,color:"#A32D2D",fontWeight:500,fontFamily:SANS}}>{err}</span>}
-          {ok &&<span style={{fontSize:11,color:"#0F6E56",fontWeight:600,fontFamily:SANS}}>{ok}</span>}
+          {err&&<span style={{fontSize:11,color:C.red,fontWeight:500,fontFamily:SANS}}>{err}</span>}
+          {ok &&<span style={{fontSize:11,color:C.tank,fontWeight:600,fontFamily:SANS}}>{ok}</span>}
         </div>
-        <button ref={btnRef} onClick={handleLogin} disabled={busy}
+        <button ref={btnRef} title="Anmelden"
+                  onClick={doLogin} disabled={busy}
           style={{width:"100%",height:40,background:ok?"#0F6E56":"#003399",color:ok?"#fff":"#FFD700",border:"none",borderRadius:6,fontFamily:SANS,fontSize:12,fontWeight:700,letterSpacing:"3px",textTransform:"uppercase",cursor:busy?"default":"pointer",transition:"background 0.15s",opacity:busy&&!ok?0.8:1}}>
           {ok?"✓ Angemeldet":busy?"Prüfe…":"Anmelden"}
         </button>
@@ -3186,14 +3913,14 @@ function AuthForm({onLogin, onMuster}) {
             </button>
           ))}
         </div>
-        <button onClick={handleMuster} disabled={busy}
-          style={{width:"100%",height:38,background:"#fff",border:"1px solid #D8D8D4",borderRadius:6,color:"#888",fontFamily:SANS,fontSize:11,fontWeight:600,letterSpacing:"1.5px",textTransform:"uppercase",cursor:busy?"default":"pointer",transition:"all 0.15s",display:"flex",alignItems:"center",justifyContent:"center",gap:7}}
+        <button onClick={doMuster} disabled={busy}
+          style={{width:"100%",height:38,background:"#fff",border:"1px solid #D8D8D4",borderRadius:6,color:C.muted,fontFamily:SANS,fontSize:11,fontWeight:600,letterSpacing:"1.5px",textTransform:"uppercase",cursor:busy?"default":"pointer",transition:"all 0.15s",display:"flex",alignItems:"center",justifyContent:"center",gap:7}}
           onMouseEnter={e=>{e.currentTarget.style.borderColor="#003399";e.currentTarget.style.color="#003399";}}
           onMouseLeave={e=>{e.currentTarget.style.borderColor="#D8D8D4";e.currentTarget.style.color="#888";}}>
           <svg width="11" height="11" viewBox="0 0 24 24" fill="#888" stroke="none"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
           Musterdaten · Demo-Zugang
         </button>
-        <div style={{fontSize:10,color:"#BBB",letterSpacing:"2px",textTransform:"uppercase",textAlign:"center",fontFamily:SANS}}>Fahrtenbuch · v46 · 2026</div>
+        <div style={{fontSize:10,color:C.borderHi,letterSpacing:"2px",textTransform:"uppercase",textAlign:"center",fontFamily:SANS}}>Fahrtenbuch · v51 · 2026</div>
       </div>
     </div>
   );
@@ -3201,44 +3928,56 @@ function AuthForm({onLogin, onMuster}) {
 
 // ─── Корневой компонент — только роутинг auth ─────────────────────────────────
 export default function FahrtenbuchLight() {
+  const [themeId, setThemeId] = useState(()=>{try{return localStorage.getItem("fb2_theme")||"google"}catch(e){return"classic"}});
+  React.useEffect(()=>{try{localStorage.setItem("fb2_theme",themeId)}catch(e){/*ok*/}}, [themeId]);
+  C = THEMES[themeId] || THEME_GOOGLE;
+  SANS = C.font;
+  // Load Google Sans for Google theme
+  React.useEffect(()=>{
+    if(themeId==="google" && !document.getElementById("gfont-roboto")){
+      const l=document.createElement("link");l.id="gfont-roboto";l.rel="stylesheet";
+      l.href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap";
+      document.head.appendChild(l);
+    }
+  },[themeId]);
+
   const [authUser, setAuthUser] = useState(()=>{
     try { const s=sessionStorage.getItem("fb2_auth"); return s?JSON.parse(s):null; } catch(e){return null;}
   });
   function handleLogin(user) {
-    try { sessionStorage.setItem("fb2_auth", JSON.stringify(user)); } catch(e){}
+    try { sessionStorage.setItem("fb2_auth", JSON.stringify(user)); } catch(e){/*ok*/}
     setAuthUser(user);
   }
   function handleMuster() {
     const u={email:"demo@fahrtenbuch.de",role:"admin",name:"Demo User",isMuster:true};
-    try { sessionStorage.setItem("fb2_auth", JSON.stringify(u)); } catch(e){}
+    try { sessionStorage.setItem("fb2_auth", JSON.stringify(u)); } catch(e){/*ok*/}
     setAuthUser(u);
   }
   if(!authUser) return <AuthForm onLogin={handleLogin} onMuster={handleMuster}/>;
-  return <FahrtenbuchApp authUser={authUser} onLogout={()=>{try{sessionStorage.removeItem("fb2_auth");}catch(e){}setAuthUser(null);}}/>;
+  return <FahrtenbuchApp authUser={authUser} onLogout={()=>{try{sessionStorage.removeItem("fb2_auth");}catch(e){/*ok*/}setAuthUser(null);}} themeId={themeId} setThemeId={setThemeId}/>;
 }
 
 // ─── Основное приложение (все хуки здесь) ─────────────────────────────────────
-function FahrtenbuchApp({authUser, onLogout}) {
+function FahrtenbuchApp({authUser, onLogout, themeId, setThemeId}) {
+  // ── Role-based permissions ──
+  const isDemo   = !!authUser?.isMuster;
+  const role     = authUser?.role || "fahrer";
+  const canEdit  = !isDemo && role !== "buchhalter";       // can add/edit/delete data
+  const canAdmin = !isDemo && role === "admin";             // vehicle settings, import/export, Muster
+  const canExport= !isDemo;                                // PDF/CSV export (all real users)
   const [state,setState] = useState(()=>{
-    // Синхронная загрузка из localStorage — данные не теряются при перезагрузке
-    try {
-      const raw = localStorage.getItem("fb2");
-      if(raw) {
-        const saved = JSON.parse(raw);
-        if(saved?.fahrzeuge?.length) {
-          const clean = saved.fahrzeuge.filter(f=>f.kennzeichen&&f.kennzeichen!=="—");
-          if(clean.length) {
-            // Migration: добавляем parkplaetze если отсутствует в сохранённых данных
-            const migrated = clean.map(f=>({...f, parkplaetze: f.parkplaetze||[]}));
-            const aktivId = migrated.find(f=>f.id===saved.aktivId)?saved.aktivId:migrated[0].id;
-            return {fahrzeuge:migrated, aktivId};
-          }
-        }
-      }
-    } catch(e) {}
-    // Нет сохранённых данных — Fiat 500e как стартовое авто
+    // Начальное состояние — сразу правильные данные по типу пользователя
+    if(authUser?.isMuster) {
+      const {fz,fz2,fz3}=createMusterDaten();
+      return {fahrzeuge:sanitizeAll([fz,fz2,fz3]),aktivId:fz.id,_musterVersion:MUSTER_VERSION};
+    }
     const fz = makeFiatDefault();
-    return {fahrzeuge:[fz], aktivId:fz.id};
+    const vw = makeVWDefault();
+    const tfai = makeTFAIDefault();
+    const touareg = makeTouaregDefault();
+    const nissan = makeNissanDefault();
+    const renault = makeRenaultDefault();
+    return {fahrzeuge:sanitizeAll([fz, vw, tfai, touareg, nissan, renault]), aktivId:fz.id, _musterVersion:MUSTER_VERSION};
   });
   const [tab,setTab]         = useState("uebersicht");
   const [sub,setSub]         = useState("standorte");
@@ -3252,10 +3991,21 @@ function FahrtenbuchApp({authUser, onLogout}) {
   const [saveStatus,setSaveStatus] = useState("");
   const [ready,setReady]     = useState(false);
   const [tuvPopup,setTuvPopup] = useState(false);
+  const kzBoxRef = useRef(null);
+  const flipKz = () => {
+    const el = kzBoxRef.current;
+    if(!el) return;
+    el.style.transition = "none";
+    el.style.transform = "perspective(600px) rotateY(90deg)";
+    el.style.opacity = "0";
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      el.style.transition = "transform 2s cubic-bezier(0.34,1.3,0.64,1), opacity 0.5s ease-out";
+      el.style.transform = "perspective(600px) rotateY(0deg)";
+      el.style.opacity = "1";
+    }));
+  };
   const saveTimer = useRef(null);
   const tuvRef = useRef(null);
-  const vorMusterRef = useRef(null); // бэкап реальных данных перед загрузкой Muster
-  const [musterAktiv, setMusterAktiv] = useState(false);
 
   // Закрытие попапа при клике вне его
   useEffect(()=>{
@@ -3294,7 +4044,7 @@ function FahrtenbuchApp({authUser, onLogout}) {
   // ── KI-Assistent ──
   const [chatOpen,   setChatOpen]   = useState(false);
   const [chatMsgs,   setChatMsgs]   = useState([
-    {role:"assistant", id:"init_msg", content:"Hallo! Ich bin Ihr Fahrtenbuch-Assistent.\n\nSo arbeiten wir zusammen:\n\nSchritt 1 — Daten sammeln:\n- Schicken Sie mir Belege, Quittungen, Rechnungen\n- Ich extrahiere Datum, Ort, Betrag automatisch\n- Tanken, Parken, Wäsche, Service, Strafen — alles wird erfasst\n\nSchritt 2 — Fahrtenbuch aufbauen:\n- Sobald Sie mir km-Stände (Odometer) mitteilen\n- Erstelle ich vollständige Fahrten mit Routen\n- Und generiere das offizielle Fahrtenbuch-PDF\n\nSagen Sie einfach was passiert ist — ich trage es ein."}
+    {role:"assistant", id:"init_msg", content:"Hallo! Ich bin Ihr Fahrtenbuch-Assistent.\n\nIch kann:\n- Belege scannen und Daten automatisch erfassen\n- Fahrten, Kosten, Partner, Messen verwalten\n- Zwischen Fahrzeugen und Ansichten wechseln\n- Filter setzen, Statistiken berechnen\n- Das Fahrtenbuch als PDF generieren\n- Daten als CSV oder Google Sheets exportieren\n\nSagen Sie einfach was Sie brauchen — ich navigiere und erledige es."}
   ]);
   const [chatInput,  setChatInput]  = useState("");
   const [chatBusy,   setChatBusy]   = useState(false);
@@ -3317,51 +4067,218 @@ function FahrtenbuchApp({authUser, onLogout}) {
     return ()=>document.removeEventListener("mousedown", h);
   }, [chatPlusOpen]);
 
-  // ── Persistence ──
+  // ── Persistence — полная изоляция Demo/Real ──
+  const STORAGE_KEY = authUser?.isMuster ? "fb2_demo" : "fb2_real";
   const persist = async d => {
     const json = JSON.stringify(d);
-    let ok = false;
-    // localStorage первым — синхронно и надёжно
-    try { localStorage.setItem("fb2", json); ok=true; } catch(e) {}
-    // window.storage как дополнительный бэкап
-    try { await window.storage.set("fb2", json); } catch(e) {}
-    if(!ok) throw new Error("Speichern fehlgeschlagen");
+    try { localStorage.setItem(STORAGE_KEY, json); } catch(e){/*ok*/}
+    try { await window.storage.set(STORAGE_KEY, json); } catch(e){/*ok*/}
   };
-  const restore = async () => {
-    // localStorage первым — синхронная инициализация уже произошла, но для async-пути тоже
-    try { const raw=localStorage.getItem("fb2"); if(raw) return JSON.parse(raw); } catch(e) {}
-    try { const r=await window.storage.get("fb2"); if(r?.value) return JSON.parse(r.value); } catch(e) {}
-    return null;
+
+  // ── МИГРАЦИИ: точечные правки данных без полной перезаписи ─────────────
+  // Правило: НИКОГДА не заменять пользовательские записи целиком.
+  // Только добавлять отсутствующие поля или фиксить структуру.
+  const DATA_MIGRATIONS = [
+    { v:1, run: fzs => fzs.map(f=>({...f, parkplaetze:f.parkplaetze||[]})) },
+    { v:2, run: fzs => fzs.map(f=>({...f, strafen:(f.strafen||[]).map(s=>({uhrzeit:"",...s}))})) },
+    { v:3, run: fzs => fzs.map(f=>({...f, partner:(f.partner||[]).map(p=>({typ:"sonstiges",...p}))})) },
+    { v:4, run: fzs => fzs.map(f=>({...f, standorteExtra:(f.standorteExtra||[]).map(s=>({typ:"sonstiges",...s}))})) },
+    { v:5, run: fzs => fzs.some(f=>f.kennzeichen==="TF-KF 2128") ? fzs : [...fzs, makeNissanDefault()] },
+    { v:6, run: fzs => fzs.some(f=>f.kennzeichen==="TF-VG 2016") ? fzs : [...fzs, makeRenaultDefault()] },
+    { v:7, run: fzs => fzs.map(f=>({...f, strafen:(f.strafen||[]).map(s=>({tatort:"",tatortAdresse:"",frist:"",...s}))})) },
+    { v:8, run: fzs => fzs.map(f=>{
+      if(f.kennzeichen!=="TF-IA 2006") return f;
+      const existing = (f.strafen||[]).map(s=>s.aktenzeichen);
+      const add = [
+        {id:uid(),datum:"2024-01-17",uhrzeit:"10:09",typ:"Parkverstoß",betrag:"25",tatort:"Kurfürstendamm neben 26",tatortAdresse:"10707 Berlin",behoerde:"Polizei Berlin, Bußgeldstelle",adresseBehoerde:"",aktenzeichen:"58.20.267740.0",frist:"",bezahlt:true,notiz:"Parken im absoluten Haltverbot (BA CW ORD B)",belegFoto:""},
+        {id:uid(),datum:"2024-11-22",uhrzeit:"15:49",typ:"Parkverstoß",betrag:"40",tatort:"Französische Str. an Ecke Friedrichstr.",tatortAdresse:"10117 Berlin",behoerde:"Polizei Berlin, Bußgeldstelle",adresseBehoerde:"",aktenzeichen:"58.23.590775.3",frist:"",bezahlt:true,notiz:"Parken im absoluten Haltverbot, Behinderung fließender Verkehr (Bezirksamt Mitte Ordnungsamt)",belegFoto:""},
+        {id:uid(),datum:"2024-12-30",uhrzeit:"15:23",typ:"Parkverstoß",betrag:"20",tatort:"Konstanzer Str. vor Hnr. 5",tatortAdresse:"10707 Berlin",behoerde:"Polizei Berlin, Bußgeldstelle",adresseBehoerde:"",aktenzeichen:"58.23.925584.0",frist:"",bezahlt:true,notiz:"Behinderung Abbiegeverkehr durch Parken (BA CW ORD B)",belegFoto:""},
+      ].filter(s=>!existing.includes(s.aktenzeichen));
+      return add.length ? {...f, strafen:[...(f.strafen||[]),...add]} : f;
+    }) },
+    { v:9, run: fzs => fzs.map(f=>{
+      if(f.kennzeichen!=="TF-AI 2006") return f;
+      const existing = (f.strafen||[]).map(s=>s.aktenzeichen);
+      if(existing.includes("58.26.698762.3")) return f;
+      return {...f, strafen:[...(f.strafen||[]),
+        {id:uid(),datum:"2025-11-21",uhrzeit:"09:50",typ:"Parkverstoß",betrag:"10",tatort:"Konstanzer Str. an Ecke Duisburger Str.",tatortAdresse:"10707 Berlin",behoerde:"Polizei Berlin, Bußgeldstelle",adresseBehoerde:"",aktenzeichen:"58.26.698762.3",frist:"",bezahlt:false,notiz:"Parken weniger als 5m hinter Einmündung (BA CW ORD B)",belegFoto:""}
+      ]};
+    }) },
+    { v:10, run: fzs => fzs.map(f=>{
+      const partners = f.partner||[];
+      const names = partners.map(p=>(p.name||"").toLowerCase());
+      let updated = partners;
+      // ViniGrandi для ALLE Fahrzeuge
+      if(!names.includes("vinigrandi gmbh")) {
+        updated = [...updated, {id:uid(),name:"ViniGrandi GmbH",adresse:"Konstanzer Str. 4, 10707 Berlin",telefon:"",kmVonStandort:"",notiz:"Firmensitz",typ:"kunde"}];
+      }
+      // Kunden nur für TF-KF 2128
+      if(f.kennzeichen==="TF-KF 2128") {
+        const add = [
+          {id:uid(),name:"ALPAGI Wine&Food GmbH",adresse:"Westfälische Str. 29, 10709 Berlin",telefon:"",kmVonStandort:"38",notiz:"Wein & Feinkost",typ:"kunde"},
+          {id:uid(),name:"8000 Vintages",adresse:"Großbeerenstraße 27A, 10963 Berlin",telefon:"",kmVonStandort:"35",notiz:"Weinhandel",typ:"kunde"},
+          {id:uid(),name:"Ristorante Bragato Vini & Gastronomia",adresse:"Dahlmannstraße 7, 10629 Berlin",telefon:"",kmVonStandort:"38",notiz:"Restaurant / Gastronomie",typ:"kunde"},
+          {id:uid(),name:"Enoiteca Il Calice",adresse:"Walter-Benjamin-Platz 4, 10629 Berlin",telefon:"",kmVonStandort:"38",notiz:"Weinbar / Enoteca",typ:"kunde"},
+          {id:uid(),name:"Enab-Berlin GmbH",adresse:"Chausseestr. 86, 10115 Berlin",telefon:"",kmVonStandort:"34",notiz:"Weinimport",typ:"kunde"},
+          {id:uid(),name:"Bar lambretta",adresse:"Revaler Straße 14, 10245 Berlin",telefon:"",kmVonStandort:"40",notiz:"Bar",typ:"kunde"},
+          {id:uid(),name:"Bar Proskauer",adresse:"Proskauer Straße 13, 10247 Berlin",telefon:"",kmVonStandort:"40",notiz:"Bar",typ:"kunde"},
+          {id:uid(),name:"Teliani Europe GmbH",adresse:"Kurfürstendamm 167/168, 10707 Berlin",telefon:"",kmVonStandort:"37",notiz:"Weinimport / Distribution",typ:"kunde"},
+        ].filter(p=>!names.includes(p.name.toLowerCase()));
+        updated = [...updated, ...add];
+      }
+      return updated.length !== partners.length ? {...f, partner:updated} : f;
+    }) },
+    { v:11, run: fzs => fzs.map(f=>{
+      const partners = f.partner||[];
+      const names = partners.map(p=>(p.name||"").toLowerCase());
+      const shared = [
+        {id:uid(),name:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH",adresse:"Lennéstr. 3, 10785 Berlin",telefon:"",kmVonStandort:"35",notiz:"Steuerberater",typ:"steuerberater"},
+        {id:uid(),name:"Knappworst Steuerberater Potsdam",adresse:"Am Bassin 4, 14467 Potsdam",telefon:"",kmVonStandort:"26",notiz:"Steuerberater",typ:"steuerberater"},
+        {id:uid(),name:"Rechtsanwälte Napiorkowski Potsdam",adresse:"Puschkinallee 3, Potsdam",telefon:"",kmVonStandort:"30",notiz:"Rechtsanwalt",typ:"anwalt"},
+        {id:uid(),name:"Rechtsanwälte Noacke Berlin",adresse:"Uhlandstr. 161, Berlin",telefon:"",kmVonStandort:"40",notiz:"Rechtsanwalt",typ:"anwalt"},
+      ].filter(p=>!names.some(n=>n.includes(p.name.split(",")[0].toLowerCase())));
+      return shared.length ? {...f, partner:[...partners,...shared]} : f;
+    }) },
+    { v:12, run: fzs => fzs.map(f=>{
+      if(f.kennzeichen!=="TF-VG 2016") return f;
+      const names = (f.partner||[]).map(p=>(p.name||"").toLowerCase());
+      const add = [
+        {id:uid(),name:"ALPAGI Wine&Food GmbH",adresse:"Westfälische Str. 29, 10709 Berlin",telefon:"",kmVonStandort:"38",notiz:"Wein & Feinkost",typ:"kunde"},
+        {id:uid(),name:"8000 Vintages",adresse:"Großbeerenstraße 27A, 10963 Berlin",telefon:"",kmVonStandort:"35",notiz:"Weinhandel",typ:"kunde"},
+        {id:uid(),name:"Ristorante Bragato Vini & Gastronomia",adresse:"Dahlmannstraße 7, 10629 Berlin",telefon:"",kmVonStandort:"38",notiz:"Restaurant / Gastronomie",typ:"kunde"},
+        {id:uid(),name:"Enoiteca Il Calice",adresse:"Walter-Benjamin-Platz 4, 10629 Berlin",telefon:"",kmVonStandort:"38",notiz:"Weinbar / Enoteca",typ:"kunde"},
+        {id:uid(),name:"Enab-Berlin GmbH",adresse:"Chausseestr. 86, 10115 Berlin",telefon:"",kmVonStandort:"34",notiz:"Weinimport",typ:"kunde"},
+        {id:uid(),name:"Bar lambretta",adresse:"Revaler Straße 14, 10245 Berlin",telefon:"",kmVonStandort:"40",notiz:"Bar",typ:"kunde"},
+        {id:uid(),name:"Bar Proskauer",adresse:"Proskauer Straße 13, 10247 Berlin",telefon:"",kmVonStandort:"40",notiz:"Bar",typ:"kunde"},
+        {id:uid(),name:"Teliani Europe GmbH",adresse:"Kurfürstendamm 167/168, 10707 Berlin",telefon:"",kmVonStandort:"37",notiz:"Weinimport / Distribution",typ:"kunde"},
+      ].filter(p=>!names.includes(p.name.toLowerCase()));
+      return add.length ? {...f, partner:[...(f.partner||[]),...add]} : f;
+    }) },
+    { v:13, run: fzs => fzs.map(f=>{
+      if(f.kennzeichen!=="TF-IV 601"&&f.kennzeichen!=="TF-VG 2016") return f;
+      const names = (f.messen||[]).map(m=>(m.name||"").toLowerCase());
+      const add = [
+        {id:uid(),name:"ProWein 2025",adresse:"Messe Düsseldorf, Stockumer Kirchstr. 61, 40474 Düsseldorf",datum:"2025-03-17",datumBis:"2025-03-18",partnerId:"",notiz:"Weltleitmesse Wein & Spirituosen — Einladung ViniGrandi",kmVonStandort:"560"},
+        {id:uid(),name:"Vinitaly 2025",adresse:"Veronafiere, Viale del Lavoro 8, 37135 Verona, Italien",datum:"2025-04-07",datumBis:"2025-04-09",partnerId:"",notiz:"Internationale Weinfachmesse — Einladung ViniGrandi",kmVonStandort:"1050"},
+        {id:uid(),name:"ProWein 2026",adresse:"Messe Düsseldorf, Stockumer Kirchstr. 61, 40474 Düsseldorf",datum:"2026-03-16",datumBis:"2026-03-17",partnerId:"",notiz:"Weltleitmesse Wein & Spirituosen — Einladung ViniGrandi",kmVonStandort:"560"},
+        {id:uid(),name:"Vinitaly 2026",adresse:"Veronafiere, Viale del Lavoro 8, 37135 Verona, Italien",datum:"2026-04-13",datumBis:"2026-04-15",partnerId:"",notiz:"Internationale Weinfachmesse Verona — Einladung ViniGrandi",kmVonStandort:"1050"},
+      ].filter(m=>!names.includes(m.name.toLowerCase()));
+      return add.length ? {...f, messen:[...(f.messen||[]),...add]} : f;
+    }) },
+    { v:14, run: fzs => fzs.map(f=>{
+      if(f.kennzeichen!=="TF-KF 2128") return f;
+      const names = (f.messen||[]).map(m=>(m.name||"").toLowerCase());
+      const add = [
+        {id:uid(),name:"ProWein 2025",adresse:"Messe Düsseldorf, Stockumer Kirchstr. 61, 40474 Düsseldorf",datum:"2025-03-17",datumBis:"2025-03-18",partnerId:"",notiz:"Weltleitmesse Wein & Spirituosen — Einladung ViniGrandi",kmVonStandort:"560"},
+        {id:uid(),name:"Vinitaly 2025",adresse:"Veronafiere, Viale del Lavoro 8, 37135 Verona, Italien",datum:"2025-04-07",datumBis:"2025-04-09",partnerId:"",notiz:"Internationale Weinfachmesse — Einladung ViniGrandi",kmVonStandort:"1050"},
+        {id:uid(),name:"ProWein 2026",adresse:"Messe Düsseldorf, Stockumer Kirchstr. 61, 40474 Düsseldorf",datum:"2026-03-16",datumBis:"2026-03-17",partnerId:"",notiz:"Weltleitmesse Wein & Spirituosen — Einladung ViniGrandi",kmVonStandort:"560"},
+        {id:uid(),name:"Vinitaly 2026",adresse:"Veronafiere, Viale del Lavoro 8, 37135 Verona, Italien",datum:"2026-04-13",datumBis:"2026-04-15",partnerId:"",notiz:"Internationale Weinfachmesse Verona — Einladung ViniGrandi",kmVonStandort:"1050"},
+      ].filter(m=>!names.includes(m.name.toLowerCase()));
+      return add.length ? {...f, messen:[...(f.messen||[]),...add]} : f;
+    }) },
+    { v:15, run: fzs => fzs.map(f=>{
+      if(f.kennzeichen!=="TF-VG 2016") return f;
+      if((f.fahrten||[]).length > 0) return f; // уже есть данные — не трогаем
+      const fresh = makeRenaultDefault();
+      return {...f, fahrten:fresh.fahrten, kmStandInitial:fresh.kmStandInitial||f.kmStandInitial};
+    }) },
+    { v:16, run: fzs => fzs.map(f=>{
+      const extra = f.standorteExtra||[];
+      const names = extra.map(s=>(s.name||"").toLowerCase());
+      const add = [
+        {id:uid(),name:"Rathaus Ludwigsfelde",adresse:"Rathausstraße 3, 14974 Ludwigsfelde",notiz:"Stadtverwaltung, Bürgeramt, Gewerbeamt",auto:false,typ:"behoerde",besuche:0,letzterBesuch:"",kmVonStandort:"2"},
+        {id:uid(),name:"Finanzamt Luckenwalde",adresse:"Dr.-Georg-Schaeffler-Straße 2, 14943 Luckenwalde",notiz:"Steuererklärung, Bescheide",auto:false,typ:"behoerde",besuche:0,letzterBesuch:"",kmVonStandort:"18"},
+        {id:uid(),name:"Kfz-Zulassungsstelle Luckenwalde",adresse:"Louis-Pasteur-Str. 5, 14943 Luckenwalde",notiz:"Zulassung, Ummeldung, Abmeldung",auto:false,typ:"behoerde",besuche:0,letzterBesuch:"",kmVonStandort:"18"},
+        {id:uid(),name:"Kreisverwaltung Teltow-Fläming",adresse:"Am Nuthefließ 2, 14943 Luckenwalde",notiz:"Landratsamt, Bauamt, Ordnungsamt",auto:false,typ:"behoerde",besuche:0,letzterBesuch:"",kmVonStandort:"18"},
+        {id:uid(),name:"IHK Potsdam",adresse:"Breite Straße 2a-c, 14467 Potsdam",notiz:"Industrie- und Handelskammer",auto:false,typ:"behoerde",besuche:0,letzterBesuch:"",kmVonStandort:"26"},
+      ].filter(s=>!names.includes(s.name.toLowerCase()));
+      return add.length ? {...f, standorteExtra:[...extra,...add]} : f;
+    }) },
+    { v:17, run: fzs => fzs.map(f=>{
+      if(f.kennzeichen!=="TF-VG 2016") return f;
+      const extra = f.standorteExtra||[];
+      const names = extra.map(s=>(s.name||"").toLowerCase());
+      const add = [
+        {id:uid(),name:"Autoservice Ludwigsfelde",adresse:"Südring, 14974 Ludwigsfelde",notiz:"KFZ-Service",auto:false,typ:"werkstatt",besuche:0,letzterBesuch:"",kmVonStandort:"2"},
+        {id:uid(),name:"Deutsche Post Ludwigsfelde",adresse:"Potsdamer Str. 60, 14974 Ludwigsfelde",notiz:"Briefe / Pakete",auto:false,typ:"post",besuche:0,letzterBesuch:"",kmVonStandort:"3"},
+        {id:uid(),name:"Autohaus Berolina Berlin",adresse:"Cicerostr. 34, 10709 Berlin-Halensee",notiz:"Fahrzeugabholung",auto:false,typ:"werkstatt",besuche:0,letzterBesuch:"",kmVonStandort:"45"},
+        {id:uid(),name:"MBS Sparkasse Ludwigsfelde",adresse:"Potsdamer Str. 60, 14974 Ludwigsfelde",notiz:"Bankfiliale",auto:false,typ:"bank",besuche:0,letzterBesuch:"",kmVonStandort:"5"},
+        {id:uid(),name:"Hornbach Ludwigsfelde",adresse:"Parkallee 36, 14974 Ludwigsfelde",notiz:"Baumarkt",auto:false,typ:"laden",besuche:0,letzterBesuch:"",kmVonStandort:"2"},
+        {id:uid(),name:"Getränke Hoffmann Berlin",adresse:"Westfälische Str. 85, 10709 Berlin",notiz:"Getränkemarkt",auto:false,typ:"laden",besuche:0,letzterBesuch:"",kmVonStandort:"38"},
+        {id:uid(),name:"Getränke Hoffmann Ludwigsfelde",adresse:"Potsdamer Str. 118, 14974 Ludwigsfelde",notiz:"Getränkemarkt",auto:false,typ:"laden",besuche:0,letzterBesuch:"",kmVonStandort:"3"},
+      ].filter(s=>!names.includes(s.name.toLowerCase()));
+      return add.length ? {...f, standorteExtra:[...extra,...add]} : f;
+    }) },
+    { v:18, run: fzs => fzs.map(f=>{
+      const extra = f.standorteExtra||[];
+      if(extra.some(s=>(s.name||"").toLowerCase().includes("bauhaus"))) return f;
+      return {...f, standorteExtra:[...extra,
+        {id:uid(),name:"Bauhaus Berlin-Halensee",adresse:"Kurfürstendamm 129a, 10711 Berlin",notiz:"Baumarkt",auto:false,typ:"laden",besuche:0,letzterBesuch:"",kmVonStandort:"38"}
+      ]};
+    }) },
+    { v:19, run: fzs => fzs.map(f=>{
+      const extra = f.standorteExtra||[];
+      const names = extra.map(s=>(s.name||"").toLowerCase());
+      const add = [
+        {id:uid(),name:"Flughafen Berlin Brandenburg (BER)",adresse:"Willy-Brandt-Platz, 12529 Schönefeld",notiz:"Terminal 1 + 2",auto:false,typ:"flughafen",besuche:0,letzterBesuch:"",kmVonStandort:"25"},
+        {id:uid(),name:"Flughafen München (MUC)",adresse:"Nordallee 25, 85356 München",notiz:"Franz Josef Strauß",auto:false,typ:"flughafen",besuche:0,letzterBesuch:"",kmVonStandort:"620"},
+        {id:uid(),name:"Flughafen Hamburg (HAM)",adresse:"Flughafenstraße 1-3, 22335 Hamburg",notiz:"Hamburg Airport",auto:false,typ:"flughafen",besuche:0,letzterBesuch:"",kmVonStandort:"290"},
+        {id:uid(),name:"Flughafen Stuttgart (STR)",adresse:"Flughafenstraße 32, 70629 Stuttgart",notiz:"Stuttgart Airport",auto:false,typ:"flughafen",besuche:0,letzterBesuch:"",kmVonStandort:"590"},
+        {id:uid(),name:"Berlin Hauptbahnhof",adresse:"Europaplatz 1, 10557 Berlin",notiz:"Fernverkehr, ICE",auto:false,typ:"bahnhof",besuche:0,letzterBesuch:"",kmVonStandort:"40"},
+      ].filter(s=>!names.some(n=>n.includes(s.name.split("(")[0].trim().toLowerCase())));
+      return add.length ? {...f, standorteExtra:[...extra,...add]} : f;
+    }) },
+    // v20: lighten car farbe colors to +42%
+    { v:20, fn: fzs => fzs.map(f => {
+      const colorMap = {
+        "#B30000":"#D26B6B","#1E3A5F":"#7C8CA2","#2A5A8A":"#839FBB","#2B4A2B":"#849684",
+        "#4A4A4A":"#969696","#1565C0":"#77A5DA","#3A4A5A":"#8C969F","#5A3A8A":"#9F8CBB",
+        "#1A6A3A":"#7AA88C","#8A6800":"#C7B06B","#7A3800":"#D5A06B","#1A5A6A":"#73AEBE",
+        "#6A3A7A":"#9F8CBB","#A07800":"#C7B06B","#7A1A7A":"#B17AB1","#0E7490":"#73AEBE",
+        "#7A5A1A":"#B19F7A","#2A6A5A":"#83A89F","#5A4A2A":"#9F9683",
+        "#EA4335":"#F29189","#1E8E3E":"#7CBD8F","#1A73E8":"#7AADF1","#E37400":"#EEAE6B",
+        "#7627BB":"#AF81D7","#5F6368":"#A2A4A7","#137333":"#76AD88","#B06000":"#D1A26B",
+        "#F9AB00":"#FBCE6B","#A50E0E":"#B17AB1","#E65100":"#F09A6B","#00695C":"#6BA8A0",
+      };
+      const newFarbe = colorMap[(f.farbe||"").toUpperCase()] || colorMap[f.farbe] || f.farbe;
+      return newFarbe !== f.farbe ? {...f, farbe: newFarbe} : f;
+    }) },
+  ];
+  const DATA_VERSION = DATA_MIGRATIONS.length ? DATA_MIGRATIONS[DATA_MIGRATIONS.length-1].v : 0;
+  const applyMigrations = (fahrzeuge, fromV) => {
+    let fzs = fahrzeuge;
+    for(const m of DATA_MIGRATIONS) {
+      if(m.v > fromV) { try { fzs = m.run(fzs); } catch(e){/*ok*/} }
+    }
+    return fzs;
   };
+
   useEffect(()=>{
     (async()=>{
-      // localStorage уже загружен синхронно в useState.
-      // Здесь проверяем window.storage как дополнительный источник (если localStorage пуст)
-      let localEmpty = false;
-      try { localEmpty = !localStorage.getItem("fb2"); } catch(e) {}
-      if(localEmpty) {
-        const saved=await restore();
-        if(saved?.fahrzeuge?.length) {
-          const clean=saved.fahrzeuge.filter(f=>f.kennzeichen&&f.kennzeichen!=="—");
-          if(clean.length) {
-            const migrated=clean.map(f=>({...f,parkplaetze:f.parkplaetze||[]}));
-            const aktivId=migrated.find(f=>f.id===saved.aktivId)?saved.aktivId:migrated[0].id;
-            setState({fahrzeuge:migrated, aktivId});
-          }
+      if(authUser?.isMuster) {
+        const {fz,fz2,fz3}=createMusterDaten();
+        setState({fahrzeuge:sanitizeAll([fz,fz2,fz3]),aktivId:fz.id,_musterVersion:MUSTER_VERSION,_dataVersion:DATA_VERSION});
+      } else {
+        // ── Реальный пользователь ──
+        // ВСЕГДА грузим из storage если данные есть. Код — ТОЛЬКО для первого запуска.
+        let loaded = false;
+        const tryLoad = saved => {
+          if(!saved?.fahrzeuge?.length) return false;
+          if(!saved.fahrzeuge.some(f=>f.kennzeichen)) return false;
+          const migrated = sanitizeAll(applyMigrations(saved.fahrzeuge, saved._dataVersion||0));
+          if(!migrated.length) return false;
+          const aktivId = migrated.find(f=>f.id===saved.aktivId)?.id || migrated[0]?.id;
+          setState({fahrzeuge:migrated, aktivId, _musterVersion:saved._musterVersion||MUSTER_VERSION, _dataVersion:DATA_VERSION});
+          loaded = true;
+          return true;
+        };
+        try { const raw=localStorage.getItem("fb2_real"); if(raw) tryLoad(JSON.parse(raw)); } catch(e){/*ok*/}
+        if(!loaded) { try { const r=await window.storage.get("fb2_real"); if(r?.value) tryLoad(JSON.parse(r.value)); } catch(e){/*ok*/} }
+        if(!loaded) {
+          const fz=makeFiatDefault(), vw=makeVWDefault(), tfai=makeTFAIDefault(), touareg=makeTouaregDefault(), nissan=makeNissanDefault(), renault=makeRenaultDefault();
+          setState({fahrzeuge:sanitizeAll([fz,vw,tfai,touareg,nissan,renault]), aktivId:fz.id, _musterVersion:MUSTER_VERSION, _dataVersion:DATA_VERSION});
         }
-      }
-      // Восстанавливаем флаг Muster если бэкап реальных данных ещё существует
-      let hasMusterBackup = false;
-      try { const r=await window.storage.get("fb2_vorMuster"); if(r?.value) hasMusterBackup=true; } catch(e) {}
-      if(!hasMusterBackup) {
-        try { if(localStorage.getItem("fb2_vorMuster")) hasMusterBackup=true; } catch(e) {}
-      }
-      if(hasMusterBackup) setMusterAktiv(true);
-      // Автозагрузка Musterdaten при Demo-входе
-      if(authUser?.isMuster && !hasMusterBackup) {
-        const {fz,fz2}=createMusterDaten();
-        setState({fahrzeuge:[fz,fz2],aktivId:fz.id});
-        setMusterAktiv(true);
+        try { localStorage.removeItem("fb2"); } catch(e){/*ok*/}
       }
       setReady(true);
     })();
@@ -3377,7 +4294,8 @@ function FahrtenbuchApp({authUser, onLogout}) {
     return ()=>{ if(saveTimer.current) clearTimeout(saveTimer.current); };
   },[state,ready]);
 
-  const aktiv    = state.fahrzeuge.find(f=>f.id===state.aktivId)||state.fahrzeuge[0];
+  const _aktiv   = state.fahrzeuge.find(f=>f.id===state.aktivId)||state.fahrzeuge[0]||{};
+  const aktiv    = {..._aktiv, fahrten:_safeArr(_aktiv.fahrten), partner:_safeArr(_aktiv.partner), messen:_safeArr(_aktiv.messen), standorte:_safeArr(_aktiv.standorte), standorteExtra:_safeArr(_aktiv.standorteExtra), tankstellen:_safeArr(_aktiv.tankstellen), strafen:_safeArr(_aktiv.strafen), waesche:_safeArr(_aktiv.waesche), services:_safeArr(_aktiv.services), parkplaetze:_safeArr(_aktiv.parkplaetze)};
   const acc      = aktiv.farbe || C.red;
   const patchAktiv = patch=>setState(prev=>({...prev,fahrzeuge:prev.fahrzeuge.map(f=>f.id===prev.aktivId?{...f,...patch}:f)}));
   const toggleBezahlt = id => patchAktiv({strafen:(aktiv.strafen||[]).map(s=>s.id===id?{...s,bezahlt:!s.bezahlt}:s)});
@@ -3469,7 +4387,7 @@ function FahrtenbuchApp({authUser, onLogout}) {
   const E_P  = () => ({id:uid(), name:"", typ:"kunde", adresse:"", telefon:"", email:"", bemerkung:""});
   const E_M  = () => ({id:uid(), name:"", ort:"", datum:new Date().toISOString().slice(0,10), einladungen:[], bemerkung:""});
   const E_T  = () => ({id:uid(), datum:new Date().toISOString().slice(0,10), liter:"", preis:"", gesamt:"", kraftstoff:"Diesel", zahlungsart:"EC-Karte", station:"", adresse:"", km:"", bemerkung:"", bezahlt:true});
-  const E_S  = () => ({id:uid(), datum:new Date().toISOString().slice(0,10), typ:"Geschwindigkeitsverstoß", betrag:"", ort:"", aktenzeichen:"", behoerde:"", bezahlt:false, bemerkung:""});
+  const E_S  = () => ({id:uid(), datum:new Date().toISOString().slice(0,10), uhrzeit:"", typ:"Geschwindigkeitsverstoß", betrag:"", tatort:"", tatortAdresse:"", aktenzeichen:"", behoerde:"", adresseBehoerde:"", frist:"", bezahlt:false, notiz:"", belegFoto:""});
   const E_W  = () => ({id:uid(), datum:new Date().toISOString().slice(0,10), typ:"Außenwäsche", preis:"", adresse:"", zahlungsart:"EC-Karte", bemerkung:""});
   const E_SV = () => ({id:uid(), datum:new Date().toISOString().slice(0,10), typ:"Ölwechsel", werkstatt:"", adresse:"", kosten:"", km:"", faelligDatum:"", faelligKm:"", zahlungsart:"EC-Karte", bemerkung:""});
   const E_Park = () => ({id:uid(), datum:new Date().toISOString().slice(0,10), uhrzeit:"", ort:"", adresse:"", dauer:"", betrag:"", zahlungsart:"EC-Karte", kennzeichen:"", bemerkung:""});
@@ -3546,15 +4464,18 @@ function FahrtenbuchApp({authUser, onLogout}) {
       name:"add_strafe",
       description:"Fügt einen Strafzettel / Bußgeldbescheid hinzu. Nur datum ist Pflicht.",
       input_schema:{type:"object",required:["datum"],properties:{
-        datum:        {type:"string"},
-        typ:          {type:"string"},
-        betrag:       {type:"string"},
-        ort:          {type:"string"},
-        aktenzeichen: {type:"string"},
-        punkte:       {type:"string"},
-        faellig:      {type:"string"},
-        bezahlt:      {type:"boolean"},
-        notiz:        {type:"string"},
+        datum:           {type:"string", description:"ISO-Datum z.B. 2025-03-12"},
+        uhrzeit:         {type:"string", description:"Uhrzeit z.B. 14:35"},
+        typ:             {type:"string", description:"Art der Strafe z.B. Geschwindigkeitsverstoß, Parkverstoß"},
+        betrag:          {type:"string", description:"Betrag in Euro z.B. 35"},
+        tatort:          {type:"string", description:"Ort/Straße des Verstoßes z.B. A10 km 42, Hauptstr. 5"},
+        tatortAdresse:   {type:"string", description:"PLZ Ort des Tatortes z.B. 14974 Ludwigsfelde"},
+        behoerde:        {type:"string", description:"Ausstellende Behörde"},
+        adresseBehoerde: {type:"string", description:"Adresse der Behörde"},
+        aktenzeichen:    {type:"string"},
+        frist:           {type:"string", description:"Zahlungs-/Einspruchsfrist ISO-Datum"},
+        bezahlt:         {type:"boolean"},
+        notiz:           {type:"string"},
       }}
     },
     {
@@ -3649,6 +4570,49 @@ function FahrtenbuchApp({authUser, onLogout}) {
         distanceKm:  {type:"string", description:"Entfernung in km (einfache Strecke)"},
       }}
     },
+    // ── UI TOOLS ──────────────────────────────────────────────────────────────
+    {
+      name:"generate_fahrtenbuch",
+      description:"Öffnet die Fahrtenbuch-Druckvorschau (Tab Fahrtenbuch → Print Preview). Von dort kann der Nutzer drucken oder als PDF speichern.",
+      input_schema:{type:"object",properties:{}}
+    },
+    {
+      name:"navigate_to",
+      description:"Navigiert zu einem bestimmten Tab oder Unter-Tab der Anwendung. Nutze dies wenn der Nutzer etwas sehen oder anzeigen möchte.",
+      input_schema:{type:"object",required:["tab"],properties:{
+        tab:    {type:"string", enum:["uebersicht","ziele","kosten","fahrten","bericht","einstellungen"], description:"Haupt-Tab"},
+        subTab: {type:"string", description:"Unter-Tab: für 'kosten' = tanken|service|waesche|strafen|parken; für 'ziele' = standorte|partner|messe"},
+      }}
+    },
+    {
+      name:"switch_vehicle",
+      description:"Wechselt das aktive Fahrzeug. Nutze list_entries(fahrzeuge) oder die Kennzeichen-Info aus dem Kontext um die ID zu finden.",
+      input_schema:{type:"object",required:["vehicleId"],properties:{
+        vehicleId: {type:"string", description:"ID oder Kennzeichen des Fahrzeugs"},
+      }}
+    },
+    {
+      name:"set_filter",
+      description:"Setzt Filter für die Fahrten-Ansicht (Tab Fahrt). Monat im Format YYYY-MM, Kategorie: alle|geschaeftlich|wohnArbeit|privat.",
+      input_schema:{type:"object",properties:{
+        monat:     {type:"string", description:"Monat-Filter, z.B. '2024-11' oder '' für alle"},
+        kategorie: {type:"string", enum:["alle","geschaeftlich","wohnArbeit","privat"], description:"Kategorie-Filter"},
+      }}
+    },
+    {
+      name:"export_data",
+      description:"Öffnet einen Export-Dialog. Format: 'csv' für CSV-Export, 'sheets' für Google Sheets, 'print' für Druckvorschau.",
+      input_schema:{type:"object",required:["format"],properties:{
+        format: {type:"string", enum:["csv","sheets","print"], description:"Export-Format"},
+      }}
+    },
+    {
+      name:"show_stats",
+      description:"Berechnet und gibt Statistiken zum aktiven Fahrzeug zurück: Gesamtkosten, km pro Monat, Anzahl Fahrten, offene Strafen, etc.",
+      input_schema:{type:"object",required:["query"],properties:{
+        query: {type:"string", description:"Was soll berechnet werden: 'kosten' | 'km' | 'fahrten' | 'strafen' | 'zusammenfassung'"},
+      }}
+    },
   ];
 
   const execTool = (name, inp) => {
@@ -3690,11 +4654,13 @@ function FahrtenbuchApp({authUser, onLogout}) {
       return `Service (${inp.typ}) am ${inp.datum} gespeichert.`;
     }
     if(name==="add_strafe"){
-      const entry={id:nid(),datum:inp.datum||"",typ:inp.typ||"",betrag:inp.betrag||"",
-        ort:inp.ort||"",aktenzeichen:inp.aktenzeichen||"",punkte:inp.punkte||"0",
-        faellig:inp.faellig||"",bezahlt:!!inp.bezahlt,notiz:inp.notiz||"",belegFoto:""};
+      const entry={id:nid(),datum:inp.datum||"",uhrzeit:inp.uhrzeit||"",typ:inp.typ||"",betrag:inp.betrag||"",
+        tatort:inp.tatort||"",tatortAdresse:inp.tatortAdresse||"",
+        behoerde:inp.behoerde||"",adresseBehoerde:inp.adresseBehoerde||"",
+        aktenzeichen:inp.aktenzeichen||"",frist:inp.frist||"",
+        bezahlt:!!inp.bezahlt,notiz:inp.notiz||"",belegFoto:""};
       patchAktiv({strafen:[...(aktiv.strafen||[]), entry]});
-      return `Strafe (${inp.typ}) am ${inp.datum} — ${inp.betrag}€ gespeichert.`;
+      return `Strafe (${inp.typ}) am ${inp.datum}${inp.tatort?" — "+inp.tatort:""} — ${inp.betrag}€ gespeichert.`;
     }
     if(name==="add_parken"){
       const entry={id:nid(),datum:inp.datum||"",uhrzeit:inp.uhrzeit||"",
@@ -3790,12 +4756,73 @@ function FahrtenbuchApp({authUser, onLogout}) {
       if(withOdo.length === 0) {
         return `Fahrtenbuch kann noch nicht erstellt werden — keine Fahrten mit Odometerdaten (kmStart/kmEnd) vorhanden. Aktuell ${(aktiv.fahrten||[]).length} Fahrten gesamt, davon ${withoutOdo.length} ohne km-Stand. Bitte zuerst Kilometerstände nachtragen.`;
       }
-      try {
-        generatePdfFile(gefFahrten, aktiv, safeFloat, formatDatum, getZielName, getZielAdr);
-        return `Fahrtenbuch PDF wird erstellt (${withOdo.length} Fahrten mit Odometer).${withoutOdo.length>0?" Hinweis: "+withoutOdo.length+" Fahrten ohne km-Stand werden ohne Kilometerangabe aufgeführt.":""}`;
-      } catch(e) {
-        return `PDF-Erstellung fehlgeschlagen: ${e.message}`;
+      setTab("bericht");
+      setTimeout(()=>setPrintPreview(true), 300);
+      return `Fahrtenbuch-Druckvorschau wird geöffnet (${withOdo.length} Fahrten mit Odometer).${withoutOdo.length>0?" Hinweis: "+withoutOdo.length+" Fahrten ohne km-Stand.":""}`;
+    }
+    // ── UI TOOLS ──────────────────────────────────────────────────────────────
+    if(name==="navigate_to"){
+      const validTabs = ["uebersicht","ziele","kosten","fahrten","bericht","einstellungen"];
+      const t = inp.tab;
+      if(!validTabs.includes(t)) return `Unbekannter Tab: ${t}. Verfügbar: ${validTabs.join(", ")}`;
+      setTab(t);
+      if(t==="kosten" && inp.subTab) {
+        const validSubs = ["tanken","service","waesche","strafen","parken"];
+        if(validSubs.includes(inp.subTab)) setKostenSub(inp.subTab);
       }
+      if(t==="ziele" && inp.subTab) {
+        const validSubs = ["standorte","partner","messe"];
+        if(validSubs.includes(inp.subTab)) setSub(inp.subTab);
+      }
+      const labels = {uebersicht:"Übersicht",ziele:"Ziele",kosten:"Kosten",fahrten:"Fahrt",bericht:"Fahrtenbuch",einstellungen:"Einstellungen"};
+      return `Navigiert zu: ${labels[t]||t}${inp.subTab?" → "+inp.subTab:""}`;
+    }
+    if(name==="switch_vehicle"){
+      const vid = inp.vehicleId;
+      // Try by ID first, then by kennzeichen
+      let target = state.fahrzeuge.find(f=>f.id===vid);
+      if(!target) target = state.fahrzeuge.find(f=>f.kennzeichen?.replace(/\s+/g,"").toLowerCase()===vid.replace(/\s+/g,"").toLowerCase());
+      if(!target) target = state.fahrzeuge.find(f=>f.kennzeichen?.toLowerCase().includes(vid.toLowerCase()));
+      if(!target) return `Fahrzeug nicht gefunden: "${vid}". Verfügbar: ${state.fahrzeuge.map(f=>f.kennzeichen).join(", ")}`;
+      setState(prev=>({...prev, aktivId:target.id}));
+      return `Gewechselt zu: ${target.kennzeichen} (${target.marke||""} ${target.modell||""})`;
+    }
+    if(name==="set_filter"){
+      if(inp.monat!==undefined) setFMonat(inp.monat||"");
+      if(inp.kategorie) setFKat(inp.kategorie);
+      setTab("fahrten");
+      const labels = [];
+      if(inp.monat) labels.push("Monat: "+inp.monat);
+      if(inp.kategorie && inp.kategorie!=="alle") labels.push("Kategorie: "+inp.kategorie);
+      return labels.length ? `Filter gesetzt: ${labels.join(", ")}` : "Alle Filter zurückgesetzt";
+    }
+    if(name==="export_data"){
+      const fmt = inp.format;
+      if(fmt==="csv") { setTab("bericht"); setTimeout(()=>setCsvModal(true),300); return "CSV-Export-Dialog wird geöffnet."; }
+      if(fmt==="sheets") { setTab("bericht"); setTimeout(()=>setSheetsModal(true),300); return "Google Sheets Export-Dialog wird geöffnet."; }
+      if(fmt==="print") { setTab("bericht"); setTimeout(()=>setPrintPreview(true),300); return "Druckvorschau wird geöffnet."; }
+      return `Unbekanntes Format: ${fmt}. Verfügbar: csv, sheets, print`;
+    }
+    if(name==="show_stats"){
+      const q = inp.query||"zusammenfassung";
+      const fahrten = aktiv.fahrten||[];
+      const totalKm = fahrten.reduce((s,f)=>s+(parseFloat(f.km)||0),0);
+      const geschKm = fahrten.filter(f=>f.kmTyp==="geschaeftlich").reduce((s,f)=>s+(parseFloat(f.km)||0),0);
+      const privKm = fahrten.filter(f=>f.kmTyp==="privat").reduce((s,f)=>s+(parseFloat(f.km)||0),0);
+      const tankSum = (aktiv.tankstellen||[]).reduce((s,t)=>s+(parseFloat(t.gesamtbetrag)||0),0);
+      const servSum = (aktiv.services||[]).reduce((s,t)=>s+(parseFloat(t.betrag)||0),0);
+      const waschSum = (aktiv.waesche||[]).reduce((s,t)=>s+(parseFloat(t.betrag)||0),0);
+      const parkSum = (aktiv.parkplaetze||[]).reduce((s,t)=>s+(parseFloat(t.betrag)||0),0);
+      const strSum = (aktiv.strafen||[]).reduce((s,t)=>s+(parseFloat(t.betrag)||0),0);
+      const gesamt = tankSum+servSum+waschSum+parkSum+strSum;
+      const offeneStrafen = (aktiv.strafen||[]).filter(s=>!s.bezahlt).length;
+
+      if(q==="kosten") return `Kosten ${aktiv.kennzeichen}:\n  Tanken: ${tankSum.toFixed(2)} EUR (${(aktiv.tankstellen||[]).length} Einträge)\n  Service: ${servSum.toFixed(2)} EUR\n  Wäsche: ${waschSum.toFixed(2)} EUR\n  Parken: ${parkSum.toFixed(2)} EUR\n  Strafen: ${strSum.toFixed(2)} EUR\n  GESAMT: ${gesamt.toFixed(2)} EUR`;
+      if(q==="km") return `Kilometer ${aktiv.kennzeichen}:\n  Gesamt: ${totalKm.toFixed(1)} km (${fahrten.length} Fahrten)\n  Geschäftlich: ${geschKm.toFixed(1)} km\n  Privat: ${privKm.toFixed(1)} km\n  Letzter Odometer: ${fahrten.length?fahrten.sort((a,b)=>(b.datum||"").localeCompare(a.datum||""))[0]?.kmEnd||"?":"?"} km`;
+      if(q==="fahrten") return `Fahrten ${aktiv.kennzeichen}: ${fahrten.length} gesamt\n  Mit Odometer: ${fahrten.filter(f=>f.kmStart&&f.kmEnd).length}\n  Ohne Odometer: ${fahrten.filter(f=>!f.kmStart||!f.kmEnd).length}\n  Letzte Fahrt: ${fahrten.length?fahrten.sort((a,b)=>(b.datum||"").localeCompare(a.datum||""))[0]?.datum||"?":"keine"}`;
+      if(q==="strafen") return `Strafen ${aktiv.kennzeichen}: ${(aktiv.strafen||[]).length} gesamt\n  Offen (unbezahlt): ${offeneStrafen}\n  Gesamtbetrag: ${strSum.toFixed(2)} EUR`;
+      // zusammenfassung
+      return `${aktiv.kennzeichen} — ${aktiv.marke||""} ${aktiv.modell||""}\n  Fahrer: ${aktiv.fahrer||"?"}\n  Stammstandort: ${aktiv.standort?.name||"?"}\n  Fahrten: ${fahrten.length} (${totalKm.toFixed(0)} km)\n  Kosten gesamt: ${gesamt.toFixed(2)} EUR\n  Offene Strafen: ${offeneStrafen}\n  Partner: ${(aktiv.partner||[]).length}\n  Messen: ${(aktiv.messen||[]).length}`;
     }
     return "Unbekanntes Tool.";
   };
@@ -3918,6 +4945,7 @@ ${odoGaps.length?"\n═══ ODOMETER-LÜCKEN ═══\n"+odoGaps.slice(0,5).j
 8. BELEGE/FOTOS: Extrahiere ALLE erkennbaren Daten (Datum, Betrag, Adresse, Liter, Bon-Nr...). Speichere als Kosten-Event. Frage dann: "Soll ich dazu eine Fahrt anlegen?"
 9. VON KOSTEN ZU FAHRTEN: Wenn ein Parkticket oder Tankquittung an einem Ort existiert, aber keine Fahrt dorthin → schlage proaktiv vor: "Am {Datum} gibt es einen Parkvorgang in {Ort} ohne Fahrt. Soll ich eine Fahrt dorthin anlegen?"
 10. PDF NUR MIT ODOMETER: Das Fahrtenbuch-PDF setzt voraus, dass Fahrten kmStart und kmEnd haben. Ohne Odometer → informiere den Nutzer was fehlt.
+11. WOCHENENDEN & FEIERTAGE: Geschäftsfahrten an Samstagen, Sonntagen und gesetzlichen Feiertagen (DE/Brandenburg) sind unüblich und werden vom Finanzamt kritisch geprüft. Wenn der Nutzer eine Fahrt an einem Wochenende oder Feiertag erfassen will → weise darauf hin und frage nach, ob das Datum korrekt ist. Beim Prüfen (Audit) melde alle Fahrten an Wochenenden/Feiertagen als Auffälligkeit.
 
 ═══ ERWEITERTE FUNKTIONEN ═══
 
@@ -3982,7 +5010,34 @@ Wenn der Nutzer "Prüfen" oder "prüfe" sagt:
 5. PFLICHTFELDER: Melde Einträge ohne km, ohne Ziel, ohne Fahrer.
 6. UNBEZAHLTE STRAFEN: Liste Strafen mit bezahlt=false und überschrittenem Fälligkeitsdatum.
 7. TÜV: Wenn tuvDatum bekannt und <30 Tage entfernt oder abgelaufen → Warnung.
+8. WOCHENENDEN/FEIERTAGE: Finde Fahrten an Samstagen, Sonntagen und gesetzlichen Feiertagen (Neujahr, Karfreitag, Ostermontag, 1. Mai, Himmelfahrt, Pfingstmontag, Tag der Deutschen Einheit, Weihnachten 25./26.12). Diese sind steuerlich auffällig — melde sie mit [!] und empfehle Korrektur oder Begründung.
 Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
+
+═══ UI-STEUERUNG (Agenten-Modus) ═══
+Du kannst die Benutzeroberfläche der App direkt steuern:
+
+NAVIGATION:
+- navigate_to: Wechsle zu jedem Tab (Übersicht, Ziele, Kosten, Fahrt, Fahrtenbuch, Einstellungen)
+  Unter-Tabs: Kosten → tanken/service/waesche/strafen/parken; Ziele → standorte/partner/messe
+- switch_vehicle: Wechsle das aktive Fahrzeug per Kennzeichen ("Wechsle zum VW" → switch_vehicle("TF-VI 601"))
+- set_filter: Setze Monat/Kategorie-Filter in der Fahrten-Ansicht
+
+EXPORT:
+- generate_fahrtenbuch: Öffnet die Druckvorschau (Tab Fahrtenbuch → Print Preview)
+- export_data(csv): Öffnet den CSV-Export-Dialog
+- export_data(sheets): Öffnet den Google Sheets Export-Dialog
+- export_data(print): Öffnet die Druckvorschau
+
+STATISTIKEN:
+- show_stats: Berechnet live Kosten, km, Fahrten, Strafen — nutze bei Fragen wie "Wie viel habe ich ausgegeben?"
+
+WICHTIG — WANN UI-TOOLS NUTZEN:
+- "Zeig mir die Kosten" → navigate_to(kosten) + show_stats(kosten)
+- "Wechsle zum Fiat" → switch_vehicle(TF-IA 2006)
+- "Zeig Fahrten im November" → set_filter(monat:"2024-11") + navigate_to(fahrten)
+- "Erstelle das Fahrtenbuch" → generate_fahrtenbuch
+- "Exportiere als CSV" → export_data(csv)
+- Kombiniere Data-Tools und UI-Tools: "Erfasse die Fahrt und zeig mir das Fahrtenbuch" → add_fahrt + generate_fahrtenbuch
 
 ═══ KONVERSATIONS-STIL ═══
 - Sprache: IMMER Deutsch
@@ -4140,20 +5195,28 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
 
   const patchFzId  = (id,patch)=>setState(prev=>({...prev,fahrzeuge:prev.fahrzeuge.map(f=>f.id===id?{...f,...patch}:f)}));
   const saveFzInline = (id, f) => {
-    if(!f.kennzeichen) return;
+    if(!f.kennzeichen?.trim()) return;
+    if(!f.stName?.trim()) { alert("Bitte Stammstandort Bezeichnung eingeben"); return; }
     const n = f.name || [f.marke, f.modell].filter(Boolean).join(" ") || f.kennzeichen;
     patchFzId(id, {
       name: n, kennzeichen: f.kennzeichen,
       marke: f.marke||"", modell: f.modell||"",
       kraftstoff: f.kraftstoff||"Diesel", farbe: f.farbe||FARBEN[0],
       tuvDatum: f.tuvDatum||"", kfzBriefNr: f.kfzBriefNr||"",
-      fahrgestellNr: f.fahrgestellNr||"", standort: f.standort||null,
+      fahrgestellNr: f.fahrgestellNr||"",
+      standort:{name:f.stName||"", adresse:f.stAdr||""},
       kmStandInitial: f.kmStandInitial||"", fahrer: f.fahrer||"",
+      halterName:f.halterName||"", halterAnschrift:f.halterAnschrift||"",
+      halterTelPrivat:f.halterTelPrivat||"", halterTelFirma:f.halterTelFirma||"",
+      fahrerAnschrift:f.fahrerAnschrift||"", fahrerTelPrivat:f.fahrerTelPrivat||"",
+      fahrerTelFirma:f.fahrerTelFirma||"",
+      reifendruckVorne:f.reifendruckVorne||"", reifendruckHinten:f.reifendruckHinten||"",
     });
     setEditFzId(null);
   }
   const addFzInline = f => {
-    if(!f.kennzeichen) return;
+    if(!f.kennzeichen?.trim()) return;
+    if(!f.stName?.trim()) { alert("Bitte Stammstandort Bezeichnung eingeben"); return; }
     const n = f.name || [f.marke, f.modell].filter(Boolean).join(" ") || f.kennzeichen;
     const fz = {
       ...makeFahrzeug(state.fahrzeuge.length),
@@ -4162,6 +5225,13 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
       kraftstoff: f.kraftstoff||"Diesel", farbe: f.farbe||FARBEN[0],
       tuvDatum: f.tuvDatum||"", kfzBriefNr: f.kfzBriefNr||"",
       fahrgestellNr: f.fahrgestellNr||"",
+      standort:{name:f.stName||"", adresse:f.stAdr||""},
+      kmStandInitial: f.kmStandInitial||"", fahrer: f.fahrer||"",
+      halterName:f.halterName||"", halterAnschrift:f.halterAnschrift||"",
+      halterTelPrivat:f.halterTelPrivat||"", halterTelFirma:f.halterTelFirma||"",
+      fahrerAnschrift:f.fahrerAnschrift||"", fahrerTelPrivat:f.fahrerTelPrivat||"",
+      fahrerTelFirma:f.fahrerTelFirma||"",
+      reifendruckVorne:f.reifendruckVorne||"", reifendruckHinten:f.reifendruckHinten||"",
     };
     setState(prev => ({...prev, fahrzeuge:[...prev.fahrzeuge, fz], aktivId: fz.id}));
     setAddingFz(false);
@@ -4175,7 +5245,7 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
       try {
         const p = JSON.parse(ev.target.result);
         if(p._version === 2 && Array.isArray(p.fahrzeuge) && p.fahrzeuge.length) {
-          const clean = p.fahrzeuge.filter(f => f.kennzeichen && f.kennzeichen !== "—");
+          const clean = sanitizeAll(p.fahrzeuge.filter(f => f.kennzeichen && f.kennzeichen !== "—"));
           if(!clean.length) { setIErr("Keine gültigen Fahrzeuge gefunden."); return; }
           const aktivId = clean.find(f => f.id === p.aktivId) ? p.aktivId : clean[0].id;
           setState({fahrzeuge: clean, aktivId});
@@ -4202,36 +5272,6 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
       URL.revokeObjectURL(url);
     } catch(err) { setIErr("Export fehlgeschlagen."); }
   };
-  const loadMuster=()=>{
-    // Сохраняем реальные данные в хранилище перед заменой
-    const backup = JSON.parse(JSON.stringify(state));
-    vorMusterRef.current = backup;
-    try { window.storage.set("fb2_vorMuster", JSON.stringify(backup)); } catch(e) {}
-    try { localStorage.setItem("fb2_vorMuster", JSON.stringify(backup)); } catch(e) {}
-
-    const { fz, fz2 } = createMusterDaten();
-        setState({fahrzeuge:[fz, fz2], aktivId:fz.id});
-    setMusterAktiv(true);
-  };
-
-  const unloadMuster=async()=>{
-    // Сначала пробуем из ref, потом из хранилища
-    let backup = vorMusterRef.current;
-    if(!backup) {
-      try { const r=await window.storage.get("fb2_vorMuster"); if(r?.value) backup=JSON.parse(r.value); } catch(e) {}
-    }
-    if(!backup) {
-      try { const raw=localStorage.getItem("fb2_vorMuster"); if(raw) backup=JSON.parse(raw); } catch(e) {}
-    }
-    if(!backup) { setIErr("Keine gesicherten Daten gefunden"); return; }
-    if(!backup?.fahrzeuge?.length) { setIErr("Backup beschädigt oder leer"); return; }
-    setState(backup);
-    vorMusterRef.current = null;
-    try { window.storage.delete("fb2_vorMuster"); } catch(e) {}
-    try { localStorage.removeItem("fb2_vorMuster"); } catch(e) {}
-    setMusterAktiv(false);
-  };
-
   const gefFahrten=useMemo(()=>(aktiv.fahrten||[]).filter(f=>{
     const q=fQ.toLowerCase();
     if(q){
@@ -4242,13 +5282,26 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
       if(!name.includes(q)&&!notiz.includes(q)) return false;
     }
     return (fMonat?f.datum?.startsWith(fMonat):true)&&(fKat==="alle"?true:f.kategorie===fKat);
-  }).sort((a,b)=>b.datum?.localeCompare(a.datum)),[aktiv.fahrten,fMonat,fKat,fQ,aktiv.partner,aktiv.messen]);
+  }).sort((a,b)=>(b?.datum||"").localeCompare(a?.datum||"")),[aktiv.fahrten,fMonat,fKat,fQ,aktiv.partner,aktiv.messen]);
+  const SKIP_WORDS=new Set(["gmbh","mbh","kg","ohg","ug","co","ag","gbr","e.v.","berlin","münchen","potsdam","nürnberg","ludwigsfelde","mittenwalde","schenkendorf","unterspreewald"]);
+  const keyW=s=>(s||"").trim().toLowerCase().split(/[\s,./&-]+/).filter(w=>w.length>1&&!SKIP_WORDS.has(w)&&!/^\d+$/.test(w));
+  const wMatch=(name,text)=>{const ws=keyW(name);if(!ws.length)return false;const hits=ws.filter(w=>text.includes(w));return hits.length>=Math.min(2,ws.length);};
+
   const stats=useMemo(()=>{
-    const nP={},nK={standorte:0,partner:0,messe:0},kmByMonthMap={};
+    const nP={},nM={},nK={standorte:0,partner:0,messe:0},kmByMonthMap={};
     (aktiv.fahrten||[]).forEach(f=>{
       const km=parseFloat(f.km)||0;
       nK[f.kategorie]=(nK[f.kategorie]||0)+km;
-      if(f.kategorie==="partner"&&f.zielId)nP[f.zielId]=(nP[f.zielId]||0)+km;
+      const combo=((f.zielName||"")+" "+(f.notiz||"")).trim().toLowerCase();
+      const zn=(f.zielName||"").trim().toLowerCase();
+      // Partner: 1) zielId, 2) word-match name in combo
+      let pid = f.zielId && (aktiv.partner||[]).find(p=>p.id===f.zielId) ? f.zielId : null;
+      if(!pid) { for(const p of (aktiv.partner||[])) { if(wMatch(p.name, combo)) { pid=p.id; break; } } }
+      if(pid) nP[pid]=(nP[pid]||0)+km;
+      // Messe: 1) zielId, 2) word-match
+      let mid = f.zielId && (aktiv.messen||[]).find(m=>m.id===f.zielId) ? f.zielId : null;
+      if(!mid) { for(const m of (aktiv.messen||[])) { if(wMatch(m.name, combo)) { mid=m.id; break; } } }
+      if(mid) nM[mid]=(nM[mid]||0)+km;
       if(f.datum){const m=f.datum.slice(0,7);kmByMonthMap[m]=(kmByMonthMap[m]||0)+km;}
     });
     const monate=[...new Set((aktiv.fahrten||[]).map(f=>f.datum?.slice(0,7)).filter(Boolean))].sort((a,b)=>b.localeCompare(a));
@@ -4270,7 +5323,7 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
       .sort((a,b)=>(a.faelligDatum||"9999").localeCompare(b.faelligDatum||"9999")).slice(0,3);
     const today=new Date().toISOString().slice(0,10);
     const faelligUeberfaellig=faelligkeiten.filter(x=>x.faelligDatum&&x.faelligDatum<=today);
-    return{nP,nK,monate,kmByMonth,tankKosten,serviceKosten,waschKosten,strafeKosten,parkKosten,
+    return{nP,nM,nK,monate,kmByMonth,tankKosten,serviceKosten,waschKosten,strafeKosten,parkKosten,
       gesamtKosten,strafenOffen,faelligkeiten,faelligUeberfaellig,
       gKm:sumKm(aktiv.fahrten||[]),gZeit:(aktiv.fahrten||[]).reduce((a,f)=>a+(parseInt(f.dauerMin)||0),0),
       gefKm:sumKm(gefFahrten),gefZeit:gefFahrten.reduce((a,f)=>a+(parseInt(f.dauerMin)||0),0)};
@@ -4299,11 +5352,20 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
     <ErrorBoundary>
     <>
     <style>{`
+@font-face {
+  font-family: 'EuroPlate';
+  src: url('https://cdn.jsdelivr.net/gh/ArmynC/ArssKnzkPlate@master/src/assets/fonts/europlate.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 @keyframes modalIn   { from { opacity:0; transform:translateY(16px) scale(0.97); } to { opacity:1; transform:translateY(0) scale(1); } }
 @keyframes overlayIn { from { opacity:0; } to { opacity:1; } }
-@keyframes toastIn   { from { opacity:0; transform:translateX(-50%) translateY(12px); } to { opacity:1; transform:translateX(-50%) translateY(0); } }
-@keyframes toastOut  { from { opacity:1; transform:translateX(-50%) translateY(0); } to { opacity:0; transform:translateX(-50%) translateY(8px); } }
+@keyframes tabFade   { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+@keyframes esFloat   { 0%{transform:perspective(400px) rotateY(0deg)} 25%{transform:perspective(400px) rotateY(90deg)} 50%{transform:perspective(400px) rotateY(0deg)} 100%{transform:perspective(400px) rotateY(0deg)} }
+@keyframes esShadow  { 0%{transform:scaleX(1);opacity:0.15} 25%{transform:scaleX(0.3);opacity:0.05} 50%,100%{transform:scaleX(1);opacity:0.15} }
 
 @media print {
   @page {
@@ -4397,14 +5459,35 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
     font-size: 8pt !important;
   }
   .fahrt-print-tr-alt { background: #f9f9f7 !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+}
+  @keyframes cardIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+  .fb-stagger > * { animation: cardIn 0.22s ease-out both; }
+  .fb-stagger > *:nth-child(2) { animation-delay:30ms; }
+  .fb-stagger > *:nth-child(3) { animation-delay:60ms; }
+  .fb-stagger > *:nth-child(4) { animation-delay:90ms; }
+  .fb-stagger > *:nth-child(5) { animation-delay:120ms; }
+  .fb-stagger > *:nth-child(6) { animation-delay:150ms; }
+  .fb-stagger > *:nth-child(7) { animation-delay:180ms; }
+  .fb-stagger > *:nth-child(8) { animation-delay:210ms; }
+  .fb-stagger > *:nth-child(n+9) { animation-delay:240ms; }
+  .fb-ico-btn { transition: transform 0.12s ease; }
+  .fb-ico-btn:hover { transform: scale(1.2); }
 `}</style>
     <div style={{minHeight:"100vh",background:C.bg,color:C.text,fontFamily:SANS}}>
 
       {/* ══ HEADER ══ */}
-      <header style={{background:C.surface,borderBottom:`0.5px solid ${acc}`,minHeight:92,boxShadow:C.shadow,position:"sticky",top:0,zIndex:100,transition:"border-color 0.3s"}}>
+      <header style={{background:C.bg,borderBottom:`0.5px solid ${acc}`,minHeight:92,position:"sticky",top:0,zIndex:100,transition:"border-color 0.3s",boxShadow:"0 1px 4px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04)"}}>
         <div style={{maxWidth:1200,margin:"0 auto",padding:"22px 28px",width:"100%",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
         <div style={{display:"flex",alignItems:"center",gap:16}}>
-          <Kennzeichen value={aktiv.kennzeichen||""} size="lg"/>
+          <div ref={kzBoxRef} style={{
+            borderRadius:6,
+            boxShadow:"0 2px 4px rgba(0,0,0,0.15), 0 6px 16px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.08)",
+            position:"relative",
+            lineHeight:0,
+            transformStyle:"preserve-3d",
+          }}>
+            <Kennzeichen value={aktiv.kennzeichen||""} size="xl"/>
+          </div>
           <div>
             {(aktiv.marke||aktiv.modell)
               ? <>
@@ -4415,36 +5498,26 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
             }
           </div>
         </div>
-        <div style={{display:"flex",alignItems:"center",gap:8}}>
-          <LiveClock accent={acc}/>
-          <button onClick={onLogout} title="Abmelden"
-            style={{width:40,height:40,background:"transparent",border:"none",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",borderRadius:8,transition:"background 0.12s",color:C.muted}}
-            onMouseEnter={e=>{e.currentTarget.style.background="rgba(0,0,0,0.08)";e.currentTarget.querySelector("svg").style.stroke=C.red;}}
-            onMouseLeave={e=>{e.currentTarget.style.background="transparent";e.currentTarget.querySelector("svg").style.stroke=C.muted;}}>
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={C.muted} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{transition:"stroke 0.12s"}}>
-              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-              <polyline points="16 17 21 12 16 7"/>
-              <line x1="21" y1="12" x2="9" y2="12"/>
-            </svg>
-          </button>
+        <div style={{display:"flex",alignItems:"center",gap:6}}>
+          <div style={{marginRight:44}}><LiveClock accent={acc}/></div>
           {(()=>{const now=new Date();const nowYM=now.getFullYear()*12+now.getMonth();const alertFz=[aktiv].filter(fz=>{if(!fz.tuvDatum)return false;const[y,m]=fz.tuvDatum.split("-").map(Number);return(y*12+(m-1))-nowYM<=2;});if(!alertFz.length)return null;return(
               <div ref={tuvRef} style={{position:"relative"}}>
                 {/* Кнопка — только иконка + красная точка */}
                 <button onClick={()=>setTuvPopup(v=>!v)}
-                  style={{width:40,height:40,background:tuvPopup?"rgba(0,0,0,0.08)":"transparent",border:"none",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",position:"relative",transition:"background 0.12s",borderRadius:8}}
+                  style={{width:40,height:40,background:tuvPopup?"rgba(0,0,0,0.08)":"transparent",border:"none",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",position:"relative",transition:"background 0.12s",borderRadius:C.inputRadius||8}}
                   onMouseEnter={e=>{if(!tuvPopup)e.currentTarget.style.background="rgba(0,0,0,0.08)"}}
                   onMouseLeave={e=>{if(!tuvPopup)e.currentTarget.style.background="transparent"}}
                   onMouseDown={e=>e.currentTarget.style.background="rgba(0,0,0,0.14)"}
                   onMouseUp={e=>e.currentTarget.style.background="rgba(0,0,0,0.08)"}>
                   <Ico name="bell" size={20} color={C.red}/>
-                  <span style={{position:"absolute",top:6,right:6,width:7,height:7,borderRadius:"50%",background:C.red,border:`1.5px solid ${C.surface}`}}/>
+                  <span style={{position:"absolute",top:6,right:6,width:7,height:7,borderRadius:"50%",background:C.red,border:`1.5px solid ${C.bg}`}}/>
                 </button>
                 {/* Попап */}
                 {tuvPopup&&(
                   <div style={{
                     position:"absolute",top:"calc(100% + 10px)",right:0,
                     background:C.surface,
-                    borderRadius:8,
+                    borderRadius:C.inputRadius||8,
                     border:`1px solid ${C.border}`,
                     boxShadow:"0 16px 48px rgba(0,0,0,0.18), 0 2px 8px rgba(0,0,0,0.08)",
                     minWidth:280,zIndex:200,overflow:"hidden",
@@ -4458,7 +5531,7 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
                     }}>
                       <div style={{display:"flex",alignItems:"center",gap:8}}>
                         <div style={{
-                          width:28,height:28,borderRadius:8,background:C.redLight,
+                          width:28,height:28,borderRadius:C.inputRadius||8,background:C.redLight,
                           display:"flex",alignItems:"center",justifyContent:"center",
                         }}>
                           <Ico name="bell" size={15} color={C.red}/>
@@ -4497,7 +5570,7 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
                             style={{
                               fontSize:14,fontWeight:700,color:statusColor,fontFamily:SANS,
                               whiteSpace:"nowrap",cursor:"pointer",
-                              background:statusBg,borderRadius:8,
+                              background:statusBg,borderRadius:C.inputRadius||8,
                               padding:"4px 8px",transition:"opacity 0.15s",
                             }}
                             onMouseEnter={e=>e.currentTarget.style.opacity="0.75"}
@@ -4512,12 +5585,22 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
             );
           })()}
           <SettingsBtn active={tab==="einstellungen"} accent={acc} onClick={()=>setTab("einstellungen")}/>
+          <button onClick={onLogout} title="Abmelden"
+            style={{width:40,height:40,background:"transparent",border:"none",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",borderRadius:C.inputRadius||8,transition:"background 0.12s",color:C.muted}}
+            onMouseEnter={e=>{e.currentTarget.style.background="rgba(0,0,0,0.08)";e.currentTarget.querySelector("svg").style.stroke=C.red;}}
+            onMouseLeave={e=>{e.currentTarget.style.background="transparent";e.currentTarget.querySelector("svg").style.stroke=C.muted;}}>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={C.muted} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{transition:"stroke 0.12s"}}>
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+              <polyline points="16 17 21 12 16 7"/>
+              <line x1="21" y1="12" x2="9" y2="12"/>
+            </svg>
+          </button>
         </div>
         </div>
       </header>
 
       {/* ══ TABS ══ */}
-      <div style={{background:C.surface,overflow:"hidden",borderBottom:`1px solid ${C.border}`}}>
+      <div style={{background:C.surface,overflow:"hidden",borderBottom:`1px solid ${C.border}`,boxShadow:"0 1px 3px rgba(0,0,0,0.06)"}}>
         <div style={{maxWidth:1200,margin:"0 auto",display:"flex",width:"100%",padding:"0 32px",boxSizing:"border-box"}}>
           {TABS.map(t=>(
             <button key={t.id} onClick={()=>{setTab(t.id);resetForms();}}
@@ -4529,7 +5612,7 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
       </div>
 
       {/* ══ CONTENT ══ */}
-      <main style={{padding:"28px 32px 40px",maxWidth:1200,margin:"0 auto"}}>
+      <main key={tab+sub} style={{padding:"28px 32px 40px",maxWidth:1200,margin:"0 auto",animation:"tabFade 0.18s ease-out"}}>
 
         {/* ── Übersicht ── */}
         {/* ── Übersicht ── */}
@@ -4593,7 +5676,7 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
                     ].map(({val,label})=>(
                       <button key={val} onClick={()=>setFData({...fData,kmTyp:val})}
                         style={{flex:1,height:34,border:`1px solid ${fData.kmTyp===val?acc:C.border}`,
-                          borderRadius:8,background:fData.kmTyp===val?acc:"#fff",
+                          borderRadius:C.inputRadius||8,background:fData.kmTyp===val?acc:"#fff",
                           color:fData.kmTyp===val?"#fff":C.muted,
                           fontSize:14,fontFamily:SANS,fontWeight:700,
                           cursor:"pointer",letterSpacing:0.5,transition:"all 0.12s"}}>
@@ -4607,7 +5690,7 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
                   HIN + ZURÜCK
                 </label>
                 <div style={{paddingTop:14}}>
-                      <label style={LBL}>Zweck der Fahrt</label>
+                      <label style={LBL_f()}>Zweck der Fahrt</label>
                       <CustomSelect
                         value={fData.notiz||""}
                         onChange={v=>setFData({...fData,notiz:v})}
@@ -4621,6 +5704,7 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
             )}
 
             {/* List header */}
+            {!!(aktiv.fahrten||[]).length&&<>
             {/* Zeile 1: Zähler + Button */}
             <div style={{display:"flex",alignItems:"center",marginBottom:10}}>
               <div style={{fontSize:14,color:C.text}}>
@@ -4631,27 +5715,31 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
               </div>
               <div style={{flex:1}}/>
               {fForm===null&&(
-                <button onClick={()=>{setFForm("new");setFData(E_F());}} style={{...btnSolid(acc),flexShrink:0}}>
+                <SpringBtn onClick={()=>{setFForm("new");setFData(E_F());}} style={{...btnSolid(acc),flexShrink:0}}>
                   <Ico name="plus" size={15} color="#fff"/>FAHRT EINTRAGEN
-                </button>
+                </SpringBtn>
               )}
             </div>
             {/* Zeile 2: Suche + Filter */}
             <div style={{display:"flex",gap:10,alignItems:"center",flexWrap:"wrap",marginBottom:14}}>
               <div style={{position:"relative",flex:1,minWidth:160,display:"flex",alignItems:"center"}}>
                 <input value={fQ} onChange={e=>setFQ(e.target?.value ?? "")} placeholder="Suchen…"
-                  style={{width:"100%",height:40,boxSizing:"border-box",padding:"0 34px 0 36px",border:`1px solid ${C.border}`,borderRadius:8,boxShadow:"0 1px 4px rgba(0,0,0,0.06)",transition:"border-color 0.15s, box-shadow 0.15s",background:"#fff",color:"#111",fontSize:14,fontFamily:SANS,outline:"none",WebkitAppearance:"none",appearance:"none"}}/>
+                  style={{width:"100%",height:40,boxSizing:"border-box",padding:"0 34px 0 36px",border:`1px solid ${C.border}`,borderRadius:C.inputRadius||8,boxShadow:"0 1px 4px rgba(0,0,0,0.06)",transition:"border-color 0.15s, box-shadow 0.15s",background:"#fff",color:"#111",fontSize:14,fontFamily:SANS,outline:"none",WebkitAppearance:"none",appearance:"none"}}/>
                 <span style={{position:"absolute",left:11,top:"50%",transform:"translateY(-50%)",pointerEvents:"none",display:"flex",alignItems:"center",lineHeight:1}}><Ico name="search" size={13} color={C.muted}/></span>
-                {fQ&&<button onClick={()=>setFQ("")} style={{position:"absolute",right:8,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",cursor:"pointer",padding:2,display:"flex"}}><Ico name="close" size={13} color={C.muted}/></button>}
+                {fQ&&<button title="Filter zurücksetzen"
+                  onClick={()=>setFQ("")} style={{position:"absolute",right:8,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",cursor:"pointer",padding:2,display:"flex"}}><Ico name="close" size={13} color={C.muted}/></button>}
               </div>
-              <div style={{flex:"0 0 clamp(120px,15%,170px)"}}><CustomSelect value={fMonat} onChange={setFMonat} accent={C.border} options={[{value:"",label:"Alle Monate"},{value:"__2025",label:"── 2025 ──",disabled:true},...(stats.monate||[]).filter(m=>m.startsWith("2025")).map(m=>({value:m,label:m})),{value:"__2024",label:"── 2024 ──",disabled:true},...["2024-12","2024-11","2024-10","2024-09","2024-08","2024-07","2024-06","2024-05","2024-04","2024-03","2024-02","2024-01"].map(m=>({value:m,label:m}))]}/></div>
+              <div style={{flex:"0 0 clamp(120px,15%,170px)"}}><CustomSelect value={fMonat} onChange={setFMonat} accent={C.border} options={[{value:"",label:"Alle Zeiträume"},...(()=>{const years=[...new Set((stats.monate||[]).map(m=>m.slice(0,4)))].sort((a,b)=>b.localeCompare(a));const opts=[];years.forEach(y=>{opts.push({value:y,label:"━ "+y+" ━"});(stats.monate||[]).filter(m=>m.startsWith(y)).sort((a,b)=>b.localeCompare(a)).forEach(m=>opts.push({value:m,label:"   "+m}));});return opts;})()]}/></div>
               <div style={{flex:"0 0 clamp(140px,17%,200px)"}}><CustomSelect value={fKat} onChange={setFKat} options={OPT_FAHRT_KAT_F} accent={C.border}/></div>
               {(fQ||fMonat||fKat!=="alle")&&(
-                <button style={{height:40,border:`1px solid ${C.border}`,borderRadius:8,background:"#fff",color:C.muted,boxShadow:"0 1px 4px rgba(0,0,0,0.06)",fontSize:14,fontFamily:SANS,padding:"0 10px",cursor:"pointer",flexShrink:0,outline:"none"}} onClick={()=>{setFQ("");setFMonat("");setFKat("alle");}}>✕ Reset</button>
+                <button style={{height:40,border:`1px solid ${C.border}`,borderRadius:C.inputRadius||8,background:"#fff",color:C.muted,boxShadow:"0 1px 4px rgba(0,0,0,0.06)",fontSize:14,fontFamily:SANS,padding:"0 10px",cursor:"pointer",flexShrink:0,outline:"none"}} onClick={()=>{setFQ("");setFMonat("");setFKat("alle");}}>✕ Reset</button>
               )}
             </div>
+            </>}
+            {!(aktiv.fahrten||[]).length&&fForm===null&&<EmptyState icon="car" accent={acc} text="Noch keine Fahrten" hint="Erste Fahrt erfassen und hier sehen" btnLabel="FAHRT EINTRAGEN" onBtnClick={()=>{setFForm("new");setFData(E_F());}}/>}
 
             {/* Fahrt list */}
+            <div className="fb-stagger">
             {gefFahrten.map(f=>{
               const ak=katAccent[f.kategorie]||C.strafe;
               const isEditing=fForm===f.id;
@@ -4699,7 +5787,7 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
                           ].map(({val,label})=>(
                             <button key={val} onClick={()=>setFData({...fData,kmTyp:val})}
                               style={{flex:1,height:34,border:`1px solid ${(fData.kmTyp||"geschaeftlich")===val?acc:C.border}`,
-                                borderRadius:8,background:(fData.kmTyp||"geschaeftlich")===val?acc:"#fff",
+                                borderRadius:C.inputRadius||8,background:(fData.kmTyp||"geschaeftlich")===val?acc:"#fff",
                                 color:(fData.kmTyp||"geschaeftlich")===val?"#fff":C.muted,
                                 fontSize:14,fontFamily:SANS,fontWeight:700,
                                 cursor:"pointer",letterSpacing:0.5,transition:"all 0.12s"}}>
@@ -4713,7 +5801,7 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
                         HIN + ZURÜCK
                       </label>
                       <div style={{paddingTop:14}}>
-                      <label style={LBL}>Zweck der Fahrt</label>
+                      <label style={LBL_f()}>Zweck der Fahrt</label>
                       <CustomSelect
                         value={fData.notiz||""}
                         onChange={v=>setFData({...fData,notiz:v})}
@@ -4726,39 +5814,39 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
                     </FormPanel>
                   )}
                   {!isEditing&&(
-                    <div style={{background:C.surface,borderLeft:`2px solid ${ak}`,padding:"12px 16px",marginBottom:2,display:"flex",alignItems:"center",gap:12,boxShadow:C.shadow}}>
+                    <div style={{background:C.surface,borderLeft:`2px solid ${ak}`,padding:"12px 16px",marginBottom:2,
+                      display:"grid",gridTemplateColumns:"96px minmax(0,1fr) 72px 100px 36px 56px",
+                      alignItems:"center",gap:"0 10px",boxShadow:C.shadow,overflow:"hidden"}}>
                       {/* Дата + время */}
-                      <div style={{width:96,flexShrink:0}}>
+                      <div>
                         <div style={{fontSize:14,fontWeight:700,color:C.text}}>{formatDatum(f.datum)}</div>
                         {f.zeitStr&&<div style={{fontSize:13,color:C.muted,marginTop:3}}>{f.zeitStr}</div>}
                       </div>
                       {/* Маршрут + Zweck */}
-                      <div style={{flex:1,minWidth:0}}>
+                      <div style={{overflow:"hidden",minWidth:0}}>
                         <div style={{fontSize:15,fontWeight:700,color:C.text,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{f.zielName||f.notiz||"—"}</div>
                         {f.notiz&&f.zielName&&<div style={{fontSize:13,color:C.steelMid,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",marginTop:1}}>{f.notiz}</div>}
                       </div>
                       {/* KM крупно */}
-                      <div style={{textAlign:"center",minWidth:72,flexShrink:0}}>
+                      <div style={{textAlign:"right"}}>
                         <div style={{fontSize:22,fontWeight:800,color:ak,fontFamily:SANS,lineHeight:1}}>{safeFloat(f.km).toFixed(1)}</div>
                         <div style={{fontSize:11,color:C.muted,letterSpacing:1,textTransform:"uppercase",marginTop:2}}>km</div>
                       </div>
-                      {/* Одометр */}
-                      {(f.kmStart||f.kmEnd)&&(
-                        <div style={{textAlign:"center",minWidth:88,flexShrink:0,borderLeft:`1px solid ${C.border}`,paddingLeft:12}}>
+                      {/* Одометр — always present cell */}
+                      <div style={{textAlign:"center",borderLeft:`1px solid ${C.border}`,paddingLeft:10}}>
+                        {(f.kmStart||f.kmEnd)?<>
                           <div style={{fontSize:13,fontWeight:700,color:C.text,fontFamily:SANS}}>{f.kmStart||"—"}</div>
                           <div style={{fontSize:10,color:C.muted,margin:"1px 0"}}>→</div>
                           <div style={{fontSize:13,fontWeight:700,color:C.text,fontFamily:SANS}}>{f.kmEnd||"—"}</div>
-                        </div>
-                      )}
-                      {/* Тип */}
-                      {(f.rueckfahrt||(f.kmTyp&&f.kmTyp!=="geschaeftlich"))&&(
-                        <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:3,flexShrink:0,minWidth:36}}>
-                          {f.rueckfahrt&&<span style={{fontSize:11,color:C.muted,background:C.surfaceAlt,borderRadius:4,padding:"2px 6px"}}>↔</span>}
-                          {f.kmTyp&&f.kmTyp!=="geschaeftlich"&&<span style={{fontSize:11,color:f.kmTyp==="privat"?C.muted:C.gold,background:C.surfaceAlt,borderRadius:4,padding:"2px 6px"}}>{f.kmTyp==="privat"?"privat":"Arb."}</span>}
-                        </div>
-                      )}
+                        </>:<div style={{fontSize:12,color:C.muted}}>—</div>}
+                      </div>
+                      {/* Тип — always present cell */}
+                      <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:3}}>
+                        {f.rueckfahrt&&<span style={{fontSize:11,color:C.muted,background:C.surfaceAlt,borderRadius:4,padding:"2px 6px"}}>↔</span>}
+                        {f.kmTyp&&f.kmTyp!=="geschaeftlich"&&<span style={{fontSize:11,color:f.kmTyp==="privat"?C.muted:C.gold,background:C.surfaceAlt,borderRadius:4,padding:"2px 6px"}}>{f.kmTyp==="privat"?"privat":"Arb."}</span>}
+                      </div>
                       {/* Кнопки */}
-                      <div style={{display:"flex",gap:2,flexShrink:0}}>
+                      <div style={{display:"flex",gap:2,justifyContent:"flex-end"}}>
                         <IcoBtn icon="edit" color={C.steelMid} title="Bearbeiten" onClick={()=>{setFForm(f.id);setFData({...f});}}/>
                         <IcoBtn icon="trash" color={C.red} title="Löschen" onClick={()=>setConfirmDel({type:"fahrt",id:f.id})}/>
                       </div>
@@ -4767,7 +5855,8 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
                 </div>
               );
             })}
-            {!gefFahrten.length&&<EmptyState icon="car" accent={C.muted} text="Keine Fahrten für diesen Filter" hint="Filter anpassen oder zurücksetzen"/>}
+            </div>
+            {!gefFahrten.length&&!!(aktiv.fahrten||[]).length&&<EmptyState icon="car" accent={C.muted} text="Keine Fahrten für diesen Filter" hint="Filter anpassen oder zurücksetzen"/>}
           </div>
         )}
 
@@ -4794,7 +5883,7 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
                       fontWeight:700, letterSpacing:2, textTransform:"uppercase",
                       display:"flex", alignItems:"center", justifyContent:"center",
                       gap:7, transition:"all 0.15s", width:"100%",
-                      boxSizing:"border-box", borderRadius:8,
+                      boxSizing:"border-box", borderRadius:C.inputRadius||8,
                     }}>
                     <Ico name={s.icon} size={15} color={active?"#fff":s.color}/>
                     {s.label}
@@ -4809,10 +5898,17 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
                 {pForm!==null&&(
                   <FormPanel accent={C.red} title={pForm==="new"?"Neuer Partner":"Partner bearbeiten"} icon="users" onSave={savePartner}>
                     <FormRow cols={2}>
-                      <F label="Name" value={pData.name||""} onChange={v=>setPData({...pData,name:v})} placeholder="Firmenname"/>
+                      <F label="Name *" value={pData.name||""} onChange={v=>setPData({...pData,name:v})} placeholder="Firmenname"/>
                       <LS label="Typ" value={pData.typ||"sonstiges"} onChange={v=>setPData({...pData,typ:v})} options={PARTNER_TYP_OPTS.map(t=>({value:t,label:PARTNER_TYP_LABELS[t]}))}/>
                     </FormRow>
-                    <F label="Adresse" value={pData.adresse||""} onChange={v=>setPData({...pData,adresse:v})} placeholder="Straße, PLZ Ort"/>
+                    <F label="Adresse *" value={pData.adresse||""} onChange={v=>setPData({...pData,adresse:v})} placeholder="Straße, PLZ Ort"
+                      onBlur={()=>{
+                        if(pData.adresse && !pData.kmVonStandort && aktiv.standort?.adresse) {
+                          estimateKm(aktiv.standort.adresse, pData.adresse).then(km=>{
+                            if(km) setPData(prev=>({...prev, kmVonStandort:prev.kmVonStandort||String(km)}));
+                          });
+                        }
+                      }}/>
                     <DuplikatWarnung check={dupCheckP} accent={C.red}/>
                     <FormRow cols={2}>
                       <F label="Telefon" value={pData.telefon||""} onChange={v=>setPData({...pData,telefon:v})} placeholder="+49 89 …"/>
@@ -4824,22 +5920,23 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
                   </FormPanel>
                 )}
                 <SectionBar count={(aktiv.partner||[]).length} label="Partner" accent={C.red} addLabel="PARTNER HINZUFÜGEN"
-                  onAdd={()=>{setPForm("new");setPData(E_P());}}/>
+                  onAdd={()=>{setPForm("new");setPData(E_P());}} formOpen={pForm!==null}/>
                 {/* Suche + Typ-Filter */}
                 {(aktiv.partner||[]).length>0&&(
                   <div style={{display:"flex",gap:10,alignItems:"center",flexWrap:"wrap",marginBottom:14}}>
                     <div style={{position:"relative",flex:1,minWidth:160,display:"flex",alignItems:"center"}}>
                       <input value={pFilter?.q||""} onChange={e=>setPFilter(f=>({...f,q:e.target?.value??""}))} placeholder="Partner suchen…"
-                        style={{width:"100%",height:40,boxSizing:"border-box",padding:"0 34px 0 36px",border:`1px solid ${C.border}`,borderRadius:8,fontSize:14,fontFamily:SANS,outline:"none"}}/>
+                        style={{width:"100%",height:40,boxSizing:"border-box",padding:"0 34px 0 36px",border:`1px solid ${C.border}`,borderRadius:C.inputRadius||8,fontSize:14,fontFamily:SANS,outline:"none"}}/>
                       <span style={{position:"absolute",left:11,top:"50%",transform:"translateY(-50%)",pointerEvents:"none",display:"flex"}}>
                         <Ico name="search" size={15} color={C.muted}/>
                       </span>
-                      {pFilter?.q&&<button onClick={()=>setPFilter(f=>({...f,q:""}))} style={{position:"absolute",right:8,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",cursor:"pointer",padding:2}}><Ico name="x" size={12} color={C.muted}/></button>}
+                      {pFilter?.q&&<button title="Filter zurücksetzen"
+                  onClick={()=>setPFilter(f=>({...f,q:""}))} style={{position:"absolute",right:8,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",cursor:"pointer",padding:2}}><Ico name="x" size={12} color={C.muted}/></button>}
                     </div>
                     <div style={{flex:"0 0 clamp(150px,18%,200px)"}}><CustomSelect value={pFilter?.typ||""} onChange={v=>setPFilter(f=>({...f,typ:v}))} options={[{value:"",label:"Alle Typen"},...Object.entries(PARTNER_TYP_LABELS).map(([v,l])=>({value:v,label:l}))]} accent={C.red}/></div>
                   </div>
                 )}
-                <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(340px,1fr))",gap:2}}>
+                <div className="fb-stagger" style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(340px,1fr))",gap:2}}>
                   {aktiv.partner
                     .filter(p=>{
                       const q=(pFilter?.q||"").toLowerCase();
@@ -4849,19 +5946,24 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
                       return matchQ&&matchT;
                     })
                     .sort((a,b)=>{
-                      const fa=(aktiv.fahrten||[]).filter(f=>f.zielId===a.id).length;
-                      const fb=(aktiv.fahrten||[]).filter(f=>f.zielId===b.id).length;
+                      const fa=(aktiv.fahrten||[]).filter(f=>{const c=((f.zielName||"")+" "+(f.notiz||"")).toLowerCase();return f.zielId===a.id||wMatch(a.name,c);}).length;
+                      const fb=(aktiv.fahrten||[]).filter(f=>{const c=((f.zielName||"")+" "+(f.notiz||"")).toLowerCase();return f.zielId===b.id||wMatch(b.name,c);}).length;
                       return fb-fa||(a.name||"").localeCompare(b.name||"");
                     })
                     .map(p=>{
-                    const km=stats.nP[p.id]||0, anz=(aktiv.fahrten||[]).filter(f=>f.zielId===p.id).length;
+                    const km=stats.nP[p.id]||0;
+                    const anz=(aktiv.fahrten||[]).filter(f=>{
+                      if(f.zielId===p.id) return true;
+                      const combo=((f.zielName||"")+" "+(f.notiz||"")).toLowerCase();
+                      return wMatch(p.name, combo);
+                    }).length;
                     const typColor=PARTNER_TYP_COLORS[p.typ]||C.red;
                     return (
                       <div key={p.id} style={{background:C.surface,borderLeft:`2px solid ${typColor}`,padding:"11px 16px",boxShadow:C.shadow,display:"flex",alignItems:"center",gap:12,minHeight:62,boxSizing:"border-box"}}>
                         <div style={{flex:1,minWidth:0}}>
-                          <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:3}}>
-                            <span style={{fontSize:14,fontWeight:700,color:C.text,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",fontFamily:SANS}}>{p.name}</span>
-                            {p.typ&&p.typ!=="sonstiges"&&<span style={{fontSize:13,fontWeight:700,letterSpacing:1.5,textTransform:"uppercase",fontFamily:SANS,borderRadius:20,lineHeight:1,display:"inline-flex",alignItems:"center",color:typColor,border:`1px solid ${typColor}`,padding:"2px 8px",flexShrink:0}}>{PARTNER_TYP_LABELS[p.typ]||p.typ}</span>}
+                          <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:3,flexWrap:"wrap"}}>
+                            <span style={{fontSize:15,fontWeight:700,color:C.text,wordBreak:"break-word",overflowWrap:"break-word",fontFamily:SANS}}>{p.name}</span>
+                            {p.typ&&p.typ!=="sonstiges"&&<span style={{fontSize:12,fontWeight:700,letterSpacing:1.5,textTransform:"uppercase",fontFamily:SANS,borderRadius:20,lineHeight:1,display:"inline-flex",alignItems:"center",background:typColor+"18",color:typColor,border:`1px solid ${typColor}30`,padding:"3px 10px",flexShrink:0}}>{PARTNER_TYP_LABELS[p.typ]||p.typ}</span>}
                           </div>
                           <div style={{display:"flex",alignItems:"center",gap:6,flexWrap:"wrap",rowGap:3}}>
                             <span style={{fontSize:14,color:C.text,display:"flex",alignItems:"center",gap:3,fontFamily:SANS}}>
@@ -4895,7 +5997,7 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
                     );
                   })}
                 </div>
-                {!(aktiv.partner||[]).length&&<EmptyState icon="users" accent={C.red} text="Noch keine Partner" hint="Kunden, Lieferanten und Geschäftspartner eintragen" btnLabel="PARTNER HINZUFÜGEN" onBtnClick={()=>{setPForm("new");setPData(E_P());}}/>}
+                {!(aktiv.partner||[]).length&&pForm===null&&<EmptyState icon="users" accent={C.red} text="Noch keine Partner" hint="Kunden, Lieferanten und Geschäftspartner eintragen" btnLabel="PARTNER HINZUFÜGEN" onBtnClick={()=>{setPForm("new");setPData(E_P());}}/>}
               </div>
             )}
 
@@ -4904,12 +6006,19 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
               <div>
                 {mForm!==null&&(
                   <FormPanel accent={C.gold} title={mForm==="new"?"Neue Messe":"Messe bearbeiten"} icon="mapPin" onSave={saveMesse}>
-                    <F label="Name" value={mData.name||""} onChange={v=>setMData({...mData,name:v})} placeholder="z.B. automatica München"/>
-                    <F label="Adresse" value={mData.adresse||""} onChange={v=>setMData({...mData,adresse:v})} placeholder="Messezentrum, PLZ Ort"/>
+                    <F label="Name *" value={mData.name||""} onChange={v=>setMData({...mData,name:v})} placeholder="z.B. automatica München"/>
+                    <F label="Adresse *" value={mData.adresse||""} onChange={v=>setMData({...mData,adresse:v})} placeholder="Messezentrum, PLZ Ort"
+                      onBlur={()=>{
+                        if(mData.adresse && !mData.kmVonStandort && aktiv.standort?.adresse) {
+                          estimateKm(aktiv.standort.adresse, mData.adresse).then(km=>{
+                            if(km) setMData(prev=>({...prev, kmVonStandort:prev.kmVonStandort||String(km)}));
+                          });
+                        }
+                      }}/>
                     <DuplikatWarnung check={dupCheckM} accent={C.gold}/>
-                    <F label="Datum" type="date" value={mData.datum||""} onChange={v=>setMData({...mData,datum:v})}/>
+                    <F label="Datum *" type="date" value={mData.datum||""} onChange={v=>setMData({...mData,datum:v})}/>
                     <div style={{paddingTop:14}}>
-                      <label style={LBL}>Einladender Partner</label>
+                      <label style={LBL_f()}>Einladender Partner</label>
                       <CustomSelect
                         value={mData.partnerId||""}
                         onChange={v=>setMData({...mData,partnerId:v})}
@@ -4924,16 +6033,21 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
                   </FormPanel>
                 )}
                 <SectionBar count={(aktiv.messen||[]).length} label="Messen" accent={C.gold} addLabel="MESSE HINZUFÜGEN"
-                  onAdd={()=>{setMForm("new");setMData(E_M());}}/>
-                <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(340px,1fr))",gap:2}}>
+                  onAdd={()=>{setMForm("new");setMData(E_M());}} formOpen={mForm!==null}/>
+                <div className="fb-stagger" style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(340px,1fr))",gap:2}}>
                   {(aktiv.messen||[]).map(m=>{
-                    const einl=(aktiv.partner||[]).find(p=>p.id===m.partnerId), fts=(aktiv.fahrten||[]).filter(f=>f.zielId===m.id);
-                    const kmM=sumKm(fts);
+                    const einl=(aktiv.partner||[]).find(p=>p.id===m.partnerId);
+                    const fts=(aktiv.fahrten||[]).filter(f=>{
+                      if(f.zielId===m.id) return true;
+                      const combo=((f.zielName||"")+" "+(f.notiz||"")).toLowerCase();
+                      return wMatch(m.name, combo);
+                    });
+                    const kmM=stats.nM?.[m.id]||sumKm(fts);
                     return (
                       <div key={m.id} style={{background:C.surface,borderLeft:`2px solid ${C.gold}`,padding:"11px 16px",boxShadow:C.shadow,display:"flex",alignItems:"center",gap:12,minHeight:62,boxSizing:"border-box"}}>
                         {/* Левая часть */}
                         <div style={{flex:1,minWidth:0}}>
-                          <div style={{fontSize:15,fontWeight:700,color:C.text,marginBottom:3,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",fontFamily:SANS}}>{m.name}</div>
+                          <div style={{fontSize:15,fontWeight:700,color:C.text,marginBottom:3,wordBreak:"break-word",overflowWrap:"break-word",fontFamily:SANS}}>{m.name}</div>
                           <div style={{display:"flex",alignItems:"center",gap:6,flexWrap:"wrap",rowGap:3}}>
                             <span style={{fontSize:14,color:C.text,display:"flex",alignItems:"center",gap:3,fontFamily:SANS}}>
                               <Ico name="mapPin" size={13} color={C.steelMid}/>{m.adresse}
@@ -4973,107 +6087,10 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
                     );
                   })}
                 </div>
-                {!(aktiv.messen||[]).length&&<EmptyState icon="mapPin" accent={C.gold} text="Noch keine Messen" hint="Messen, Ausstellungen und Events erfassen" btnLabel="MESSE HINZUFÜGEN" onBtnClick={()=>{setMForm("new");setMData(E_M());}}/>}
+                {!(aktiv.messen||[]).length&&mForm===null&&<EmptyState icon="mapPin" accent={C.gold} text="Noch keine Messen" hint="Messen, Ausstellungen und Events erfassen" btnLabel="MESSE HINZUFÜGEN" onBtnClick={()=>{setMForm("new");setMData(E_M());}}/>}
               </div>
             )}
 
-            {/* ─ TANKSTELLE ─ */}
-            {sub==="tanke"&&(
-              <div>
-                {tForm!==null&&(
-                  <FormPanel accent={C.tank} title={tForm==="new"?"Tankvorgang erfassen":"Tankvorgang bearbeiten"} icon="droplet" onSave={saveTanke}>
-                    <FormRow cols={2}>
-                      <F label="Datum *" type="date" value={tData.datum||""} onChange={v=>setTData({...tData,datum:v})} accent={C.tank}/>
-                      <F label="Uhrzeit" type="time" value={tData.uhrzeit||""} onChange={v=>setTData({...tData,uhrzeit:v})} accent={C.tank}/>
-                    </FormRow>
-                    <FormRow cols={2}>
-                      <F label="Tankstelle / Marke" value={tData.stationName||""} onChange={v=>setTData({...tData,stationName:v})} placeholder="Shell, Aral, BP…" accent={C.tank}/>
-                      <F label="Adresse" value={tData.adresse||""} onChange={v=>setTData({...tData,adresse:v})} placeholder="Straße, PLZ Ort" accent={C.tank}/>
-                    </FormRow>
-                    <LS label="Kraftstoffart" value={tData.kraftstoff||"Diesel"} onChange={v=>setTData({...tData,kraftstoff:v})} accent={C.tank} options={OPT_KRAFTSTOFF}/>
-                    <FormRow cols={3}>
-                      <F label="Liter" type="number" value={tData.menge||""} onChange={v=>{const m=parseFloat(v)||0,p=parseFloat(tData.preisProLiter)||0;setTData({...tData,menge:v,gesamtbetrag:m&&p?(m*p).toFixed(2):tData.gesamtbetrag});}} placeholder="45.00" accent={C.tank}/>
-                      <F label="Preis / L (€)" type="number" value={tData.preisProLiter||""} onChange={v=>{const p=parseFloat(v)||0,m=parseFloat(tData.menge)||0;setTData({...tData,preisProLiter:v,gesamtbetrag:m&&p?(m*p).toFixed(2):tData.gesamtbetrag});}} placeholder="1.899" accent={C.tank}/>
-                      <F label="Gesamt (€)" type="number" value={tData.gesamtbetrag||""} onChange={v=>setTData({...tData,gesamtbetrag:v})} placeholder="85.45" accent={C.tank}/>
-                    </FormRow>
-                    <FormRow cols={2}>
-                      <F label="KM-Stand" type="number" value={tData.kmStand||""} onChange={v=>setTData({...tData,kmStand:v})} placeholder="125000" accent={C.tank}/>
-                      <F label="Beleg-Nr. (optional)" value={tData.bonNr||""} onChange={v=>setTData({...tData,bonNr:v})} placeholder="BON-001234" accent={C.tank}/>
-                    </FormRow>
-                    <LS label="Zahlungsart (optional)" value={tData.zahlungsart||"EC-Karte"} onChange={v=>setTData({...tData,zahlungsart:v})} options={OPT_ZAHLUNG}/>
-                    <F label="km vom Stammstandort" type="number" value={tData.kmVonStandort||""} onChange={v=>setTData({...tData,kmVonStandort:v})} placeholder="z.B. 8.4" accent={C.tank}/>
-                    <F label="Notiz (optional)" value={tData.notiz||""} onChange={v=>setTData({...tData,notiz:v})} placeholder="Interne Bemerkung" accent={C.tank}/>
-                    <FormActions onSave={saveTanke} onCancel={()=>setTForm(null)} accent={C.tank}/>
-                  </FormPanel>
-                )}
-                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
-                  <div style={{fontSize:14,color:C.text}}>
-                    Gesamt: <span style={{color:C.tank,fontWeight:700}}>{(aktiv.tankstellen||[]).reduce((s,t)=>s+(parseFloat(t.menge)||0),0).toFixed(1)} L</span>
-                    {" · "}<span style={{color:C.gold,fontWeight:700}}>{(aktiv.tankstellen||[]).reduce((s,t)=>s+(parseFloat(t.gesamtbetrag)||0),0).toFixed(2)} €</span>
-                  </div>
-                  {tForm===null&&<button onClick={()=>{setTForm("new");setTData(E_T());}} style={btnSolid(C.tank)}><Ico name="plus" size={15} color="#fff"/>TANKVORGANG ERFASSEN</button>}
-                </div>
-                <TankenListe
-                  items={aktiv.tankstellen}
-                  onEdit={t=>{setTForm(t.id);setTData({...t});}}
-                  onDelete={id=>setConfirmDel({type:"tanke",id})}
-                />
-              </div>
-            )}
-
-            {/* ─ STRAFEN ─ */}
-            {sub==="strafe"&&(
-              <div>
-                {sForm!==null&&(
-                  <FormPanel accent={C.strafe} title={sForm==="new"?"Strafe erfassen":"Strafe bearbeiten"} icon="alert" onSave={saveStrafe}>
-                    <FormRow cols={2}>
-                      <F label="Datum *" type="date" value={sData.datum||""} onChange={v=>setSData({...sData,datum:v})} accent={C.strafe}/>
-                      <F label="Betrag (€)" type="number" value={sData.betrag||""} onChange={v=>setSData({...sData,betrag:v})} placeholder="0.00" accent={C.strafe}/>
-                    </FormRow>
-                    <div style={{paddingTop:14}}>
-                      <label style={LBL}>Art der Strafe</label>
-                      <CustomSelect
-                        value={sData.typ||""}
-                        onChange={v=>setSData({...sData,typ:v})}
-                        accent={C.strafe}
-                        placeholder="— Art wählen —"
-                        options={OPT_STRAFE_TYP}
-                      />
-                    </div>
-                    <F label="Behörde / Stelle" value={sData.behoerde||""} onChange={v=>setSData({...sData,behoerde:v})} placeholder="z.B. Bußgeldbehörde München"/>
-                    <F label="Adresse der Behörde" value={sData.adresseBehoerde||""} onChange={v=>setSData({...sData,adresseBehoerde:v})} placeholder="Straße, PLZ Ort"/>
-                    <F label="Aktenzeichen (optional)" value={sData.aktenzeichen||""} onChange={v=>setSData({...sData,aktenzeichen:v})} placeholder="Az. 12345/25"/>
-                    <div>
-                      <label style={{display:"flex",alignItems:"center",gap:10,cursor:"pointer",height:40,padding:"0 12px",border:`1px solid ${C.border}`,borderRadius:8,background:sData.bezahlt?C.strafeLight:"#FFFFFF",boxSizing:"border-box",userSelect:"none",width:"100%"}}>
-                        <input type="checkbox" checked={!!sData.bezahlt} onChange={e=>setSData({...sData,bezahlt:e.target.checked})}
-                          style={{width:16,height:16,flexShrink:0,cursor:"pointer",
-                            accentColor:C.strafe,WebkitAppearance:"checkbox",appearance:"checkbox",
-                            margin:0, padding:0}}/>
-                        <span style={{fontSize:14,fontFamily:SANS,fontWeight:700,letterSpacing:1.5,textTransform:"uppercase",color:sData.bezahlt?C.strafe:C.textSoft}}>
-                          {sData.bezahlt?<><Ico name="check" size={13} color={C.strafe} style={{marginRight:4}}/>{" Bereits bezahlt"}</>:"Noch offen"}
-                        </span>
-                      </label>
-                    </div>
-                    <F label="Notiz (optional)" value={sData.notiz||""} onChange={v=>setSData({...sData,notiz:v})} placeholder="Interne Bemerkung"/>
-                    <FormActions onSave={saveStrafe} onCancel={()=>setSForm(null)} accent={C.strafe}/>
-                  </FormPanel>
-                )}
-                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
-                  <div style={{fontSize:14,color:C.text}}>
-                    Gesamt: <span style={{color:C.strafe,fontWeight:700}}>{(aktiv.strafen||[]).reduce((s,x)=>s+(parseFloat(x.betrag)||0),0).toFixed(2)} €</span>
-                    {" · "}<span style={{color:C.gold,fontWeight:700}}>{(aktiv.strafen||[]).filter(x=>x.bezahlt).length} bez.</span>
-                    {" / "}<span style={{color:C.red,fontWeight:700}}>{(aktiv.strafen||[]).filter(x=>!x.bezahlt).length} offen</span>
-                  </div>
-                  {sForm===null&&<button onClick={()=>{setSForm("new");setSData(E_S());}} style={btnSolid(C.strafe)}><Ico name="plus" size={15} color="#fff"/>STRAFE ERFASSEN</button>}
-                </div>
-                <StrafenListe
-                  items={aktiv.strafen}
-                  onEdit={s=>{setSForm(s.id);setSData({...s});}}
-                  onDelete={id=>setConfirmDel({type:"strafe",id})}
-                  onToggleBezahlt={toggleBezahlt}
-                />
-              </div>
-            )}
             {/* ─ STANDORTE ─ */}
             {sub==="standorte"&&(
               <StandortePanel
@@ -5101,8 +6118,9 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
               ].map(s=>{
                 const active=kostenSub===s.id;
                 return (
-                  <button key={s.id} onClick={()=>{setKostenSub(s.id);setTForm(null);setSForm(null);setWForm(null);setParkForm(null);setSvForm(null);}}
-                    style={{padding:"12px 0",background:active?s.color:C.surface,border:`1px solid ${active?s.color:C.border}`,color:active?"#fff":C.muted,cursor:"pointer",fontSize:14,fontFamily:SANS,fontWeight:700,letterSpacing:1.5,textTransform:"uppercase",display:"flex",alignItems:"center",justifyContent:"center",gap:6,transition:"all 0.15s",width:"100%",boxSizing:"border-box",borderRadius:8}}>
+                  <button key={s.id} title={s.label}
+                  onClick={()=>{setKostenSub(s.id);setTForm(null);setSForm(null);setWForm(null);setParkForm(null);setSvForm(null);}}
+                    style={{padding:"12px 0",background:active?s.color:C.surface,border:`1px solid ${active?s.color:C.border}`,color:active?"#fff":C.muted,cursor:"pointer",fontSize:14,fontFamily:SANS,fontWeight:700,letterSpacing:1.5,textTransform:"uppercase",display:"flex",alignItems:"center",justifyContent:"center",gap:6,transition:"all 0.15s",width:"100%",boxSizing:"border-box",borderRadius:C.inputRadius||8}}>
                     <Ico name={s.icon} size={15} color={active?"#fff":s.color}/>
                     {s.label}
                   </button>
@@ -5124,8 +6142,8 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
                       <F label="Uhrzeit" type="time" value={tData.uhrzeit||""} onChange={v=>setTData({...tData,uhrzeit:v})} accent={C.tank}/>
                     </FormRow>
                     <FormRow cols={2}>
-                      <F label="Tankstelle / Marke" value={tData.stationName||""} onChange={v=>setTData({...tData,stationName:v})} placeholder="Shell, Aral, BP…" accent={C.tank}/>
-                      <F label="Adresse" value={tData.adresse||""} onChange={v=>setTData({...tData,adresse:v})} placeholder="Straße, PLZ Ort" accent={C.tank}/>
+                      <F label="Tankstelle / Marke *" value={tData.stationName||""} onChange={v=>setTData({...tData,stationName:v})} placeholder="Shell, Aral, BP…" accent={C.tank}/>
+                      <F label="Adresse *" value={tData.adresse||""} onChange={v=>setTData({...tData,adresse:v})} placeholder="Straße, PLZ Ort" accent={C.tank}/>
                     </FormRow>
                     <LS label="Kraftstoffart" value={tData.kraftstoff||"Diesel"} onChange={v=>setTData({...tData,kraftstoff:v})} accent={C.tank} options={OPT_KRAFTSTOFF}/>
                     <FormRow cols={3}>
@@ -5144,13 +6162,14 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
                     <FormActions onSave={saveTanke} onCancel={()=>setTForm(null)} accent={C.tank}/>
                   </FormPanel>
                 )}
-                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
+                {!!(aktiv.tankstellen||[]).length&&<div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
                   <div style={{fontSize:14,color:C.text}}>
                     Gesamt: <span style={{color:C.tank,fontWeight:700}}>{(aktiv.tankstellen||[]).reduce((s,t)=>s+(parseFloat(t.menge)||0),0).toFixed(1)} L</span>
                     {" · "}<span style={{color:C.gold,fontWeight:700}}>{(aktiv.tankstellen||[]).reduce((s,t)=>s+(parseFloat(t.gesamtbetrag)||0),0).toFixed(2)} €</span>
                   </div>
-                  {tForm===null&&<button onClick={()=>{setTForm("new");setTData(E_T());}} style={btnSolid(C.tank)}><Ico name="plus" size={15} color="#fff"/>TANKVORGANG ERFASSEN</button>}
-                </div>
+                  {tForm===null&&<SpringBtn onClick={()=>{setTForm("new");setTData(E_T());}} style={btnSolid(C.tank)}><Ico name="plus" size={15} color="#fff"/>TANKVORGANG ERFASSEN</SpringBtn>}
+                </div>}
+                {!(aktiv.tankstellen||[]).length&&tForm===null&&<EmptyState icon="droplet" accent={C.tank} text="Keine Tankvorgänge" hint="Tankfüllung, AdBlue oder Strom erfassen" btnLabel="TANKVORGANG ERFASSEN" onBtnClick={()=>{setTForm("new");setTData(E_T());}}/>}
                 <TankenListe
                   items={aktiv.tankstellen}
                   onEdit={t=>{setTForm(t.id);setTData({...t});}}
@@ -5170,8 +6189,8 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
                       <LS label="Service-Typ" value={svData.typ||"Ölwechsel"} onChange={v=>setSvData({...svData,typ:v})} accent={C.service} options={OPT_SERVICE_TYP}/>
                     </FormRow>
                     <FormRow cols={2}>
-                      <F label="Werkstatt" value={svData.werkstatt||""} onChange={v=>setSvData({...svData,werkstatt:v})} placeholder="z.B. ATU, BMW Service…" accent={C.service}/>
-                      <F label="Adresse" value={svData.adresse||""} onChange={v=>setSvData({...svData,adresse:v})} placeholder="Straße, PLZ Ort" accent={C.service}/>
+                      <F label="Werkstatt *" value={svData.werkstatt||""} onChange={v=>setSvData({...svData,werkstatt:v})} placeholder="z.B. ATU, BMW Service…" accent={C.service}/>
+                      <F label="Adresse *" value={svData.adresse||""} onChange={v=>setSvData({...svData,adresse:v})} placeholder="Straße, PLZ Ort" accent={C.service}/>
                     </FormRow>
                     <FormRow cols={3}>
                       <F label="KM-Stand" type="number" value={svData.kmStand||""} onChange={v=>setSvData({...svData,kmStand:v})} placeholder="125000" accent={C.service}/>
@@ -5190,14 +6209,14 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
                     <FormActions onSave={saveService} onCancel={()=>setSvForm(null)} accent={C.service}/>
                   </FormPanel>
                 )}
-                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
+                {!!(aktiv.services||[]).length&&<div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
                   <div style={{fontSize:14,color:C.text}}>
                     Gesamt: <span style={{color:C.service,fontWeight:700}}>{(aktiv.services||[]).reduce((s,x)=>s+(parseFloat(x.betrag)||0),0).toFixed(2)} €</span>
                     {" · "}<span style={{color:C.text}}>{(aktiv.services||[]).length} Einträge</span>
                   </div>
-                  {svForm===null&&<button onClick={()=>{setSvForm("new");setSvData(E_SV());}} style={btnSolid(C.service)}><Ico name="plus" size={15} color="#fff"/>SERVICE ERFASSEN</button>}
-                </div>
-                {(aktiv.services||[]).slice().sort((a,b)=>b.datum?.localeCompare(a.datum)).map(x=>(
+                  {svForm===null&&<SpringBtn onClick={()=>{setSvForm("new");setSvData(E_SV());}} style={btnSolid(C.service)}><Ico name="plus" size={15} color="#fff"/>SERVICE ERFASSEN</SpringBtn>}
+                </div>}
+                <div className="fb-stagger">{(aktiv.services||[]).slice().sort((a,b)=>(b?.datum||"").localeCompare(a?.datum||"")).map(x=>(
                   <div key={x.id} style={{background:C.surface,borderLeft:`2px solid ${C.service}`,padding:"12px 18px",marginBottom:2,display:"flex",alignItems:"center",gap:14,boxShadow:C.shadow}}>
                     <div style={{width:96,flexShrink:0}}>
                       <div style={{fontSize:14,fontWeight:700,color:C.text}}>{formatDatum(x.datum)}</div>
@@ -5223,8 +6242,8 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
                       <IcoBtn icon="trash" color={C.service} title="Löschen" onClick={()=>setConfirmDel({type:"service",id:x.id})}/>
                     </div>
                   </div>
-                ))}
-                {!(aktiv.services||[]).length&&<EmptyState icon="tool" accent={C.service} text="Keine Service-Einträge" hint="Werkstattbesuche, TÜV, Ölwechsel erfassen" btnLabel="SERVICE ERFASSEN" onBtnClick={()=>{setSvForm("new");setSvData(E_SV());}}/>}
+                ))}</div>
+                {!(aktiv.services||[]).length&&svForm===null&&<EmptyState icon="tool" accent={C.service} text="Keine Service-Einträge" hint="Werkstattbesuche, TÜV, Ölwechsel erfassen" btnLabel="SERVICE ERFASSEN" onBtnClick={()=>{setSvForm("new");setSvData(E_SV());}}/>}
               </div>
             )}
 
@@ -5239,8 +6258,8 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
                       <F label="Uhrzeit" type="time" value={wData.uhrzeit||""} onChange={v=>setWData({...wData,uhrzeit:v})} accent={C.wasch}/>
                     </FormRow>
                     <LS label="Wäsche-Typ" value={wData.typ||"Außenwäsche"} onChange={v=>setWData({...wData,typ:v})} accent={C.wasch} options={OPT_WASCHE_TYP}/>
-                    <F label="Name der Waschanlage" value={wData.name||""} onChange={v=>setWData({...wData,name:v})} placeholder="z.B. SB-Waschcenter Nord" accent={C.wasch}/>
-                    <F label="Adresse (optional)" value={wData.adresse||""} onChange={v=>setWData({...wData,adresse:v})} placeholder="Straße, PLZ Ort" accent={C.wasch}/>
+                    <F label="Name der Waschanlage *" value={wData.name||""} onChange={v=>setWData({...wData,name:v})} placeholder="z.B. SB-Waschcenter Nord" accent={C.wasch}/>
+                    <F label="Adresse *" value={wData.adresse||""} onChange={v=>setWData({...wData,adresse:v})} placeholder="Straße, PLZ Ort" accent={C.wasch}/>
                     <FormRow cols={2}>
                       <F label="Betrag (€)" type="number" value={wData.betrag||""} onChange={v=>setWData({...wData,betrag:v})} placeholder="12.00" accent={C.wasch}/>
                       <LS label="Zahlungsart" value={wData.zahlungsart||"EC-Karte"} onChange={v=>setWData({...wData,zahlungsart:v})} options={OPT_ZAHLUNG_W}/>
@@ -5251,14 +6270,14 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
                     <FormActions onSave={saveWaesche} onCancel={()=>setWForm(null)} accent={C.wasch}/>
                   </FormPanel>
                 )}
-                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
+                {!!(aktiv.waesche||[]).length&&<div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
                   <div style={{fontSize:14,color:C.text}}>
                     Gesamt: <span style={{color:C.wasch,fontWeight:700}}>{(aktiv.waesche||[]).reduce((s,x)=>s+(parseFloat(x.betrag)||0),0).toFixed(2)} €</span>
                     {" · "}<span style={{color:C.text}}>{(aktiv.waesche||[]).length} Wäschen</span>
                   </div>
-                  {wForm===null&&<button onClick={()=>{setWForm("new");setWData(E_W());}} style={btnSolid(C.wasch)}><Ico name="plus" size={15} color="#fff"/>WÄSCHE ERFASSEN</button>}
-                </div>
-                {(aktiv.waesche||[]).slice().sort((a,b)=>b.datum?.localeCompare(a.datum)).map(x=>(
+                  {wForm===null&&<SpringBtn onClick={()=>{setWForm("new");setWData(E_W());}} style={btnSolid(C.wasch)}><Ico name="plus" size={15} color="#fff"/>WÄSCHE ERFASSEN</SpringBtn>}
+                </div>}
+                <div className="fb-stagger">{(aktiv.waesche||[]).slice().sort((a,b)=>(b?.datum||"").localeCompare(a?.datum||"")).map(x=>(
                   <div key={x.id} style={{background:C.surface,borderLeft:`2px solid ${C.wasch}`,padding:"12px 18px",marginBottom:2,display:"flex",alignItems:"center",gap:14,boxShadow:C.shadow}}>
                     <div style={{width:96,flexShrink:0}}>
                       <div style={{fontSize:14,fontWeight:700,color:C.text}}>{formatDatum(x.datum)}</div>
@@ -5278,8 +6297,8 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
                       <IcoBtn icon="trash" color={C.wasch} title="Löschen" onClick={()=>setConfirmDel({type:"waesche",id:x.id})}/>
                     </div>
                   </div>
-                ))}
-                {!(aktiv.waesche||[]).length&&<EmptyState icon="wasch" accent={C.wasch} text="Keine Wäschen erfasst" hint="Autowäschen und Reinigungen dokumentieren" btnLabel="WÄSCHE ERFASSEN" onBtnClick={()=>{setWForm("new");setWData({});}}/>}
+                ))}</div>
+                {!(aktiv.waesche||[]).length&&wForm===null&&<EmptyState icon="wasch" accent={C.wasch} text="Keine Wäschen erfasst" hint="Autowäschen und Reinigungen dokumentieren" btnLabel="WÄSCHE ERFASSEN" onBtnClick={()=>{setWForm("new");setWData({});}}/>}
               </div>
             )}
 
@@ -5293,8 +6312,8 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
                       <F label="Datum *" type="date" value={parkData.datum||""} onChange={v=>setParkData({...parkData,datum:v})} accent={C.park}/>
                       <F label="Uhrzeit" type="time" value={parkData.uhrzeit||""} onChange={v=>setParkData({...parkData,uhrzeit:v})} accent={C.park}/>
                     </FormRow>
-                    <F label="Parkort / Name" value={parkData.ort||""} onChange={v=>setParkData({...parkData,ort:v})} placeholder="z.B. Parkhaus City, P+R Messe"/>
-                    <F label="Adresse (optional)" value={parkData.adresse||""} onChange={v=>setParkData({...parkData,adresse:v})} placeholder="Straße, Stadt"/>
+                    <F label="Parkort / Name *" value={parkData.ort||""} onChange={v=>setParkData({...parkData,ort:v})} placeholder="z.B. Parkhaus City, P+R Messe"/>
+                    <F label="Adresse *" value={parkData.adresse||""} onChange={v=>setParkData({...parkData,adresse:v})} placeholder="Straße, Stadt"/>
                     <FormRow cols={2}>
                       <F label="Dauer (Std.)" type="number" value={parkData.dauer||""} onChange={v=>setParkData({...parkData,dauer:v})} placeholder="z.B. 2.5"/>
                       <F label="Betrag (€) *" type="number" value={parkData.betrag||""} onChange={v=>setParkData({...parkData,betrag:v})} placeholder="0.00" accent={C.park}/>
@@ -5305,14 +6324,14 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
                     <FormActions onSave={savePark} onCancel={()=>setParkForm(null)} accent={C.park}/>
                   </FormPanel>
                 )}
-                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
+                {!!(aktiv.parkplaetze||[]).length&&<div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
                   <div style={{fontSize:14,color:C.text}}>
                     Gesamt: <span style={{color:C.park,fontWeight:700}}>{(aktiv.parkplaetze||[]).reduce((s,x)=>s+(parseFloat(x.betrag)||0),0).toFixed(2)} €</span>
                     {" · "}<span style={{color:C.text}}>{(aktiv.parkplaetze||[]).length} Parkvorgänge</span>
                   </div>
-                  {parkForm===null&&<button onClick={()=>{setParkForm("new");setParkData(E_Park());}} style={btnSolid(C.park)}><Ico name="plus" size={15} color="#fff"/>PARKVORGANG ERFASSEN</button>}
-                </div>
-                {(aktiv.parkplaetze||[]).slice().sort((a,b)=>b.datum?.localeCompare(a.datum)).map(x=>(
+                  {parkForm===null&&<SpringBtn onClick={()=>{setParkForm("new");setParkData(E_Park());}} style={btnSolid(C.park)}><Ico name="plus" size={15} color="#fff"/>PARKVORGANG ERFASSEN</SpringBtn>}
+                </div>}
+                <div className="fb-stagger">{(aktiv.parkplaetze||[]).slice().sort((a,b)=>(b?.datum||"").localeCompare(a?.datum||"")).map(x=>(
                   <div key={x.id} style={{background:C.surface,borderLeft:`2px solid ${C.park}`,padding:"12px 16px",marginBottom:2,display:"flex",alignItems:"center",gap:12,boxShadow:C.shadow}}>
                     <div style={{width:96,flexShrink:0}}>
                       <div style={{fontSize:14,fontWeight:700,color:C.text}}>{formatDatum(x.datum)}</div>
@@ -5332,8 +6351,8 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
                       <IcoBtn icon="trash" color={C.park} title="Löschen" onClick={()=>setConfirmDel({type:"park",id:x.id})}/>
                     </div>
                   </div>
-                ))}
-                {!(aktiv.parkplaetze||[]).length&&<EmptyState icon="park" accent={C.park} text="Keine Parkvorgänge" hint="Parkhaus, Parkschein, Parkgebühren erfassen"/>}
+                ))}</div>
+                {!(aktiv.parkplaetze||[]).length&&parkForm===null&&<EmptyState icon="park" accent={C.park} text="Keine Parkvorgänge" hint="Parkhaus, Parkschein, Parkgebühren erfassen" btnLabel="PARKVORGANG ERFASSEN" onBtnClick={()=>{setParkForm("new");setParkData(E_Park());}}/>}
               </div>
             )}
 
@@ -5343,12 +6362,14 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
                 {sForm!==null&&(
                   <FormPanel accent={C.strafe} title={sForm==="new"?"Strafe erfassen":"Strafe bearbeiten"} icon="alert" onSave={saveStrafe}>
                     <BelegScan accent={C.strafe} onResult={d=>setSData(prev=>({...prev,...d}))}/>
-                    <FormRow cols={2}>
+                    {/* ── Wann & Was ── */}
+                    <FormRow cols={3}>
                       <F label="Datum *" type="date" value={sData.datum||""} onChange={v=>setSData({...sData,datum:v})} accent={C.strafe}/>
-                      <F label="Betrag (€)" type="number" value={sData.betrag||""} onChange={v=>setSData({...sData,betrag:v})} placeholder="0.00" accent={C.strafe}/>
+                      <F label="Uhrzeit *" type="time" value={sData.uhrzeit||""} onChange={v=>setSData({...sData,uhrzeit:v})} accent={C.strafe}/>
+                      <F label="Betrag (€) *" type="number" value={sData.betrag||""} onChange={v=>setSData({...sData,betrag:v})} placeholder="0.00" accent={C.strafe}/>
                     </FormRow>
                     <div style={{paddingTop:14}}>
-                      <label style={LBL}>Art der Strafe</label>
+                      <label style={LBL_f()}>Art der Strafe</label>
                       <CustomSelect
                         value={sData.typ||""}
                         onChange={v=>setSData({...sData,typ:v})}
@@ -5357,11 +6378,27 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
                         options={OPT_STRAFE_TYP}
                       />
                     </div>
-                    <F label="Behörde / Stelle" value={sData.behoerde||""} onChange={v=>setSData({...sData,behoerde:v})} placeholder="z.B. Bußgeldbehörde München"/>
-                    <F label="Adresse der Behörde" value={sData.adresseBehoerde||""} onChange={v=>setSData({...sData,adresseBehoerde:v})} placeholder="Straße, PLZ Ort"/>
-                    <F label="Aktenzeichen (optional)" value={sData.aktenzeichen||""} onChange={v=>setSData({...sData,aktenzeichen:v})} placeholder="Az. 12345/25"/>
+                    {/* ── Wo: Tatort ── */}
+                    <div style={{borderTop:`1px solid ${C.border}`,marginTop:16,paddingTop:14}}>
+                      <div style={{fontSize:13,color:C.strafe,letterSpacing:2,textTransform:"uppercase",fontFamily:SANS,fontWeight:700,marginBottom:10}}>ORT DES VERSTOẞES</div>
+                    </div>
+                    <F label="Tatort / Straße *" value={sData.tatort||""} onChange={v=>setSData({...sData,tatort:v})} placeholder="z.B. A10 Richtung Hamburg, km 42" accent={C.strafe}/>
+                    <F label="PLZ / Ort" value={sData.tatortAdresse||""} onChange={v=>setSData({...sData,tatortAdresse:v})} placeholder="z.B. 14974 Ludwigsfelde" accent={C.strafe}/>
+                    {/* ── Behörde & Aktenzeichen ── */}
+                    <div style={{borderTop:`1px solid ${C.border}`,marginTop:16,paddingTop:14}}>
+                      <div style={{fontSize:13,color:C.strafe,letterSpacing:2,textTransform:"uppercase",fontFamily:SANS,fontWeight:700,marginBottom:10}}>BEHÖRDE</div>
+                    </div>
+                    <FormRow cols={2}>
+                      <F label="Behörde / Stelle *" value={sData.behoerde||""} onChange={v=>setSData({...sData,behoerde:v})} placeholder="z.B. Bußgeldbehörde München"/>
+                      <F label="Adresse der Behörde" value={sData.adresseBehoerde||""} onChange={v=>setSData({...sData,adresseBehoerde:v})} placeholder="Straße, PLZ Ort"/>
+                    </FormRow>
+                    <FormRow cols={2}>
+                      <F label="Aktenzeichen" value={sData.aktenzeichen||""} onChange={v=>setSData({...sData,aktenzeichen:v})} placeholder="Az. 12345/25"/>
+                      <F label="Frist bis" type="date" value={sData.frist||""} onChange={v=>setSData({...sData,frist:v})} accent={C.strafe}/>
+                    </FormRow>
+                    {/* ── Status ── */}
                     <div>
-                      <label style={{display:"flex",alignItems:"center",gap:10,cursor:"pointer",height:40,padding:"0 12px",border:`1px solid ${C.border}`,borderRadius:8,background:sData.bezahlt?C.strafeLight:"#FFFFFF",boxSizing:"border-box",userSelect:"none",width:"100%"}}>
+                      <label style={{display:"flex",alignItems:"center",gap:10,cursor:"pointer",height:40,padding:"0 12px",border:`1px solid ${C.border}`,borderRadius:C.inputRadius||8,background:sData.bezahlt?C.strafeLight:"#FFFFFF",boxSizing:"border-box",userSelect:"none",width:"100%"}}>
                         <input type="checkbox" checked={!!sData.bezahlt} onChange={e=>setSData({...sData,bezahlt:e.target.checked})} style={{width:16,height:16,flexShrink:0,cursor:"pointer",accentColor:C.strafe,WebkitAppearance:"checkbox",appearance:"checkbox",margin:0,padding:0}}/>
                         <span style={{fontSize:14,fontFamily:SANS,fontWeight:700,letterSpacing:1.5,textTransform:"uppercase",color:sData.bezahlt?C.strafe:C.textSoft}}>{sData.bezahlt?<><Ico name="check" size={13} color={C.strafe} style={{marginRight:4}}/>{" Bereits bezahlt"}</>:"Noch offen"}</span>
                       </label>
@@ -5371,14 +6408,15 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
                     <FormActions onSave={saveStrafe} onCancel={()=>setSForm(null)} accent={C.strafe}/>
                   </FormPanel>
                 )}
-                <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
+                {!!(aktiv.strafen||[]).length&&<div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
                   <div style={{fontSize:14,color:C.text}}>
                     Gesamt: <span style={{color:C.strafe,fontWeight:700}}>{(aktiv.strafen||[]).reduce((s,x)=>s+(parseFloat(x.betrag)||0),0).toFixed(2)} €</span>
                     {" · "}<span style={{color:C.gold,fontWeight:700}}>{(aktiv.strafen||[]).filter(x=>x.bezahlt).length} bez.</span>
                     {" / "}<span style={{color:C.red,fontWeight:700}}>{(aktiv.strafen||[]).filter(x=>!x.bezahlt).length} offen</span>
                   </div>
-                  {sForm===null&&<button onClick={()=>{setSForm("new");setSData(E_S());}} style={btnSolid(C.strafe)}><Ico name="plus" size={15} color="#fff"/>STRAFE ERFASSEN</button>}
-                </div>
+                  {sForm===null&&<SpringBtn onClick={()=>{setSForm("new");setSData(E_S());}} style={btnSolid(C.strafe)}><Ico name="plus" size={15} color="#fff"/>STRAFE ERFASSEN</SpringBtn>}
+                </div>}
+                {!(aktiv.strafen||[]).length&&sForm===null&&<EmptyState icon="alert" accent={C.strafe} text="Keine Strafen erfasst" hint="Strafzettel, Bußgeldbescheide erfassen" btnLabel="STRAFE ERFASSEN" onBtnClick={()=>{setSForm("new");setSData(E_S());}}/>}
                 <StrafenListe
                   items={aktiv.strafen}
                   onEdit={s=>{setSForm(s.id);setSData({...s});}}
@@ -5413,18 +6451,21 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
         {tab==="einstellungen"&&(
           <div style={{maxWidth:860}}>
             <div style={{display:"flex",alignItems:"center",gap:16,marginBottom:10,paddingBottom:10}}>
-              <div style={{width:52,height:52,background:acc,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,borderRadius:8}}>
+              <div style={{width:52,height:52,background:acc,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,borderRadius:C.inputRadius||8}}>
                 <Ico name="settings" size={26} color="#fff"/>
               </div>
               <div>
                 <div style={{fontSize:16,fontWeight:700,letterSpacing:2,textTransform:"uppercase",color:C.text}}>Einstellungen</div>
-                <div style={{fontSize:14,color:C.text,letterSpacing:2,marginTop:2}}>Fahrzeuge, Stammstandort, Datensicherung</div>
+                <div style={{fontSize:14,color:C.muted,letterSpacing:1,marginTop:2}}>Fuhrpark, Erscheinungsbild, Datensicherung</div>
               </div>
             </div>
 
             {/* FAHRZEUGE */}
             <SettingsBlock accent={acc}>
               <SettingsLabel icon="car2" text="FAHRZEUGE / FUHRPARK" accent={C.muted}/>
+              <div style={{fontSize:14,color:C.muted,marginBottom:14,lineHeight:1.6}}>
+                Aktives Fahrzeug auswählen, Fahrzeugdaten bearbeiten oder neues Fahrzeug anlegen.
+              </div>
               <div style={{marginBottom:16,marginLeft:-28,marginRight:-28}}>
                 {(state.fahrzeuge||[]).map(fz=>{
                   const isActive=fz.id===state.aktivId, isEditing=editFzId===fz.id;
@@ -5432,40 +6473,83 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
                   const label=[fz.marke,fz.modell].filter(Boolean).join(" ")||fz.kennzeichen||"—";
                   return (
                     <div key={fz.id} style={{marginBottom:2}}>
-                      <div onClick={()=>{if(!isEditing){setState(prev=>({...prev,aktivId:fz.id}));resetForms();}}}
+                      <div onClick={()=>{if(!isEditing){setState(prev=>({...prev,aktivId:fz.id}));flipKz();resetForms();}}}
                         style={{background:isActive?C.surface:C.surfaceAlt,borderLeft:`2px solid ${fzAcc}`,padding:"12px 28px 12px 24px",display:"flex",alignItems:"center",gap:14,cursor:"pointer",transition:"all 0.15s"}}>
-                        <Kennzeichen value={fz.kennzeichen||"—"} size="lg"/>
+                        <div style={{borderRadius:6,boxShadow:"0 2px 4px rgba(0,0,0,0.15), 0 4px 12px rgba(0,0,0,0.10)",lineHeight:0}}><Kennzeichen value={fz.kennzeichen||"—"} size="lg"/></div>
                         <div style={{flex:1,minWidth:0}}>
                           <div style={{fontSize:16,fontWeight:700,color:C.text,fontFamily:SANS}}>{label}</div>
-                          {fz.fahrer&&<div style={{fontSize:14,color:C.text,marginTop:1}}>{fz.fahrer}</div>}
+                          {fz.halterName&&<div style={{fontSize:14,color:C.text,marginTop:1}}>{fz.halterName}</div>}
                         </div>
                         {isActive&&<span style={{fontSize:11,letterSpacing:1.5,color:"#fff",background:fzAcc,padding:"2px 8px",fontFamily:SANS,fontWeight:700,lineHeight:1,borderRadius:20,display:"inline-flex",alignItems:"center",whiteSpace:"nowrap"}}>AKTIV</span>}
-                        <div style={{display:"flex",gap:2,flexShrink:0}} onClick={e=>e.stopPropagation()}>
+                        {canAdmin&&<div style={{display:"flex",gap:2,flexShrink:0}} onClick={e=>e.stopPropagation()}>
                           <IcoBtn icon="edit" color={C.steelMid} title="Bearbeiten" onClick={()=>{setEditFzId(isEditing?null:fz.id);setAddingFz(false);}}/>
                           <IcoBtn icon="trash" color={C.red} title="Löschen" onClick={()=>setConfirmDel({type:"fahrzeug",id:fz.id})}/>
-                        </div>
+                        </div>}
                       </div>
                     </div>
                   );
                 })}
               </div>
-              {editFzId&&state.fahrzeuge.find(f=>f.id===editFzId)&&(
-                <FzEditForm fz={state.fahrzeuge.find(f=>f.id===editFzId)} accent={state.fahrzeuge.find(f=>f.id===editFzId)?.farbe||C.steel} onSave={f=>saveFzInline(editFzId,f)} onCancel={()=>setEditFzId(null)}/>
+              {canAdmin&&editFzId&&state.fahrzeuge.find(f=>f.id===editFzId)&&(
+                <FzEditForm key={editFzId} fz={state.fahrzeuge.find(f=>f.id===editFzId)} accent={state.fahrzeuge.find(f=>f.id===editFzId)?.farbe||C.steel} onSave={f=>saveFzInline(editFzId,f)} onCancel={()=>setEditFzId(null)}/>
               )}
-              {!editFzId&&(addingFz?(
+              {canAdmin&&!editFzId&&(addingFz?(
                 <FzEditForm fz={makeFahrzeug(state.fahrzeuge.length)} accent={C.red} onSave={addFzInline} onCancel={()=>setAddingFz(false)}/>
               ):(
-                <button onClick={()=>{setAddingFz(true);setEditFzId(null);}} style={{...btnSolid(C.red),marginTop:4}}><Ico name="plus" size={15} color="#fff"/>NEUES FAHRZEUG</button>
+                <SpringBtn onClick={()=>{setAddingFz(true);setEditFzId(null);}} style={{...btnSolid(C.red),marginTop:4}}><Ico name="plus" size={15} color="#fff"/>NEUES FAHRZEUG</SpringBtn>
               ))}
 
             </SettingsBlock>
 
-            {/* DATENSICHERUNG */}
+            {/* DESIGN-THEMA */}
+            <SettingsBlock accent={acc}>
+              <SettingsLabel text="ERSCHEINUNGSBILD" accent={C.muted}/>
+              <div style={{fontSize:14,color:C.muted,marginBottom:14,lineHeight:1.6}}>
+                Farbschema und Stil der Benutzeroberfläche anpassen.
+              </div>
+              <div style={{display:"flex",gap:10,flexWrap:"wrap"}}>
+                {[THEMES.google, THEMES.classic].map(t=>{
+                  const active = themeId===t.id;
+                  const preview = t.id==="classic"
+                    ? {bg:"#F4F4F0",accent:"#D26B6B",surface:"#FFFFFF",text:"#111"}
+                    : {bg:"#F8F9FA",accent:"#7AADF1",surface:"#FFFFFF",text:"#202124"};
+                  return (
+                    <button key={t.id} onClick={()=>setThemeId(t.id)}
+                      style={{
+                        flex:"1 1 200px",maxWidth:320,padding:0,border:active?`2px solid ${preview.accent}`:`1.5px solid ${C.border}`,
+                        borderRadius:t.id==="google"?12:6,background:preview.bg,cursor:"pointer",
+                        overflow:"hidden",transition:"border-color 0.2s, box-shadow 0.2s",
+                        boxShadow:active?"0 0 0 3px "+preview.accent+"22":"none",
+                      }}>
+                      <div style={{padding:"14px 16px 12px"}}>
+                        <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}>
+                          <div style={{width:28,height:28,borderRadius:t.id==="google"?14:6,background:preview.accent,display:"flex",alignItems:"center",justifyContent:"center"}}>
+                            <span style={{color:"#fff",fontSize:14,fontWeight:700}}>{t.id==="classic"?"C":"M"}</span>
+                          </div>
+                          <span style={{fontSize:15,fontWeight:700,color:preview.text,fontFamily:t.font}}>{t.label}</span>
+                          {active&&<span style={{marginLeft:"auto",fontSize:11,fontWeight:700,background:preview.accent,color:"#fff",padding:"2px 8px",borderRadius:10}}>AKTIV</span>}
+                        </div>
+                        <div style={{display:"flex",gap:4,marginBottom:8}}>
+                          {[preview.accent,preview.bg,preview.surface,"#34A853","#FBBC05","#EA4335"].slice(0, t.id==="google"?6:3).map((c,i)=>(
+                            <div key={i} style={{width:20,height:20,borderRadius:t.id==="google"?10:4,background:c,border:"1px solid rgba(0,0,0,0.1)"}}/>
+                          ))}
+                        </div>
+                        <div style={{fontSize:12,color:preview.text,opacity:0.6,fontFamily:t.font,textAlign:"left"}}>
+                          {t.id==="classic"?"Zurückhaltend, Deutsch, Fahrtenbuch-typisch":"Material Design 3, hell, rund"}
+                        </div>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </SettingsBlock>
+
+            {/* DATENSICHERUNG — nur für Admin */}
+            {canAdmin&&(
             <SettingsBlock accent={C.gold}>
               <SettingsLabel icon="download" text="DATENSICHERUNG" accent={C.muted}/>
-              <div style={{fontSize:14,color:C.text,marginBottom:18,lineHeight:1.7}}>
-                Alle Fahrzeuge, Fahrten und Einstellungen als JSON sichern oder wiederherstellen.<br/>
-                <span style={{color:C.text,fontSize:14}}>Beim Import werden alle vorhandenen Daten vollständig ersetzt.</span>
+              <div style={{fontSize:14,color:C.muted,marginBottom:18,lineHeight:1.6}}>
+                Fahrzeuge, Fahrten und Einstellungen als JSON-Datei exportieren oder aus einer Sicherung wiederherstellen. Beim Import werden alle vorhandenen Daten ersetzt.
               </div>
               <div style={{display:"flex",gap:10,alignItems:"center",flexWrap:"wrap"}}>
                 <button onClick={doExport} style={btnSolid(C.gold)}><Ico name="download" size={15} color="#fff"/>JSON EXPORTIEREN</button>
@@ -5475,29 +6559,25 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
                 </label>
               </div>
 
-              {/* Musterdaten-Block */}
-              <div style={{marginTop:20,background:"transparent",borderLeft:`2px solid ${musterAktiv?C.standort:C.border}`,padding:"16px 0 16px 24px",transition:"border-color 0.2s",marginLeft:-28,marginRight:-28}}>
-                <div style={{fontSize:14,fontWeight:700,color:musterAktiv?C.standort:C.text,letterSpacing:2,textTransform:"uppercase",fontFamily:SANS,display:"flex",alignItems:"center",gap:7,marginBottom:6}}>
-                  <Ico name={musterAktiv?"check":"users"} size={15} color={musterAktiv?C.standort:C.text}/>
-                  {musterAktiv ? "Musterdaten aktiv" : "Musterdaten"}
-                </div>
-                <div style={{fontSize:14,color:C.text,marginBottom:14,lineHeight:1.5}}>
-                  {musterAktiv
-                    ? "BMW 520d · 5 Partner · 4 Messen · 3 Standorte — echte Daten sind gesichert"
-                    : "BMW 520d · 5 Partner · 4 Messen · 3 Standorte — echte Daten werden gesichert"}
-                </div>
-                {musterAktiv
-                  ? <button onClick={unloadMuster} style={btnSolid(C.standort)}>
-                      <Ico name="arrowRight" size={15} color="#fff"/>ZURÜCK ZU ECHTEN DATEN
-                    </button>
-                  : <button onClick={loadMuster} style={btnOutline(C.standort)}>
-                      <Ico name="users" size={15} color={C.standort}/>MUSTERDATEN LADEN
-                    </button>
-                }
-              </div>
               {importOk&&<div style={{marginTop:12,borderLeft:`2px solid ${C.gold}`,padding:"8px 0 8px 14px",display:"flex",alignItems:"center",gap:6,fontSize:14,color:C.gold}}><Ico name="check" size={13} color={C.gold}/>Daten erfolgreich geladen</div>}
               {importErr&&<div style={{marginTop:12,borderLeft:`2px solid ${C.red}`,padding:"8px 0 8px 14px",display:"flex",alignItems:"center",gap:6,fontSize:14,color:C.red}}><Ico name="alert" size={13} color={C.red}/>{importErr}</div>}
+              <div style={{borderTop:`1px solid ${C.border}`,marginTop:24,paddingTop:18}}>
+                <div style={{fontSize:13,color:C.muted,marginBottom:10,lineHeight:1.6}}>Alle Daten unwiderruflich löschen und mit Werksdaten neu starten. Vorher unbedingt ein JSON-Backup erstellen!</div>
+                <button onClick={()=>{if(window.confirm("Alle Fahrzeuge, Fahrten und Einstellungen werden unwiderruflich gelöscht.\n\nFortfahren?")){try{localStorage.removeItem("fb2_real");localStorage.removeItem("fb2_demo");}catch(e){/*ok*/}window.location.reload();}}}
+                  style={{...btnOutline(C.muted),fontSize:13}}><Ico name="refresh" size={14} color={C.muted}/>WERKSEINSTELLUNGEN</button>
+              </div>
             </SettingsBlock>
+            )}
+
+            {/* Demo-Hinweis — immer im Demo-Modus */}
+            {isDemo&&(
+            <SettingsBlock accent={C.standort}>
+              <SettingsLabel icon="users" text="DEMO-MODUS AKTIV" accent={C.standort}/>
+              <div style={{fontSize:14,color:C.muted,lineHeight:1.7}}>
+                Sie verwenden Muster-Fahrzeuge mit Testdaten. Alle Änderungen werden lokal gespeichert. Melden Sie sich ab und loggen Sie sich mit einem echten Konto ein, um auf Ihre Fahrzeuge zuzugreifen.
+              </div>
+            </SettingsBlock>
+            )}
           </div>
         )}
 
@@ -5513,10 +6593,10 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
           style={{
             position:"fixed", bottom:28, right:28,
             width:54, height:54,
-            background:C.euBlue, border:"none", borderRadius:"50%",
+            background:C.chatPrimary, border:"none", borderRadius:"50%",
             cursor:"pointer", zIndex:1200,
             display:"flex", alignItems:"center", justifyContent:"center",
-            boxShadow:"0 4px 20px rgba(0,51,153,0.30)",
+            boxShadow:`0 4px 20px ${C.chatPrimary}4D`,
             transition:"transform 0.2s",
           }}
           onMouseEnter={e=>e.currentTarget.style.transform="scale(1.1)"}
@@ -5536,7 +6616,7 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
         <div style={{
           position:"fixed", top:0, right:0, bottom:0,
           width:560, background:C.bg,
-          borderLeft:`0.5px solid ${C.euBlue}`,
+          borderLeft:`0.5px solid ${C.chatPrimary}`,
           boxShadow:"-4px 0 32px rgba(0,0,0,0.12)",
           display:"flex", flexDirection:"column",
           zIndex:1100, fontFamily:SANS,
@@ -5563,7 +6643,7 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
 
           {/* Panel Header */}
           <div style={{
-            background:C.euBlue, padding:"12px 48px 12px 14px",
+            background:C.chatPrimary, padding:"12px 48px 12px 14px",
             display:"flex", alignItems:"center", justifyContent:"space-between",
             flexShrink:0,
           }}>
@@ -5614,9 +6694,9 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
                   display:"flex", flexDirection:"column", alignItems:"center", gap:4,
                   transition:"all 0.15s",
                   boxShadow:"0 2px 6px rgba(0,0,0,0.09), 0 1px 2px rgba(0,0,0,0.06)",
-                  borderRadius:8,
+                  borderRadius:C.inputRadius||8,
                 }}
-                onMouseEnter={e=>{e.currentTarget.style.background=C.euBluePale;e.currentTarget.style.borderColor=C.euBlue;e.currentTarget.style.color=C.euBlue;e.currentTarget.style.boxShadow=`0 4px 10px ${C.euBlue}26`;}}
+                onMouseEnter={e=>{e.currentTarget.style.background=C.chatHover;e.currentTarget.style.borderColor=C.chatPrimary;e.currentTarget.style.color=C.chatPrimary;e.currentTarget.style.boxShadow=`0 4px 10px ${C.chatPrimary}26`;}}
                 onMouseLeave={e=>{e.currentTarget.style.background=C.surface;e.currentTarget.style.borderColor=C.border;e.currentTarget.style.color=C.text;e.currentTarget.style.boxShadow="0 2px 6px rgba(0,0,0,0.09), 0 1px 2px rgba(0,0,0,0.06)";}}
               >
                 {ico}
@@ -5656,9 +6736,9 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
                     maxWidth:"82%",
                     marginLeft: isUser ? 0 : "auto",
                     marginRight: isUser ? "auto" : 0,
-                    background: isUser ? C.surface : isError ? "#FFF0F0" : "#f0f4ff",
+                    background: isUser ? C.surface : isError ? C.redLight : C.chatTint,
                     color: C.text,
-                    border: isUser ? "1px solid #e0e0e0" : isError ? "1px solid #f5c0c0" : "1px solid #dde3f0",
+                    border: isUser ? `1px solid ${C.border}` : isError ? `1px solid ${C.red}44` : `1px solid ${C.border}`,
                     padding:"10px 14px",
                     borderTopLeftRadius:"18px", borderTopRightRadius:"18px",
                     borderBottomRightRadius: isUser ? "18px" : "4px",
@@ -5666,14 +6746,12 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
                     fontSize:14, lineHeight:1.65,
                     fontFamily:SANS,
                     whiteSpace:"pre-wrap", wordBreak:"break-word",
-                    border: isUser ? "1px solid #e0e0e0" : "1px solid #dde3f0",
-                    boxShadow: isUser
-                      ? "0 1px 4px rgba(0,0,0,0.08)"
-                      : "0 2px 10px rgba(0,51,153,0.10), 0 1px 4px rgba(0,0,0,0.07)",
+                    border: isUser ? `1px solid ${C.border}` : `1px solid ${C.border}`,
+                    boxShadow: isUser ? C.shadow : C.shadowMd,
                   }}>
                     {isError && (
                         <span style={{display:"inline-flex",alignItems:"center",gap:5,marginRight:6,verticalAlign:"middle"}}>
-                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C00" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={C.red} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                             <circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>
                           </svg>
                         </span>
@@ -5691,7 +6769,7 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
             {chatBusy && (
               <div style={{display:"flex", alignItems:"flex-start"}}>
                 <div style={{
-                  background:C.euBlueTint,
+                  background:C.chatTint,
                   borderRadius:"18px 18px 18px 4px",
                   padding:"12px 16px", display:"flex", gap:5, alignItems:"center",
                   boxShadow:"0 1px 3px rgba(0,0,0,0.07)",
@@ -5720,10 +6798,10 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
                   {/* Thumbnail card — Claude-style square */}
                   <div style={{
                     position:"relative", width:68, height:68,
-                    borderRadius:8, overflow:"hidden",
-                    border:"1px solid #e0e0e0",
+                    borderRadius:C.inputRadius||8, overflow:"hidden",
+                    border:`1px solid ${C.border}`,
                     boxShadow:"0 1px 4px rgba(0,0,0,0.08)",
-                    flexShrink:0, background:C.euBlueTint,
+                    flexShrink:0, background:C.chatTint,
                   }}>
                     {img.mime && img.mime.startsWith("image/") ? (
                       <img src={`data:${img.mime};base64,${img.base64}`} alt={img.name}
@@ -5734,11 +6812,11 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
                     ) : (
                       <div style={{width:"100%", height:"100%", display:"flex", flexDirection:"column",
                         alignItems:"center", justifyContent:"center", gap:3}}>
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={C.euBlue} strokeWidth="1.5" strokeLinecap="round">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={C.chatPrimary} strokeWidth="1.5" strokeLinecap="round">
                           <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
                           <polyline points="14 2 14 8 20 8"/>
                         </svg>
-                        <span style={{fontSize:8, color:C.euBlue, fontFamily:SANS}}>PDF…</span>
+                        <span style={{fontSize:8, color:C.chatPrimary, fontFamily:SANS}}>PDF…</span>
                       </div>
                     )}
                     {/* Remove × */}
@@ -5762,7 +6840,7 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
                   </div>
                   {/* Filename */}
                   <div style={{
-                    fontSize:14, color:"#888", fontFamily:SANS,
+                    fontSize:14, color:C.muted, fontFamily:SANS,
                     maxWidth:68, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap",
                     textAlign:"center",
                   }}>{img.name}</div>
@@ -5781,7 +6859,7 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
             <div style={{
               position:"relative",
               border:"none",
-              borderRadius:8,
+              borderRadius:C.inputRadius||8,
               background:C.surface,
               display:"flex", flexDirection:"column",
               boxShadow:"0 4px 24px rgba(0,0,0,0.13), 0 1px 4px rgba(0,0,0,0.07)",
@@ -5817,10 +6895,10 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
                     title="Anhängen"
                     style={{
                       width:30, height:30, borderRadius:"50%",
-                      background: chatPlusOpen ? C.euBlue : "transparent",
-                      border:`1.5px solid ${chatPlusOpen||chatImgs.length ? C.euBlue : C.borderHi}`,
+                      background: chatPlusOpen ? C.chatPrimary : "transparent",
+                      border:`1.5px solid ${chatPlusOpen||chatImgs.length ? C.chatPrimary : C.borderHi}`,
                       cursor:"pointer",
-                      color: chatPlusOpen ? "#fff" : chatImgs.length ? C.euBlue : C.muted,
+                      color: chatPlusOpen ? "#fff" : chatImgs.length ? C.chatPrimary : C.muted,
                       display:"flex", alignItems:"center", justifyContent:"center",
                       transition:"all 0.15s", flexShrink:0,
                     }}
@@ -5835,7 +6913,7 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
                     <div style={{
                       position:"absolute", bottom:38, left:0,
                       background:C.surface,
-                      borderRadius:8,
+                      borderRadius:C.inputRadius||8,
                       boxShadow:"0 4px 20px rgba(0,0,0,0.13), 0 1px 4px rgba(0,0,0,0.08)",
                       border:"1px solid #e8e8e8",
                       overflow:"hidden",
@@ -5874,14 +6952,14 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
                           onMouseLeave={e=>e.currentTarget.style.background="transparent"}
                         >
                           <div style={{
-                            width:32, height:32, borderRadius:8,
-                            background:C.euBlueTint,
+                            width:32, height:32, borderRadius:C.inputRadius||8,
+                            background:C.chatTint,
                             display:"flex", alignItems:"center", justifyContent:"center",
-                            color:C.euBlue, flexShrink:0,
+                            color:C.chatPrimary, flexShrink:0,
                           }}>{item.ico}</div>
                           <div>
                             <div style={{fontSize:15, fontWeight:700, color:"#111", letterSpacing:0.3}}>{item.label}</div>
-                            <div style={{fontSize:13, color:"#999", marginTop:1, letterSpacing:0.5}}>{item.hint}</div>
+                            <div style={{fontSize:13, color:C.muted, marginTop:1, letterSpacing:0.5}}>{item.hint}</div>
                           </div>
                         </button>
                       ))}
@@ -5896,7 +6974,7 @@ Präsentiere das Ergebnis als strukturierte Liste mit [OK] und [!] Markierungen.
                   title="Senden (Enter)"
                   style={{
                     width:32, height:32, borderRadius:"50%",
-                    background: (chatBusy || (!chatInput.trim() && !chatImgs.length)) ? C.border : C.euBlue,
+                    background: (chatBusy || (!chatInput.trim() && !chatImgs.length)) ? C.border : C.chatPrimary,
                     border:"none",
                     cursor: (chatBusy || (!chatInput.trim() && !chatImgs.length)) ? "not-allowed" : "pointer",
                     display:"flex", alignItems:"center", justifyContent:"center",
