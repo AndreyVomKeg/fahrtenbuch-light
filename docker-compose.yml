@@ -1,0 +1,44 @@
+services:
+  backend:
+    build: ./packages/backend
+    container_name: fb-backend
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql://fb:${DB_PASSWORD}@trid-postgres:5432/fahrtenbuch
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET}
+      NODE_ENV: production
+      PORT: 3002
+    ports:
+      - "127.0.0.1:3002:3002"
+    networks: [fb-net, trid_default]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3002/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    restart: unless-stopped
+
+  frontend:
+    build: ./packages/frontend
+    container_name: fb-frontend
+    ports:
+      - "127.0.0.1:3003:80"
+    networks: [fb-net]
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: fb-redis
+    networks: [fb-net]
+    volumes:
+      - fb-redis-data:/data
+    restart: unless-stopped
+
+networks:
+  fb-net:
+  trid_default:
+    external: true
+
+volumes:
+  fb-redis-data:
