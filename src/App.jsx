@@ -5604,7 +5604,7 @@ WICHTIG — WANN UI-TOOLS NUTZEN:
         <div style={{maxWidth:1200,margin:"0 auto",display:"flex",width:"100%",padding:"0 32px",boxSizing:"border-box"}}>
           {TABS.map(t=>(
             <button key={t.id} onClick={()=>{setTab(t.id);resetForms();}}
-              style={{flex:1,padding:"12px 8px",background:"transparent",border:"none",boxShadow:tab===t.id?`inset 0 -2px 0 ${acc}`:"none",color:tab===t.id?acc:C.muted,cursor:"pointer",fontSize:15,fontFamily:SANS,fontWeight:700,letterSpacing:1,textTransform:"uppercase",transition:"all 0.15s",whiteSpace:"nowrap",textAlign:"center",minWidth:0}}>
+              style={{flex:1,padding:"12px 8px",background:"transparent",border:"none",boxShadow:tab===t.id?`inset 0 -2px 0 ${acc}`:"none",color:tab===t.id?acc:C.text,cursor:"pointer",fontSize:15,fontFamily:SANS,fontWeight:700,letterSpacing:1,textTransform:"uppercase",transition:"all 0.15s",whiteSpace:"nowrap",textAlign:"center",minWidth:0}}>
               {t.label}
             </button>
           ))}
