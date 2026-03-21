@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply antialiased;
+  }
+
+  input, select, textarea {
+    @apply h-10 rounded-lg border border-border px-3 text-sm outline-none transition-colors
+      focus:border-accent focus:ring-1 focus:ring-accent;
+  }
+
+  button {
+    @apply cursor-pointer transition-colors;
+  }
+}

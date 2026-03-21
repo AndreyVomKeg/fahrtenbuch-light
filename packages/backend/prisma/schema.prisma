@@ -1,0 +1,116 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  BENUTZER
+}
+
+enum KmTyp {
+  GESCHAEFTLICH
+  WOHN_ARBEIT
+  PRIVAT
+}
+
+enum RecordStatus {
+  ACTIVE
+  SUPERSEDED
+  STORNIERT
+}
+
+enum ChangeAction {
+  CREATE
+  UPDATE
+  STORNIERT
+  LOCK
+  UNLOCK
+}
+
+enum OdometerQuelle {
+  FAHRT
+  TANKEN
+  SERVICE
+  KONTROLLE
+}
+
+enum Kraftstoff {
+  BENZIN
+  DIESEL
+  ELEKTRO
+  HYBRID
+}
+
+model User {
+  id            String   @id @default(uuid()) @db.Uuid
+  email         String   @unique
+  passwordHash  String   @map("password_hash")
+  role          Role     @default(BENUTZER)
+  lang          String   @default("de") @db.VarChar(5)
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  fahrzeuge     Fahrzeug[]
+  changeLogs    ChangeLog[]
+  odometerReadings OdometerReading[]
+
+  @@map("users")
+}
+
+model Fahrzeug {
+  id            String     @id @default(uuid()) @db.Uuid
+  userId        String     @map("user_id") @db.Uuid
+  kennzeichen   String     @db.VarChar(15)
+  marke         String     @db.VarChar(50)
+  modell        String     @db.VarChar(50)
+  vin           String?    @db.VarChar(17)
+  kraftstoff    Kraftstoff @default(BENZIN)
+  tuvDatum      DateTime?  @map("tuv_datum") @db.Date
+  kmInitial     Int        @map("km_initial")
+  kmCurrent     Int        @map("km_current")
+  createdAt     DateTime   @default(now()) @map("created_at")
+
+  user          User       @relation(fields: [userId], references: [id])
+  odometerReadings OdometerReading[]
+
+  @@map("fahrzeuge")
+}
+
+model OdometerReading {
+  id            String         @id @default(uuid()) @db.Uuid
+  fahrzeugId    String         @map("fahrzeug_id") @db.Uuid
+  userId        String         @map("user_id") @db.Uuid
+  datum         DateTime       @db.Date
+  kmStand       Int            @map("km_stand")
+  quelle        OdometerQuelle
+  referenzId    String?        @map("referenz_id") @db.Uuid
+  createdAt     DateTime       @default(now()) @map("created_at")
+
+  fahrzeug      Fahrzeug       @relation(fields: [fahrzeugId], references: [id])
+  user          User           @relation(fields: [userId], references: [id])
+
+  @@map("odometer_readings")
+}
+
+model ChangeLog {
+  id            String       @id @default(uuid()) @db.Uuid
+  entityType    String       @map("entity_type") @db.VarChar(50)
+  entityId      String       @map("entity_id") @db.Uuid
+  action        ChangeAction
+  fieldName     String?      @map("field_name")
+  oldValue      String?      @map("old_value")
+  newValue      String?      @map("new_value")
+  reason        String?
+  userId        String       @map("user_id") @db.Uuid
+  ipAddress     String       @map("ip_address") @db.VarChar(45)
+  userAgent     String       @map("user_agent")
+  createdAt     DateTime     @default(now()) @map("created_at")
+
+  user          User         @relation(fields: [userId], references: [id])
+
+  @@map("change_log")
+}
