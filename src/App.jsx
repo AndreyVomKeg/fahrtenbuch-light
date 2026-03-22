@@ -1,7 +1,7 @@
 // FahrtenbuchLight v51
 import React, { useState, useMemo, useEffect, useRef } from "react";
 import {
-  THEMES, THEME_GOOGLE, THEME_CLASSIC, syncTheme,
+  THEMES, THEME_GOOGLE, THEME_CLASSIC, THEME_HYBRID, syncTheme,
   FARBEN, FARBE_DK_MAP,
   PARTNER_TYP_COLORS, PARTNER_TYP_COLORS_DK,
   PARTNER_TYP_LABELS, PARTNER_TYP_OPTS,
@@ -27,6 +27,9 @@ const FS = {
 
 // ─── UTILS ───────────────────────────────────────────────────────────────────
 const safeFloat = (v, fallback=0) => { const n=parseFloat(v); return isNaN(n)?fallback:n; };
+// Gradient helper: returns gradient string if C.useGradients, else solid color
+const grad = (dk, base, dir="90deg") => C.useGradients ? `linear-gradient(${dir}, ${dk}, ${base})` : base;
+const gradBg = (dk, base, dir="90deg") => C.useGradients ? {background:`linear-gradient(${dir}, ${dk}, ${base})`} : {background:base};
 
 
 // ─── CLAUDE API HELPER ────────────────────────────────────────────────────────
@@ -812,8 +815,32 @@ const makeRenaultDefault = () => ({
     {id:uid(), name:"Flughafen München (MUC)", adresse:"Nordallee 25, 85356 München", notiz:"Franz Josef Strauß", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"620"},
     {id:uid(), name:"Flughafen Hamburg (HAM)", adresse:"Flughafenstraße 1-3, 22335 Hamburg", notiz:"Hamburg Airport", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"290"},
     {id:uid(), name:"Flughafen Stuttgart (STR)", adresse:"Flughafenstraße 32, 70629 Stuttgart", notiz:"Stuttgart Airport", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"590"},
-    {id:uid(), name:"Berlin Hauptbahnhof", adresse:"Europaplatz 1, 10557 Berlin", notiz:"Fernverkehr, ICE", auto:false, typ:"bahnhof", besuche:0, letzterBesuch:"", kmVonStandort:"40"}],
-  strafen:[], tankstellen:[], waesche:[], parkplaetze:[], services:[],
+    {id:uid(), name:"Berlin Hauptbahnhof", adresse:"Europaplatz 1, 10557 Berlin", notiz:"Fernverkehr, ICE", auto:false, typ:"bahnhof", besuche:0, letzterBesuch:"", kmVonStandort:"40"},
+    {id:uid(), name:"KfZ-Meisterbetrieb Klaus & Mike", adresse:"Ruhlsdorfer Str. 100, 14513 Teltow", notiz:"Werkstatt TF-VG 2016", auto:false, typ:"werkstatt", besuche:2, letzterBesuch:"2025-12-08", kmVonStandort:"20"},
+    {id:uid(), name:"ARAL - REWE To Go", adresse:"Hohenzollerndamm 97, 14199 Berlin", notiz:"Tankstelle + REWE", auto:false, typ:"tankstelle", besuche:3, letzterBesuch:"2025-11-21", kmVonStandort:"38"},
+    {id:uid(), name:"Sprint Tankstelle Wildau", adresse:"Chausseestr. 1, 15745 Wildau", notiz:"Tankstelle", auto:false, typ:"tankstelle", besuche:1, letzterBesuch:"2025-09-04", kmVonStandort:"25"},
+    {id:uid(), name:"Kaufland Wildau", adresse:"Chausseestraße 1, 15745 Wildau", notiz:"Supermarkt", auto:false, typ:"laden", besuche:2, letzterBesuch:"2025-11-07", kmVonStandort:"25"},
+    {id:uid(), name:"Kaufland Ludwigsfelde", adresse:"Potsdamer Straße 51-53, 14974 Ludwigsfelde", notiz:"Supermarkt", auto:false, typ:"laden", besuche:1, letzterBesuch:"2025-12-01", kmVonStandort:"3"},
+    {id:uid(), name:"Blumen-Koch", adresse:"Westfälische Str. 38, 10711 Berlin", notiz:"Blumenladen", auto:false, typ:"laden", besuche:1, letzterBesuch:"2025-10-22", kmVonStandort:"38"},
+    {id:uid(), name:"Blume 2000", adresse:"Breite Straße 14a, 14199 Berlin", notiz:"Blumenladen", auto:false, typ:"laden", besuche:1, letzterBesuch:"2025-11-07", kmVonStandort:"38"},
+    {id:uid(), name:"Berliner Schlüsseldienst", adresse:"Konstanzer Str. 50, 10707 Berlin", notiz:"Schlüssel / Schlösser", auto:false, typ:"laden", besuche:1, letzterBesuch:"2025-11-21", kmVonStandort:"38"}],
+  strafen:[],
+  tankstellen:[
+    {id:uid(),datum:"2025-06-21",uhrzeit:"09:28",stationName:"ARAL - REWE To Go",adresse:"Hohenzollerndamm 97, 14199 Berlin",kraftstoff:"Super E10",menge:"55.03",preisProLiter:"1.699",gesamtbetrag:"93.50",kmStand:"",zahlungsart:"EC-Karte",bonNr:"",notiz:"",kmVonStandort:"38"},
+    {id:uid(),datum:"2025-06-22",uhrzeit:"12:21",stationName:"ENI Deutschland GmbH",adresse:"BAB 9 Richtung München, 90537 Nürnberg-Feucht",kraftstoff:"Super E10",menge:"46.78",preisProLiter:"2.219",gesamtbetrag:"103.80",kmStand:"",zahlungsart:"EC-Karte",bonNr:"",notiz:"Autobahn A9",kmVonStandort:""},
+    {id:uid(),datum:"2025-06-27",uhrzeit:"13:03",stationName:"Tankstelle Forster",adresse:"BAB 9 Fürholzen Ost, 85376 Fürholzen",kraftstoff:"Super E10",menge:"41.66",preisProLiter:"2.199",gesamtbetrag:"91.61",kmStand:"",zahlungsart:"EC-Karte",bonNr:"",notiz:"Autobahn A9",kmVonStandort:""},
+    {id:uid(),datum:"2025-06-27",uhrzeit:"16:48",stationName:"ENI Service Station",adresse:"An der BAB 9, 07927 Hirschberg",kraftstoff:"Super E10",menge:"31.75",preisProLiter:"1.989",gesamtbetrag:"63.15",kmStand:"",zahlungsart:"EC-Karte",bonNr:"",notiz:"Autobahn A9, Rückfahrt",kmVonStandort:""},
+    {id:uid(),datum:"2025-08-22",uhrzeit:"14:05",stationName:"ARAL - REWE To Go",adresse:"Hohenzollerndamm 97, 14199 Berlin",kraftstoff:"Super E10",menge:"49.43",preisProLiter:"1.629",gesamtbetrag:"80.52",kmStand:"",zahlungsart:"EC-Karte",bonNr:"",notiz:"",kmVonStandort:"38"},
+    {id:uid(),datum:"2025-09-04",uhrzeit:"12:10",stationName:"Sprint Tankstelle",adresse:"Chausseestr. 1, 15745 Wildau",kraftstoff:"Super E10",menge:"24.26",preisProLiter:"1.649",gesamtbetrag:"40.00",kmStand:"",zahlungsart:"EC-Karte",bonNr:"",notiz:"",kmVonStandort:"25"},
+    {id:uid(),datum:"2025-09-14",uhrzeit:"09:40",stationName:"Shell Tankstelle",adresse:"Zur Achmühle 9, 91171 Greding",kraftstoff:"Super E10",menge:"54.56",preisProLiter:"2.239",gesamtbetrag:"122.16",kmStand:"",zahlungsart:"EC-Karte",bonNr:"",notiz:"Autobahn A9",kmVonStandort:""},
+    {id:uid(),datum:"2025-11-21",uhrzeit:"08:27",stationName:"ARAL - REWE To Go",adresse:"Hohenzollerndamm 97, 14199 Berlin",kraftstoff:"Super E10",menge:"53.74",preisProLiter:"1.939",gesamtbetrag:"115.19",kmStand:"",zahlungsart:"EC-Karte",bonNr:"",notiz:"Inkl. Aral Klare Sicht 10,99 € (Scheibenwischwasser)",kmVonStandort:"38"},
+    {id:uid(),datum:"2025-11-22",uhrzeit:"09:39",stationName:"Shell Tankstellen GmbH",adresse:"BAB 9 / Westseite, 06682 Teuchern",kraftstoff:"Super E10",menge:"26.08",preisProLiter:"1.809",gesamtbetrag:"47.18",kmStand:"",zahlungsart:"EC-Karte",bonNr:"",notiz:"Autobahn A9",kmVonStandort:""},
+  ],
+  waesche:[], parkplaetze:[],
+  services:[
+    {id:uid(),datum:"2025-06-06",typ:"Inspektion",werkstatt:"KfZ-Meisterbetrieb Klaus & Mike",adresse:"Ruhlsdorfer Str. 100, 14513 Teltow",kmStand:"76583",betrag:"",rechnungsNr:"",faelligKm:"",faelligDatum:"",zahlungsart:"",notiz:"Inspektion + Ölwechsel",belegFoto:""},
+    {id:uid(),datum:"2025-12-08",typ:"Inspektion",werkstatt:"KfZ-Meisterbetrieb Klaus & Mike",adresse:"Ruhlsdorfer Str. 100, 14513 Teltow",kmStand:"81015",betrag:"",rechnungsNr:"",faelligKm:"",faelligDatum:"",zahlungsart:"",notiz:"Inspektion",belegFoto:""},
+  ],
   fahrten:[
     {id:uid(), datum:"2024-01-09", zeitStr:"9:30-10:30", kategorie:"sonstige", zielId:"", zielName:"Büro - Werkstatt - Teltow Büro", km:"30", dauerMin:"", rueckfahrt:true, notiz:"Werkstattbesuch", kmTyp:"geschaeftlich", kmStart:"61378", kmEnd:"61408"},
     {id:uid(), datum:"2024-01-12", zeitStr:"10:00-10:45", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post Ludwigsfelde", km:"10", dauerMin:"", rueckfahrt:true, notiz:"Einschreiben", kmTyp:"geschaeftlich", kmStart:"61408", kmEnd:"61418"},
@@ -980,7 +1007,10 @@ const LBL_f = () => ({
 });
 const btnSolid = (color) => ({
   display:"inline-flex", alignItems:"center", gap:6,
-  height:40, padding:"0 20px", background:color, border:`1px solid ${color}`,
+  height:40, padding:"0 20px",
+  background:C.useGradients?`linear-gradient(135deg, ${color}, ${color}cc)`:color,
+  border:`1px solid ${color}`,
+  boxShadow:C.useGradients?`0 2px 8px ${color}30`:"none",
   color:"#fff", cursor:"pointer", fontSize:14,
   fontFamily:SANS, fontWeight:700,
   letterSpacing:1.5, textTransform:"uppercase",
@@ -1116,8 +1146,9 @@ function KpiCard({wert, unit, label, akzent, akzentDk, icon}) {
     return ()=>{ if(rafRef.current) cancelAnimationFrame(rafRef.current); };
   },[numVal]);
   return (
-    <div style={{background:C.surface, borderTop:`2px solid ${akzent}`, padding:"20px 22px",
+    <div style={{background:C.surface, borderTop:C.useGradients?'none':`2px solid ${akzent}`, padding:"20px 22px",
       position:"relative", overflow:"hidden", boxShadow:C.shadow, borderRadius:C.inputRadius||8}}>
+      {C.useGradients&&<div style={{position:"absolute",top:0,left:0,right:0,height:3,background:`linear-gradient(90deg, ${akzentDk||akzent}, ${akzent})`}}/>}
       <div style={{position:"absolute",top:10,right:12,opacity:0.18}}><Ico name={icon} size={44} color={akzent}/></div>
       <div style={{display:"flex",alignItems:"baseline",gap:4,marginBottom:5,minWidth:0}}>
         <div style={{fontSize:28,fontWeight:800,color:akzentDk||akzent,fontFamily:SANS,
@@ -1129,15 +1160,16 @@ function KpiCard({wert, unit, label, akzent, akzentDk, icon}) {
     </div>
   );
 }
-function AnimatedBar({pct, color, height=6}) {
+function AnimatedBar({pct, color, colorDk, height=6}) {
   const [width, setWidth] = useState(0);
   useEffect(()=>{
     const id = requestAnimationFrame(()=>setWidth(parseFloat(pct)||0));
     return ()=>cancelAnimationFrame(id);
   },[pct]);
+  const barBg = C.useGradients&&colorDk ? `linear-gradient(90deg, ${colorDk}, ${color})` : color;
   return (
     <div style={{height,background:C.border,borderRadius:C.inputRadius||8}}>
-      <div style={{width:`${width}%`,height:"100%",background:color,borderRadius:C.inputRadius||8,transition:"width 0.5s ease"}}/>
+      <div style={{width:`${width}%`,height:"100%",background:barBg,borderRadius:C.inputRadius||8,transition:"width 0.5s ease"}}/>
     </div>
   );
 }
@@ -2860,7 +2892,7 @@ function UebersichtTab({stats, aktiv, acc, accDk, C, SANS, FS, katAccent, katAcc
     <span style={{fontSize:13,fontWeight:700,letterSpacing:1.5,textTransform:"uppercase",fontFamily:SANS,color:C.text}}>{cat.label}</span>
     </div>
     <div style={{fontSize:20,fontWeight:800,color:C.text,fontFamily:SANS,lineHeight:1,marginBottom:4}}>{cat.betrag.toFixed(2)} €</div>
-    <AnimatedBar pct={stats.gesamtKosten>0?Math.min((cat.betrag/stats.gesamtKosten)*100,100).toFixed(1):0} color={cat.color} height={3}/>
+    <AnimatedBar pct={stats.gesamtKosten>0?Math.min((cat.betrag/stats.gesamtKosten)*100,100).toFixed(1):0} color={cat.color} colorDk={cat.colorDk} height={3}/>
     </div>
     ))}
     </div>
@@ -2881,7 +2913,7 @@ function UebersichtTab({stats, aktiv, acc, accDk, C, SANS, FS, katAccent, katAcc
     {km.toFixed(0)} km <span style={{color:C.muted,fontSize:13}}>({pct}%)</span>
     </span>
     </div>
-    <AnimatedBar pct={pct} color={ak}/>
+    <AnimatedBar pct={pct} color={ak} colorDk={katAccentDk[kat]||C.steelDk}/>
     </div>
     );
     })}
@@ -4204,6 +4236,44 @@ function FahrtenbuchApp({authUser, onLogout, themeId, setThemeId}) {
       const newFarbe = fixMap[(f.farbe||"").toUpperCase()] || fixMap[f.farbe] || f.farbe;
       return newFarbe !== f.farbe ? {...f, farbe: newFarbe} : f;
     }) },
+    // v22: TF-VG 2016 — inject defaults for tankstellen + services (only if arrays empty)
+    { v:22, run: fzs => fzs.map(f => {
+      if(f.kennzeichen !== "TF-VG 2016") return f;
+      const patch = {};
+      // Tankstellen: inject 9 entries only if empty
+      if(!(f.tankstellen||[]).length) {
+        patch.tankstellen = [
+          {id:uid(),datum:"2025-06-21",uhrzeit:"09:28",stationName:"ARAL - REWE To Go",adresse:"Hohenzollerndamm 97, 14199 Berlin",kraftstoff:"Super E10",menge:"55.03",preisProLiter:"1.699",gesamtbetrag:"93.50",kmStand:"",zahlungsart:"EC-Karte",bonNr:"",notiz:"",kmVonStandort:"38"},
+          {id:uid(),datum:"2025-06-22",uhrzeit:"12:21",stationName:"ENI Deutschland GmbH",adresse:"BAB 9 Richtung München, 90537 Nürnberg-Feucht",kraftstoff:"Super E10",menge:"46.78",preisProLiter:"2.219",gesamtbetrag:"103.80",kmStand:"",zahlungsart:"EC-Karte",bonNr:"",notiz:"Autobahn A9",kmVonStandort:""},
+          {id:uid(),datum:"2025-06-27",uhrzeit:"13:03",stationName:"Tankstelle Forster",adresse:"BAB 9 Fürholzen Ost, 85376 Fürholzen",kraftstoff:"Super E10",menge:"41.66",preisProLiter:"2.199",gesamtbetrag:"91.61",kmStand:"",zahlungsart:"EC-Karte",bonNr:"",notiz:"Autobahn A9",kmVonStandort:""},
+          {id:uid(),datum:"2025-06-27",uhrzeit:"16:48",stationName:"ENI Service Station",adresse:"An der BAB 9, 07927 Hirschberg",kraftstoff:"Super E10",menge:"31.75",preisProLiter:"1.989",gesamtbetrag:"63.15",kmStand:"",zahlungsart:"EC-Karte",bonNr:"",notiz:"Autobahn A9, Rückfahrt",kmVonStandort:""},
+          {id:uid(),datum:"2025-08-22",uhrzeit:"14:05",stationName:"ARAL - REWE To Go",adresse:"Hohenzollerndamm 97, 14199 Berlin",kraftstoff:"Super E10",menge:"49.43",preisProLiter:"1.629",gesamtbetrag:"80.52",kmStand:"",zahlungsart:"EC-Karte",bonNr:"",notiz:"",kmVonStandort:"38"},
+          {id:uid(),datum:"2025-09-04",uhrzeit:"12:10",stationName:"Sprint Tankstelle",adresse:"Chausseestr. 1, 15745 Wildau",kraftstoff:"Super E10",menge:"24.26",preisProLiter:"1.649",gesamtbetrag:"40.00",kmStand:"",zahlungsart:"EC-Karte",bonNr:"",notiz:"",kmVonStandort:"25"},
+          {id:uid(),datum:"2025-09-14",uhrzeit:"09:40",stationName:"Shell Tankstelle",adresse:"Zur Achmühle 9, 91171 Greding",kraftstoff:"Super E10",menge:"54.56",preisProLiter:"2.239",gesamtbetrag:"122.16",kmStand:"",zahlungsart:"EC-Karte",bonNr:"",notiz:"Autobahn A9",kmVonStandort:""},
+          {id:uid(),datum:"2025-11-21",uhrzeit:"08:27",stationName:"ARAL - REWE To Go",adresse:"Hohenzollerndamm 97, 14199 Berlin",kraftstoff:"Super E10",menge:"53.74",preisProLiter:"1.939",gesamtbetrag:"115.19",kmStand:"",zahlungsart:"EC-Karte",bonNr:"",notiz:"Inkl. Aral Klare Sicht 10,99 € (Scheibenwischwasser)",kmVonStandort:"38"},
+          {id:uid(),datum:"2025-11-22",uhrzeit:"09:39",stationName:"Shell Tankstellen GmbH",adresse:"BAB 9 / Westseite, 06682 Teuchern",kraftstoff:"Super E10",menge:"26.08",preisProLiter:"1.809",gesamtbetrag:"47.18",kmStand:"",zahlungsart:"EC-Karte",bonNr:"",notiz:"Autobahn A9",kmVonStandort:""},
+        ];
+      }
+      // Services: inject 2 entries only if empty
+      if(!(f.services||[]).length) {
+        patch.services = [
+          {id:uid(),datum:"2025-06-06",typ:"Inspektion",werkstatt:"KfZ-Meisterbetrieb Klaus & Mike",adresse:"Ruhlsdorfer Str. 100, 14513 Teltow",kmStand:"76583",betrag:"",rechnungsNr:"",faelligKm:"",faelligDatum:"",zahlungsart:"",notiz:"Inspektion + Ölwechsel",belegFoto:""},
+          {id:uid(),datum:"2025-12-08",typ:"Inspektion",werkstatt:"KfZ-Meisterbetrieb Klaus & Mike",adresse:"Ruhlsdorfer Str. 100, 14513 Teltow",kmStand:"81015",betrag:"",rechnungsNr:"",faelligKm:"",faelligDatum:"",zahlungsart:"",notiz:"Inspektion",belegFoto:""},
+        ];
+      }
+      // Standorte: add missing entries (non-destructive)
+      const extra = [...(f.standorteExtra||[])];
+      const add = (name,obj) => { if(!extra.some(e=>(e.name||"").toLowerCase()===name.toLowerCase())) extra.push({id:uid(),auto:false,...obj}); };
+      add("KfZ-Meisterbetrieb Klaus & Mike",{name:"KfZ-Meisterbetrieb Klaus & Mike",adresse:"Ruhlsdorfer Str. 100, 14513 Teltow",notiz:"Werkstatt TF-VG 2016",typ:"werkstatt",besuche:2,letzterBesuch:"2025-12-08",kmVonStandort:"20"});
+      add("ARAL - REWE To Go",{name:"ARAL - REWE To Go",adresse:"Hohenzollerndamm 97, 14199 Berlin",notiz:"Tankstelle + REWE",typ:"tankstelle",besuche:3,letzterBesuch:"2025-11-21",kmVonStandort:"38"});
+      add("Sprint Tankstelle Wildau",{name:"Sprint Tankstelle Wildau",adresse:"Chausseestr. 1, 15745 Wildau",notiz:"Tankstelle",typ:"tankstelle",besuche:1,letzterBesuch:"2025-09-04",kmVonStandort:"25"});
+      add("Kaufland Wildau",{name:"Kaufland Wildau",adresse:"Chausseestraße 1, 15745 Wildau",notiz:"Supermarkt",typ:"laden",besuche:2,letzterBesuch:"2025-11-07",kmVonStandort:"25"});
+      add("Kaufland Ludwigsfelde",{name:"Kaufland Ludwigsfelde",adresse:"Potsdamer Straße 51-53, 14974 Ludwigsfelde",notiz:"Supermarkt",typ:"laden",besuche:1,letzterBesuch:"2025-12-01",kmVonStandort:"3"});
+      add("Blumen-Koch",{name:"Blumen-Koch",adresse:"Westfälische Str. 38, 10711 Berlin",notiz:"Blumenladen",typ:"laden",besuche:1,letzterBesuch:"2025-10-22",kmVonStandort:"38"});
+      add("Blume 2000",{name:"Blume 2000",adresse:"Breite Straße 14a, 14199 Berlin",notiz:"Blumenladen",typ:"laden",besuche:1,letzterBesuch:"2025-11-07",kmVonStandort:"38"});
+      add("Berliner Schlüsseldienst",{name:"Berliner Schlüsseldienst",adresse:"Konstanzer Str. 50, 10707 Berlin",notiz:"Schlüssel / Schlösser",typ:"laden",besuche:1,letzterBesuch:"2025-11-21",kmVonStandort:"38"});
+      return {...f, ...patch, standorteExtra:extra};
+    }) },
   ];
   const DATA_VERSION = DATA_MIGRATIONS.length ? DATA_MIGRATIONS[DATA_MIGRATIONS.length-1].v : 0;
   const applyMigrations = (fahrzeuge, fromV) => {
@@ -5439,6 +5509,7 @@ WICHTIG — WANN UI-TOOLS NUTZEN:
 
       {/* ══ HEADER ══ */}
       <header style={{background:C.bg,borderBottom:`0.5px solid ${acc}`,minHeight:92,position:"sticky",top:0,zIndex:100,transition:"border-color 0.3s",boxShadow:"0 1px 4px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04)"}}>
+        {C.useGradients&&<div style={{height:3,background:C.headerGradient}}/>}
         <div style={{maxWidth:1200,margin:"0 auto",padding:"22px 28px",width:"100%",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
         <div style={{display:"flex",alignItems:"center",gap:16}}>
           <div ref={kzBoxRef} style={{
@@ -5566,7 +5637,7 @@ WICHTIG — WANN UI-TOOLS NUTZEN:
         <div style={{maxWidth:1200,margin:"0 auto",display:"flex",width:"100%",padding:"0 32px",boxSizing:"border-box"}}>
           {TABS.map(t=>(
             <button key={t.id} onClick={()=>{setTab(t.id);resetForms();}}
-              style={{flex:1,padding:"12px 8px",background:"transparent",border:"none",boxShadow:tab===t.id?`inset 0 -2px 0 ${acc}`:"none",color:tab===t.id?acc:C.text,cursor:"pointer",fontSize:15,fontFamily:SANS,fontWeight:700,letterSpacing:1,textTransform:"uppercase",transition:"all 0.15s",whiteSpace:"nowrap",textAlign:"center",minWidth:0}}>
+              style={{flex:1,padding:"12px 8px",background:"transparent",border:"none",boxShadow:tab===t.id?`inset 0 ${C.useGradients?"-3":"-2"}px 0 ${accDk||acc}`:"none",color:tab===t.id?(accDk||acc):C.text,cursor:"pointer",fontSize:15,fontFamily:SANS,fontWeight:700,letterSpacing:1,textTransform:"uppercase",transition:"all 0.15s",whiteSpace:"nowrap",textAlign:"center",minWidth:0}}>
               {t.label}
             </button>
           ))}
@@ -6471,34 +6542,39 @@ WICHTIG — WANN UI-TOOLS NUTZEN:
                 Farbschema und Stil der Benutzeroberfläche anpassen.
               </div>
               <div style={{display:"flex",gap:10,flexWrap:"wrap"}}>
-                {[THEMES.google, THEMES.classic].map(t=>{
+                {[THEMES.google, THEMES.classic, THEMES.hybrid].map(t=>{
                   const active = themeId===t.id;
                   const preview = t.id==="classic"
-                    ? {bg:"#F4F4F0",accent:"#CD5959",surface:"#FFFFFF",text:"#111"}
-                    : {bg:"#F8F9FA",accent:"#6AA4F0",surface:"#FFFFFF",text:"#202124"};
+                    ? {bg:"#F4F4F0",accent:"#CD5959",surface:"#FFFFFF",text:"#111",radius:6,letter:"C",desc:"Zurückhaltend, Deutsch, Fahrtenbuch-typisch",colors:["#CD5959","#F4F4F0","#FFFFFF"]}
+                    : t.id==="hybrid"
+                    ? {bg:"#F4F4F0",accent:"#A44747",surface:"#FFFFFF",text:"#111",radius:6,letter:"H",desc:"Classic-Basis mit Carbon-Akzenten, Gradient-Effekte",colors:["#A44747","#E8A838","#547E64"],gradient:true}
+                    : {bg:"#F8F9FA",accent:"#6AA4F0",surface:"#FFFFFF",text:"#202124",radius:12,letter:"M",desc:"Material Design 3, hell, rund",colors:["#6AA4F0","#F8F9FA","#FFFFFF","#34A853","#FBBC05","#EA4335"]};
                   return (
                     <button key={t.id} onClick={()=>setThemeId(t.id)}
                       style={{
-                        flex:"1 1 200px",maxWidth:320,padding:0,border:active?`2px solid ${preview.accent}`:`1.5px solid ${C.border}`,
-                        borderRadius:t.id==="google"?12:6,background:preview.bg,cursor:"pointer",
+                        flex:"1 1 160px",maxWidth:320,padding:0,border:active?`2px solid ${preview.accent}`:`1.5px solid ${C.border}`,
+                        borderRadius:preview.radius,background:preview.bg,cursor:"pointer",
                         overflow:"hidden",transition:"border-color 0.2s, box-shadow 0.2s",
                         boxShadow:active?"0 0 0 3px "+preview.accent+"22":"none",
                       }}>
+                      {preview.gradient
+                        ?<div style={{height:3,background:"linear-gradient(90deg, #A44747, #E8A838, #547E64)"}}/>
+                        :<div style={{height:3}}/>}
                       <div style={{padding:"14px 16px 12px"}}>
                         <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}>
-                          <div style={{width:28,height:28,borderRadius:t.id==="google"?14:6,background:preview.accent,display:"flex",alignItems:"center",justifyContent:"center"}}>
-                            <span style={{color:"#fff",fontSize:14,fontWeight:700}}>{t.id==="classic"?"C":"M"}</span>
+                          <div style={{width:28,height:28,borderRadius:preview.radius>=12?14:6,background:preview.accent,display:"flex",alignItems:"center",justifyContent:"center"}}>
+                            <span style={{color:"#fff",fontSize:14,fontWeight:700}}>{preview.letter}</span>
                           </div>
                           <span style={{fontSize:15,fontWeight:700,color:preview.text,fontFamily:t.font}}>{t.label}</span>
                           {active&&<span style={{marginLeft:"auto",fontSize:11,fontWeight:700,background:preview.accent,color:"#fff",padding:"2px 8px",borderRadius:10}}>AKTIV</span>}
                         </div>
                         <div style={{display:"flex",gap:4,marginBottom:8}}>
-                          {[preview.accent,preview.bg,preview.surface,"#34A853","#FBBC05","#EA4335"].slice(0, t.id==="google"?6:3).map((c,i)=>(
-                            <div key={i} style={{width:20,height:20,borderRadius:t.id==="google"?10:4,background:c,border:"1px solid rgba(0,0,0,0.1)"}}/>
+                          {preview.colors.map((c,i)=>(
+                            <div key={i} style={{width:20,height:20,borderRadius:preview.radius>=12?10:4,background:c,border:"1px solid rgba(0,0,0,0.1)"}}/>
                           ))}
                         </div>
                         <div style={{fontSize:12,color:preview.text,opacity:0.6,fontFamily:t.font,textAlign:"left"}}>
-                          {t.id==="classic"?"Zurückhaltend, Deutsch, Fahrtenbuch-typisch":"Material Design 3, hell, rund"}
+                          {preview.desc}
                         </div>
                       </div>
                     </button>
@@ -6617,7 +6693,7 @@ WICHTIG — WANN UI-TOOLS NUTZEN:
               <div>
                 <div style={{color:"#fff", fontSize:14, fontWeight:700, letterSpacing:2, textTransform:"uppercase"}}>KI-Assistent</div>
                 <div style={{color:"rgba(255,255,255,0.88)", fontSize:13, fontWeight:600, letterSpacing:0.5, marginTop:2}}>
-                  {aktiv.kennzeichen||"Fahrzeug"} · {aktiv.fahrer||"Fahrer"}
+                  {aktiv.kennzeichen||"Fahrzeug"}
                 </div>
               </div>
             </div>
