@@ -66,7 +66,15 @@ export const THEME_GOOGLE = {
   btnRadius:20, cardRadius:12, inputRadius:8,
 };
 
-export const THEMES = { classic: THEME_CLASSIC, google: THEME_GOOGLE };
+export const THEME_HYBRID = {
+  ...THEME_CLASSIC,
+  id:"hybrid", label:"Carbon", font:"'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
+  useGradients: true,
+  headerGradient: "linear-gradient(90deg, #A44747, #E8A838, #547E64)",
+  btnRadius:8, cardRadius:8, inputRadius:8,
+};
+
+export const THEMES = { classic: THEME_CLASSIC, google: THEME_GOOGLE, hybrid: THEME_HYBRID };
 
 // ═══ STATIC COLOR PALETTES ═══════════════════════════════════════════════════
 
