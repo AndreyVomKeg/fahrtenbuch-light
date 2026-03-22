@@ -5396,6 +5396,7 @@ WICHTIG — WANN UI-TOOLS NUTZEN:
 @keyframes modalIn   { from { opacity:0; transform:translateY(16px) scale(0.97); } to { opacity:1; transform:translateY(0) scale(1); } }
 @keyframes overlayIn { from { opacity:0; } to { opacity:1; } }
 @keyframes tabFade   { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+@keyframes chatSlideIn { from { transform:translateX(100%); } to { transform:translateX(0); } }
 @keyframes esFloat   { 0%{transform:perspective(400px) rotateY(0deg)} 25%{transform:perspective(400px) rotateY(90deg)} 50%{transform:perspective(400px) rotateY(0deg)} 100%{transform:perspective(400px) rotateY(0deg)} }
 @keyframes esShadow  { 0%{transform:scaleX(1);opacity:0.15} 25%{transform:scaleX(0.3);opacity:0.05} 50%,100%{transform:scaleX(1);opacity:0.15} }
 
@@ -5505,7 +5506,7 @@ WICHTIG — WANN UI-TOOLS NUTZEN:
   .fb-ico-btn { transition: transform 0.12s ease; }
   .fb-ico-btn:hover { transform: scale(1.2); }
 `}</style>
-    <div style={{minHeight:"100vh",background:C.bg,color:C.text,fontFamily:SANS}}>
+    <div style={{minHeight:"100vh",background:C.bg,color:C.text,fontFamily:SANS,marginRight:chatOpen?420:0,transition:"margin-right 0.35s cubic-bezier(0.4,0,0.2,1)"}}>
 
       {/* ══ HEADER ══ */}
       <header style={{background:C.bg,borderBottom:`0.5px solid ${acc}`,minHeight:92,position:"sticky",top:0,zIndex:100,transition:"border-color 0.3s",boxShadow:"0 1px 4px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04)"}}>
@@ -6654,11 +6655,12 @@ WICHTIG — WANN UI-TOOLS NUTZEN:
       {chatOpen && (
         <div style={{
           position:"fixed", top:0, right:0, bottom:0,
-          width:560, background:C.bg,
-          borderLeft:`0.5px solid ${C.chatPrimary}`,
-          boxShadow:"-4px 0 32px rgba(0,0,0,0.12)",
+          width:420, background:C.bg,
+          borderLeft:`1px solid ${C.border}`,
+          boxShadow:"-2px 0 12px rgba(0,0,0,0.06)",
           display:"flex", flexDirection:"column",
           zIndex:1100, fontFamily:SANS,
+          animation:"chatSlideIn 0.35s cubic-bezier(0.4,0,0.2,1)",
         }}>
           {/* Close × — absolutely centered in header height */}
           <button
