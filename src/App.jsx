@@ -468,17 +468,7 @@ const makeFiatDefault = () => ({
     {id:uid(), datum:"2025-10-23", zeitStr:"10:15-11:45", kategorie:"partner", zielId:"", zielName:"tetris Modulbau GmbH, Zeppelinring 16, 15749 Mittenwalde-Schenkendorf", km:"56", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch tetris Modulbau", kmTyp:"geschaeftlich", kmStart:"13634", kmEnd:"13690"},
     {id:uid(), datum:"2025-10-28", zeitStr:"11:00-12:30", kategorie:"partner", zielId:"", zielName:"GF Berlin, Seydelstr. 1, 10117 Berlin", km:"54", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF", kmTyp:"geschaeftlich", kmStart:"13690", kmEnd:"13744"},
     {id:uid(), datum:"2025-10-31", zeitStr:"14:00-15:30", kategorie:"partner", zielId:"", zielName:"Wagner Zeltsysteme, Hauptstr. 63, 15910 Unterspreewald", km:"130", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Wagner Zeltsysteme", kmTyp:"geschaeftlich", kmStart:"13744", kmEnd:"13874"},
-    {id:uid(), datum:"2025-11-04", zeitStr:"10:00-12:30", kategorie:"sonstige", zielId:"", zielName:"Stellantis &You Deutschland GmbH (Fiat), Seesener Str. 60-61, 10709 Berlin", km:"38", dauerMin:"", rueckfahrt:false, notiz:"Fahrzeugabgabe — Werkstatt (letzte Fahrt)", kmTyp:"geschaeftlich", kmStart:"13874", kmEnd:"13912"},
-    {id:uid(), datum:"2025-11-07", zeitStr:"09:15-10:30", kategorie:"partner", zielId:"", zielName:"GF Berlin, Konstanzer Str. 4, 10707 Berlin", km:"74", dauerMin:"", rueckfahrt:true, notiz:"GF Berlin — Unterlagen abgeben", kmTyp:"geschaeftlich", kmStart:"13912", kmEnd:"13986"},
-    {id:uid(), datum:"2025-11-12", zeitStr:"10:00-11:30", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"54", dauerMin:"", rueckfahrt:true, notiz:"Objektkontrolle", kmTyp:"geschaeftlich", kmStart:"13986", kmEnd:"14040"},
-    {id:uid(), datum:"2025-11-18", zeitStr:"08:30-09:45", kategorie:"partner", zielId:"", zielName:"GF Berlin, Seydelstr. 1, 10117 Berlin", km:"52", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen abgeben", kmTyp:"geschaeftlich", kmStart:"14040", kmEnd:"14092"},
-    {id:uid(), datum:"2025-11-25", zeitStr:"09:00-10:15", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"10", dauerMin:"", rueckfahrt:true, notiz:"Postversand", kmTyp:"geschaeftlich", kmStart:"14092", kmEnd:"14102"},
-    {id:uid(), datum:"2025-12-02", zeitStr:"09:30-11:00", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"54", dauerMin:"", rueckfahrt:true, notiz:"Objektkontrolle", kmTyp:"geschaeftlich", kmStart:"14102", kmEnd:"14156"},
-    {id:uid(), datum:"2025-12-05", zeitStr:"10:15-11:45", kategorie:"partner", zielId:"", zielName:"Hecht, von Luxburg Steuerberatungsges. mbH, Lennéstr. 3, 10785 Berlin", km:"52", dauerMin:"", rueckfahrt:true, notiz:"Steuerberatung Jahresabschluss", kmTyp:"geschaeftlich", kmStart:"14156", kmEnd:"14208"},
-    {id:uid(), datum:"2025-12-10", zeitStr:"08:00-09:30", kategorie:"sonstige", zielId:"", zielName:"Oppfine GmbH, Zeppelinring 2, 15711 Mittenwalde", km:"54", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch", kmTyp:"geschaeftlich", kmStart:"14208", kmEnd:"14262"},
-    {id:uid(), datum:"2025-12-15", zeitStr:"11:00-12:30", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"72", dauerMin:"", rueckfahrt:true, notiz:"Schaubühne Berlin", kmTyp:"geschaeftlich", kmStart:"14262", kmEnd:"14334"},
-    {id:uid(), datum:"2025-12-19", zeitStr:"09:00-10:15", kategorie:"sonstige", zielId:"", zielName:"MBS Sparkasse, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"10", dauerMin:"", rueckfahrt:true, notiz:"Bankgeschäfte", kmTyp:"geschaeftlich", kmStart:"14334", kmEnd:"14344"},
-    {id:uid(), datum:"2025-12-23", zeitStr:"10:00-11:30", kategorie:"partner", zielId:"", zielName:"ViniGrandi GmbH, Konstanzer Str. 4, 10707 Berlin", km:"74", dauerMin:"", rueckfahrt:true, notiz:"ViniGrandi — Jahresabschluss", kmTyp:"geschaeftlich", kmStart:"14344", kmEnd:"14418"}
+    {id:uid(), datum:"2025-11-04", zeitStr:"10:00-12:30", kategorie:"sonstige", zielId:"", zielName:"Stellantis &You Deutschland GmbH (Fiat), Seesener Str. 60-61, 10709 Berlin", km:"38", dauerMin:"", rueckfahrt:false, notiz:"Fahrzeugabgabe — Werkstatt (letzte Fahrt)", kmTyp:"geschaeftlich", kmStart:"13874", kmEnd:"13912"}
     ],
 });
 
@@ -4643,17 +4633,24 @@ function FahrtenbuchApp({authUser, onLogout, themeId, setThemeId}) {
         return {...f, partner, standorte, standorteExtra, messen, fahrten};
       });
     } },
-    // v37: Remove "Getränke Hoffmann Berlin" (Westfälische) from standorte + replace in fahrten → GF Berlin
+    // v37: Remove "Getränke Hoffmann Berlin" from standorte + refresh TF-IA 2006 fahrten (168 trips, last=04.11.2025 Stellantis)
     { v:37, run: fzs => fzs.map(f => {
       const dropGH = arr => (arr||[]).filter(s => !(s.name||"").includes("Getränke Hoffmann") || !(s.adresse||"").includes("Westfälische"));
       const standorte = dropGH(f.standorte);
       const standorteExtra = dropGH(f.standorteExtra);
-      const fahrten = (f.fahrten||[]).map(t => {
+      let fahrten = f.fahrten;
+      if(f.kennzeichen==="TF-IA 2006") { const fresh=makeFiatDefault(); fahrten=fresh.fahrten; }
+      else { fahrten = (fahrten||[]).map(t => {
         if((t.zielName||"").includes("Getränke Hoffmann") && (t.zielName||"").includes("Westfälische"))
           return {...t, zielName:"GF Berlin, Konstanzer Str. 4, 10707 Berlin", notiz:"GF Berlin — Unterlagen abgeben", kategorie:"partner"};
         return t;
-      });
+      }); }
       return {...f, standorte, standorteExtra, fahrten};
+    }) },
+    // v38: TF-IA 2006 — refresh fahrten from factory (168 trips, last=04.11.2025 Stellantis one-way, 13912 km)
+    { v:38, run: fzs => fzs.map(f => {
+      if(f.kennzeichen==="TF-IA 2006") { const fresh=makeFiatDefault(); return {...f, fahrten:fresh.fahrten}; }
+      return f;
     }) },
   ];
   const DATA_VERSION = DATA_MIGRATIONS.length ? DATA_MIGRATIONS[DATA_MIGRATIONS.length-1].v : 0;
