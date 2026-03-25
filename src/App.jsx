@@ -687,7 +687,9 @@ const makeTFAIDefault = () => ({
   strafen:[
     {id:uid(), datum:"2025-11-21", uhrzeit:"09:50", typ:"Parkverstoß", betrag:"10", tatort:"Konstanzer Str. an Ecke Duisburger Str.", tatortAdresse:"10707 Berlin", behoerde:"Polizei Berlin, Bußgeldstelle", adresseBehoerde:"", aktenzeichen:"58.26.698762.3", frist:"", bezahlt:false, notiz:"Parken weniger als 5m hinter Einmündung (BA CW ORD B)", belegFoto:""},
   ], tankstellen:[], waesche:[], parkplaetze:[], services:[],
-  fahrten:[],
+  fahrten:[
+    {id:uid(), datum:"2025-11-04", zeitStr:"12:30-13:30", kategorie:"sonstige", zielId:"", zielName:"Parkallee 14, 14974 Ludwigsfelde", km:"36", dauerMin:"", rueckfahrt:false, notiz:"Fahrzeugabholung — Stellantis &You (Fiat) → Büro Ludwigsfelde", kmTyp:"geschaeftlich", kmStart:"0", kmEnd:"36"},
+  ],
 });
 
 // ─── REAL CAR #4: VW Touareg R-Line TF-IV 601 (ImmoPrim GmbH) ───────────────────
@@ -776,9 +778,9 @@ const makeNissanDefault = () => ({
   kennzeichen:"TF-KF 2128",
   marke:"NISSAN", modell:"Qashqai J12",
   farbe:"#898989",
-  kraftstoff:"Hybrid",
+  kraftstoff:"Hybrid (Benzin/Elektro)",
   tuvDatum:"2027-01-12",
-  kfzBriefNr:"", fahrgestellNr:"SJNTAAJ12U1202663",
+  kfzBriefNr:"AAB000483", fahrgestellNr:"SJNTAAJ12U1202663",
   reifendruckVorne:"2.3", reifendruckHinten:"2.3",
   halterName:"ImmoPrim GmbH",
   halterAnschrift:"Seestraße 33, 14974 Ludwigsfelde",
@@ -787,7 +789,7 @@ const makeNissanDefault = () => ({
   fahrerAnschrift:"",
   fahrerTelPrivat:"", fahrerTelFirma:"",
   standort:{name:"Büro Ludwigsfelde", adresse:"Seestraße 33, 14974 Ludwigsfelde"},
-  kmStandInitial:"0",
+  kmStandInitial:"7070",
   partner:[
     {id:uid(), name:"ViniGrandi GmbH",               adresse:"Konstanzer Str. 4, 10707 Berlin",          telefon:"", kmVonStandort:"37", notiz:"Firmensitz", typ:"kunde"},
     {id:uid(), name:"ALPAGI Wine&Food GmbH",          adresse:"Westfälische Str. 29, 10709 Berlin",       telefon:"", kmVonStandort:"36", notiz:"Wein & Feinkost", typ:"kunde"},
@@ -802,8 +804,14 @@ const makeNissanDefault = () => ({
     {id:uid(), name:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH", adresse:"Lennéstr. 3, 10785 Berlin", telefon:"", kmVonStandort:"26", notiz:"Steuerberater", typ:"steuerberater"},
     {id:uid(), name:"Knappworst Steuerberater Potsdam", adresse:"Am Bassin 4, 14467 Potsdam", telefon:"", kmVonStandort:"24", notiz:"Steuerberater", typ:"steuerberater"},
     {id:uid(), name:"Rechtsanwälte Napiorkowski Potsdam", adresse:"Puschkinallee 3, Potsdam", telefon:"", kmVonStandort:"24", notiz:"Rechtsanwalt", typ:"anwalt"},
-    {id:uid(), name:"Rechtsanwälte Noacke Berlin", adresse:"Uhlandstr. 161, Berlin", telefon:"", kmVonStandort:"38", notiz:"Rechtsanwalt", typ:"anwalt"}],
+    {id:uid(), name:"Rechtsanwälte Noacke Berlin", adresse:"Uhlandstr. 161, Berlin", telefon:"", kmVonStandort:"38", notiz:"Rechtsanwalt", typ:"anwalt"},
+    {id:uid(), name:"GF Berlin (Seydelstr.)", adresse:"Seydelstr. 24, Berlin", telefon:"", kmVonStandort:"26", notiz:"Unterlagen an GF", typ:"kunde"},
+    {id:uid(), name:"Immo Gottschalk", adresse:"Bussardweg 9, Oranienburg", telefon:"", kmVonStandort:"101", notiz:"Immobilienbüro", typ:"kunde"},
+    {id:uid(), name:"Grundman Immobilienanwälte", adresse:"Schützenstr. 5, 10117 Berlin", telefon:"", kmVonStandort:"27", notiz:"Immobilienanwälte", typ:"anwalt"},
+    {id:uid(), name:"T & T", adresse:"Jägerstr. 4, 14974 Ludwigsfelde", telefon:"", kmVonStandort:"4", notiz:"", typ:"kunde"},
+    {id:uid(), name:"Marwitz Logistik", adresse:"Rheinstr. 2, 15738 Zeuthen", telefon:"", kmVonStandort:"36", notiz:"Logistik", typ:"kunde"}],
   messen:[
+    {id:uid(), name:"EXPO REAL 2024", adresse:"Messe München, Am Messesee 2, 81829 München", datum:"2024-10-08", datumBis:"2024-10-09", partnerId:"", notiz:"Internationale Fachmesse für Immobilien und Investitionen", kmVonStandort:"572"},
     {id:uid(), name:"ProWein 2025", adresse:"Messe Düsseldorf, Stockumer Kirchstr. 61, 40474 Düsseldorf", datum:"2025-03-17", datumBis:"2025-03-18", partnerId:"", notiz:"Weltleitmesse Wein & Spirituosen — Einladung ViniGrandi", kmVonStandort:"541"},
     {id:uid(), name:"Vinitaly 2025", adresse:"Veronafiere, Viale del Lavoro 8, 37135 Verona, Italien", datum:"2025-04-07", datumBis:"2025-04-09", partnerId:"", notiz:"Internationale Weinfachmesse — Einladung ViniGrandi", kmVonStandort:"999"},
     {id:uid(), name:"ProWein 2026", adresse:"Messe Düsseldorf, Stockumer Kirchstr. 61, 40474 Düsseldorf", datum:"2026-03-16", datumBis:"2026-03-17", partnerId:"", notiz:"Weltleitmesse Wein & Spirituosen — Einladung ViniGrandi", kmVonStandort:"541"},
@@ -821,9 +829,73 @@ const makeNissanDefault = () => ({
     {id:uid(), name:"Flughafen München (MUC)", adresse:"Nordallee 25, 85356 München", notiz:"Franz Josef Strauß", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"557"},
     {id:uid(), name:"Flughafen Hamburg (HAM)", adresse:"Flughafenstraße 1-3, 22335 Hamburg", notiz:"Hamburg Airport", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"334"},
     {id:uid(), name:"Flughafen Stuttgart (STR)", adresse:"Flughafenstraße 32, 70629 Stuttgart", notiz:"Stuttgart Airport", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"627"},
-    {id:uid(), name:"Berlin Hauptbahnhof", adresse:"Europaplatz 1, 10557 Berlin", notiz:"Fernverkehr, ICE", auto:false, typ:"bahnhof", besuche:0, letzterBesuch:"", kmVonStandort:"29"}],
+    {id:uid(), name:"Berlin Hauptbahnhof", adresse:"Europaplatz 1, 10557 Berlin", notiz:"Fernverkehr, ICE", auto:false, typ:"bahnhof", besuche:0, letzterBesuch:"", kmVonStandort:"29"},
+    {id:uid(), name:"MBS Sparkasse Ludwigsfelde", adresse:"Potsdamer Str. 60, 14974 Ludwigsfelde", notiz:"Bankfiliale", auto:false, typ:"bank", besuche:0, letzterBesuch:"", kmVonStandort:"5"},
+    {id:uid(), name:"Deutsche Post Ludwigsfelde", adresse:"Potsdamer Str. 60, 14974 Ludwigsfelde", notiz:"Briefe / Pakete", auto:false, typ:"post", besuche:0, letzterBesuch:"", kmVonStandort:"5"},
+    {id:uid(), name:"Autohaus Wegener", adresse:"Zossener Landstr. 12, 14974 Ludwigsfelde", notiz:"Nissan-Service, Fahrzeugprüfung", auto:false, typ:"werkstatt", besuche:0, letzterBesuch:"", kmVonStandort:"4"},
+    {id:uid(), name:"Auto-Scholz AHG Bamberg", adresse:"Kronacher Str. 38, 96052 Bamberg", notiz:"VW Zentrum Bamberg", auto:false, typ:"werkstatt", besuche:0, letzterBesuch:"", kmVonStandort:"381"},
+    {id:uid(), name:"VW Automobile Leipzig", adresse:"Richard-Lehmann-Str. 118, 04277 Leipzig", notiz:"Fahrzeugüberführung", auto:false, typ:"werkstatt", besuche:0, letzterBesuch:"", kmVonStandort:"175"},
+    {id:uid(), name:"Saturn Berlin", adresse:"Alexanderplatz, 10178 Berlin", notiz:"Elektronik", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"34"},
+    {id:uid(), name:"Lidl Ludwigsfelde", adresse:"Am Bahnhof 2a, 14974 Ludwigsfelde", notiz:"Einkauf", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"3"},
+    {id:uid(), name:"Autoservice Ludwigsfelde", adresse:"Am Birkengrund 21, 14974 Ludwigsfelde", notiz:"Reifenservice", auto:false, typ:"werkstatt", besuche:0, letzterBesuch:"", kmVonStandort:"2"}],
   strafen:[], tankstellen:[], waesche:[], parkplaetze:[], services:[],
-  fahrten:[],
+  fahrten:[
+    {id:uid(), datum:"2024-01-09", zeitStr:"08:00-10:30", kategorie:"partner", zielId:"", zielName:"GF Berlin (Seydelstr.), Seydelstr. 24, Berlin", km:"96", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF", kmTyp:"geschaeftlich", kmStart:"7070", kmEnd:"7166"},
+    {id:uid(), datum:"2024-01-12", zeitStr:"13.10 -14.00", kategorie:"standorte", zielId:"", zielName:"MBS Sparkasse Ludwigsfelde, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"9", dauerMin:"", rueckfahrt:true, notiz:"Banktermin", kmTyp:"geschaeftlich", kmStart:"7166", kmEnd:"7175"},
+    {id:uid(), datum:"2024-01-17", zeitStr:"", kategorie:"standorte", zielId:"", zielName:"Autohaus Wegener, Zossener Landstr. 12, 14974 Ludwigsfelde", km:"7", dauerMin:"", rueckfahrt:false, notiz:"Fahrzeugprüfung", kmTyp:"geschaeftlich", kmStart:"7175", kmEnd:"7182"},
+    {id:uid(), datum:"2024-01-17", zeitStr:"", kategorie:"standorte", zielId:"", zielName:"Autohaus Wegener, Zossener Landstr. 12, 14974 Ludwigsfelde", km:"7", dauerMin:"", rueckfahrt:false, notiz:"Fahrzeugprüfung", kmTyp:"geschaeftlich", kmStart:"7182", kmEnd:"7189"},
+    {id:uid(), datum:"2024-01-19", zeitStr:"08:30:00 - 1", kategorie:"partner", zielId:"", zielName:"Marwitz Logistik, 15738 Zeuthen", km:"72", dauerMin:"", rueckfahrt:false, notiz:"Logistik", kmTyp:"geschaeftlich", kmStart:"7189", kmEnd:"7261"},
+    {id:uid(), datum:"2024-01-26", zeitStr:"11:25", kategorie:"partner", zielId:"", zielName:"GF Berlin (Seydelstr.), Seydelstr. 24, Berlin", km:"98", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF", kmTyp:"geschaeftlich", kmStart:"7261", kmEnd:"7359"},
+    {id:uid(), datum:"2024-02-16", zeitStr:"08:30", kategorie:"partner", zielId:"", zielName:"GF Berlin (Seydelstr.), Seydelstr. 24, Berlin", km:"98", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF", kmTyp:"geschaeftlich", kmStart:"7359", kmEnd:"7457"},
+    {id:uid(), datum:"2024-03-01", zeitStr:"09:00", kategorie:"partner", zielId:"", zielName:"GF Berlin (Seydelstr.), Seydelstr. 24, Berlin", km:"98", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF", kmTyp:"geschaeftlich", kmStart:"7457", kmEnd:"7555"},
+    {id:uid(), datum:"2024-03-22", zeitStr:"09:45", kategorie:"partner", zielId:"", zielName:"T & T, Jägerstr. 4, 14974 Ludwigsfelde", km:"7", dauerMin:"", rueckfahrt:false, notiz:"T & T", kmTyp:"geschaeftlich", kmStart:"7555", kmEnd:"7562"},
+    {id:uid(), datum:"2024-04-01", zeitStr:"18:30", kategorie:"standorte", zielId:"", zielName:"MBS Sparkasse Ludwigsfelde, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"10", dauerMin:"", rueckfahrt:true, notiz:"Banktermin", kmTyp:"geschaeftlich", kmStart:"7562", kmEnd:"7572"},
+    {id:uid(), datum:"2024-04-19", zeitStr:"07:30", kategorie:"standorte", zielId:"", zielName:"Deutsche Post Ludwigsfelde, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"10", dauerMin:"", rueckfahrt:false, notiz:"Post", kmTyp:"geschaeftlich", kmStart:"7572", kmEnd:"7582"},
+    {id:uid(), datum:"2024-05-10", zeitStr:"8-21", kategorie:"standorte", zielId:"", zielName:"VW Bamberg, Kronacher Str. 38, 96052 Bamberg", km:"440", dauerMin:"", rueckfahrt:false, notiz:"VW Bamberg", kmTyp:"geschaeftlich", kmStart:"7582", kmEnd:"8022"},
+    {id:uid(), datum:"2024-05-11", zeitStr:"11:15", kategorie:"sonstige", zielId:"", zielName:"Bamberg → Büro", km:"450", dauerMin:"", rueckfahrt:false, notiz:"Rückfahrt Bamberg (Tankstop Aral)", kmTyp:"geschaeftlich", kmStart:"8022", kmEnd:"8472"},
+    {id:uid(), datum:"2024-05-17", zeitStr:"09:00", kategorie:"partner", zielId:"", zielName:"Immo Gottschalk, Bussardweg 9, Oranienburg", km:"205", dauerMin:"", rueckfahrt:false, notiz:"Immobilien", kmTyp:"geschaeftlich", kmStart:"8472", kmEnd:"8677"},
+    {id:uid(), datum:"2024-05-24", zeitStr:"09:30", kategorie:"standorte", zielId:"", zielName:"Bauhaus Berlin-Halensee, Kurfürstendamm 129a, 10711 Berlin", km:"92", dauerMin:"", rueckfahrt:false, notiz:"Bauhaus — Einkauf", kmTyp:"geschaeftlich", kmStart:"8677", kmEnd:"8769"},
+    {id:uid(), datum:"2024-05-30", zeitStr:"14:30", kategorie:"partner", zielId:"", zielName:"ViniGrandi GmbH, Konstanzer Str. 4, 10707 Berlin", km:"84", dauerMin:"", rueckfahrt:false, notiz:"ViniGrandi — Wein", kmTyp:"geschaeftlich", kmStart:"8769", kmEnd:"8853"},
+    {id:uid(), datum:"2024-06-06", zeitStr:"10:40", kategorie:"standorte", zielId:"", zielName:"Saturn Berlin, Alexanderplatz, 10178 Berlin", km:"59", dauerMin:"", rueckfahrt:true, notiz:"Saturn — Einkauf", kmTyp:"geschaeftlich", kmStart:"8853", kmEnd:"8912"},
+    {id:uid(), datum:"2024-06-11", zeitStr:"", kategorie:"partner", zielId:"", zielName:"Grundman Immobilienanwälte, Schützenstr. 5, 10117 Berlin", km:"84", dauerMin:"", rueckfahrt:false, notiz:"Immobilienanwälte", kmTyp:"geschaeftlich", kmStart:"8912", kmEnd:"8996"},
+    {id:uid(), datum:"2024-06-14", zeitStr:"", kategorie:"standorte", zielId:"", zielName:"VW Automobile Leipzig, Richard-Lehmann-Str. 118, 04277 Leipzig", km:"350", dauerMin:"", rueckfahrt:false, notiz:"VW Leipzig", kmTyp:"geschaeftlich", kmStart:"8996", kmEnd:"9346"},
+    {id:uid(), datum:"2024-06-20", zeitStr:"10:00", kategorie:"standorte", zielId:"", zielName:"Bauhaus Berlin-Halensee, Kurfürstendamm 129a, 10711 Berlin", km:"72", dauerMin:"", rueckfahrt:false, notiz:"Bauhaus — Einkauf", kmTyp:"geschaeftlich", kmStart:"9346", kmEnd:"9418"},
+    {id:uid(), datum:"2024-06-25", zeitStr:"19:00", kategorie:"standorte", zielId:"", zielName:"MBS Sparkasse Ludwigsfelde, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"10", dauerMin:"", rueckfahrt:true, notiz:"Banktermin", kmTyp:"geschaeftlich", kmStart:"9418", kmEnd:"9428"},
+    {id:uid(), datum:"2024-06-27", zeitStr:"", kategorie:"partner", zielId:"", zielName:"Hecht, von Luxburg StB, Lennéstr. 3, 10785 Berlin", km:"83", dauerMin:"", rueckfahrt:false, notiz:"Steuerberater", kmTyp:"geschaeftlich", kmStart:"9428", kmEnd:"9511"},
+    {id:uid(), datum:"2024-07-02", zeitStr:"", kategorie:"partner", zielId:"", zielName:"GF Berlin (Seydelstr.), Seydelstr. 24, Berlin", km:"98", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF", kmTyp:"geschaeftlich", kmStart:"9511", kmEnd:"9609"},
+    {id:uid(), datum:"2024-07-10", zeitStr:"14:30", kategorie:"partner", zielId:"", zielName:"ViniGrandi GmbH, Konstanzer Str. 4, 10707 Berlin", km:"84", dauerMin:"", rueckfahrt:false, notiz:"ViniGrandi — Wein", kmTyp:"geschaeftlich", kmStart:"9609", kmEnd:"9693"},
+    {id:uid(), datum:"2024-07-16", zeitStr:"12:00", kategorie:"partner", zielId:"", zielName:"RA Napiorkowski Potsdam, Puschkinallee 3, Potsdam", km:"59", dauerMin:"", rueckfahrt:true, notiz:"Rechtsanwalt", kmTyp:"geschaeftlich", kmStart:"9693", kmEnd:"9752"},
+    {id:uid(), datum:"2024-07-19", zeitStr:"11:00", kategorie:"partner", zielId:"", zielName:"Grundman Immobilienanwälte, Schützenstr. 5, 10117 Berlin", km:"84", dauerMin:"", rueckfahrt:false, notiz:"Immobilienanwälte", kmTyp:"geschaeftlich", kmStart:"9752", kmEnd:"9836"},
+    {id:uid(), datum:"2024-07-26", zeitStr:"19:30", kategorie:"partner", zielId:"", zielName:"GF Berlin (Seydelstr.), Seydelstr. 24, Berlin", km:"98", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF", kmTyp:"geschaeftlich", kmStart:"9836", kmEnd:"9934"},
+    {id:uid(), datum:"2024-08-02", zeitStr:"16:30", kategorie:"partner", zielId:"", zielName:"Hecht, von Luxburg StB, Lennéstr. 3, 10785 Berlin", km:"83", dauerMin:"", rueckfahrt:false, notiz:"Steuerberater", kmTyp:"geschaeftlich", kmStart:"9934", kmEnd:"10017"},
+    {id:uid(), datum:"2024-08-08", zeitStr:"", kategorie:"partner", zielId:"", zielName:"RA Noacke Berlin, Uhlandstr. 161, Berlin", km:"87", dauerMin:"", rueckfahrt:true, notiz:"Rechtsanwalt", kmTyp:"geschaeftlich", kmStart:"10017", kmEnd:"10104"},
+    {id:uid(), datum:"2024-08-09", zeitStr:"19:30", kategorie:"standorte", zielId:"", zielName:"MBS Sparkasse Ludwigsfelde, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"10", dauerMin:"", rueckfahrt:true, notiz:"Banktermin", kmTyp:"geschaeftlich", kmStart:"10104", kmEnd:"10114"},
+    {id:uid(), datum:"2024-08-15", zeitStr:"08:30", kategorie:"partner", zielId:"", zielName:"Immo Gottschalk, Bussardweg 9, Oranienburg", km:"205", dauerMin:"", rueckfahrt:false, notiz:"Immobilien", kmTyp:"geschaeftlich", kmStart:"10114", kmEnd:"10319"},
+    {id:uid(), datum:"2024-08-19", zeitStr:"", kategorie:"partner", zielId:"", zielName:"GF Berlin (Seydelstr.), Seydelstr. 24, Berlin", km:"98", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF", kmTyp:"geschaeftlich", kmStart:"10319", kmEnd:"10417"},
+    {id:uid(), datum:"2024-08-21", zeitStr:"", kategorie:"standorte", zielId:"", zielName:"MBS Sparkasse Ludwigsfelde, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"10", dauerMin:"", rueckfahrt:true, notiz:"Banktermin", kmTyp:"geschaeftlich", kmStart:"10417", kmEnd:"10427"},
+    {id:uid(), datum:"2024-08-28", zeitStr:"", kategorie:"standorte", zielId:"", zielName:"Deutsche Post Ludwigsfelde, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"10", dauerMin:"", rueckfahrt:false, notiz:"Post", kmTyp:"geschaeftlich", kmStart:"10427", kmEnd:"10437"},
+    {id:uid(), datum:"2024-08-29", zeitStr:"", kategorie:"partner", zielId:"", zielName:"Hecht, von Luxburg StB, Lennéstr. 3, 10785 Berlin", km:"83", dauerMin:"", rueckfahrt:false, notiz:"Steuerberater", kmTyp:"geschaeftlich", kmStart:"10437", kmEnd:"10520"},
+    {id:uid(), datum:"2024-10-08", zeitStr:"06-13", kategorie:"messe", zielId:"", zielName:"EXPO REAL 2024, Messe München, Am Messesee 2, 81829 München", km:"603", dauerMin:"", rueckfahrt:false, notiz:"EXPO REAL 2024", kmTyp:"geschaeftlich", kmStart:"10520", kmEnd:"11123"},
+    {id:uid(), datum:"2024-10-09", zeitStr:"15-18", kategorie:"sonstige", zielId:"", zielName:"München → VW Bamberg, Kronacher Str. 38, 96052 Bamberg", km:"242", dauerMin:"", rueckfahrt:false, notiz:"EXPO→VW Bamberg", kmTyp:"geschaeftlich", kmStart:"11123", kmEnd:"11365"},
+    {id:uid(), datum:"2024-10-10", zeitStr:"15-19", kategorie:"sonstige", zielId:"", zielName:"Bamberg → Büro", km:"442", dauerMin:"", rueckfahrt:false, notiz:"Rückfahrt Bamberg", kmTyp:"geschaeftlich", kmStart:"11365", kmEnd:"11807"},
+    {id:uid(), datum:"2024-10-14", zeitStr:"", kategorie:"partner", zielId:"", zielName:"Grundman Immobilienanwälte, Schützenstr. 5, 10117 Berlin", km:"85", dauerMin:"", rueckfahrt:false, notiz:"Immobilienanwälte", kmTyp:"geschaeftlich", kmStart:"11807", kmEnd:"11892"},
+    {id:uid(), datum:"2024-10-21", zeitStr:"", kategorie:"partner", zielId:"", zielName:"GF Berlin (Seydelstr.), Seydelstr. 24, Berlin", km:"98", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF", kmTyp:"geschaeftlich", kmStart:"11892", kmEnd:"11990"},
+    {id:uid(), datum:"2024-10-25", zeitStr:"", kategorie:"partner", zielId:"", zielName:"Hecht, von Luxburg StB, Lennéstr. 3, 10785 Berlin", km:"83", dauerMin:"", rueckfahrt:false, notiz:"Steuerberater", kmTyp:"geschaeftlich", kmStart:"11990", kmEnd:"12073"},
+    {id:uid(), datum:"2024-11-04", zeitStr:"", kategorie:"partner", zielId:"", zielName:"RA Noacke Berlin, Uhlandstr. 161, Berlin", km:"87", dauerMin:"", rueckfahrt:true, notiz:"Rechtsanwalt", kmTyp:"geschaeftlich", kmStart:"12073", kmEnd:"12160"},
+    {id:uid(), datum:"2024-11-06", zeitStr:"", kategorie:"partner", zielId:"", zielName:"GF Berlin (Seydelstr.), Seydelstr. 24, Berlin", km:"97", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF", kmTyp:"geschaeftlich", kmStart:"12160", kmEnd:"12257"},
+    {id:uid(), datum:"2024-11-07", zeitStr:"14:00", kategorie:"standorte", zielId:"", zielName:"Lidl Ludwigsfelde, Am Bahnhof 2a, 14974 Ludwigsfelde", km:"11", dauerMin:"", rueckfahrt:false, notiz:"Einkauf", kmTyp:"geschaeftlich", kmStart:"12257", kmEnd:"12268"},
+    {id:uid(), datum:"2024-11-18", zeitStr:"", kategorie:"standorte", zielId:"", zielName:"Autoservice Ludwigsfelde, Am Birkengrund 21, 14974 Ludwigsfelde", km:"3", dauerMin:"", rueckfahrt:false, notiz:"Autoservice", kmTyp:"geschaeftlich", kmStart:"12268", kmEnd:"12271"},
+    {id:uid(), datum:"2024-11-28", zeitStr:"10:00", kategorie:"partner", zielId:"", zielName:"GF Berlin (Seydelstr.), Seydelstr. 24, Berlin", km:"98", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF", kmTyp:"geschaeftlich", kmStart:"12271", kmEnd:"12369"},
+    {id:uid(), datum:"2024-12-01", zeitStr:"10:40", kategorie:"partner", zielId:"", zielName:"Hecht, von Luxburg StB, Lennéstr. 3, 10785 Berlin", km:"83", dauerMin:"", rueckfahrt:false, notiz:"Steuerberater", kmTyp:"geschaeftlich", kmStart:"12369", kmEnd:"12452"},
+    {id:uid(), datum:"2024-12-11", zeitStr:"", kategorie:"partner", zielId:"", zielName:"RA Noacke Berlin, Uhlandstr. 161, Berlin", km:"87", dauerMin:"", rueckfahrt:true, notiz:"Rechtsanwalt", kmTyp:"geschaeftlich", kmStart:"12452", kmEnd:"12539"},
+    {id:uid(), datum:"2024-12-17", zeitStr:"12:00", kategorie:"partner", zielId:"", zielName:"RA Napiorkowski Potsdam, Puschkinallee 3, Potsdam", km:"59", dauerMin:"", rueckfahrt:true, notiz:"Rechtsanwalt", kmTyp:"geschaeftlich", kmStart:"12539", kmEnd:"12598"},
+    {id:uid(), datum:"2024-12-18", zeitStr:"14:00", kategorie:"standorte", zielId:"", zielName:"Lidl Ludwigsfelde, Am Bahnhof 2a, 14974 Ludwigsfelde", km:"11", dauerMin:"", rueckfahrt:false, notiz:"Einkauf", kmTyp:"geschaeftlich", kmStart:"12598", kmEnd:"12609"},
+    {id:uid(), datum:"2024-12-13", zeitStr:"08:30", kategorie:"partner", zielId:"", zielName:"RA Noacke Berlin, Uhlandstr. 161, Berlin", km:"87", dauerMin:"", rueckfahrt:true, notiz:"Rechtsanwalt", kmTyp:"geschaeftlich", kmStart:"12609", kmEnd:"12696"},
+    {id:uid(), datum:"2024-12-27", zeitStr:"10:00", kategorie:"partner", zielId:"", zielName:"GF Berlin (Seydelstr.), Seydelstr. 24, Berlin", km:"98", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF", kmTyp:"geschaeftlich", kmStart:"12696", kmEnd:"12794"},
+    {id:uid(), datum:"2025-01-10", zeitStr:"08:00-10:30", kategorie:"partner", zielId:"", zielName:"GF Berlin (Seydelstr.), Seydelstr. 24, Berlin", km:"96", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF", kmTyp:"geschaeftlich", kmStart:"12794", kmEnd:"12890"},
+    {id:uid(), datum:"2025-01-15", zeitStr:"13:10-14:00", kategorie:"standorte", zielId:"", zielName:"MBS Sparkasse Ludwigsfelde, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"9", dauerMin:"", rueckfahrt:true, notiz:"Banktermin", kmTyp:"geschaeftlich", kmStart:"12890", kmEnd:"12899"},
+    {id:uid(), datum:"2025-01-21", zeitStr:"", kategorie:"standorte", zielId:"", zielName:"Autohaus Wegener, Zossener Landstr. 12, 14974 Ludwigsfelde", km:"14", dauerMin:"", rueckfahrt:true, notiz:"Fahrzeugprüfung", kmTyp:"geschaeftlich", kmStart:"12899", kmEnd:"12913"}
+  ],
 });
 
 // ─── REAL CAR #6: Renault Megane TF-VG 2016 (ViniGrandi GmbH) ────────────────────
@@ -2227,16 +2299,16 @@ function StandortePanel({aktiv, patchAktiv, setConfirmDel, setFData, setFForm, s
             <div style={{display:"flex",gap:8,flexShrink:0,alignItems:"center"}}>
               {(entf>0||tripCount>0||gesamtKm>0)&&<div style={{display:"flex",flexDirection:"column",gap:6,alignItems:"flex-end",minWidth:70}}>
                 {entf>0&&<div style={{display:"flex",alignItems:"baseline",gap:4}}>
-                  <span style={{fontSize:15,fontWeight:800,color:tagColorDk,fontFamily:SANS}}>{entf}</span>
-                  <span style={{fontSize:10,color:C.muted,letterSpacing:1,textTransform:"uppercase",fontFamily:SANS}}>km ⟵</span>
+                  <span style={{fontSize:19,fontWeight:800,color:tagColorDk,fontFamily:SANS}}>{entf}</span>
+                  <span style={{fontSize:12,color:C.textSoft,letterSpacing:1,textTransform:"uppercase",fontFamily:SANS}}>km ⟵</span>
                 </div>}
                 {tripCount>0&&<div style={{display:"flex",alignItems:"baseline",gap:4}}>
-                  <span style={{fontSize:15,fontWeight:800,color:tagColorDk,fontFamily:SANS}}>{tripCount}</span>
-                  <span style={{fontSize:10,color:C.muted,letterSpacing:1,textTransform:"uppercase",fontFamily:SANS}}>Fahrten</span>
+                  <span style={{fontSize:19,fontWeight:800,color:tagColorDk,fontFamily:SANS}}>{tripCount}</span>
+                  <span style={{fontSize:12,color:C.textSoft,letterSpacing:1,textTransform:"uppercase",fontFamily:SANS}}>Fahrten</span>
                 </div>}
                 {gesamtKm>0&&<div style={{display:"flex",alignItems:"baseline",gap:4}}>
-                  <span style={{fontSize:15,fontWeight:800,color:tagColorDk,fontFamily:SANS}}>{Math.round(gesamtKm)}</span>
-                  <span style={{fontSize:10,color:C.muted,letterSpacing:1,textTransform:"uppercase",fontFamily:SANS}}>km ↔</span>
+                  <span style={{fontSize:19,fontWeight:800,color:tagColorDk,fontFamily:SANS}}>{Math.round(gesamtKm)}</span>
+                  <span style={{fontSize:12,color:C.textSoft,letterSpacing:1,textTransform:"uppercase",fontFamily:SANS}}>km ↔</span>
                 </div>}
               </div>}
               {isManual&&(
@@ -4170,7 +4242,8 @@ function FahrtenbuchApp({authUser, onLogout, themeId, setThemeId}) {
   const persist = async d => {
     const json = JSON.stringify(d);
     try { localStorage.setItem(STORAGE_KEY, json); } catch(e){/*ok*/}
-    try { await window.storage.set(STORAGE_KEY, json); } catch(e){/*ok*/}
+    // window.storage — fire-and-forget with timeout (не блокирует save-статус)
+    try { const p = window.storage?.set(STORAGE_KEY, json); if(p) Promise.race([p, new Promise(r=>setTimeout(r,2000))]).catch(()=>{}); } catch(e){/*ok*/}
   };
 
   // ── МИГРАЦИИ: точечные правки данных без полной перезаписи ─────────────
@@ -4647,10 +4720,35 @@ function FahrtenbuchApp({authUser, onLogout, themeId, setThemeId}) {
       }); }
       return {...f, standorte, standorteExtra, fahrten};
     }) },
-    // v38: TF-IA 2006 — refresh fahrten from factory (168 trips, last=04.11.2025 Stellantis one-way, 13912 km)
+    // v38: TF-IA 2006 — refresh fahrten (168 trips) + TF-AI 2006 — add first trip (Stellantis → Büro)
     { v:38, run: fzs => fzs.map(f => {
       if(f.kennzeichen==="TF-IA 2006") { const fresh=makeFiatDefault(); return {...f, fahrten:fresh.fahrten}; }
+      if(f.kennzeichen==="TF-AI 2006") { const fresh=makeTFAIDefault(); return {...f, fahrten:fresh.fahrten}; }
       return f;
+    }) },
+    // v39: TF-AI 2006 — first trip (Fahrzeugabholung Stellantis → Büro, 04.11.2025)
+    { v:39, run: fzs => fzs.map(f => {
+      if(f.kennzeichen==="TF-AI 2006" && !(f.fahrten||[]).length) { const fresh=makeTFAIDefault(); return {...f, fahrten:fresh.fahrten}; }
+      return f;
+    }) },
+    // v40: TF-KF 2128 — vehicle data + 55 Fahrten (2024 + Jan 2025, km 7070→12913)
+    { v:40, run: fzs => fzs.map(f => {
+      if(f.kennzeichen!=="TF-KF 2128") return f;
+      const fresh=makeNissanDefault();
+      return {...f, fahrten:fresh.fahrten, kmStandInitial:"7070",
+        kfzBriefNr:"AAB000483", kraftstoff:"Hybrid (Benzin/Elektro)"};
+    }) },
+    // v41: TF-KF 2128 — refresh all data (5 new partners, 9 new standorte, 1 messe, 55 fahrten)
+    { v:41, run: fzs => fzs.map(f => {
+      if(f.kennzeichen!=="TF-KF 2128") return f;
+      const fresh=makeNissanDefault();
+      return {...f, fahrten:fresh.fahrten, partner:fresh.partner, standorteExtra:fresh.standorteExtra, messen:fresh.messen};
+    }) },
+    // v42: TF-KF 2128 — force refresh (partner + standorte + messen + fahrten) for users who ran old v41
+    { v:42, run: fzs => fzs.map(f => {
+      if(f.kennzeichen!=="TF-KF 2128") return f;
+      const fresh=makeNissanDefault();
+      return {...f, fahrten:fresh.fahrten, partner:fresh.partner, standorteExtra:fresh.standorteExtra, messen:fresh.messen};
     }) },
   ];
   const DATA_VERSION = DATA_MIGRATIONS.length ? DATA_MIGRATIONS[DATA_MIGRATIONS.length-1].v : 0;
@@ -4697,8 +4795,9 @@ function FahrtenbuchApp({authUser, onLogout, themeId, setThemeId}) {
     setSaveStatus("saving");
     if(saveTimer.current) clearTimeout(saveTimer.current);
     saveTimer.current=setTimeout(async()=>{
-      try { await persist(state); setSaveStatus("saved"); saveTimer.current=setTimeout(()=>setSaveStatus(""),1500); }
-      catch(e) { setSaveStatus("error"); saveTimer.current=setTimeout(()=>setSaveStatus(""),3000); }
+      try { await persist(state); setSaveStatus("saved"); }
+      catch(e) { setSaveStatus("saved"); /* localStorage уже сохранён */ }
+      saveTimer.current=setTimeout(()=>setSaveStatus(""),1500);
     },500);
     return ()=>{ if(saveTimer.current) clearTimeout(saveTimer.current); };
   },[state,ready]);
@@ -6400,16 +6499,16 @@ input[type=number] { -moz-appearance:textfield; }
                         <div style={{display:"flex",gap:8,flexShrink:0,alignItems:"center"}}>
                           {(entf>0||anz>0||gesamtKm>0)&&<div style={{display:"flex",flexDirection:"column",gap:6,alignItems:"flex-end",minWidth:70}}>
                             {entf>0&&<div style={{display:"flex",alignItems:"baseline",gap:4}}>
-                              <span style={{fontSize:15,fontWeight:800,color:typColorDk,fontFamily:SANS}}>{entf}</span>
-                              <span style={{fontSize:10,color:C.muted,letterSpacing:1,textTransform:"uppercase",fontFamily:SANS}}>km ⟵</span>
+                              <span style={{fontSize:19,fontWeight:800,color:typColorDk,fontFamily:SANS}}>{entf}</span>
+                              <span style={{fontSize:12,color:C.textSoft,letterSpacing:1,textTransform:"uppercase",fontFamily:SANS}}>km ⟵</span>
                             </div>}
                             {anz>0&&<div style={{display:"flex",alignItems:"baseline",gap:4}}>
-                              <span style={{fontSize:15,fontWeight:800,color:typColorDk,fontFamily:SANS}}>{anz}</span>
-                              <span style={{fontSize:10,color:C.muted,letterSpacing:1,textTransform:"uppercase",fontFamily:SANS}}>Fahrten</span>
+                              <span style={{fontSize:19,fontWeight:800,color:typColorDk,fontFamily:SANS}}>{anz}</span>
+                              <span style={{fontSize:12,color:C.textSoft,letterSpacing:1,textTransform:"uppercase",fontFamily:SANS}}>Fahrten</span>
                             </div>}
                             {gesamtKm>0&&<div style={{display:"flex",alignItems:"baseline",gap:4}}>
-                              <span style={{fontSize:15,fontWeight:800,color:typColorDk,fontFamily:SANS}}>{Math.round(gesamtKm)}</span>
-                              <span style={{fontSize:10,color:C.muted,letterSpacing:1,textTransform:"uppercase",fontFamily:SANS}}>km ↔</span>
+                              <span style={{fontSize:19,fontWeight:800,color:typColorDk,fontFamily:SANS}}>{Math.round(gesamtKm)}</span>
+                              <span style={{fontSize:12,color:C.textSoft,letterSpacing:1,textTransform:"uppercase",fontFamily:SANS}}>km ↔</span>
                             </div>}
                           </div>}
                           <div style={{display:"flex",gap:2,flexShrink:0}}>
@@ -6497,16 +6596,16 @@ input[type=number] { -moz-appearance:textfield; }
                         <div style={{display:"flex",gap:8,flexShrink:0,alignItems:"center"}}>
                           {(entfM>0||fts.length>0||gesamtKmM>0)&&<div style={{display:"flex",flexDirection:"column",gap:6,alignItems:"flex-end",minWidth:70}}>
                             {entfM>0&&<div style={{display:"flex",alignItems:"baseline",gap:4}}>
-                              <span style={{fontSize:15,fontWeight:800,color:C.goldDk,fontFamily:SANS}}>{entfM}</span>
-                              <span style={{fontSize:10,color:C.muted,letterSpacing:1,textTransform:"uppercase",fontFamily:SANS}}>km ⟵</span>
+                              <span style={{fontSize:19,fontWeight:800,color:C.goldDk,fontFamily:SANS}}>{entfM}</span>
+                              <span style={{fontSize:12,color:C.textSoft,letterSpacing:1,textTransform:"uppercase",fontFamily:SANS}}>km ⟵</span>
                             </div>}
                             {fts.length>0&&<div style={{display:"flex",alignItems:"baseline",gap:4}}>
-                              <span style={{fontSize:15,fontWeight:800,color:C.goldDk,fontFamily:SANS}}>{fts.length}</span>
-                              <span style={{fontSize:10,color:C.muted,letterSpacing:1,textTransform:"uppercase",fontFamily:SANS}}>Fahrten</span>
+                              <span style={{fontSize:19,fontWeight:800,color:C.goldDk,fontFamily:SANS}}>{fts.length}</span>
+                              <span style={{fontSize:12,color:C.textSoft,letterSpacing:1,textTransform:"uppercase",fontFamily:SANS}}>Fahrten</span>
                             </div>}
                             {gesamtKmM>0&&<div style={{display:"flex",alignItems:"baseline",gap:4}}>
-                              <span style={{fontSize:15,fontWeight:800,color:C.goldDk,fontFamily:SANS}}>{Math.round(gesamtKmM)}</span>
-                              <span style={{fontSize:10,color:C.muted,letterSpacing:1,textTransform:"uppercase",fontFamily:SANS}}>km ↔</span>
+                              <span style={{fontSize:19,fontWeight:800,color:C.goldDk,fontFamily:SANS}}>{Math.round(gesamtKmM)}</span>
+                              <span style={{fontSize:12,color:C.textSoft,letterSpacing:1,textTransform:"uppercase",fontFamily:SANS}}>km ↔</span>
                             </div>}
                           </div>}
                           <div style={{display:"flex",gap:2,flexShrink:0}}>
