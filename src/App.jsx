@@ -253,42 +253,41 @@ const makeFiatDefault = () => ({
   standort:{name:"Büro Ludwigsfelde", adresse:"Parkallee 14, 14974 Ludwigsfelde"},
   kmStandInitial:"4831",
   partner:[
-    {id:uid(), name:"ViniGrandi GmbH", adresse:"Konstanzer Str. 4, 10707 Berlin", telefon:"", kmVonStandort:"38", notiz:"Firmensitz", typ:"kunde"},
+    {id:uid(), name:"ViniGrandi GmbH", adresse:"Konstanzer Str. 4, 10707 Berlin", telefon:"", kmVonStandort:"37", notiz:"Firmensitz", typ:"kunde"},
     {id:uid(), name:"GF Berlin",                    adresse:"Konstanzer Str. 4, 10707 Berlin",        telefon:"", kmVonStandort:"37", notiz:"Unterlagen Abgeben", typ:"kunde"},
-    {id:uid(), name:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH",         adresse:"Lennéstr. 3, 10785 Berlin",     telefon:"", kmVonStandort:"35", notiz:"Dokumente unterschreiben", typ:"steuerberater"},
-    {id:uid(), name:"Jörg Wagner Zeltsysteme",     adresse:"Hauptstr. 63, 15910 Unterspreewald",              telefon:"+49 030 53217381",   kmVonStandort:"30", notiz:"Mieter — Halle II + III, Zeppelinring 2", typ:"mieter"},
-    {id:uid(), name:"Oppfine GmbH",                adresse:"Zeppelinring 2, 15711 Mittenwalde",               telefon:"+49 030 53217381",   kmVonStandort:"30", notiz:"Mieter — Lagerhalle III, Zeppelinring 2", typ:"mieter"},
-    {id:uid(), name:"Schaubühne Berlin",            adresse:"Kurfürstendamm 153, 10709 Berlin",               telefon:"",                   kmVonStandort:"38", notiz:"Mieter — Lager I, Zeppelinring 2", typ:"mieter"},
-    {id:uid(), name:"tetris Modulbau GmbH",         adresse:"Zeppelinring 16, 15749 Mittenwalde-Schenkendorf",telefon:"+49 03375 9214901",  kmVonStandort:"30", notiz:"Mieter — EG + 1.OG, MV2025-136", typ:"mieter"},
-    {id:uid(), name:"Knappworst Steuerberater Potsdam", adresse:"Am Bassin 4, 14467 Potsdam", telefon:"", kmVonStandort:"26", notiz:"Steuerberater", typ:"steuerberater"},
+    {id:uid(), name:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH",         adresse:"Lennéstr. 3, 10785 Berlin",     telefon:"", kmVonStandort:"26", notiz:"Dokumente unterschreiben", typ:"steuerberater"},
+    {id:uid(), name:"Jörg Wagner Zeltsysteme",     adresse:"Hauptstr. 63, 15910 Unterspreewald",              telefon:"+49 030 53217381",   kmVonStandort:"62", notiz:"Mieter — Halle II + III, Zeppelinring 2", typ:"mieter"},
+    {id:uid(), name:"Oppfine GmbH",                adresse:"Zeppelinring 2, 15711 Mittenwalde",               telefon:"+49 030 53217381",   kmVonStandort:"27", notiz:"Mieter — Lagerhalle III, Zeppelinring 2", typ:"mieter"},
+    {id:uid(), name:"Schaubühne Berlin",            adresse:"Kurfürstendamm 153, 10709 Berlin",               telefon:"",                   kmVonStandort:"36", notiz:"Mieter — Lager I, Zeppelinring 2", typ:"mieter"},
+    {id:uid(), name:"tetris Modulbau GmbH",         adresse:"Zeppelinring 16, 15749 Mittenwalde-Schenkendorf",telefon:"+49 03375 9214901",  kmVonStandort:"27", notiz:"Mieter — EG + 1.OG, MV2025-136", typ:"mieter"},
+    {id:uid(), name:"Knappworst Steuerberater Potsdam", adresse:"Am Bassin 4, 14467 Potsdam", telefon:"", kmVonStandort:"24", notiz:"Steuerberater", typ:"steuerberater"},
 
   ,
-    {id:uid(), name:"Rechtsanwälte Napiorkowski Potsdam", adresse:"Puschkinallee 3, Potsdam", telefon:"", kmVonStandort:"30", notiz:"Rechtsanwalt", typ:"anwalt"},
-    {id:uid(), name:"Rechtsanwälte Noacke Berlin", adresse:"Uhlandstr. 161, Berlin", telefon:"", kmVonStandort:"40", notiz:"Rechtsanwalt", typ:"anwalt"},
-    {id:uid(), name:"Rohrer Immobilien Toskana", adresse:"Via Tosco Romagnola, 56025 Pontedera (PI), Italien", telefon:"", kmVonStandort:"1200", notiz:"Immobilienbesichtigungen Toskana — Objektakquise ImmoPrim", typ:"kunde"},
-    {id:uid(), name:"Objektbesichtigung Scharmützelsee", adresse:"Storkow / Bad Saarow, 15859 Brandenburg", telefon:"", kmVonStandort:"40", notiz:"Immobilienbesichtigung Seegrundstücke — Objektakquise ImmoPrim", typ:"kunde"}],
+    {id:uid(), name:"Rechtsanwälte Napiorkowski Potsdam", adresse:"Puschkinallee 3, Potsdam", telefon:"", kmVonStandort:"24", notiz:"Rechtsanwalt", typ:"anwalt"},
+    {id:uid(), name:"Rechtsanwälte Noacke Berlin", adresse:"Uhlandstr. 161, Berlin", telefon:"", kmVonStandort:"38", notiz:"Rechtsanwalt", typ:"anwalt"},
+    {id:uid(), name:"Rohrer Immobilien Toskana", adresse:"Via Tosco Romagnola, 56025 Pontedera (PI), Italien", telefon:"", kmVonStandort:"1258", notiz:"Immobilienbesichtigungen Toskana — Objektakquise ImmoPrim", typ:"kunde"},
+    {id:uid(), name:"Objektbesichtigung Scharmützelsee", adresse:"Storkow / Bad Saarow, 15859 Brandenburg", telefon:"", kmVonStandort:"64", notiz:"Immobilienbesichtigung Seegrundstücke — Objektakquise ImmoPrim", typ:"kunde"}],
   messen:[
     {id:uid(), name:"Tag der Immobilienwirtschaft 2024",  adresse:"Tempodrom, Möckernstr. 10, 10963 Berlin",   datum:"2024-06-11", partnerId:"", notiz:"ZIA — 2500 Branchenvertreter", kmVonStandort:"44"},
   ],
   standorteExtra:[
-    {id:uid(), name:"Stellantis &You Deutschland GmbH (Fiat)",   adresse:"Seesener Str. 60-61, 10709 Berlin",  notiz:"KFZ-Service, Berater: Rene Steinfurth",   auto:false, typ:"werkstatt", besuche:0, letzterBesuch:"", kmVonStandort:"38"},
-    {id:uid(), name:"Deutsche Post Ludwigsfelde", adresse:"Potsdamer Str. 60, 14974 Ludwigsfelde", notiz:"Briefe / Pakete", auto:false, typ:"post", besuche:0, letzterBesuch:"", kmVonStandort:"3"},
+    {id:uid(), name:"Stellantis &You Deutschland GmbH (Fiat)",   adresse:"Seesener Str. 60-61, 10709 Berlin",  notiz:"KFZ-Service, Berater: Rene Steinfurth",   auto:false, typ:"werkstatt", besuche:0, letzterBesuch:"", kmVonStandort:"36"},
+    {id:uid(), name:"Deutsche Post Ludwigsfelde", adresse:"Potsdamer Str. 60, 14974 Ludwigsfelde", notiz:"Briefe / Pakete", auto:false, typ:"post", besuche:0, letzterBesuch:"", kmVonStandort:"5"},
     {id:uid(), name:"MBS Sparkasse Ludwigsfelde", adresse:"Potsdamer Str. 60, 14974 Ludwigsfelde", notiz:"Bankfiliale", auto:false, typ:"bank", besuche:0, letzterBesuch:"", kmVonStandort:"5"},
-    {id:uid(), name:"Getränke Hoffmann Berlin", adresse:"Westfälische Str. 85, 10709 Berlin", notiz:"Getränkemarkt", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"38"},
-    {id:uid(), name:"Getränke Hoffmann Ludwigsfelde", adresse:"Potsdamer Str. 118, 14974 Ludwigsfelde", notiz:"Getränkemarkt", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"3"},
+    {id:uid(), name:"Getränke Hoffmann Ludwigsfelde", adresse:"Potsdamer Str. 118, 14974 Ludwigsfelde", notiz:"Getränkemarkt", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"6"},
     {id:uid(), name:"Hornbach Ludwigsfelde", adresse:"Parkallee 36, 14974 Ludwigsfelde", notiz:"Baumarkt", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"2"},
   ,
-    {id:uid(), name:"Rathaus Ludwigsfelde", adresse:"Rathausstraße 3, 14974 Ludwigsfelde", notiz:"Stadtverwaltung, Bürgeramt, Gewerbeamt", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"2"},
-    {id:uid(), name:"Finanzamt Luckenwalde", adresse:"Dr.-Georg-Schaeffler-Straße 2, 14943 Luckenwalde", notiz:"Steuererklärung, Bescheide", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"18"},
-    {id:uid(), name:"Kfz-Zulassungsstelle Luckenwalde", adresse:"Louis-Pasteur-Str. 5, 14943 Luckenwalde", notiz:"Zulassung, Ummeldung, Abmeldung", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"18"},
-    {id:uid(), name:"Kreisverwaltung Teltow-Fläming", adresse:"Am Nuthefließ 2, 14943 Luckenwalde", notiz:"Landratsamt, Bauamt, Ordnungsamt", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"18"},
-    {id:uid(), name:"IHK Potsdam", adresse:"Breite Straße 2a-c, 14467 Potsdam", notiz:"Industrie- und Handelskammer", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"26"},
-    {id:uid(), name:"Bauhaus Berlin-Halensee", adresse:"Kurfürstendamm 129a, 10711 Berlin", notiz:"Baumarkt", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"38"},
-    {id:uid(), name:"Flughafen Berlin Brandenburg (BER)", adresse:"Willy-Brandt-Platz, 12529 Schönefeld", notiz:"Terminal 1 + 2", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"25"},
-    {id:uid(), name:"Flughafen München (MUC)", adresse:"Nordallee 25, 85356 München", notiz:"Franz Josef Strauß", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"620"},
-    {id:uid(), name:"Flughafen Hamburg (HAM)", adresse:"Flughafenstraße 1-3, 22335 Hamburg", notiz:"Hamburg Airport", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"290"},
-    {id:uid(), name:"Flughafen Stuttgart (STR)", adresse:"Flughafenstraße 32, 70629 Stuttgart", notiz:"Stuttgart Airport", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"590"},
-    {id:uid(), name:"Berlin Hauptbahnhof", adresse:"Europaplatz 1, 10557 Berlin", notiz:"Fernverkehr, ICE", auto:false, typ:"bahnhof", besuche:0, letzterBesuch:"", kmVonStandort:"40"}],
+    {id:uid(), name:"Rathaus Ludwigsfelde", adresse:"Rathausstraße 3, 14974 Ludwigsfelde", notiz:"Stadtverwaltung, Bürgeramt, Gewerbeamt", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"5"},
+    {id:uid(), name:"Finanzamt Luckenwalde", adresse:"Dr.-Georg-Schaeffler-Straße 2, 14943 Luckenwalde", notiz:"Steuererklärung, Bescheide", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"33"},
+    {id:uid(), name:"Kfz-Zulassungsstelle Luckenwalde", adresse:"Louis-Pasteur-Str. 5, 14943 Luckenwalde", notiz:"Zulassung, Ummeldung, Abmeldung", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"37"},
+    {id:uid(), name:"Kreisverwaltung Teltow-Fläming", adresse:"Am Nuthefließ 2, 14943 Luckenwalde", notiz:"Landratsamt, Bauamt, Ordnungsamt", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"41"},
+    {id:uid(), name:"IHK Potsdam", adresse:"Breite Straße 2a-c, 14467 Potsdam", notiz:"Industrie- und Handelskammer", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"24"},
+    {id:uid(), name:"Bauhaus Berlin-Halensee", adresse:"Kurfürstendamm 129a, 10711 Berlin", notiz:"Baumarkt", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"35"},
+    {id:uid(), name:"Flughafen Berlin Brandenburg (BER)", adresse:"Willy-Brandt-Platz, 12529 Schönefeld", notiz:"Terminal 1 + 2", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"29"},
+    {id:uid(), name:"Flughafen München (MUC)", adresse:"Nordallee 25, 85356 München", notiz:"Franz Josef Strauß", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"557"},
+    {id:uid(), name:"Flughafen Hamburg (HAM)", adresse:"Flughafenstraße 1-3, 22335 Hamburg", notiz:"Hamburg Airport", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"334"},
+    {id:uid(), name:"Flughafen Stuttgart (STR)", adresse:"Flughafenstraße 32, 70629 Stuttgart", notiz:"Stuttgart Airport", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"627"},
+    {id:uid(), name:"Berlin Hauptbahnhof", adresse:"Europaplatz 1, 10557 Berlin", notiz:"Fernverkehr, ICE", auto:false, typ:"bahnhof", besuche:0, letzterBesuch:"", kmVonStandort:"29"}],
   strafen:[
     {id:uid(), datum:"2024-01-17", uhrzeit:"10:09", typ:"Parkverstoß", betrag:"25", tatort:"Kurfürstendamm neben 26", tatortAdresse:"10707 Berlin", behoerde:"Polizei Berlin, Bußgeldstelle", adresseBehoerde:"", aktenzeichen:"58.20.267740.0", frist:"", bezahlt:true, notiz:"Parken im absoluten Haltverbot (BA CW ORD B)", belegFoto:""},
     {id:uid(), datum:"2024-11-22", uhrzeit:"15:49", typ:"Parkverstoß", betrag:"40", tatort:"Französische Str. an Ecke Friedrichstr.", tatortAdresse:"10117 Berlin", behoerde:"Polizei Berlin, Bußgeldstelle", adresseBehoerde:"", aktenzeichen:"58.23.590775.3", frist:"", bezahlt:true, notiz:"Parken im absoluten Haltverbot, Behinderung fließender Verkehr (Bezirksamt Mitte Ordnungsamt)", belegFoto:""},
@@ -302,184 +301,184 @@ const makeFiatDefault = () => ({
     {id:uid(), datum:"2025-11-04", typ:"Inspektion", werkstatt:"Stellantis &You Deutschland GmbH (Fiat)", adresse:"Seesener Str. 60-61, 10709 Berlin", kmStand:"13912", betrag:"", rechnungsNr:"", faelligKm:"", faelligDatum:"", zahlungsart:"", notiz:"Fahrzeugabgabe — verbleibt in Werkstatt", belegFoto:""},
   ],
   fahrten:[
-    {id:uid(), datum:"2024-01-02", zeitStr:"08:30-09:45", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"53", dauerMin:"", rueckfahrt:true, notiz:"Schaubühne Berlin — Vertragsgespräch", kmTyp:"geschaeftlich", kmStart:"4831", kmEnd:"4884"},
-    {id:uid(), datum:"2024-01-04", zeitStr:"09:00-10:15", kategorie:"sonstige", zielId:"", zielName:"MBS Sparkasse, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"7", dauerMin:"", rueckfahrt:true, notiz:"MBS Sparkasse — Banktermin", kmTyp:"geschaeftlich", kmStart:"4884", kmEnd:"4891"},
-    {id:uid(), datum:"2024-01-09", zeitStr:"09:30-11:00", kategorie:"sonstige", zielId:"", zielName:"MBS Sparkasse, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"7", dauerMin:"", rueckfahrt:true, notiz:"MBS Sparkasse — Banktermin", kmTyp:"geschaeftlich", kmStart:"4891", kmEnd:"4898"},
-    {id:uid(), datum:"2024-01-12", zeitStr:"10:00-11:30", kategorie:"partner", zielId:"", zielName:"Oppfine GmbH, Zeppelinring 2, 15711 Mittenwalde", km:"43", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Oppfine GmbH", kmTyp:"geschaeftlich", kmStart:"4898", kmEnd:"4941"},
-    {id:uid(), datum:"2024-01-17", zeitStr:"08:00-09:30", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"43", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Dach / Fassade", kmTyp:"geschaeftlich", kmStart:"4941", kmEnd:"4984"},
-    {id:uid(), datum:"2024-01-22", zeitStr:"10:15-11:45", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"43", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Heizungsanlage", kmTyp:"geschaeftlich", kmStart:"4984", kmEnd:"5027"},
-    {id:uid(), datum:"2024-01-25", zeitStr:"11:00-12:30", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"4", dauerMin:"", rueckfahrt:true, notiz:"Deutsche Post — Briefe", kmTyp:"geschaeftlich", kmStart:"5027", kmEnd:"5031"},
-    {id:uid(), datum:"2024-01-29", zeitStr:"14:00-15:30", kategorie:"partner", zielId:"", zielName:"GF Berlin, Seydelstr. 1, 10117 Berlin", km:"53", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF", kmTyp:"geschaeftlich", kmStart:"5031", kmEnd:"5084"},
-    {id:uid(), datum:"2024-02-01", zeitStr:"08:45-10:00", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"43", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Dach / Fassade", kmTyp:"geschaeftlich", kmStart:"5084", kmEnd:"5127"},
-    {id:uid(), datum:"2024-02-06", zeitStr:"09:15-10:30", kategorie:"partner", zielId:"", zielName:"tetris Modulbau GmbH, Zeppelinring 16, 15749 Mittenwalde-Schenkendorf", km:"43", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch tetris Modulbau", kmTyp:"geschaeftlich", kmStart:"5127", kmEnd:"5170"},
-    {id:uid(), datum:"2024-02-09", zeitStr:"13:00-14:15", kategorie:"partner", zielId:"", zielName:"Wagner Zeltsysteme, Hauptstr. 63, 15910 Unterspreewald", km:"43", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Wagner Zeltsysteme", kmTyp:"geschaeftlich", kmStart:"5170", kmEnd:"5213"},
-    {id:uid(), datum:"2024-02-14", zeitStr:"07:30-09:00", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"43", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Heizungsanlage", kmTyp:"geschaeftlich", kmStart:"5213", kmEnd:"5256"},
-    {id:uid(), datum:"2024-02-19", zeitStr:"08:30-09:45", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"43", dauerMin:"", rueckfahrt:true, notiz:"Handwerkertermin vor Ort", kmTyp:"geschaeftlich", kmStart:"5256", kmEnd:"5299"},
-    {id:uid(), datum:"2024-02-22", zeitStr:"09:00-10:15", kategorie:"partner", zielId:"", zielName:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH, Lennéstr. 3, 10785 Berlin", km:"50", dauerMin:"", rueckfahrt:true, notiz:"Hecht, von Luxburg — Steuerberater", kmTyp:"geschaeftlich", kmStart:"5299", kmEnd:"5349"},
-    {id:uid(), datum:"2024-02-26", zeitStr:"09:30-11:00", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"43", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Heizungsanlage", kmTyp:"geschaeftlich", kmStart:"5349", kmEnd:"5392"},
-    {id:uid(), datum:"2024-02-29", zeitStr:"10:00-11:30", kategorie:"sonstige", zielId:"", zielName:"Getränke Hoffmann, Westfälische Str. 85, 10709 Berlin", km:"53", dauerMin:"", rueckfahrt:true, notiz:"Getränke Hoffmann Berlin — Einkauf", kmTyp:"geschaeftlich", kmStart:"5392", kmEnd:"5445"},
-    {id:uid(), datum:"2024-03-05", zeitStr:"08:00-09:30", kategorie:"partner", zielId:"", zielName:"GF Berlin, Seydelstr. 1, 10117 Berlin", km:"53", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF", kmTyp:"geschaeftlich", kmStart:"5445", kmEnd:"5498"},
-    {id:uid(), datum:"2024-03-08", zeitStr:"10:15-11:45", kategorie:"partner", zielId:"", zielName:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH, Lennéstr. 3, 10785 Berlin", km:"50", dauerMin:"", rueckfahrt:true, notiz:"Hecht, von Luxburg — Steuerberater", kmTyp:"geschaeftlich", kmStart:"5498", kmEnd:"5548"},
-    {id:uid(), datum:"2024-03-13", zeitStr:"11:00-12:30", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"53", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Schaubühne Berlin", kmTyp:"geschaeftlich", kmStart:"5548", kmEnd:"5601"},
-    {id:uid(), datum:"2024-03-18", zeitStr:"14:00-15:30", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"43", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Heizungsanlage", kmTyp:"geschaeftlich", kmStart:"5601", kmEnd:"5644"},
-    {id:uid(), datum:"2024-03-21", zeitStr:"08:45-10:00", kategorie:"partner", zielId:"", zielName:"Oppfine GmbH, Zeppelinring 2, 15711 Mittenwalde", km:"43", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Oppfine GmbH", kmTyp:"geschaeftlich", kmStart:"5644", kmEnd:"5687"},
-    {id:uid(), datum:"2024-03-25", zeitStr:"09:15-10:30", kategorie:"partner", zielId:"", zielName:"tetris Modulbau GmbH, Zeppelinring 16, 15749 Mittenwalde-Schenkendorf", km:"43", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch tetris Modulbau", kmTyp:"geschaeftlich", kmStart:"5687", kmEnd:"5730"},
-    {id:uid(), datum:"2024-03-28", zeitStr:"13:00-14:15", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"43", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Dach / Fassade", kmTyp:"geschaeftlich", kmStart:"5730", kmEnd:"5773"},
-    {id:uid(), datum:"2024-04-04", zeitStr:"07:30-09:00", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"4", dauerMin:"", rueckfahrt:true, notiz:"Deutsche Post — Briefe", kmTyp:"geschaeftlich", kmStart:"5773", kmEnd:"5777"},
-    {id:uid(), datum:"2024-04-09", zeitStr:"08:30-09:45", kategorie:"partner", zielId:"", zielName:"GF Berlin, Seydelstr. 1, 10117 Berlin", km:"53", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF", kmTyp:"geschaeftlich", kmStart:"5777", kmEnd:"5830"},
-    {id:uid(), datum:"2024-04-12", zeitStr:"09:00-10:15", kategorie:"partner", zielId:"", zielName:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH, Lennéstr. 3, 10785 Berlin", km:"50", dauerMin:"", rueckfahrt:true, notiz:"Hecht, von Luxburg — Steuerberater", kmTyp:"geschaeftlich", kmStart:"5830", kmEnd:"5880"},
-    {id:uid(), datum:"2024-04-17", zeitStr:"09:30-11:00", kategorie:"partner", zielId:"", zielName:"Knappworst Steuerberater, Am Bassin 4, 14467 Potsdam", km:"37", dauerMin:"", rueckfahrt:true, notiz:"Knappworst Steuerberater", kmTyp:"geschaeftlich", kmStart:"5880", kmEnd:"5917"},
-    {id:uid(), datum:"2024-04-18", zeitStr:"08:00-12:00", kategorie:"sonstige", zielId:"", zielName:"Stellantis &You Deutschland GmbH (Fiat), Seesener Str. 60-61, 10709 Berlin", km:"54", dauerMin:"", rueckfahrt:true, notiz:"1. Jahreswartung Fiat 500e — Stellantis &You Berlin", kmTyp:"geschaeftlich", kmStart:"5917", kmEnd:"5971"},
-    {id:uid(), datum:"2024-04-22", zeitStr:"10:00-11:30", kategorie:"sonstige", zielId:"", zielName:"MBS Sparkasse, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"10", dauerMin:"", rueckfahrt:true, notiz:"MBS Sparkasse — Banktermin", kmTyp:"geschaeftlich", kmStart:"5971", kmEnd:"5981"},
-    {id:uid(), datum:"2024-04-24", zeitStr:"08:00-09:30", kategorie:"partner", zielId:"", zielName:"tetris Modulbau GmbH, Zeppelinring 16, 15749 Mittenwalde-Schenkendorf", km:"63", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch tetris Modulbau", kmTyp:"geschaeftlich", kmStart:"5981", kmEnd:"6044"},
-    {id:uid(), datum:"2024-04-29", zeitStr:"10:15-11:45", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"63", dauerMin:"", rueckfahrt:true, notiz:"Zählerablesung / Nebenkostenabrechnung", kmTyp:"geschaeftlich", kmStart:"6044", kmEnd:"6107"},
-    {id:uid(), datum:"2024-05-03", zeitStr:"11:00-12:30", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"63", dauerMin:"", rueckfahrt:true, notiz:"Handwerkertermin vor Ort", kmTyp:"geschaeftlich", kmStart:"6107", kmEnd:"6170"},
-    {id:uid(), datum:"2024-05-08", zeitStr:"14:00-15:30", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"63", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Dach / Fassade", kmTyp:"geschaeftlich", kmStart:"6170", kmEnd:"6233"},
-    {id:uid(), datum:"2024-05-14", zeitStr:"08:45-10:00", kategorie:"sonstige", zielId:"", zielName:"Getränke Hoffmann, Westfälische Str. 85, 10709 Berlin", km:"79", dauerMin:"", rueckfahrt:true, notiz:"Getränke Hoffmann Berlin — Einkauf", kmTyp:"geschaeftlich", kmStart:"6233", kmEnd:"6312"},
-    {id:uid(), datum:"2024-05-17", zeitStr:"09:15-10:30", kategorie:"partner", zielId:"", zielName:"GF Berlin, Seydelstr. 1, 10117 Berlin", km:"78", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF", kmTyp:"geschaeftlich", kmStart:"6312", kmEnd:"6390"},
-    {id:uid(), datum:"2024-05-22", zeitStr:"13:00-14:15", kategorie:"sonstige", zielId:"", zielName:"MBS Sparkasse, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"10", dauerMin:"", rueckfahrt:true, notiz:"MBS Sparkasse — Banktermin", kmTyp:"geschaeftlich", kmStart:"6390", kmEnd:"6400"},
-    {id:uid(), datum:"2024-05-27", zeitStr:"07:30-09:00", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"79", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Schaubühne Berlin", kmTyp:"geschaeftlich", kmStart:"6400", kmEnd:"6479"},
-    {id:uid(), datum:"2024-05-30", zeitStr:"08:30-09:45", kategorie:"partner", zielId:"", zielName:"Wagner Zeltsysteme, Hauptstr. 63, 15910 Unterspreewald", km:"63", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Wagner Zeltsysteme", kmTyp:"geschaeftlich", kmStart:"6479", kmEnd:"6542"},
-    {id:uid(), datum:"2024-06-04", zeitStr:"09:00-10:15", kategorie:"partner", zielId:"", zielName:"Knappworst Steuerberater, Am Bassin 4, 14467 Potsdam", km:"55", dauerMin:"", rueckfahrt:true, notiz:"Knappworst Steuerberater", kmTyp:"geschaeftlich", kmStart:"6542", kmEnd:"6597"},
-    {id:uid(), datum:"2024-06-07", zeitStr:"09:30-11:00", kategorie:"partner", zielId:"", zielName:"GF Berlin, Seydelstr. 1, 10117 Berlin", km:"78", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF", kmTyp:"geschaeftlich", kmStart:"6597", kmEnd:"6675"},
-    {id:uid(), datum:"2024-06-11", zeitStr:"10:00-11:30", kategorie:"messe", zielId:"", zielName:"Tempodrom, Möckernstr. 10, 10963 Berlin", km:"91", dauerMin:"", rueckfahrt:true, notiz:"Tag der Immobilienwirtschaft 2024", kmTyp:"geschaeftlich", kmStart:"6675", kmEnd:"6766"},
-    {id:uid(), datum:"2024-06-13", zeitStr:"08:00-09:30", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"63", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Heizungsanlage", kmTyp:"geschaeftlich", kmStart:"6766", kmEnd:"6829"},
-    {id:uid(), datum:"2024-06-18", zeitStr:"10:15-17:00", kategorie:"partner", zielId:"", zielName:"ViniGrandi GmbH, Konstanzer Str. 4, 10707 Berlin", km:"80", dauerMin:"", rueckfahrt:true, notiz:"Schaubühne + Bürotermin ViniGrandi, Konstanzer Str.", kmTyp:"geschaeftlich", kmStart:"6829", kmEnd:"6909"},
-    {id:uid(), datum:"2024-06-20", zeitStr:"11:00-12:30", kategorie:"partner", zielId:"", zielName:"Oppfine GmbH, Zeppelinring 2, 15711 Mittenwalde", km:"63", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Oppfine GmbH", kmTyp:"geschaeftlich", kmStart:"6909", kmEnd:"6972"},
-    {id:uid(), datum:"2024-06-25", zeitStr:"14:00-15:30", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"80", dauerMin:"", rueckfahrt:true, notiz:"Schaubühne Berlin — Vertragsgespräch", kmTyp:"geschaeftlich", kmStart:"6972", kmEnd:"7052"},
-    {id:uid(), datum:"2024-06-28", zeitStr:"08:45-10:00", kategorie:"sonstige", zielId:"", zielName:"MBS Sparkasse, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"10", dauerMin:"", rueckfahrt:true, notiz:"MBS Sparkasse — Banktermin", kmTyp:"geschaeftlich", kmStart:"7052", kmEnd:"7062"},
-    {id:uid(), datum:"2024-07-03", zeitStr:"09:15-10:30", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"80", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Schaubühne Berlin", kmTyp:"geschaeftlich", kmStart:"7062", kmEnd:"7142"},
-    {id:uid(), datum:"2024-07-08", zeitStr:"13:00-14:15", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"80", dauerMin:"", rueckfahrt:true, notiz:"Schaubühne Berlin — Vertragsgespräch", kmTyp:"geschaeftlich", kmStart:"7142", kmEnd:"7222"},
-    {id:uid(), datum:"2024-07-11", zeitStr:"07:30-09:00", kategorie:"sonstige", zielId:"", zielName:"Getränke Hoffmann, Westfälische Str. 85, 10709 Berlin", km:"80", dauerMin:"", rueckfahrt:true, notiz:"Getränke Hoffmann Berlin — Einkauf", kmTyp:"geschaeftlich", kmStart:"7222", kmEnd:"7302"},
-    {id:uid(), datum:"2024-07-16", zeitStr:"08:30-09:45", kategorie:"sonstige", zielId:"", zielName:"Getränke Hoffmann, Westfälische Str. 85, 10709 Berlin", km:"80", dauerMin:"", rueckfahrt:true, notiz:"Getränke Hoffmann Berlin — Einkauf", kmTyp:"geschaeftlich", kmStart:"7302", kmEnd:"7382"},
-    {id:uid(), datum:"2024-07-18", zeitStr:"09:00-10:15", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"80", dauerMin:"", rueckfahrt:true, notiz:"Schaubühne Berlin — Vertragsgespräch", kmTyp:"geschaeftlich", kmStart:"7382", kmEnd:"7462"},
-    {id:uid(), datum:"2024-07-23", zeitStr:"09:30-11:00", kategorie:"partner", zielId:"", zielName:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH, Lennéstr. 3, 10785 Berlin", km:"73", dauerMin:"", rueckfahrt:true, notiz:"Hecht, von Luxburg — Steuerberater", kmTyp:"geschaeftlich", kmStart:"7462", kmEnd:"7535"},
-    {id:uid(), datum:"2024-07-26", zeitStr:"10:00-11:30", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"6", dauerMin:"", rueckfahrt:true, notiz:"Deutsche Post — Briefe", kmTyp:"geschaeftlich", kmStart:"7535", kmEnd:"7541"},
-    {id:uid(), datum:"2024-07-31", zeitStr:"08:00-09:30", kategorie:"partner", zielId:"", zielName:"tetris Modulbau GmbH, Zeppelinring 16, 15749 Mittenwalde-Schenkendorf", km:"63", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch tetris Modulbau", kmTyp:"geschaeftlich", kmStart:"7541", kmEnd:"7604"},
-    {id:uid(), datum:"2024-08-05", zeitStr:"10:15-11:45", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"63", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Heizungsanlage", kmTyp:"geschaeftlich", kmStart:"7604", kmEnd:"7667"},
-    {id:uid(), datum:"2024-08-08", zeitStr:"11:00-12:30", kategorie:"partner", zielId:"", zielName:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH, Lennéstr. 3, 10785 Berlin", km:"73", dauerMin:"", rueckfahrt:true, notiz:"Hecht, von Luxburg — Steuerberater", kmTyp:"geschaeftlich", kmStart:"7667", kmEnd:"7740"},
-    {id:uid(), datum:"2024-08-13", zeitStr:"14:00-15:30", kategorie:"partner", zielId:"", zielName:"Knappworst Steuerberater, Am Bassin 4, 14467 Potsdam", km:"55", dauerMin:"", rueckfahrt:true, notiz:"Knappworst Steuerberater", kmTyp:"geschaeftlich", kmStart:"7740", kmEnd:"7795"},
-    {id:uid(), datum:"2024-08-15", zeitStr:"08:45-10:00", kategorie:"sonstige", zielId:"", zielName:"Getränke Hoffmann, Westfälische Str. 85, 10709 Berlin", km:"80", dauerMin:"", rueckfahrt:true, notiz:"Getränke Hoffmann Berlin — Einkauf", kmTyp:"geschaeftlich", kmStart:"7795", kmEnd:"7875"},
-    {id:uid(), datum:"2024-08-20", zeitStr:"09:15-10:30", kategorie:"partner", zielId:"", zielName:"GF Berlin, Seydelstr. 1, 10117 Berlin", km:"78", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF", kmTyp:"geschaeftlich", kmStart:"7875", kmEnd:"7953"},
-    {id:uid(), datum:"2024-08-23", zeitStr:"13:00-14:15", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"6", dauerMin:"", rueckfahrt:true, notiz:"Deutsche Post — Briefe", kmTyp:"geschaeftlich", kmStart:"7953", kmEnd:"7959"},
-    {id:uid(), datum:"2024-08-28", zeitStr:"07:30-09:00", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"63", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Dach / Fassade", kmTyp:"geschaeftlich", kmStart:"7959", kmEnd:"8022"},
-    {id:uid(), datum:"2024-09-02", zeitStr:"08:30-09:45", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"63", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Dach / Fassade", kmTyp:"geschaeftlich", kmStart:"8022", kmEnd:"8085"},
-    {id:uid(), datum:"2024-09-05", zeitStr:"09:00-10:15", kategorie:"partner", zielId:"", zielName:"Oppfine GmbH, Zeppelinring 2, 15711 Mittenwalde", km:"63", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Oppfine GmbH", kmTyp:"geschaeftlich", kmStart:"8085", kmEnd:"8148"},
-    {id:uid(), datum:"2024-09-10", zeitStr:"09:30-14:00", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"83", dauerMin:"", rueckfahrt:true, notiz:"Vertragsgespräch Schaubühne — Rückfahrt über Schöneberg", kmTyp:"geschaeftlich", kmStart:"8148", kmEnd:"8231"},
-    {id:uid(), datum:"2024-09-12", zeitStr:"10:00-11:30", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"6", dauerMin:"", rueckfahrt:true, notiz:"Deutsche Post — Briefe", kmTyp:"geschaeftlich", kmStart:"8231", kmEnd:"8237"},
-    {id:uid(), datum:"2024-09-17", zeitStr:"08:00-09:30", kategorie:"partner", zielId:"", zielName:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH, Lennéstr. 3, 10785 Berlin", km:"73", dauerMin:"", rueckfahrt:true, notiz:"Hecht, von Luxburg — Steuerberater", kmTyp:"geschaeftlich", kmStart:"8237", kmEnd:"8310"},
-    {id:uid(), datum:"2024-09-20", zeitStr:"10:15-11:45", kategorie:"sonstige", zielId:"", zielName:"Getränke Hoffmann, Westfälische Str. 85, 10709 Berlin", km:"80", dauerMin:"", rueckfahrt:true, notiz:"Getränke Hoffmann Berlin — Einkauf", kmTyp:"geschaeftlich", kmStart:"8310", kmEnd:"8390"},
-    {id:uid(), datum:"2024-09-25", zeitStr:"11:00-12:30", kategorie:"partner", zielId:"", zielName:"Knappworst Steuerberater, Am Bassin 4, 14467 Potsdam", km:"55", dauerMin:"", rueckfahrt:true, notiz:"Knappworst Steuerberater", kmTyp:"geschaeftlich", kmStart:"8390", kmEnd:"8445"},
-    {id:uid(), datum:"2024-09-30", zeitStr:"14:00-15:30", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"80", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Schaubühne Berlin", kmTyp:"geschaeftlich", kmStart:"8445", kmEnd:"8525"},
-    {id:uid(), datum:"2024-10-04", zeitStr:"08:45-10:00", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"63", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Dach / Fassade", kmTyp:"geschaeftlich", kmStart:"8525", kmEnd:"8588"},
-    {id:uid(), datum:"2024-10-08", zeitStr:"09:15-10:30", kategorie:"partner", zielId:"", zielName:"GF Berlin, Seydelstr. 1, 10117 Berlin", km:"78", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF", kmTyp:"geschaeftlich", kmStart:"8588", kmEnd:"8666"},
-    {id:uid(), datum:"2024-10-11", zeitStr:"13:00-14:15", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"6", dauerMin:"", rueckfahrt:true, notiz:"Deutsche Post — Briefe", kmTyp:"geschaeftlich", kmStart:"8666", kmEnd:"8672"},
-    {id:uid(), datum:"2024-10-16", zeitStr:"07:30-09:00", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"63", dauerMin:"", rueckfahrt:true, notiz:"Handwerkertermin vor Ort", kmTyp:"geschaeftlich", kmStart:"8672", kmEnd:"8735"},
-    {id:uid(), datum:"2024-10-21", zeitStr:"08:30-09:45", kategorie:"partner", zielId:"", zielName:"Oppfine GmbH, Zeppelinring 2, 15711 Mittenwalde", km:"63", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Oppfine GmbH", kmTyp:"geschaeftlich", kmStart:"8735", kmEnd:"8798"},
-    {id:uid(), datum:"2024-10-24", zeitStr:"09:00-10:15", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"63", dauerMin:"", rueckfahrt:true, notiz:"Zählerablesung / Nebenkostenabrechnung", kmTyp:"geschaeftlich", kmStart:"8798", kmEnd:"8861"},
-    {id:uid(), datum:"2024-10-29", zeitStr:"09:30-11:00", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"63", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Dach / Fassade", kmTyp:"geschaeftlich", kmStart:"8861", kmEnd:"8924"},
-    {id:uid(), datum:"2024-11-01", zeitStr:"10:00-11:30", kategorie:"sonstige", zielId:"", zielName:"MBS Sparkasse, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"10", dauerMin:"", rueckfahrt:true, notiz:"MBS Sparkasse — Banktermin", kmTyp:"geschaeftlich", kmStart:"8924", kmEnd:"8934"},
-    {id:uid(), datum:"2024-11-05", zeitStr:"08:00-09:30", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"6", dauerMin:"", rueckfahrt:true, notiz:"Deutsche Post — Briefe", kmTyp:"geschaeftlich", kmStart:"8934", kmEnd:"8940"},
-    {id:uid(), datum:"2024-11-08", zeitStr:"10:15-11:45", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"63", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Dach / Fassade", kmTyp:"geschaeftlich", kmStart:"8940", kmEnd:"9003"},
-    {id:uid(), datum:"2024-11-13", zeitStr:"11:00-12:30", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"6", dauerMin:"", rueckfahrt:true, notiz:"Deutsche Post — Briefe", kmTyp:"geschaeftlich", kmStart:"9003", kmEnd:"9009"},
-    {id:uid(), datum:"2024-11-18", zeitStr:"14:00-15:30", kategorie:"partner", zielId:"", zielName:"Wagner Zeltsysteme, Hauptstr. 63, 15910 Unterspreewald", km:"63", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Wagner Zeltsysteme", kmTyp:"geschaeftlich", kmStart:"9009", kmEnd:"9072"},
-    {id:uid(), datum:"2024-11-21", zeitStr:"08:45-10:00", kategorie:"sonstige", zielId:"", zielName:"Getränke Hoffmann, Westfälische Str. 85, 10709 Berlin", km:"80", dauerMin:"", rueckfahrt:true, notiz:"Getränke Hoffmann Berlin — Einkauf", kmTyp:"geschaeftlich", kmStart:"9072", kmEnd:"9152"},
-    {id:uid(), datum:"2024-11-22", zeitStr:"13:00-16:30", kategorie:"partner", zielId:"", zielName:"GF Berlin, Seydelstr. 1, 10117 Berlin", km:"78", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF — Französische Str. / Friedrichstr.", kmTyp:"geschaeftlich", kmStart:"9152", kmEnd:"9230"},
-    {id:uid(), datum:"2024-11-26", zeitStr:"09:15-10:30", kategorie:"partner", zielId:"", zielName:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH, Lennéstr. 3, 10785 Berlin", km:"73", dauerMin:"", rueckfahrt:true, notiz:"Hecht, von Luxburg — Steuerberater", kmTyp:"geschaeftlich", kmStart:"9230", kmEnd:"9303"},
-    {id:uid(), datum:"2024-11-29", zeitStr:"13:00-14:15", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"63", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Heizungsanlage", kmTyp:"geschaeftlich", kmStart:"9303", kmEnd:"9366"},
-    {id:uid(), datum:"2024-12-03", zeitStr:"07:30-09:00", kategorie:"partner", zielId:"", zielName:"GF Berlin, Seydelstr. 1, 10117 Berlin", km:"78", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF", kmTyp:"geschaeftlich", kmStart:"9366", kmEnd:"9444"},
-    {id:uid(), datum:"2024-12-06", zeitStr:"08:30-09:45", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"6", dauerMin:"", rueckfahrt:true, notiz:"Deutsche Post — Briefe", kmTyp:"geschaeftlich", kmStart:"9444", kmEnd:"9450"},
-    {id:uid(), datum:"2024-12-11", zeitStr:"09:00-10:15", kategorie:"partner", zielId:"", zielName:"Wagner Zeltsysteme, Hauptstr. 63, 15910 Unterspreewald", km:"63", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Wagner Zeltsysteme", kmTyp:"geschaeftlich", kmStart:"9450", kmEnd:"9513"},
-    {id:uid(), datum:"2024-12-16", zeitStr:"09:30-11:00", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"6", dauerMin:"", rueckfahrt:true, notiz:"Deutsche Post — Briefe", kmTyp:"geschaeftlich", kmStart:"9513", kmEnd:"9519"},
-    {id:uid(), datum:"2024-12-19", zeitStr:"10:00-11:30", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"63", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Dach / Fassade", kmTyp:"geschaeftlich", kmStart:"9519", kmEnd:"9582"},
-    {id:uid(), datum:"2024-12-24", zeitStr:"08:00-09:30", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"63", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Heizungsanlage", kmTyp:"geschaeftlich", kmStart:"9582", kmEnd:"9645"},
-    {id:uid(), datum:"2024-12-30", zeitStr:"13:00-16:00", kategorie:"partner", zielId:"", zielName:"ViniGrandi GmbH, Konstanzer Str. 4, 10707 Berlin", km:"80", dauerMin:"", rueckfahrt:true, notiz:"Bürotermin ViniGrandi — Jahresabschluss, Konstanzer Str.", kmTyp:"geschaeftlich", kmStart:"9645", kmEnd:"9725"},
-    {id:uid(), datum:"2024-12-31", zeitStr:"10:15-11:45", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"80", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Schaubühne Berlin", kmTyp:"geschaeftlich", kmStart:"9725", kmEnd:"9805"},
-    {id:uid(), datum:"2025-01-03", zeitStr:"11:00-12:30", kategorie:"partner", zielId:"", zielName:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH, Lennéstr. 3, 10785 Berlin", km:"73", dauerMin:"", rueckfahrt:true, notiz:"Hecht, von Luxburg — Steuerberater", kmTyp:"geschaeftlich", kmStart:"9805", kmEnd:"9878"},
-    {id:uid(), datum:"2025-01-08", zeitStr:"14:00-15:30", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"63", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Dach / Fassade", kmTyp:"geschaeftlich", kmStart:"9878", kmEnd:"9941"},
-    {id:uid(), datum:"2025-01-13", zeitStr:"08:45-10:00", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"6", dauerMin:"", rueckfahrt:true, notiz:"Deutsche Post — Briefe", kmTyp:"geschaeftlich", kmStart:"9941", kmEnd:"9947"},
-    {id:uid(), datum:"2025-01-16", zeitStr:"09:15-10:30", kategorie:"sonstige", zielId:"", zielName:"Getränke Hoffmann, Westfälische Str. 85, 10709 Berlin", km:"80", dauerMin:"", rueckfahrt:true, notiz:"Getränke Hoffmann Berlin — Einkauf", kmTyp:"geschaeftlich", kmStart:"9947", kmEnd:"10027"},
-    {id:uid(), datum:"2025-01-21", zeitStr:"13:00-14:15", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"63", dauerMin:"", rueckfahrt:true, notiz:"Handwerkertermin vor Ort", kmTyp:"geschaeftlich", kmStart:"10027", kmEnd:"10090"},
-    {id:uid(), datum:"2025-01-24", zeitStr:"07:30-09:00", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"63", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Dach / Fassade", kmTyp:"geschaeftlich", kmStart:"10090", kmEnd:"10153"},
-    {id:uid(), datum:"2025-01-29", zeitStr:"08:30-09:45", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"63", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Heizungsanlage", kmTyp:"geschaeftlich", kmStart:"10153", kmEnd:"10216"},
-    {id:uid(), datum:"2025-01-31", zeitStr:"09:00-10:15", kategorie:"sonstige", zielId:"", zielName:"MBS Sparkasse, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"10", dauerMin:"", rueckfahrt:true, notiz:"MBS Sparkasse — Banktermin", kmTyp:"geschaeftlich", kmStart:"10216", kmEnd:"10226"},
-    {id:uid(), datum:"2025-02-05", zeitStr:"09:30-11:00", kategorie:"sonstige", zielId:"", zielName:"Getränke Hoffmann, Westfälische Str. 85, 10709 Berlin", km:"80", dauerMin:"", rueckfahrt:true, notiz:"Getränke Hoffmann Berlin — Einkauf", kmTyp:"geschaeftlich", kmStart:"10226", kmEnd:"10306"},
-    {id:uid(), datum:"2025-02-10", zeitStr:"10:00-11:30", kategorie:"sonstige", zielId:"", zielName:"Getränke Hoffmann, Westfälische Str. 85, 10709 Berlin", km:"80", dauerMin:"", rueckfahrt:true, notiz:"Getränke Hoffmann Berlin — Einkauf", kmTyp:"geschaeftlich", kmStart:"10306", kmEnd:"10386"},
-    {id:uid(), datum:"2025-02-13", zeitStr:"08:00-09:30", kategorie:"sonstige", zielId:"", zielName:"MBS Sparkasse, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"10", dauerMin:"", rueckfahrt:true, notiz:"MBS Sparkasse — Banktermin", kmTyp:"geschaeftlich", kmStart:"10386", kmEnd:"10396"},
-    {id:uid(), datum:"2025-02-18", zeitStr:"10:15-11:45", kategorie:"partner", zielId:"", zielName:"Wagner Zeltsysteme, Hauptstr. 63, 15910 Unterspreewald", km:"63", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Wagner Zeltsysteme", kmTyp:"geschaeftlich", kmStart:"10396", kmEnd:"10459"},
-    {id:uid(), datum:"2025-02-21", zeitStr:"11:00-12:30", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"6", dauerMin:"", rueckfahrt:true, notiz:"Deutsche Post — Briefe", kmTyp:"geschaeftlich", kmStart:"10459", kmEnd:"10465"},
-    {id:uid(), datum:"2025-02-25", zeitStr:"14:00-15:30", kategorie:"sonstige", zielId:"", zielName:"Getränke Hoffmann, Westfälische Str. 85, 10709 Berlin", km:"80", dauerMin:"", rueckfahrt:true, notiz:"Getränke Hoffmann Berlin — Einkauf", kmTyp:"geschaeftlich", kmStart:"10465", kmEnd:"10545"},
-    {id:uid(), datum:"2025-02-28", zeitStr:"08:45-10:00", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"63", dauerMin:"", rueckfahrt:true, notiz:"Handwerkertermin vor Ort", kmTyp:"geschaeftlich", kmStart:"10545", kmEnd:"10608"},
-    {id:uid(), datum:"2025-03-05", zeitStr:"09:15-10:30", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"6", dauerMin:"", rueckfahrt:true, notiz:"Deutsche Post — Briefe", kmTyp:"geschaeftlich", kmStart:"10608", kmEnd:"10614"},
-    {id:uid(), datum:"2025-03-10", zeitStr:"13:00-14:15", kategorie:"partner", zielId:"", zielName:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH, Lennéstr. 3, 10785 Berlin", km:"73", dauerMin:"", rueckfahrt:true, notiz:"Hecht, von Luxburg — Steuerberater", kmTyp:"geschaeftlich", kmStart:"10614", kmEnd:"10687"},
-    {id:uid(), datum:"2025-03-13", zeitStr:"07:30-09:00", kategorie:"partner", zielId:"", zielName:"tetris Modulbau GmbH, Zeppelinring 16, 15749 Mittenwalde-Schenkendorf", km:"63", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch tetris Modulbau", kmTyp:"geschaeftlich", kmStart:"10687", kmEnd:"10750"},
-    {id:uid(), datum:"2025-03-18", zeitStr:"08:30-09:45", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"80", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Schaubühne Berlin", kmTyp:"geschaeftlich", kmStart:"10750", kmEnd:"10830"},
-    {id:uid(), datum:"2025-03-21", zeitStr:"09:00-10:15", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"6", dauerMin:"", rueckfahrt:true, notiz:"Deutsche Post — Briefe", kmTyp:"geschaeftlich", kmStart:"10830", kmEnd:"10836"},
-    {id:uid(), datum:"2025-03-25", zeitStr:"09:30-11:00", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"6", dauerMin:"", rueckfahrt:true, notiz:"Deutsche Post — Briefe", kmTyp:"geschaeftlich", kmStart:"10836", kmEnd:"10842"},
-    {id:uid(), datum:"2025-03-28", zeitStr:"10:00-11:30", kategorie:"sonstige", zielId:"", zielName:"MBS Sparkasse, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"10", dauerMin:"", rueckfahrt:true, notiz:"MBS Sparkasse — Banktermin", kmTyp:"geschaeftlich", kmStart:"10842", kmEnd:"10852"},
-    {id:uid(), datum:"2025-04-02", zeitStr:"08:00-09:30", kategorie:"partner", zielId:"", zielName:"Oppfine GmbH, Zeppelinring 2, 15711 Mittenwalde", km:"63", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Oppfine GmbH", kmTyp:"geschaeftlich", kmStart:"10852", kmEnd:"10915"},
-    {id:uid(), datum:"2025-04-07", zeitStr:"10:15-11:45", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"63", dauerMin:"", rueckfahrt:true, notiz:"Zählerablesung / Nebenkostenabrechnung", kmTyp:"geschaeftlich", kmStart:"10915", kmEnd:"10978"},
-    {id:uid(), datum:"2025-04-10", zeitStr:"11:00-12:30", kategorie:"partner", zielId:"", zielName:"GF Berlin, Seydelstr. 1, 10117 Berlin", km:"78", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF", kmTyp:"geschaeftlich", kmStart:"10978", kmEnd:"11056"},
-    {id:uid(), datum:"2025-04-15", zeitStr:"14:00-15:30", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"80", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Schaubühne Berlin", kmTyp:"geschaeftlich", kmStart:"11056", kmEnd:"11136"},
-    {id:uid(), datum:"2025-04-22", zeitStr:"08:45-10:00", kategorie:"partner", zielId:"", zielName:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH, Lennéstr. 3, 10785 Berlin", km:"73", dauerMin:"", rueckfahrt:true, notiz:"Hecht, von Luxburg — Steuerberater", kmTyp:"geschaeftlich", kmStart:"11136", kmEnd:"11209"},
-    {id:uid(), datum:"2025-04-24", zeitStr:"09:15-10:30", kategorie:"partner", zielId:"", zielName:"tetris Modulbau GmbH, Zeppelinring 16, 15749 Mittenwalde-Schenkendorf", km:"63", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch tetris Modulbau", kmTyp:"geschaeftlich", kmStart:"11209", kmEnd:"11272"},
-    {id:uid(), datum:"2025-04-29", zeitStr:"13:00-14:15", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"80", dauerMin:"", rueckfahrt:true, notiz:"Schaubühne Berlin — Vertragsgespräch", kmTyp:"geschaeftlich", kmStart:"11272", kmEnd:"11352"},
-    {id:uid(), datum:"2025-05-05", zeitStr:"07:30-09:00", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"6", dauerMin:"", rueckfahrt:true, notiz:"Deutsche Post — Briefe", kmTyp:"geschaeftlich", kmStart:"11352", kmEnd:"11358"},
-    {id:uid(), datum:"2025-05-08", zeitStr:"08:30-09:45", kategorie:"partner", zielId:"", zielName:"GF Berlin, Seydelstr. 1, 10117 Berlin", km:"78", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF", kmTyp:"geschaeftlich", kmStart:"11358", kmEnd:"11436"},
-    {id:uid(), datum:"2025-05-13", zeitStr:"09:00-10:15", kategorie:"sonstige", zielId:"", zielName:"MBS Sparkasse, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"10", dauerMin:"", rueckfahrt:true, notiz:"MBS Sparkasse — Banktermin", kmTyp:"geschaeftlich", kmStart:"11436", kmEnd:"11446"},
-    {id:uid(), datum:"2025-05-16", zeitStr:"09:30-11:00", kategorie:"partner", zielId:"", zielName:"Wagner Zeltsysteme, Hauptstr. 63, 15910 Unterspreewald", km:"58", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Wagner Zeltsysteme", kmTyp:"geschaeftlich", kmStart:"11446", kmEnd:"11504"},
-    {id:uid(), datum:"2025-05-21", zeitStr:"10:00-11:30", kategorie:"partner", zielId:"", zielName:"Knappworst Steuerberater, Am Bassin 4, 14467 Potsdam", km:"51", dauerMin:"", rueckfahrt:true, notiz:"Knappworst Steuerberater", kmTyp:"geschaeftlich", kmStart:"11504", kmEnd:"11555"},
-    {id:uid(), datum:"2025-05-23", zeitStr:"08:00-09:30", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"75", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Schaubühne Berlin", kmTyp:"geschaeftlich", kmStart:"11555", kmEnd:"11630"},
-    {id:uid(), datum:"2025-05-28", zeitStr:"10:15-11:45", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"58", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Dach / Fassade", kmTyp:"geschaeftlich", kmStart:"11630", kmEnd:"11688"},
-    {id:uid(), datum:"2025-06-03", zeitStr:"11:00-12:30", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"75", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Schaubühne Berlin", kmTyp:"geschaeftlich", kmStart:"11688", kmEnd:"11763"},
-    {id:uid(), datum:"2025-06-06", zeitStr:"14:00-15:30", kategorie:"partner", zielId:"", zielName:"GF Berlin, Seydelstr. 1, 10117 Berlin", km:"73", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF", kmTyp:"geschaeftlich", kmStart:"11763", kmEnd:"11836"},
-    {id:uid(), datum:"2025-06-12", zeitStr:"08:45-10:00", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"6", dauerMin:"", rueckfahrt:true, notiz:"Deutsche Post — Briefe", kmTyp:"geschaeftlich", kmStart:"11836", kmEnd:"11842"},
-    {id:uid(), datum:"2025-06-17", zeitStr:"09:15-10:30", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"58", dauerMin:"", rueckfahrt:true, notiz:"Handwerkertermin vor Ort", kmTyp:"geschaeftlich", kmStart:"11842", kmEnd:"11900"},
-    {id:uid(), datum:"2025-06-20", zeitStr:"13:00-14:15", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"58", dauerMin:"", rueckfahrt:true, notiz:"Handwerkertermin vor Ort", kmTyp:"geschaeftlich", kmStart:"11900", kmEnd:"11958"},
-    {id:uid(), datum:"2025-06-24", zeitStr:"07:30-09:00", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"6", dauerMin:"", rueckfahrt:true, notiz:"Deutsche Post — Briefe", kmTyp:"geschaeftlich", kmStart:"11958", kmEnd:"11964"},
-    {id:uid(), datum:"2025-06-27", zeitStr:"08:30-09:45", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"58", dauerMin:"", rueckfahrt:true, notiz:"Handwerkertermin vor Ort", kmTyp:"geschaeftlich", kmStart:"11964", kmEnd:"12022"},
-    {id:uid(), datum:"2025-07-02", zeitStr:"09:00-10:15", kategorie:"partner", zielId:"", zielName:"Oppfine GmbH, Zeppelinring 2, 15711 Mittenwalde", km:"58", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Oppfine GmbH", kmTyp:"geschaeftlich", kmStart:"12022", kmEnd:"12080"},
-    {id:uid(), datum:"2025-07-07", zeitStr:"09:30-11:00", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"58", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Dach / Fassade", kmTyp:"geschaeftlich", kmStart:"12080", kmEnd:"12138"},
-    {id:uid(), datum:"2025-07-10", zeitStr:"10:00-11:30", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"6", dauerMin:"", rueckfahrt:true, notiz:"Deutsche Post — Briefe", kmTyp:"geschaeftlich", kmStart:"12138", kmEnd:"12144"},
-    {id:uid(), datum:"2025-07-15", zeitStr:"08:00-09:30", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"58", dauerMin:"", rueckfahrt:true, notiz:"Handwerkertermin vor Ort", kmTyp:"geschaeftlich", kmStart:"12144", kmEnd:"12202"},
-    {id:uid(), datum:"2025-07-17", zeitStr:"10:15-11:45", kategorie:"partner", zielId:"", zielName:"Oppfine GmbH, Zeppelinring 2, 15711 Mittenwalde", km:"58", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Oppfine GmbH", kmTyp:"geschaeftlich", kmStart:"12202", kmEnd:"12260"},
-    {id:uid(), datum:"2025-07-22", zeitStr:"11:00-12:30", kategorie:"partner", zielId:"", zielName:"GF Berlin, Seydelstr. 1, 10117 Berlin", km:"72", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF", kmTyp:"geschaeftlich", kmStart:"12260", kmEnd:"12332"},
-    {id:uid(), datum:"2025-07-25", zeitStr:"14:00-15:30", kategorie:"partner", zielId:"", zielName:"tetris Modulbau GmbH, Zeppelinring 16, 15749 Mittenwalde-Schenkendorf", km:"58", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch tetris Modulbau", kmTyp:"geschaeftlich", kmStart:"12332", kmEnd:"12390"},
-    {id:uid(), datum:"2025-07-30", zeitStr:"08:45-10:00", kategorie:"sonstige", zielId:"", zielName:"Getränke Hoffmann, Westfälische Str. 85, 10709 Berlin", km:"75", dauerMin:"", rueckfahrt:true, notiz:"Getränke Hoffmann Berlin — Einkauf", kmTyp:"geschaeftlich", kmStart:"12390", kmEnd:"12465"},
-    {id:uid(), datum:"2025-08-04", zeitStr:"09:15-10:30", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"75", dauerMin:"", rueckfahrt:true, notiz:"Schaubühne Berlin — Vertragsgespräch", kmTyp:"geschaeftlich", kmStart:"12465", kmEnd:"12540"},
-    {id:uid(), datum:"2025-08-07", zeitStr:"13:00-14:15", kategorie:"sonstige", zielId:"", zielName:"MBS Sparkasse, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"10", dauerMin:"", rueckfahrt:true, notiz:"MBS Sparkasse — Banktermin", kmTyp:"geschaeftlich", kmStart:"12540", kmEnd:"12550"},
-    {id:uid(), datum:"2025-08-12", zeitStr:"07:30-09:00", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"58", dauerMin:"", rueckfahrt:true, notiz:"Handwerkertermin vor Ort", kmTyp:"geschaeftlich", kmStart:"12550", kmEnd:"12608"},
-    {id:uid(), datum:"2025-08-14", zeitStr:"08:30-09:45", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"75", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Schaubühne Berlin", kmTyp:"geschaeftlich", kmStart:"12608", kmEnd:"12683"},
-    {id:uid(), datum:"2025-08-19", zeitStr:"09:00-10:15", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"58", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Dach / Fassade", kmTyp:"geschaeftlich", kmStart:"12683", kmEnd:"12741"},
-    {id:uid(), datum:"2025-08-22", zeitStr:"09:30-11:00", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"58", dauerMin:"", rueckfahrt:true, notiz:"Zählerablesung / Nebenkostenabrechnung", kmTyp:"geschaeftlich", kmStart:"12741", kmEnd:"12799"},
-    {id:uid(), datum:"2025-08-27", zeitStr:"10:00-11:30", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"58", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Heizungsanlage", kmTyp:"geschaeftlich", kmStart:"12799", kmEnd:"12857"},
-    {id:uid(), datum:"2025-09-01", zeitStr:"08:00-09:30", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"75", dauerMin:"", rueckfahrt:true, notiz:"Schaubühne Berlin — Vertragsgespräch", kmTyp:"geschaeftlich", kmStart:"12857", kmEnd:"12932"},
-    {id:uid(), datum:"2025-09-04", zeitStr:"10:15-11:45", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"75", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Schaubühne Berlin", kmTyp:"geschaeftlich", kmStart:"12932", kmEnd:"13007"},
-    {id:uid(), datum:"2025-09-09", zeitStr:"11:00-12:30", kategorie:"partner", zielId:"", zielName:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH, Lennéstr. 3, 10785 Berlin", km:"68", dauerMin:"", rueckfahrt:true, notiz:"Hecht, von Luxburg — Steuerberater", kmTyp:"geschaeftlich", kmStart:"13007", kmEnd:"13075"},
-    {id:uid(), datum:"2025-09-11", zeitStr:"14:00-15:30", kategorie:"partner", zielId:"", zielName:"GF Berlin, Seydelstr. 1, 10117 Berlin", km:"72", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF", kmTyp:"geschaeftlich", kmStart:"13075", kmEnd:"13147"},
-    {id:uid(), datum:"2025-09-16", zeitStr:"08:45-10:00", kategorie:"partner", zielId:"", zielName:"GF Berlin, Seydelstr. 1, 10117 Berlin", km:"72", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF", kmTyp:"geschaeftlich", kmStart:"13147", kmEnd:"13219"},
-    {id:uid(), datum:"2025-09-19", zeitStr:"09:15-10:30", kategorie:"sonstige", zielId:"", zielName:"MBS Sparkasse, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"10", dauerMin:"", rueckfahrt:true, notiz:"MBS Sparkasse — Banktermin", kmTyp:"geschaeftlich", kmStart:"13219", kmEnd:"13229"},
-    {id:uid(), datum:"2025-09-24", zeitStr:"13:00-14:15", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"58", dauerMin:"", rueckfahrt:true, notiz:"Handwerkertermin vor Ort", kmTyp:"geschaeftlich", kmStart:"13229", kmEnd:"13287"},
-    {id:uid(), datum:"2025-09-29", zeitStr:"07:30-09:00", kategorie:"partner", zielId:"", zielName:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH, Lennéstr. 3, 10785 Berlin", km:"68", dauerMin:"", rueckfahrt:true, notiz:"Hecht, von Luxburg — Steuerberater", kmTyp:"geschaeftlich", kmStart:"13287", kmEnd:"13355"},
-    {id:uid(), datum:"2025-10-02", zeitStr:"08:30-09:45", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"58", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Dach / Fassade", kmTyp:"geschaeftlich", kmStart:"13355", kmEnd:"13413"},
-    {id:uid(), datum:"2025-10-08", zeitStr:"09:00-10:15", kategorie:"partner", zielId:"", zielName:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH, Lennéstr. 3, 10785 Berlin", km:"68", dauerMin:"", rueckfahrt:true, notiz:"Hecht, von Luxburg — Steuerberater", kmTyp:"geschaeftlich", kmStart:"13413", kmEnd:"13481"},
-    {id:uid(), datum:"2025-10-10", zeitStr:"09:30-11:00", kategorie:"partner", zielId:"", zielName:"Oppfine GmbH, Zeppelinring 2, 15711 Mittenwalde", km:"58", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Oppfine GmbH", kmTyp:"geschaeftlich", kmStart:"13481", kmEnd:"13539"},
-    {id:uid(), datum:"2025-10-15", zeitStr:"10:00-11:30", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"75", dauerMin:"", rueckfahrt:true, notiz:"Schaubühne Berlin — Vertragsgespräch", kmTyp:"geschaeftlich", kmStart:"13539", kmEnd:"13614"},
-    {id:uid(), datum:"2025-10-20", zeitStr:"08:00-09:30", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"75", dauerMin:"", rueckfahrt:true, notiz:"Schaubühne Berlin — Vertragsgespräch", kmTyp:"geschaeftlich", kmStart:"13614", kmEnd:"13689"},
-    {id:uid(), datum:"2025-10-23", zeitStr:"10:15-11:45", kategorie:"partner", zielId:"", zielName:"tetris Modulbau GmbH, Zeppelinring 16, 15749 Mittenwalde-Schenkendorf", km:"58", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch tetris Modulbau", kmTyp:"geschaeftlich", kmStart:"13689", kmEnd:"13747"},
-    {id:uid(), datum:"2025-10-28", zeitStr:"11:00-12:30", kategorie:"partner", zielId:"", zielName:"GF Berlin, Seydelstr. 1, 10117 Berlin", km:"72", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF", kmTyp:"geschaeftlich", kmStart:"13747", kmEnd:"13819"},
-    {id:uid(), datum:"2025-10-31", zeitStr:"14:00-15:30", kategorie:"partner", zielId:"", zielName:"Wagner Zeltsysteme, Hauptstr. 63, 15910 Unterspreewald", km:"58", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Wagner Zeltsysteme", kmTyp:"geschaeftlich", kmStart:"13819", kmEnd:"13877"},
-    {id:uid(), datum:"2025-11-04", zeitStr:"10:00-12:30", kategorie:"sonstige", zielId:"", zielName:"Stellantis &You Deutschland GmbH (Fiat), Seesener Str. 60-61, 10709 Berlin", km:"35", dauerMin:"", rueckfahrt:false, notiz:"Fahrzeugabgabe — Werkstatt (letzte Fahrt)", kmTyp:"geschaeftlich", kmStart:"13877", kmEnd:"13912"},
-    {id:uid(), datum:"2025-11-07", zeitStr:"09:15-10:30", kategorie:"partner", zielId:"", zielName:"Getränke Hoffmann, Westfälische Str. 85, 10709 Berlin", km:"76", dauerMin:"", rueckfahrt:true, notiz:"Lieferung / Abholung", kmTyp:"geschaeftlich", kmStart:"13912", kmEnd:"13988"},
-    {id:uid(), datum:"2025-11-12", zeitStr:"10:00-11:30", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Objektkontrolle", kmTyp:"geschaeftlich", kmStart:"13988", kmEnd:"14048"},
-    {id:uid(), datum:"2025-11-18", zeitStr:"08:30-09:45", kategorie:"partner", zielId:"", zielName:"GF Berlin, Seydelstr. 1, 10117 Berlin", km:"74", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen abgeben", kmTyp:"geschaeftlich", kmStart:"14048", kmEnd:"14122"},
-    {id:uid(), datum:"2025-11-25", zeitStr:"09:00-10:15", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"6", dauerMin:"", rueckfahrt:true, notiz:"Postversand", kmTyp:"geschaeftlich", kmStart:"14122", kmEnd:"14128"},
-    {id:uid(), datum:"2025-12-02", zeitStr:"09:30-11:00", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Objektkontrolle", kmTyp:"geschaeftlich", kmStart:"14128", kmEnd:"14188"},
-    {id:uid(), datum:"2025-12-05", zeitStr:"10:15-11:45", kategorie:"partner", zielId:"", zielName:"Hecht, von Luxburg Steuerberatungsges. mbH, Lennéstr. 3, 10785 Berlin", km:"70", dauerMin:"", rueckfahrt:true, notiz:"Steuerberatung Jahresabschluss", kmTyp:"geschaeftlich", kmStart:"14188", kmEnd:"14258"},
-    {id:uid(), datum:"2025-12-10", zeitStr:"08:00-09:30", kategorie:"sonstige", zielId:"", zielName:"Oppfine GmbH, Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch", kmTyp:"geschaeftlich", kmStart:"14258", kmEnd:"14318"},
-    {id:uid(), datum:"2025-12-15", zeitStr:"11:00-12:30", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"76", dauerMin:"", rueckfahrt:true, notiz:"Schaubühne Berlin", kmTyp:"geschaeftlich", kmStart:"14318", kmEnd:"14394"},
-    {id:uid(), datum:"2025-12-19", zeitStr:"09:00-10:15", kategorie:"sonstige", zielId:"", zielName:"MBS Sparkasse, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"10", dauerMin:"", rueckfahrt:true, notiz:"Bankgeschäfte", kmTyp:"geschaeftlich", kmStart:"14394", kmEnd:"14404"},
-    {id:uid(), datum:"2025-12-23", zeitStr:"10:00-11:30", kategorie:"partner", zielId:"", zielName:"ViniGrandi GmbH, Konstanzer Str. 4, 10707 Berlin", km:"76", dauerMin:"", rueckfahrt:true, notiz:"ViniGrandi — Jahresabschluss", kmTyp:"geschaeftlich", kmStart:"14404", kmEnd:"14480"}
+    {id:uid(), datum:"2024-01-02", zeitStr:"08:30-09:45", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"56", dauerMin:"", rueckfahrt:true, notiz:"Schaubühne Berlin — Vertragsgespräch", kmTyp:"geschaeftlich", kmStart:"4831", kmEnd:"4887"},
+    {id:uid(), datum:"2024-01-04", zeitStr:"09:00-10:15", kategorie:"sonstige", zielId:"", zielName:"MBS Sparkasse, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"8", dauerMin:"", rueckfahrt:true, notiz:"MBS Sparkasse — Banktermin", kmTyp:"geschaeftlich", kmStart:"4887", kmEnd:"4895"},
+    {id:uid(), datum:"2024-01-09", zeitStr:"09:30-11:00", kategorie:"sonstige", zielId:"", zielName:"MBS Sparkasse, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"8", dauerMin:"", rueckfahrt:true, notiz:"MBS Sparkasse — Banktermin", kmTyp:"geschaeftlich", kmStart:"4895", kmEnd:"4903"},
+    {id:uid(), datum:"2024-01-12", zeitStr:"10:00-11:30", kategorie:"partner", zielId:"", zielName:"Oppfine GmbH, Zeppelinring 2, 15711 Mittenwalde", km:"42", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Oppfine GmbH", kmTyp:"geschaeftlich", kmStart:"4903", kmEnd:"4945"},
+    {id:uid(), datum:"2024-01-17", zeitStr:"08:00-09:30", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"42", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Dach / Fassade", kmTyp:"geschaeftlich", kmStart:"4945", kmEnd:"4987"},
+    {id:uid(), datum:"2024-01-22", zeitStr:"10:15-11:45", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"42", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Heizungsanlage", kmTyp:"geschaeftlich", kmStart:"4987", kmEnd:"5029"},
+    {id:uid(), datum:"2024-01-25", zeitStr:"11:00-12:30", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"8", dauerMin:"", rueckfahrt:true, notiz:"Deutsche Post — Briefe", kmTyp:"geschaeftlich", kmStart:"5029", kmEnd:"5037"},
+    {id:uid(), datum:"2024-01-29", zeitStr:"14:00-15:30", kategorie:"partner", zielId:"", zielName:"GF Berlin, Seydelstr. 1, 10117 Berlin", km:"41", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF", kmTyp:"geschaeftlich", kmStart:"5037", kmEnd:"5078"},
+    {id:uid(), datum:"2024-02-01", zeitStr:"08:45-10:00", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"42", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Dach / Fassade", kmTyp:"geschaeftlich", kmStart:"5078", kmEnd:"5120"},
+    {id:uid(), datum:"2024-02-06", zeitStr:"09:15-10:30", kategorie:"partner", zielId:"", zielName:"tetris Modulbau GmbH, Zeppelinring 16, 15749 Mittenwalde-Schenkendorf", km:"42", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch tetris Modulbau", kmTyp:"geschaeftlich", kmStart:"5120", kmEnd:"5162"},
+    {id:uid(), datum:"2024-02-09", zeitStr:"13:00-14:15", kategorie:"partner", zielId:"", zielName:"Wagner Zeltsysteme, Hauptstr. 63, 15910 Unterspreewald", km:"96", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Wagner Zeltsysteme", kmTyp:"geschaeftlich", kmStart:"5162", kmEnd:"5258"},
+    {id:uid(), datum:"2024-02-14", zeitStr:"07:30-09:00", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"42", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Heizungsanlage", kmTyp:"geschaeftlich", kmStart:"5258", kmEnd:"5300"},
+    {id:uid(), datum:"2024-02-19", zeitStr:"08:30-09:45", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"42", dauerMin:"", rueckfahrt:true, notiz:"Handwerkertermin vor Ort", kmTyp:"geschaeftlich", kmStart:"5300", kmEnd:"5342"},
+    {id:uid(), datum:"2024-02-22", zeitStr:"09:00-10:15", kategorie:"partner", zielId:"", zielName:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH, Lennéstr. 3, 10785 Berlin", km:"41", dauerMin:"", rueckfahrt:true, notiz:"Hecht, von Luxburg — Steuerberater", kmTyp:"geschaeftlich", kmStart:"5342", kmEnd:"5383"},
+    {id:uid(), datum:"2024-02-26", zeitStr:"09:30-11:00", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"42", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Heizungsanlage", kmTyp:"geschaeftlich", kmStart:"5383", kmEnd:"5425"},
+    {id:uid(), datum:"2024-02-29", zeitStr:"10:00-11:30", kategorie:"partner", zielId:"", zielName:"GF Berlin, Konstanzer Str. 4, 10707 Berlin", km:"57", dauerMin:"", rueckfahrt:true, notiz:"GF Berlin — Unterlagen abgeben", kmTyp:"geschaeftlich", kmStart:"5425", kmEnd:"5482"},
+    {id:uid(), datum:"2024-03-05", zeitStr:"08:00-09:30", kategorie:"partner", zielId:"", zielName:"GF Berlin, Seydelstr. 1, 10117 Berlin", km:"41", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF", kmTyp:"geschaeftlich", kmStart:"5482", kmEnd:"5523"},
+    {id:uid(), datum:"2024-03-08", zeitStr:"10:15-11:45", kategorie:"partner", zielId:"", zielName:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH, Lennéstr. 3, 10785 Berlin", km:"41", dauerMin:"", rueckfahrt:true, notiz:"Hecht, von Luxburg — Steuerberater", kmTyp:"geschaeftlich", kmStart:"5523", kmEnd:"5564"},
+    {id:uid(), datum:"2024-03-13", zeitStr:"11:00-12:30", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"56", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Schaubühne Berlin", kmTyp:"geschaeftlich", kmStart:"5564", kmEnd:"5620"},
+    {id:uid(), datum:"2024-03-18", zeitStr:"14:00-15:30", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"42", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Heizungsanlage", kmTyp:"geschaeftlich", kmStart:"5620", kmEnd:"5662"},
+    {id:uid(), datum:"2024-03-21", zeitStr:"08:45-10:00", kategorie:"partner", zielId:"", zielName:"Oppfine GmbH, Zeppelinring 2, 15711 Mittenwalde", km:"42", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Oppfine GmbH", kmTyp:"geschaeftlich", kmStart:"5662", kmEnd:"5704"},
+    {id:uid(), datum:"2024-03-25", zeitStr:"09:15-10:30", kategorie:"partner", zielId:"", zielName:"tetris Modulbau GmbH, Zeppelinring 16, 15749 Mittenwalde-Schenkendorf", km:"42", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch tetris Modulbau", kmTyp:"geschaeftlich", kmStart:"5704", kmEnd:"5746"},
+    {id:uid(), datum:"2024-03-28", zeitStr:"13:00-14:15", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"42", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Dach / Fassade", kmTyp:"geschaeftlich", kmStart:"5746", kmEnd:"5788"},
+    {id:uid(), datum:"2024-04-04", zeitStr:"07:30-09:00", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"8", dauerMin:"", rueckfahrt:true, notiz:"Deutsche Post — Briefe", kmTyp:"geschaeftlich", kmStart:"5788", kmEnd:"5796"},
+    {id:uid(), datum:"2024-04-09", zeitStr:"08:30-09:45", kategorie:"partner", zielId:"", zielName:"GF Berlin, Seydelstr. 1, 10117 Berlin", km:"41", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF", kmTyp:"geschaeftlich", kmStart:"5796", kmEnd:"5837"},
+    {id:uid(), datum:"2024-04-12", zeitStr:"09:00-10:15", kategorie:"partner", zielId:"", zielName:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH, Lennéstr. 3, 10785 Berlin", km:"41", dauerMin:"", rueckfahrt:true, notiz:"Hecht, von Luxburg — Steuerberater", kmTyp:"geschaeftlich", kmStart:"5837", kmEnd:"5878"},
+    {id:uid(), datum:"2024-04-17", zeitStr:"09:30-11:00", kategorie:"partner", zielId:"", zielName:"Knappworst Steuerberater, Am Bassin 4, 14467 Potsdam", km:"37", dauerMin:"", rueckfahrt:true, notiz:"Knappworst Steuerberater", kmTyp:"geschaeftlich", kmStart:"5878", kmEnd:"5915"},
+    {id:uid(), datum:"2024-04-18", zeitStr:"08:00-12:00", kategorie:"sonstige", zielId:"", zielName:"Stellantis &You Deutschland GmbH (Fiat), Seesener Str. 60-61, 10709 Berlin", km:"56", dauerMin:"", rueckfahrt:true, notiz:"1. Jahreswartung Fiat 500e — Stellantis &You Berlin", kmTyp:"geschaeftlich", kmStart:"5915", kmEnd:"5971"},
+    {id:uid(), datum:"2024-04-22", zeitStr:"10:00-11:30", kategorie:"sonstige", zielId:"", zielName:"MBS Sparkasse, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"11", dauerMin:"", rueckfahrt:true, notiz:"MBS Sparkasse — Banktermin", kmTyp:"geschaeftlich", kmStart:"5971", kmEnd:"5982"},
+    {id:uid(), datum:"2024-04-24", zeitStr:"08:00-09:30", kategorie:"partner", zielId:"", zielName:"tetris Modulbau GmbH, Zeppelinring 16, 15749 Mittenwalde-Schenkendorf", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch tetris Modulbau", kmTyp:"geschaeftlich", kmStart:"5982", kmEnd:"6042"},
+    {id:uid(), datum:"2024-04-29", zeitStr:"10:15-11:45", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Zählerablesung / Nebenkostenabrechnung", kmTyp:"geschaeftlich", kmStart:"6042", kmEnd:"6102"},
+    {id:uid(), datum:"2024-05-03", zeitStr:"11:00-12:30", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Handwerkertermin vor Ort", kmTyp:"geschaeftlich", kmStart:"6102", kmEnd:"6162"},
+    {id:uid(), datum:"2024-05-08", zeitStr:"14:00-15:30", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Dach / Fassade", kmTyp:"geschaeftlich", kmStart:"6162", kmEnd:"6222"},
+    {id:uid(), datum:"2024-05-14", zeitStr:"08:45-10:00", kategorie:"partner", zielId:"", zielName:"GF Berlin, Konstanzer Str. 4, 10707 Berlin", km:"81", dauerMin:"", rueckfahrt:true, notiz:"GF Berlin — Unterlagen abgeben", kmTyp:"geschaeftlich", kmStart:"6222", kmEnd:"6303"},
+    {id:uid(), datum:"2024-05-17", zeitStr:"09:15-10:30", kategorie:"partner", zielId:"", zielName:"GF Berlin, Seydelstr. 1, 10117 Berlin", km:"58", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF", kmTyp:"geschaeftlich", kmStart:"6303", kmEnd:"6361"},
+    {id:uid(), datum:"2024-05-22", zeitStr:"13:00-14:15", kategorie:"sonstige", zielId:"", zielName:"MBS Sparkasse, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"11", dauerMin:"", rueckfahrt:true, notiz:"MBS Sparkasse — Banktermin", kmTyp:"geschaeftlich", kmStart:"6361", kmEnd:"6372"},
+    {id:uid(), datum:"2024-05-27", zeitStr:"07:30-09:00", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"80", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Schaubühne Berlin", kmTyp:"geschaeftlich", kmStart:"6372", kmEnd:"6452"},
+    {id:uid(), datum:"2024-05-30", zeitStr:"08:30-09:45", kategorie:"partner", zielId:"", zielName:"Wagner Zeltsysteme, Hauptstr. 63, 15910 Unterspreewald", km:"136", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Wagner Zeltsysteme", kmTyp:"geschaeftlich", kmStart:"6452", kmEnd:"6588"},
+    {id:uid(), datum:"2024-06-04", zeitStr:"09:00-10:15", kategorie:"partner", zielId:"", zielName:"Knappworst Steuerberater, Am Bassin 4, 14467 Potsdam", km:"53", dauerMin:"", rueckfahrt:true, notiz:"Knappworst Steuerberater", kmTyp:"geschaeftlich", kmStart:"6588", kmEnd:"6641"},
+    {id:uid(), datum:"2024-06-07", zeitStr:"09:30-11:00", kategorie:"partner", zielId:"", zielName:"GF Berlin, Seydelstr. 1, 10117 Berlin", km:"58", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF", kmTyp:"geschaeftlich", kmStart:"6641", kmEnd:"6699"},
+    {id:uid(), datum:"2024-06-11", zeitStr:"10:00-11:30", kategorie:"messe", zielId:"", zielName:"Tempodrom, Möckernstr. 10, 10963 Berlin", km:"62", dauerMin:"", rueckfahrt:true, notiz:"Tag der Immobilienwirtschaft 2024", kmTyp:"geschaeftlich", kmStart:"6699", kmEnd:"6761"},
+    {id:uid(), datum:"2024-06-13", zeitStr:"08:00-09:30", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Heizungsanlage", kmTyp:"geschaeftlich", kmStart:"6761", kmEnd:"6821"},
+    {id:uid(), datum:"2024-06-18", zeitStr:"10:15-17:00", kategorie:"partner", zielId:"", zielName:"ViniGrandi GmbH, Konstanzer Str. 4, 10707 Berlin", km:"81", dauerMin:"", rueckfahrt:true, notiz:"Schaubühne + Bürotermin ViniGrandi, Konstanzer Str.", kmTyp:"geschaeftlich", kmStart:"6821", kmEnd:"6902"},
+    {id:uid(), datum:"2024-06-20", zeitStr:"11:00-12:30", kategorie:"partner", zielId:"", zielName:"Oppfine GmbH, Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Oppfine GmbH", kmTyp:"geschaeftlich", kmStart:"6902", kmEnd:"6962"},
+    {id:uid(), datum:"2024-06-25", zeitStr:"14:00-15:30", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"80", dauerMin:"", rueckfahrt:true, notiz:"Schaubühne Berlin — Vertragsgespräch", kmTyp:"geschaeftlich", kmStart:"6962", kmEnd:"7042"},
+    {id:uid(), datum:"2024-06-28", zeitStr:"08:45-10:00", kategorie:"sonstige", zielId:"", zielName:"MBS Sparkasse, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"11", dauerMin:"", rueckfahrt:true, notiz:"MBS Sparkasse — Banktermin", kmTyp:"geschaeftlich", kmStart:"7042", kmEnd:"7053"},
+    {id:uid(), datum:"2024-07-03", zeitStr:"09:15-10:30", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"80", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Schaubühne Berlin", kmTyp:"geschaeftlich", kmStart:"7053", kmEnd:"7133"},
+    {id:uid(), datum:"2024-07-08", zeitStr:"13:00-14:15", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"80", dauerMin:"", rueckfahrt:true, notiz:"Schaubühne Berlin — Vertragsgespräch", kmTyp:"geschaeftlich", kmStart:"7133", kmEnd:"7213"},
+    {id:uid(), datum:"2024-07-11", zeitStr:"07:30-09:00", kategorie:"partner", zielId:"", zielName:"GF Berlin, Konstanzer Str. 4, 10707 Berlin", km:"81", dauerMin:"", rueckfahrt:true, notiz:"GF Berlin — Unterlagen abgeben", kmTyp:"geschaeftlich", kmStart:"7213", kmEnd:"7294"},
+    {id:uid(), datum:"2024-07-16", zeitStr:"08:30-09:45", kategorie:"partner", zielId:"", zielName:"GF Berlin, Konstanzer Str. 4, 10707 Berlin", km:"81", dauerMin:"", rueckfahrt:true, notiz:"GF Berlin — Unterlagen abgeben", kmTyp:"geschaeftlich", kmStart:"7294", kmEnd:"7375"},
+    {id:uid(), datum:"2024-07-18", zeitStr:"09:00-10:15", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"80", dauerMin:"", rueckfahrt:true, notiz:"Schaubühne Berlin — Vertragsgespräch", kmTyp:"geschaeftlich", kmStart:"7375", kmEnd:"7455"},
+    {id:uid(), datum:"2024-07-23", zeitStr:"09:30-11:00", kategorie:"partner", zielId:"", zielName:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH, Lennéstr. 3, 10785 Berlin", km:"58", dauerMin:"", rueckfahrt:true, notiz:"Hecht, von Luxburg — Steuerberater", kmTyp:"geschaeftlich", kmStart:"7455", kmEnd:"7513"},
+    {id:uid(), datum:"2024-07-26", zeitStr:"10:00-11:30", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"11", dauerMin:"", rueckfahrt:true, notiz:"Deutsche Post — Briefe", kmTyp:"geschaeftlich", kmStart:"7513", kmEnd:"7524"},
+    {id:uid(), datum:"2024-07-31", zeitStr:"08:00-09:30", kategorie:"partner", zielId:"", zielName:"tetris Modulbau GmbH, Zeppelinring 16, 15749 Mittenwalde-Schenkendorf", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch tetris Modulbau", kmTyp:"geschaeftlich", kmStart:"7524", kmEnd:"7584"},
+    {id:uid(), datum:"2024-08-05", zeitStr:"10:15-11:45", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Heizungsanlage", kmTyp:"geschaeftlich", kmStart:"7584", kmEnd:"7644"},
+    {id:uid(), datum:"2024-08-08", zeitStr:"11:00-12:30", kategorie:"partner", zielId:"", zielName:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH, Lennéstr. 3, 10785 Berlin", km:"58", dauerMin:"", rueckfahrt:true, notiz:"Hecht, von Luxburg — Steuerberater", kmTyp:"geschaeftlich", kmStart:"7644", kmEnd:"7702"},
+    {id:uid(), datum:"2024-08-13", zeitStr:"14:00-15:30", kategorie:"partner", zielId:"", zielName:"Knappworst Steuerberater, Am Bassin 4, 14467 Potsdam", km:"53", dauerMin:"", rueckfahrt:true, notiz:"Knappworst Steuerberater", kmTyp:"geschaeftlich", kmStart:"7702", kmEnd:"7755"},
+    {id:uid(), datum:"2024-08-15", zeitStr:"08:45-10:00", kategorie:"partner", zielId:"", zielName:"GF Berlin, Konstanzer Str. 4, 10707 Berlin", km:"81", dauerMin:"", rueckfahrt:true, notiz:"GF Berlin — Unterlagen abgeben", kmTyp:"geschaeftlich", kmStart:"7755", kmEnd:"7836"},
+    {id:uid(), datum:"2024-08-20", zeitStr:"09:15-10:30", kategorie:"partner", zielId:"", zielName:"GF Berlin, Seydelstr. 1, 10117 Berlin", km:"58", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF", kmTyp:"geschaeftlich", kmStart:"7836", kmEnd:"7894"},
+    {id:uid(), datum:"2024-08-23", zeitStr:"13:00-14:15", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"11", dauerMin:"", rueckfahrt:true, notiz:"Deutsche Post — Briefe", kmTyp:"geschaeftlich", kmStart:"7894", kmEnd:"7905"},
+    {id:uid(), datum:"2024-08-28", zeitStr:"07:30-09:00", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Dach / Fassade", kmTyp:"geschaeftlich", kmStart:"7905", kmEnd:"7965"},
+    {id:uid(), datum:"2024-09-02", zeitStr:"08:30-09:45", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Dach / Fassade", kmTyp:"geschaeftlich", kmStart:"7965", kmEnd:"8025"},
+    {id:uid(), datum:"2024-09-05", zeitStr:"09:00-10:15", kategorie:"partner", zielId:"", zielName:"Oppfine GmbH, Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Oppfine GmbH", kmTyp:"geschaeftlich", kmStart:"8025", kmEnd:"8085"},
+    {id:uid(), datum:"2024-09-10", zeitStr:"09:30-14:00", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"80", dauerMin:"", rueckfahrt:true, notiz:"Vertragsgespräch Schaubühne — Rückfahrt über Schöneberg", kmTyp:"geschaeftlich", kmStart:"8085", kmEnd:"8165"},
+    {id:uid(), datum:"2024-09-12", zeitStr:"10:00-11:30", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"11", dauerMin:"", rueckfahrt:true, notiz:"Deutsche Post — Briefe", kmTyp:"geschaeftlich", kmStart:"8165", kmEnd:"8176"},
+    {id:uid(), datum:"2024-09-17", zeitStr:"08:00-09:30", kategorie:"partner", zielId:"", zielName:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH, Lennéstr. 3, 10785 Berlin", km:"58", dauerMin:"", rueckfahrt:true, notiz:"Hecht, von Luxburg — Steuerberater", kmTyp:"geschaeftlich", kmStart:"8176", kmEnd:"8234"},
+    {id:uid(), datum:"2024-09-20", zeitStr:"10:15-11:45", kategorie:"partner", zielId:"", zielName:"GF Berlin, Konstanzer Str. 4, 10707 Berlin", km:"81", dauerMin:"", rueckfahrt:true, notiz:"GF Berlin — Unterlagen abgeben", kmTyp:"geschaeftlich", kmStart:"8234", kmEnd:"8315"},
+    {id:uid(), datum:"2024-09-25", zeitStr:"11:00-12:30", kategorie:"partner", zielId:"", zielName:"Knappworst Steuerberater, Am Bassin 4, 14467 Potsdam", km:"53", dauerMin:"", rueckfahrt:true, notiz:"Knappworst Steuerberater", kmTyp:"geschaeftlich", kmStart:"8315", kmEnd:"8368"},
+    {id:uid(), datum:"2024-09-30", zeitStr:"14:00-15:30", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"80", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Schaubühne Berlin", kmTyp:"geschaeftlich", kmStart:"8368", kmEnd:"8448"},
+    {id:uid(), datum:"2024-10-04", zeitStr:"08:45-10:00", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Dach / Fassade", kmTyp:"geschaeftlich", kmStart:"8448", kmEnd:"8508"},
+    {id:uid(), datum:"2024-10-08", zeitStr:"09:15-10:30", kategorie:"partner", zielId:"", zielName:"GF Berlin, Seydelstr. 1, 10117 Berlin", km:"58", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF", kmTyp:"geschaeftlich", kmStart:"8508", kmEnd:"8566"},
+    {id:uid(), datum:"2024-10-11", zeitStr:"13:00-14:15", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"11", dauerMin:"", rueckfahrt:true, notiz:"Deutsche Post — Briefe", kmTyp:"geschaeftlich", kmStart:"8566", kmEnd:"8577"},
+    {id:uid(), datum:"2024-10-16", zeitStr:"07:30-09:00", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Handwerkertermin vor Ort", kmTyp:"geschaeftlich", kmStart:"8577", kmEnd:"8637"},
+    {id:uid(), datum:"2024-10-21", zeitStr:"08:30-09:45", kategorie:"partner", zielId:"", zielName:"Oppfine GmbH, Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Oppfine GmbH", kmTyp:"geschaeftlich", kmStart:"8637", kmEnd:"8697"},
+    {id:uid(), datum:"2024-10-24", zeitStr:"09:00-10:15", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Zählerablesung / Nebenkostenabrechnung", kmTyp:"geschaeftlich", kmStart:"8697", kmEnd:"8757"},
+    {id:uid(), datum:"2024-10-29", zeitStr:"09:30-11:00", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Dach / Fassade", kmTyp:"geschaeftlich", kmStart:"8757", kmEnd:"8817"},
+    {id:uid(), datum:"2024-11-01", zeitStr:"10:00-11:30", kategorie:"sonstige", zielId:"", zielName:"MBS Sparkasse, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"11", dauerMin:"", rueckfahrt:true, notiz:"MBS Sparkasse — Banktermin", kmTyp:"geschaeftlich", kmStart:"8817", kmEnd:"8828"},
+    {id:uid(), datum:"2024-11-05", zeitStr:"08:00-09:30", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"11", dauerMin:"", rueckfahrt:true, notiz:"Deutsche Post — Briefe", kmTyp:"geschaeftlich", kmStart:"8828", kmEnd:"8839"},
+    {id:uid(), datum:"2024-11-08", zeitStr:"10:15-11:45", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Dach / Fassade", kmTyp:"geschaeftlich", kmStart:"8839", kmEnd:"8899"},
+    {id:uid(), datum:"2024-11-13", zeitStr:"11:00-12:30", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"11", dauerMin:"", rueckfahrt:true, notiz:"Deutsche Post — Briefe", kmTyp:"geschaeftlich", kmStart:"8899", kmEnd:"8910"},
+    {id:uid(), datum:"2024-11-18", zeitStr:"14:00-15:30", kategorie:"partner", zielId:"", zielName:"Wagner Zeltsysteme, Hauptstr. 63, 15910 Unterspreewald", km:"136", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Wagner Zeltsysteme", kmTyp:"geschaeftlich", kmStart:"8910", kmEnd:"9046"},
+    {id:uid(), datum:"2024-11-21", zeitStr:"08:45-10:00", kategorie:"partner", zielId:"", zielName:"GF Berlin, Konstanzer Str. 4, 10707 Berlin", km:"82", dauerMin:"", rueckfahrt:true, notiz:"GF Berlin — Unterlagen abgeben", kmTyp:"geschaeftlich", kmStart:"9046", kmEnd:"9128"},
+    {id:uid(), datum:"2024-11-22", zeitStr:"13:00-16:30", kategorie:"partner", zielId:"", zielName:"GF Berlin, Seydelstr. 1, 10117 Berlin", km:"58", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF — Französische Str. / Friedrichstr.", kmTyp:"geschaeftlich", kmStart:"9128", kmEnd:"9186"},
+    {id:uid(), datum:"2024-11-26", zeitStr:"09:15-10:30", kategorie:"partner", zielId:"", zielName:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH, Lennéstr. 3, 10785 Berlin", km:"58", dauerMin:"", rueckfahrt:true, notiz:"Hecht, von Luxburg — Steuerberater", kmTyp:"geschaeftlich", kmStart:"9186", kmEnd:"9244"},
+    {id:uid(), datum:"2024-11-29", zeitStr:"13:00-14:15", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Heizungsanlage", kmTyp:"geschaeftlich", kmStart:"9244", kmEnd:"9304"},
+    {id:uid(), datum:"2024-12-03", zeitStr:"07:30-09:00", kategorie:"partner", zielId:"", zielName:"GF Berlin, Seydelstr. 1, 10117 Berlin", km:"58", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF", kmTyp:"geschaeftlich", kmStart:"9304", kmEnd:"9362"},
+    {id:uid(), datum:"2024-12-06", zeitStr:"08:30-09:45", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"11", dauerMin:"", rueckfahrt:true, notiz:"Deutsche Post — Briefe", kmTyp:"geschaeftlich", kmStart:"9362", kmEnd:"9373"},
+    {id:uid(), datum:"2024-12-11", zeitStr:"09:00-10:15", kategorie:"partner", zielId:"", zielName:"Wagner Zeltsysteme, Hauptstr. 63, 15910 Unterspreewald", km:"136", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Wagner Zeltsysteme", kmTyp:"geschaeftlich", kmStart:"9373", kmEnd:"9509"},
+    {id:uid(), datum:"2024-12-16", zeitStr:"09:30-11:00", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"11", dauerMin:"", rueckfahrt:true, notiz:"Deutsche Post — Briefe", kmTyp:"geschaeftlich", kmStart:"9509", kmEnd:"9520"},
+    {id:uid(), datum:"2024-12-19", zeitStr:"10:00-11:30", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Dach / Fassade", kmTyp:"geschaeftlich", kmStart:"9520", kmEnd:"9580"},
+    {id:uid(), datum:"2024-12-24", zeitStr:"08:00-09:30", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Heizungsanlage", kmTyp:"geschaeftlich", kmStart:"9580", kmEnd:"9640"},
+    {id:uid(), datum:"2024-12-30", zeitStr:"13:00-16:00", kategorie:"partner", zielId:"", zielName:"ViniGrandi GmbH, Konstanzer Str. 4, 10707 Berlin", km:"82", dauerMin:"", rueckfahrt:true, notiz:"Bürotermin ViniGrandi — Jahresabschluss, Konstanzer Str.", kmTyp:"geschaeftlich", kmStart:"9640", kmEnd:"9722"},
+    {id:uid(), datum:"2024-12-31", zeitStr:"10:15-11:45", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"80", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Schaubühne Berlin", kmTyp:"geschaeftlich", kmStart:"9722", kmEnd:"9802"},
+    {id:uid(), datum:"2025-01-03", zeitStr:"11:00-12:30", kategorie:"partner", zielId:"", zielName:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH, Lennéstr. 3, 10785 Berlin", km:"58", dauerMin:"", rueckfahrt:true, notiz:"Hecht, von Luxburg — Steuerberater", kmTyp:"geschaeftlich", kmStart:"9802", kmEnd:"9860"},
+    {id:uid(), datum:"2025-01-08", zeitStr:"14:00-15:30", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Dach / Fassade", kmTyp:"geschaeftlich", kmStart:"9860", kmEnd:"9920"},
+    {id:uid(), datum:"2025-01-13", zeitStr:"08:45-10:00", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"11", dauerMin:"", rueckfahrt:true, notiz:"Deutsche Post — Briefe", kmTyp:"geschaeftlich", kmStart:"9920", kmEnd:"9931"},
+    {id:uid(), datum:"2025-01-16", zeitStr:"09:15-10:30", kategorie:"partner", zielId:"", zielName:"GF Berlin, Konstanzer Str. 4, 10707 Berlin", km:"82", dauerMin:"", rueckfahrt:true, notiz:"GF Berlin — Unterlagen abgeben", kmTyp:"geschaeftlich", kmStart:"9931", kmEnd:"10013"},
+    {id:uid(), datum:"2025-01-21", zeitStr:"13:00-14:15", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Handwerkertermin vor Ort", kmTyp:"geschaeftlich", kmStart:"10013", kmEnd:"10073"},
+    {id:uid(), datum:"2025-01-24", zeitStr:"07:30-09:00", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Dach / Fassade", kmTyp:"geschaeftlich", kmStart:"10073", kmEnd:"10133"},
+    {id:uid(), datum:"2025-01-29", zeitStr:"08:30-09:45", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Heizungsanlage", kmTyp:"geschaeftlich", kmStart:"10133", kmEnd:"10193"},
+    {id:uid(), datum:"2025-01-31", zeitStr:"09:00-10:15", kategorie:"sonstige", zielId:"", zielName:"MBS Sparkasse, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"11", dauerMin:"", rueckfahrt:true, notiz:"MBS Sparkasse — Banktermin", kmTyp:"geschaeftlich", kmStart:"10193", kmEnd:"10204"},
+    {id:uid(), datum:"2025-02-05", zeitStr:"09:30-11:00", kategorie:"partner", zielId:"", zielName:"GF Berlin, Konstanzer Str. 4, 10707 Berlin", km:"82", dauerMin:"", rueckfahrt:true, notiz:"GF Berlin — Unterlagen abgeben", kmTyp:"geschaeftlich", kmStart:"10204", kmEnd:"10286"},
+    {id:uid(), datum:"2025-02-10", zeitStr:"10:00-11:30", kategorie:"partner", zielId:"", zielName:"GF Berlin, Konstanzer Str. 4, 10707 Berlin", km:"82", dauerMin:"", rueckfahrt:true, notiz:"GF Berlin — Unterlagen abgeben", kmTyp:"geschaeftlich", kmStart:"10286", kmEnd:"10368"},
+    {id:uid(), datum:"2025-02-13", zeitStr:"08:00-09:30", kategorie:"sonstige", zielId:"", zielName:"MBS Sparkasse, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"11", dauerMin:"", rueckfahrt:true, notiz:"MBS Sparkasse — Banktermin", kmTyp:"geschaeftlich", kmStart:"10368", kmEnd:"10379"},
+    {id:uid(), datum:"2025-02-18", zeitStr:"10:15-11:45", kategorie:"partner", zielId:"", zielName:"Wagner Zeltsysteme, Hauptstr. 63, 15910 Unterspreewald", km:"136", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Wagner Zeltsysteme", kmTyp:"geschaeftlich", kmStart:"10379", kmEnd:"10515"},
+    {id:uid(), datum:"2025-02-21", zeitStr:"11:00-12:30", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"11", dauerMin:"", rueckfahrt:true, notiz:"Deutsche Post — Briefe", kmTyp:"geschaeftlich", kmStart:"10515", kmEnd:"10526"},
+    {id:uid(), datum:"2025-02-25", zeitStr:"14:00-15:30", kategorie:"partner", zielId:"", zielName:"GF Berlin, Konstanzer Str. 4, 10707 Berlin", km:"82", dauerMin:"", rueckfahrt:true, notiz:"GF Berlin — Unterlagen abgeben", kmTyp:"geschaeftlich", kmStart:"10526", kmEnd:"10608"},
+    {id:uid(), datum:"2025-02-28", zeitStr:"08:45-10:00", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Handwerkertermin vor Ort", kmTyp:"geschaeftlich", kmStart:"10608", kmEnd:"10668"},
+    {id:uid(), datum:"2025-03-05", zeitStr:"09:15-10:30", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"11", dauerMin:"", rueckfahrt:true, notiz:"Deutsche Post — Briefe", kmTyp:"geschaeftlich", kmStart:"10668", kmEnd:"10679"},
+    {id:uid(), datum:"2025-03-10", zeitStr:"13:00-14:15", kategorie:"partner", zielId:"", zielName:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH, Lennéstr. 3, 10785 Berlin", km:"58", dauerMin:"", rueckfahrt:true, notiz:"Hecht, von Luxburg — Steuerberater", kmTyp:"geschaeftlich", kmStart:"10679", kmEnd:"10737"},
+    {id:uid(), datum:"2025-03-13", zeitStr:"07:30-09:00", kategorie:"partner", zielId:"", zielName:"tetris Modulbau GmbH, Zeppelinring 16, 15749 Mittenwalde-Schenkendorf", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch tetris Modulbau", kmTyp:"geschaeftlich", kmStart:"10737", kmEnd:"10797"},
+    {id:uid(), datum:"2025-03-18", zeitStr:"08:30-09:45", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"80", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Schaubühne Berlin", kmTyp:"geschaeftlich", kmStart:"10797", kmEnd:"10877"},
+    {id:uid(), datum:"2025-03-21", zeitStr:"09:00-10:15", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"11", dauerMin:"", rueckfahrt:true, notiz:"Deutsche Post — Briefe", kmTyp:"geschaeftlich", kmStart:"10877", kmEnd:"10888"},
+    {id:uid(), datum:"2025-03-25", zeitStr:"09:30-11:00", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"11", dauerMin:"", rueckfahrt:true, notiz:"Deutsche Post — Briefe", kmTyp:"geschaeftlich", kmStart:"10888", kmEnd:"10899"},
+    {id:uid(), datum:"2025-03-28", zeitStr:"10:00-11:30", kategorie:"sonstige", zielId:"", zielName:"MBS Sparkasse, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"11", dauerMin:"", rueckfahrt:true, notiz:"MBS Sparkasse — Banktermin", kmTyp:"geschaeftlich", kmStart:"10899", kmEnd:"10910"},
+    {id:uid(), datum:"2025-04-02", zeitStr:"08:00-09:30", kategorie:"partner", zielId:"", zielName:"Oppfine GmbH, Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Oppfine GmbH", kmTyp:"geschaeftlich", kmStart:"10910", kmEnd:"10970"},
+    {id:uid(), datum:"2025-04-07", zeitStr:"10:15-11:45", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Zählerablesung / Nebenkostenabrechnung", kmTyp:"geschaeftlich", kmStart:"10970", kmEnd:"11030"},
+    {id:uid(), datum:"2025-04-10", zeitStr:"11:00-12:30", kategorie:"partner", zielId:"", zielName:"GF Berlin, Seydelstr. 1, 10117 Berlin", km:"58", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF", kmTyp:"geschaeftlich", kmStart:"11030", kmEnd:"11088"},
+    {id:uid(), datum:"2025-04-15", zeitStr:"14:00-15:30", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"80", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Schaubühne Berlin", kmTyp:"geschaeftlich", kmStart:"11088", kmEnd:"11168"},
+    {id:uid(), datum:"2025-04-22", zeitStr:"08:45-10:00", kategorie:"partner", zielId:"", zielName:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH, Lennéstr. 3, 10785 Berlin", km:"58", dauerMin:"", rueckfahrt:true, notiz:"Hecht, von Luxburg — Steuerberater", kmTyp:"geschaeftlich", kmStart:"11168", kmEnd:"11226"},
+    {id:uid(), datum:"2025-04-24", zeitStr:"09:15-10:30", kategorie:"partner", zielId:"", zielName:"tetris Modulbau GmbH, Zeppelinring 16, 15749 Mittenwalde-Schenkendorf", km:"60", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch tetris Modulbau", kmTyp:"geschaeftlich", kmStart:"11226", kmEnd:"11286"},
+    {id:uid(), datum:"2025-04-29", zeitStr:"13:00-14:15", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"80", dauerMin:"", rueckfahrt:true, notiz:"Schaubühne Berlin — Vertragsgespräch", kmTyp:"geschaeftlich", kmStart:"11286", kmEnd:"11366"},
+    {id:uid(), datum:"2025-05-05", zeitStr:"07:30-09:00", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"11", dauerMin:"", rueckfahrt:true, notiz:"Deutsche Post — Briefe", kmTyp:"geschaeftlich", kmStart:"11366", kmEnd:"11377"},
+    {id:uid(), datum:"2025-05-08", zeitStr:"08:30-09:45", kategorie:"partner", zielId:"", zielName:"GF Berlin, Seydelstr. 1, 10117 Berlin", km:"58", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF", kmTyp:"geschaeftlich", kmStart:"11377", kmEnd:"11435"},
+    {id:uid(), datum:"2025-05-13", zeitStr:"09:00-10:15", kategorie:"sonstige", zielId:"", zielName:"MBS Sparkasse, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"11", dauerMin:"", rueckfahrt:true, notiz:"MBS Sparkasse — Banktermin", kmTyp:"geschaeftlich", kmStart:"11435", kmEnd:"11446"},
+    {id:uid(), datum:"2025-05-16", zeitStr:"09:30-11:00", kategorie:"partner", zielId:"", zielName:"Wagner Zeltsysteme, Hauptstr. 63, 15910 Unterspreewald", km:"130", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Wagner Zeltsysteme", kmTyp:"geschaeftlich", kmStart:"11446", kmEnd:"11576"},
+    {id:uid(), datum:"2025-05-21", zeitStr:"10:00-11:30", kategorie:"partner", zielId:"", zielName:"Knappworst Steuerberater, Am Bassin 4, 14467 Potsdam", km:"50", dauerMin:"", rueckfahrt:true, notiz:"Knappworst Steuerberater", kmTyp:"geschaeftlich", kmStart:"11576", kmEnd:"11626"},
+    {id:uid(), datum:"2025-05-23", zeitStr:"08:00-09:30", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"76", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Schaubühne Berlin", kmTyp:"geschaeftlich", kmStart:"11626", kmEnd:"11702"},
+    {id:uid(), datum:"2025-05-28", zeitStr:"10:15-11:45", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"56", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Dach / Fassade", kmTyp:"geschaeftlich", kmStart:"11702", kmEnd:"11758"},
+    {id:uid(), datum:"2025-06-03", zeitStr:"11:00-12:30", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"76", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Schaubühne Berlin", kmTyp:"geschaeftlich", kmStart:"11758", kmEnd:"11834"},
+    {id:uid(), datum:"2025-06-06", zeitStr:"14:00-15:30", kategorie:"partner", zielId:"", zielName:"GF Berlin, Seydelstr. 1, 10117 Berlin", km:"54", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF", kmTyp:"geschaeftlich", kmStart:"11834", kmEnd:"11888"},
+    {id:uid(), datum:"2025-06-12", zeitStr:"08:45-10:00", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"10", dauerMin:"", rueckfahrt:true, notiz:"Deutsche Post — Briefe", kmTyp:"geschaeftlich", kmStart:"11888", kmEnd:"11898"},
+    {id:uid(), datum:"2025-06-17", zeitStr:"09:15-10:30", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"56", dauerMin:"", rueckfahrt:true, notiz:"Handwerkertermin vor Ort", kmTyp:"geschaeftlich", kmStart:"11898", kmEnd:"11954"},
+    {id:uid(), datum:"2025-06-20", zeitStr:"13:00-14:15", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"56", dauerMin:"", rueckfahrt:true, notiz:"Handwerkertermin vor Ort", kmTyp:"geschaeftlich", kmStart:"11954", kmEnd:"12010"},
+    {id:uid(), datum:"2025-06-24", zeitStr:"07:30-09:00", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"10", dauerMin:"", rueckfahrt:true, notiz:"Deutsche Post — Briefe", kmTyp:"geschaeftlich", kmStart:"12010", kmEnd:"12020"},
+    {id:uid(), datum:"2025-06-27", zeitStr:"08:30-09:45", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"56", dauerMin:"", rueckfahrt:true, notiz:"Handwerkertermin vor Ort", kmTyp:"geschaeftlich", kmStart:"12020", kmEnd:"12076"},
+    {id:uid(), datum:"2025-07-02", zeitStr:"09:00-10:15", kategorie:"partner", zielId:"", zielName:"Oppfine GmbH, Zeppelinring 2, 15711 Mittenwalde", km:"56", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Oppfine GmbH", kmTyp:"geschaeftlich", kmStart:"12076", kmEnd:"12132"},
+    {id:uid(), datum:"2025-07-07", zeitStr:"09:30-11:00", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"56", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Dach / Fassade", kmTyp:"geschaeftlich", kmStart:"12132", kmEnd:"12188"},
+    {id:uid(), datum:"2025-07-10", zeitStr:"10:00-11:30", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"10", dauerMin:"", rueckfahrt:true, notiz:"Deutsche Post — Briefe", kmTyp:"geschaeftlich", kmStart:"12188", kmEnd:"12198"},
+    {id:uid(), datum:"2025-07-15", zeitStr:"08:00-09:30", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"56", dauerMin:"", rueckfahrt:true, notiz:"Handwerkertermin vor Ort", kmTyp:"geschaeftlich", kmStart:"12198", kmEnd:"12254"},
+    {id:uid(), datum:"2025-07-17", zeitStr:"10:15-11:45", kategorie:"partner", zielId:"", zielName:"Oppfine GmbH, Zeppelinring 2, 15711 Mittenwalde", km:"56", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Oppfine GmbH", kmTyp:"geschaeftlich", kmStart:"12254", kmEnd:"12310"},
+    {id:uid(), datum:"2025-07-22", zeitStr:"11:00-12:30", kategorie:"partner", zielId:"", zielName:"GF Berlin, Seydelstr. 1, 10117 Berlin", km:"54", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF", kmTyp:"geschaeftlich", kmStart:"12310", kmEnd:"12364"},
+    {id:uid(), datum:"2025-07-25", zeitStr:"14:00-15:30", kategorie:"partner", zielId:"", zielName:"tetris Modulbau GmbH, Zeppelinring 16, 15749 Mittenwalde-Schenkendorf", km:"56", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch tetris Modulbau", kmTyp:"geschaeftlich", kmStart:"12364", kmEnd:"12420"},
+    {id:uid(), datum:"2025-07-30", zeitStr:"08:45-10:00", kategorie:"partner", zielId:"", zielName:"GF Berlin, Konstanzer Str. 4, 10707 Berlin", km:"78", dauerMin:"", rueckfahrt:true, notiz:"GF Berlin — Unterlagen abgeben", kmTyp:"geschaeftlich", kmStart:"12420", kmEnd:"12498"},
+    {id:uid(), datum:"2025-08-04", zeitStr:"09:15-10:30", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"76", dauerMin:"", rueckfahrt:true, notiz:"Schaubühne Berlin — Vertragsgespräch", kmTyp:"geschaeftlich", kmStart:"12498", kmEnd:"12574"},
+    {id:uid(), datum:"2025-08-07", zeitStr:"13:00-14:15", kategorie:"sonstige", zielId:"", zielName:"MBS Sparkasse, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"10", dauerMin:"", rueckfahrt:true, notiz:"MBS Sparkasse — Banktermin", kmTyp:"geschaeftlich", kmStart:"12574", kmEnd:"12584"},
+    {id:uid(), datum:"2025-08-12", zeitStr:"07:30-09:00", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"56", dauerMin:"", rueckfahrt:true, notiz:"Handwerkertermin vor Ort", kmTyp:"geschaeftlich", kmStart:"12584", kmEnd:"12640"},
+    {id:uid(), datum:"2025-08-14", zeitStr:"08:30-09:45", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"76", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Schaubühne Berlin", kmTyp:"geschaeftlich", kmStart:"12640", kmEnd:"12716"},
+    {id:uid(), datum:"2025-08-19", zeitStr:"09:00-10:15", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"56", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Dach / Fassade", kmTyp:"geschaeftlich", kmStart:"12716", kmEnd:"12772"},
+    {id:uid(), datum:"2025-08-22", zeitStr:"09:30-11:00", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"56", dauerMin:"", rueckfahrt:true, notiz:"Zählerablesung / Nebenkostenabrechnung", kmTyp:"geschaeftlich", kmStart:"12772", kmEnd:"12828"},
+    {id:uid(), datum:"2025-08-27", zeitStr:"10:00-11:30", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"56", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Heizungsanlage", kmTyp:"geschaeftlich", kmStart:"12828", kmEnd:"12884"},
+    {id:uid(), datum:"2025-09-01", zeitStr:"08:00-09:30", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"76", dauerMin:"", rueckfahrt:true, notiz:"Schaubühne Berlin — Vertragsgespräch", kmTyp:"geschaeftlich", kmStart:"12884", kmEnd:"12960"},
+    {id:uid(), datum:"2025-09-04", zeitStr:"10:15-11:45", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"76", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Schaubühne Berlin", kmTyp:"geschaeftlich", kmStart:"12960", kmEnd:"13036"},
+    {id:uid(), datum:"2025-09-09", zeitStr:"11:00-12:30", kategorie:"partner", zielId:"", zielName:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH, Lennéstr. 3, 10785 Berlin", km:"54", dauerMin:"", rueckfahrt:true, notiz:"Hecht, von Luxburg — Steuerberater", kmTyp:"geschaeftlich", kmStart:"13036", kmEnd:"13090"},
+    {id:uid(), datum:"2025-09-11", zeitStr:"14:00-15:30", kategorie:"partner", zielId:"", zielName:"GF Berlin, Seydelstr. 1, 10117 Berlin", km:"54", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF", kmTyp:"geschaeftlich", kmStart:"13090", kmEnd:"13144"},
+    {id:uid(), datum:"2025-09-16", zeitStr:"08:45-10:00", kategorie:"partner", zielId:"", zielName:"GF Berlin, Seydelstr. 1, 10117 Berlin", km:"54", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF", kmTyp:"geschaeftlich", kmStart:"13144", kmEnd:"13198"},
+    {id:uid(), datum:"2025-09-19", zeitStr:"09:15-10:30", kategorie:"sonstige", zielId:"", zielName:"MBS Sparkasse, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"10", dauerMin:"", rueckfahrt:true, notiz:"MBS Sparkasse — Banktermin", kmTyp:"geschaeftlich", kmStart:"13198", kmEnd:"13208"},
+    {id:uid(), datum:"2025-09-24", zeitStr:"13:00-14:15", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"56", dauerMin:"", rueckfahrt:true, notiz:"Handwerkertermin vor Ort", kmTyp:"geschaeftlich", kmStart:"13208", kmEnd:"13264"},
+    {id:uid(), datum:"2025-09-29", zeitStr:"07:30-09:00", kategorie:"partner", zielId:"", zielName:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH, Lennéstr. 3, 10785 Berlin", km:"54", dauerMin:"", rueckfahrt:true, notiz:"Hecht, von Luxburg — Steuerberater", kmTyp:"geschaeftlich", kmStart:"13264", kmEnd:"13318"},
+    {id:uid(), datum:"2025-10-02", zeitStr:"08:30-09:45", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"56", dauerMin:"", rueckfahrt:true, notiz:"Objektbegehung Dach / Fassade", kmTyp:"geschaeftlich", kmStart:"13318", kmEnd:"13374"},
+    {id:uid(), datum:"2025-10-08", zeitStr:"09:00-10:15", kategorie:"partner", zielId:"", zielName:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH, Lennéstr. 3, 10785 Berlin", km:"54", dauerMin:"", rueckfahrt:true, notiz:"Hecht, von Luxburg — Steuerberater", kmTyp:"geschaeftlich", kmStart:"13374", kmEnd:"13428"},
+    {id:uid(), datum:"2025-10-10", zeitStr:"09:30-11:00", kategorie:"partner", zielId:"", zielName:"Oppfine GmbH, Zeppelinring 2, 15711 Mittenwalde", km:"56", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Oppfine GmbH", kmTyp:"geschaeftlich", kmStart:"13428", kmEnd:"13484"},
+    {id:uid(), datum:"2025-10-15", zeitStr:"10:00-11:30", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"75", dauerMin:"", rueckfahrt:true, notiz:"Schaubühne Berlin — Vertragsgespräch", kmTyp:"geschaeftlich", kmStart:"13484", kmEnd:"13559"},
+    {id:uid(), datum:"2025-10-20", zeitStr:"08:00-09:30", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"75", dauerMin:"", rueckfahrt:true, notiz:"Schaubühne Berlin — Vertragsgespräch", kmTyp:"geschaeftlich", kmStart:"13559", kmEnd:"13634"},
+    {id:uid(), datum:"2025-10-23", zeitStr:"10:15-11:45", kategorie:"partner", zielId:"", zielName:"tetris Modulbau GmbH, Zeppelinring 16, 15749 Mittenwalde-Schenkendorf", km:"56", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch tetris Modulbau", kmTyp:"geschaeftlich", kmStart:"13634", kmEnd:"13690"},
+    {id:uid(), datum:"2025-10-28", zeitStr:"11:00-12:30", kategorie:"partner", zielId:"", zielName:"GF Berlin, Seydelstr. 1, 10117 Berlin", km:"54", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF", kmTyp:"geschaeftlich", kmStart:"13690", kmEnd:"13744"},
+    {id:uid(), datum:"2025-10-31", zeitStr:"14:00-15:30", kategorie:"partner", zielId:"", zielName:"Wagner Zeltsysteme, Hauptstr. 63, 15910 Unterspreewald", km:"130", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch Wagner Zeltsysteme", kmTyp:"geschaeftlich", kmStart:"13744", kmEnd:"13874"},
+    {id:uid(), datum:"2025-11-04", zeitStr:"10:00-12:30", kategorie:"sonstige", zielId:"", zielName:"Stellantis &You Deutschland GmbH (Fiat), Seesener Str. 60-61, 10709 Berlin", km:"38", dauerMin:"", rueckfahrt:false, notiz:"Fahrzeugabgabe — Werkstatt (letzte Fahrt)", kmTyp:"geschaeftlich", kmStart:"13874", kmEnd:"13912"},
+    {id:uid(), datum:"2025-11-07", zeitStr:"09:15-10:30", kategorie:"partner", zielId:"", zielName:"GF Berlin, Konstanzer Str. 4, 10707 Berlin", km:"74", dauerMin:"", rueckfahrt:true, notiz:"GF Berlin — Unterlagen abgeben", kmTyp:"geschaeftlich", kmStart:"13912", kmEnd:"13986"},
+    {id:uid(), datum:"2025-11-12", zeitStr:"10:00-11:30", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"54", dauerMin:"", rueckfahrt:true, notiz:"Objektkontrolle", kmTyp:"geschaeftlich", kmStart:"13986", kmEnd:"14040"},
+    {id:uid(), datum:"2025-11-18", zeitStr:"08:30-09:45", kategorie:"partner", zielId:"", zielName:"GF Berlin, Seydelstr. 1, 10117 Berlin", km:"52", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen abgeben", kmTyp:"geschaeftlich", kmStart:"14040", kmEnd:"14092"},
+    {id:uid(), datum:"2025-11-25", zeitStr:"09:00-10:15", kategorie:"sonstige", zielId:"", zielName:"Deutsche Post, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"10", dauerMin:"", rueckfahrt:true, notiz:"Postversand", kmTyp:"geschaeftlich", kmStart:"14092", kmEnd:"14102"},
+    {id:uid(), datum:"2025-12-02", zeitStr:"09:30-11:00", kategorie:"sonstige", zielId:"", zielName:"Zeppelinring 2, 15711 Mittenwalde", km:"54", dauerMin:"", rueckfahrt:true, notiz:"Objektkontrolle", kmTyp:"geschaeftlich", kmStart:"14102", kmEnd:"14156"},
+    {id:uid(), datum:"2025-12-05", zeitStr:"10:15-11:45", kategorie:"partner", zielId:"", zielName:"Hecht, von Luxburg Steuerberatungsges. mbH, Lennéstr. 3, 10785 Berlin", km:"52", dauerMin:"", rueckfahrt:true, notiz:"Steuerberatung Jahresabschluss", kmTyp:"geschaeftlich", kmStart:"14156", kmEnd:"14208"},
+    {id:uid(), datum:"2025-12-10", zeitStr:"08:00-09:30", kategorie:"sonstige", zielId:"", zielName:"Oppfine GmbH, Zeppelinring 2, 15711 Mittenwalde", km:"54", dauerMin:"", rueckfahrt:true, notiz:"Mietergespräch", kmTyp:"geschaeftlich", kmStart:"14208", kmEnd:"14262"},
+    {id:uid(), datum:"2025-12-15", zeitStr:"11:00-12:30", kategorie:"partner", zielId:"", zielName:"Schaubühne Berlin, Kurfürstendamm 153, 10709 Berlin", km:"72", dauerMin:"", rueckfahrt:true, notiz:"Schaubühne Berlin", kmTyp:"geschaeftlich", kmStart:"14262", kmEnd:"14334"},
+    {id:uid(), datum:"2025-12-19", zeitStr:"09:00-10:15", kategorie:"sonstige", zielId:"", zielName:"MBS Sparkasse, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"10", dauerMin:"", rueckfahrt:true, notiz:"Bankgeschäfte", kmTyp:"geschaeftlich", kmStart:"14334", kmEnd:"14344"},
+    {id:uid(), datum:"2025-12-23", zeitStr:"10:00-11:30", kategorie:"partner", zielId:"", zielName:"ViniGrandi GmbH, Konstanzer Str. 4, 10707 Berlin", km:"74", dauerMin:"", rueckfahrt:true, notiz:"ViniGrandi — Jahresabschluss", kmTyp:"geschaeftlich", kmStart:"14344", kmEnd:"14418"}
     ],
 });
 
@@ -503,98 +502,97 @@ const makeVWDefault = () => ({
   standort:{name:"Büro Ludwigsfelde", adresse:"Seestr. 33, 14974 Ludwigsfelde"},
   kmStandInitial:"0",
   partner:[
-    {id:uid(), name:"ViniGrandi GmbH", adresse:"Konstanzer Str. 4, 10707 Berlin", telefon:"", kmVonStandort:"38", notiz:"Firmensitz", typ:"kunde"},
-    {id:uid(), name:"GF Berlin (Seydelstr.)",       adresse:"Seydelstr. 24, Berlin",                    telefon:"", kmVonStandort:"49", notiz:"Unterlagen an GF", typ:"kunde"},
-    {id:uid(), name:"Immo Gottschalk",              adresse:"Bussardweg 9, Oranienburg",                telefon:"", kmVonStandort:"87", notiz:"Immobilienkunde", typ:"makler"},
+    {id:uid(), name:"ViniGrandi GmbH", adresse:"Konstanzer Str. 4, 10707 Berlin", telefon:"", kmVonStandort:"37", notiz:"Firmensitz", typ:"kunde"},
+    {id:uid(), name:"GF Berlin (Seydelstr.)",       adresse:"Seydelstr. 24, Berlin",                    telefon:"", kmVonStandort:"26", notiz:"Unterlagen an GF", typ:"kunde"},
+    {id:uid(), name:"Immo Gottschalk",              adresse:"Bussardweg 9, Oranienburg",                telefon:"", kmVonStandort:"101", notiz:"Immobilienkunde", typ:"makler"},
     {id:uid(), name:"T & T",                        adresse:"Jägerstr. 4, 14974 Ludwigsfelde",          telefon:"", kmVonStandort:"4",  notiz:"Geschäftspartner", typ:"kunde"},
-    {id:uid(), name:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH",      adresse:"Lennéstr. 3, Berlin",                      telefon:"", kmVonStandort:"42", notiz:"Steuerberater", typ:"steuerberater"},
-    {id:uid(), name:"Rohrer Immobilien München",    adresse:"Lessingstr. 9, 80336 München",                     telefon:"", kmVonStandort:"610",notiz:"Immobilienmakler", typ:"makler"},
-    {id:uid(), name:"WOGE Immobilien Nürnberg",     adresse:"Parsifalstr. 8, 90461 Nürnberg",                                 telefon:"", kmVonStandort:"420",notiz:"Immobilien", typ:"makler"},
-    {id:uid(), name:"Rainbow Sanierung Berlin",     adresse:"Platanenstr. 163 / Nauenstr. 34, Berlin",  telefon:"", kmVonStandort:"52", notiz:"Sanierungsfirma", typ:"handwerker"},
-    {id:uid(), name:"Rechtsanwälte Napiorkowski Potsdam",      adresse:"Puschkinallee 3, Potsdam",                 telefon:"", kmVonStandort:"30", notiz:"Rechtsanwalt", typ:"anwalt"},
-    {id:uid(), name:"Rechtsanwälte Noacke Berlin",             adresse:"Uhlandstr. 161, Berlin",                   telefon:"", kmVonStandort:"40", notiz:"Rechtsanwalt", typ:"anwalt"},
-    {id:uid(), name:"Knappworst Steuerberater Potsdam", adresse:"Am Bassin 4, 14467 Potsdam", telefon:"", kmVonStandort:"26", notiz:"Steuerberater", typ:"steuerberater"},
+    {id:uid(), name:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH",      adresse:"Lennéstr. 3, Berlin",                      telefon:"", kmVonStandort:"26", notiz:"Steuerberater", typ:"steuerberater"},
+    {id:uid(), name:"Rohrer Immobilien München",    adresse:"Lessingstr. 9, 80336 München",                     telefon:"", kmVonStandort:"569",notiz:"Immobilienmakler", typ:"makler"},
+    {id:uid(), name:"WOGE Immobilien Nürnberg",     adresse:"Parsifalstr. 8, 90461 Nürnberg",                                 telefon:"", kmVonStandort:"417",notiz:"Immobilien", typ:"makler"},
+    {id:uid(), name:"Rainbow Sanierung Berlin",     adresse:"Platanenstr. 163 / Nauenstr. 34, Berlin",  telefon:"", kmVonStandort:"53", notiz:"Sanierungsfirma", typ:"handwerker"},
+    {id:uid(), name:"Rechtsanwälte Napiorkowski Potsdam",      adresse:"Puschkinallee 3, Potsdam",                 telefon:"", kmVonStandort:"24", notiz:"Rechtsanwalt", typ:"anwalt"},
+    {id:uid(), name:"Rechtsanwälte Noacke Berlin",             adresse:"Uhlandstr. 161, Berlin",                   telefon:"", kmVonStandort:"38", notiz:"Rechtsanwalt", typ:"anwalt"},
+    {id:uid(), name:"Knappworst Steuerberater Potsdam", adresse:"Am Bassin 4, 14467 Potsdam", telefon:"", kmVonStandort:"24", notiz:"Steuerberater", typ:"steuerberater"},
 
   ],
   messen:[
     {id:uid(), name:"Immobilienmesse Berlin 2024",  adresse:"Wiebestr. 42, Berlin",  datum:"2024-09-07", partnerId:"", notiz:"Immobilienmesse", kmVonStandort:"44"},
-    {id:uid(), name:"Wiener Immobilien Messe (WIM) 2025", adresse:"Messe Wien, Messeplatz 1, 1020 Wien, Österreich", datum:"2025-03-15", datumBis:"2025-03-16", partnerId:"", notiz:"Österreichs größter Marktplatz für Wohnimmobilien, Sa–So", kmVonStandort:"680"},
-    {id:uid(), name:"MAPIC Italy 2025", adresse:"Superstudio Maxi, Via Moncucco 35, Milano, Italien", datum:"2025-05-14", datumBis:"2025-05-15", partnerId:"", notiz:"Fachmesse Retail Real Estate, 2.500 Besucher", kmVonStandort:"1000"},
-    {id:uid(), name:"Real Estate Arena 2025", adresse:"Messegelände Hannover, Hermesallee 1, 30521 Hannover", datum:"2025-05-14", datumBis:"2025-05-15", partnerId:"", notiz:"Deutschlands Immobilienmesse, 7.500 Fachbesucher, 400 Aussteller", kmVonStandort:"280"},
-    {id:uid(), name:"RE ITALY Convention 2025", adresse:"Borsa Italiana, Piazza degli Affari 6, 20123 Milano, Italien", datum:"2025-06-10", datumBis:"2025-06-10", partnerId:"", notiz:"Real Estate Convention, 26. Ausgabe", kmVonStandort:"1000"},
-    {id:uid(), name:"EXPO REAL 2025", adresse:"Messe München, Am Messesee 2, 81829 München", datum:"2025-10-06", datumBis:"2025-10-08", partnerId:"", notiz:"Europas wichtigste Immobilienmesse, 45.000 Teilnehmer, 2.100 Aussteller", kmVonStandort:"600"},
+    {id:uid(), name:"Wiener Immobilien Messe (WIM) 2025", adresse:"Messe Wien, Messeplatz 1, 1020 Wien, Österreich", datum:"2025-03-15", datumBis:"2025-03-16", partnerId:"", notiz:"Österreichs größter Marktplatz für Wohnimmobilien, Sa–So", kmVonStandort:"665"},
+    {id:uid(), name:"MAPIC Italy 2025", adresse:"Superstudio Maxi, Via Moncucco 35, Milano, Italien", datum:"2025-05-14", datumBis:"2025-05-15", partnerId:"", notiz:"Fachmesse Retail Real Estate, 2.500 Besucher", kmVonStandort:"1027"},
+    {id:uid(), name:"Real Estate Arena 2025", adresse:"Messegelände Hannover, Hermesallee 1, 30521 Hannover", datum:"2025-05-14", datumBis:"2025-05-15", partnerId:"", notiz:"Deutschlands Immobilienmesse, 7.500 Fachbesucher, 400 Aussteller", kmVonStandort:"268"},
+    {id:uid(), name:"RE ITALY Convention 2025", adresse:"Borsa Italiana, Piazza degli Affari 6, 20123 Milano, Italien", datum:"2025-06-10", datumBis:"2025-06-10", partnerId:"", notiz:"Real Estate Convention, 26. Ausgabe", kmVonStandort:"1015"},
+    {id:uid(), name:"EXPO REAL 2025", adresse:"Messe München, Am Messesee 2, 81829 München", datum:"2025-10-06", datumBis:"2025-10-08", partnerId:"", notiz:"Europas wichtigste Immobilienmesse, 45.000 Teilnehmer, 2.100 Aussteller", kmVonStandort:"572"},
   ],
   standorteExtra:[
-    {id:uid(), name:"Autoservice Ludwigsfelde",  adresse:"Südring, 14974 Ludwigsfelde", notiz:"KFZ-Service", auto:false, typ:"werkstatt", besuche:0, letzterBesuch:"", kmVonStandort:"2"},
-    {id:uid(), name:"Premio Reifen + Autoservice", adresse:"Am Birkengrund 21-23, 14974 Ludwigsfelde", notiz:"Reifenservice", auto:false, typ:"werkstatt", besuche:1, letzterBesuch:"2025-04-16", kmVonStandort:"3"},
-    {id:uid(), name:"Deutsche Post Ludwigsfelde", adresse:"Potsdamer Str. 60, 14974 Ludwigsfelde", notiz:"Briefe / Pakete", auto:false, typ:"post", besuche:0, letzterBesuch:"", kmVonStandort:"3"},
-    {id:uid(), name:"Autohaus Berolina Berlin", adresse:"Cicerostr. 34, 10709 Berlin-Halensee", notiz:"Fahrzeugabholung", auto:false, typ:"werkstatt", besuche:0, letzterBesuch:"", kmVonStandort:"45"},
+    {id:uid(), name:"Autoservice Ludwigsfelde",  adresse:"Südring, 14974 Ludwigsfelde", notiz:"KFZ-Service", auto:false, typ:"werkstatt", besuche:0, letzterBesuch:"", kmVonStandort:"9"},
+    {id:uid(), name:"Premio Reifen + Autoservice", adresse:"Am Birkengrund 21-23, 14974 Ludwigsfelde", notiz:"Reifenservice", auto:false, typ:"werkstatt", besuche:1, letzterBesuch:"2025-04-16", kmVonStandort:"1"},
+    {id:uid(), name:"Deutsche Post Ludwigsfelde", adresse:"Potsdamer Str. 60, 14974 Ludwigsfelde", notiz:"Briefe / Pakete", auto:false, typ:"post", besuche:0, letzterBesuch:"", kmVonStandort:"5"},
+    {id:uid(), name:"Autohaus Berolina Berlin", adresse:"Cicerostr. 34, 10709 Berlin-Halensee", notiz:"Fahrzeugabholung", auto:false, typ:"werkstatt", besuche:0, letzterBesuch:"", kmVonStandort:"36"},
     {id:uid(), name:"MBS Sparkasse Ludwigsfelde", adresse:"Potsdamer Str. 60, 14974 Ludwigsfelde", notiz:"Bankfiliale", auto:false, typ:"bank", besuche:0, letzterBesuch:"", kmVonStandort:"5"},
     {id:uid(), name:"Hornbach Ludwigsfelde", adresse:"Parkallee 36, 14974 Ludwigsfelde", notiz:"Baumarkt", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"2"},
-    {id:uid(), name:"Getränke Hoffmann Berlin", adresse:"Westfälische Str. 85, 10709 Berlin", notiz:"Getränkemarkt", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"38"},
-    {id:uid(), name:"Getränke Hoffmann Ludwigsfelde", adresse:"Potsdamer Str. 118, 14974 Ludwigsfelde", notiz:"Getränkemarkt", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"3"},
+    {id:uid(), name:"Getränke Hoffmann Ludwigsfelde", adresse:"Potsdamer Str. 118, 14974 Ludwigsfelde", notiz:"Getränkemarkt", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"6"},
   ,
-    {id:uid(), name:"Rathaus Ludwigsfelde", adresse:"Rathausstraße 3, 14974 Ludwigsfelde", notiz:"Stadtverwaltung, Bürgeramt, Gewerbeamt", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"2"},
-    {id:uid(), name:"Finanzamt Luckenwalde", adresse:"Dr.-Georg-Schaeffler-Straße 2, 14943 Luckenwalde", notiz:"Steuererklärung, Bescheide", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"18"},
-    {id:uid(), name:"Kfz-Zulassungsstelle Luckenwalde", adresse:"Louis-Pasteur-Str. 5, 14943 Luckenwalde", notiz:"Zulassung, Ummeldung, Abmeldung", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"18"},
-    {id:uid(), name:"Kreisverwaltung Teltow-Fläming", adresse:"Am Nuthefließ 2, 14943 Luckenwalde", notiz:"Landratsamt, Bauamt, Ordnungsamt", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"18"},
-    {id:uid(), name:"IHK Potsdam", adresse:"Breite Straße 2a-c, 14467 Potsdam", notiz:"Industrie- und Handelskammer", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"26"},
-    {id:uid(), name:"Bauhaus Berlin-Halensee", adresse:"Kurfürstendamm 129a, 10711 Berlin", notiz:"Baumarkt", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"38"},
-    {id:uid(), name:"Flughafen Berlin Brandenburg (BER)", adresse:"Willy-Brandt-Platz, 12529 Schönefeld", notiz:"Terminal 1 + 2", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"25"},
-    {id:uid(), name:"Flughafen München (MUC)", adresse:"Nordallee 25, 85356 München", notiz:"Franz Josef Strauß", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"620"},
-    {id:uid(), name:"Flughafen Hamburg (HAM)", adresse:"Flughafenstraße 1-3, 22335 Hamburg", notiz:"Hamburg Airport", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"290"},
-    {id:uid(), name:"Flughafen Stuttgart (STR)", adresse:"Flughafenstraße 32, 70629 Stuttgart", notiz:"Stuttgart Airport", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"590"},
-    {id:uid(), name:"Berlin Hauptbahnhof", adresse:"Europaplatz 1, 10557 Berlin", notiz:"Fernverkehr, ICE", auto:false, typ:"bahnhof", besuche:0, letzterBesuch:"", kmVonStandort:"40"},
-    {id:uid(), name:"Auto-Scholz AHG Bamberg", adresse:"Kronacher Str. 38, 96052 Bamberg", notiz:"VW Händler", auto:false, typ:"werkstatt", besuche:0, letzterBesuch:"", kmVonStandort:"400"},
-    {id:uid(), name:"Rohrer Immobilien Toskana", adresse:"Via Tosco Romagnola, 56025 Pontedera (PI), Italien", notiz:"Immobilienbesichtigungen", auto:false, typ:"sonstiges", besuche:1, letzterBesuch:"2025-08-24", kmVonStandort:"1200"},
-    {id:uid(), name:"Scharmützelsee / Storkow", adresse:"Storkow / Bad Saarow, 15859 Brandenburg", notiz:"Immobilienbesichtigung Seegrundstücke", auto:false, typ:"sonstiges", besuche:1, letzterBesuch:"2025-07-22", kmVonStandort:"40"}],
+    {id:uid(), name:"Rathaus Ludwigsfelde", adresse:"Rathausstraße 3, 14974 Ludwigsfelde", notiz:"Stadtverwaltung, Bürgeramt, Gewerbeamt", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"5"},
+    {id:uid(), name:"Finanzamt Luckenwalde", adresse:"Dr.-Georg-Schaeffler-Straße 2, 14943 Luckenwalde", notiz:"Steuererklärung, Bescheide", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"33"},
+    {id:uid(), name:"Kfz-Zulassungsstelle Luckenwalde", adresse:"Louis-Pasteur-Str. 5, 14943 Luckenwalde", notiz:"Zulassung, Ummeldung, Abmeldung", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"37"},
+    {id:uid(), name:"Kreisverwaltung Teltow-Fläming", adresse:"Am Nuthefließ 2, 14943 Luckenwalde", notiz:"Landratsamt, Bauamt, Ordnungsamt", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"41"},
+    {id:uid(), name:"IHK Potsdam", adresse:"Breite Straße 2a-c, 14467 Potsdam", notiz:"Industrie- und Handelskammer", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"24"},
+    {id:uid(), name:"Bauhaus Berlin-Halensee", adresse:"Kurfürstendamm 129a, 10711 Berlin", notiz:"Baumarkt", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"35"},
+    {id:uid(), name:"Flughafen Berlin Brandenburg (BER)", adresse:"Willy-Brandt-Platz, 12529 Schönefeld", notiz:"Terminal 1 + 2", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"29"},
+    {id:uid(), name:"Flughafen München (MUC)", adresse:"Nordallee 25, 85356 München", notiz:"Franz Josef Strauß", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"557"},
+    {id:uid(), name:"Flughafen Hamburg (HAM)", adresse:"Flughafenstraße 1-3, 22335 Hamburg", notiz:"Hamburg Airport", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"334"},
+    {id:uid(), name:"Flughafen Stuttgart (STR)", adresse:"Flughafenstraße 32, 70629 Stuttgart", notiz:"Stuttgart Airport", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"627"},
+    {id:uid(), name:"Berlin Hauptbahnhof", adresse:"Europaplatz 1, 10557 Berlin", notiz:"Fernverkehr, ICE", auto:false, typ:"bahnhof", besuche:0, letzterBesuch:"", kmVonStandort:"29"},
+    {id:uid(), name:"Auto-Scholz AHG Bamberg", adresse:"Kronacher Str. 38, 96052 Bamberg", notiz:"VW Händler", auto:false, typ:"werkstatt", besuche:0, letzterBesuch:"", kmVonStandort:"381"},
+    {id:uid(), name:"Rohrer Immobilien Toskana", adresse:"Via Tosco Romagnola, 56025 Pontedera (PI), Italien", notiz:"Immobilienbesichtigungen", auto:false, typ:"sonstiges", besuche:1, letzterBesuch:"2025-08-24", kmVonStandort:"1258"},
+    {id:uid(), name:"Scharmützelsee / Storkow", adresse:"Storkow / Bad Saarow, 15859 Brandenburg", notiz:"Immobilienbesichtigung Seegrundstücke", auto:false, typ:"sonstiges", besuche:1, letzterBesuch:"2025-07-22", kmVonStandort:"64"}],
   strafen:[
     {id:uid(), datum:"2025-03-02", uhrzeit:"13:37", typ:"Geschwindigkeitsüberschreitung (bis 10 km/h)", betrag:"30", tatort:"Leipziger Straße 45", tatortAdresse:"10117 Berlin", behoerde:"Polizei Berlin, Bußgeldstelle", adresseBehoerde:"", aktenzeichen:"58.70.080458.3", frist:"", bezahlt:true, notiz:"Innerorts 30er-Zone, gemessen 37 km/h (nach Toleranzabzug)", belegFoto:""},
     {id:uid(), datum:"2025-08-24", uhrzeit:"17:09", typ:"Geschwindigkeitsüberschreitung (21–25 km/h)", betrag:"", tatort:"FI-PI-LI, Comune di Montopoli, KM 41+100, Firenze-Pisa", tatortAdresse:"Italien", behoerde:"Provincia di Pisa, Polizia Provinciale", adresseBehoerde:"Via P. Nenni 30, 56124 Pisa, Italien", aktenzeichen:"V/1028860A/2025", frist:"", bezahlt:false, notiz:"Außerorts 90er-Zone, gemessen 117 km/h → 111,15 km/h (nach Toleranz), +21,15 km/h. Italienischer Bußgeldbescheid.", belegFoto:""},
     {id:uid(), datum:"2025-10-20", uhrzeit:"13:09", typ:"Geschwindigkeitsüberschreitung (bis 10 km/h)", betrag:"30", tatort:"Lindenthaler Allee 18", tatortAdresse:"14163 Berlin", behoerde:"Polizei Berlin, Bußgeldstelle", adresseBehoerde:"", aktenzeichen:"58.70.760796.1", frist:"", bezahlt:false, notiz:"Innerorts 30er-Zone, gemessen 36 km/h (nach Toleranzabzug)", belegFoto:""},
   ], tankstellen:[
     // DKV 2025: 24 entries, 894.4L, 1571.49€ brutto
-    {id:uid(),datum:"2025-01-31",uhrzeit:"08:08",stationName:"TotalEnergies",adresse:"Ludwigsfelde",kraftstoff:"Euro 95 (Super)",menge:"35.68",preisProLiter:"1.5706",gesamtbetrag:"68.27",kmStand:"",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"3"},
-    {id:uid(),datum:"2025-03-07",uhrzeit:"16:28",stationName:"Shell",adresse:"Ludwigsfelde",kraftstoff:"Diesel",menge:"42.34",preisProLiter:"1.5579",gesamtbetrag:"79.38",kmStand:"3479",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"3"},
-    {id:uid(),datum:"2025-03-26",uhrzeit:"13:54",stationName:"ESSO",adresse:"Ludwigsfelde",kraftstoff:"Euro 95 (Super)",menge:"33.01",preisProLiter:"1.4696",gesamtbetrag:"59.10",kmStand:"",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"3"},
-    {id:uid(),datum:"2025-03-28",uhrzeit:"12:42",stationName:"Shell",adresse:"Ludwigsfelde",kraftstoff:"Euro 95 (Super)",menge:"38.67",preisProLiter:"1.6375",gesamtbetrag:"77.13",kmStand:"",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"3"},
-    {id:uid(),datum:"2025-04-03",uhrzeit:"11:11",stationName:"TotalEnergies",adresse:"Ludwigsfelde",kraftstoff:"Euro 95 (Super)",menge:"41.22",preisProLiter:"1.5116",gesamtbetrag:"75.91",kmStand:"",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"3"},
-    {id:uid(),datum:"2025-04-14",uhrzeit:"16:47",stationName:"TotalEnergies",adresse:"Ludwigsfelde",kraftstoff:"Euro 95 (Super)",menge:"44.31",preisProLiter:"1.4193",gesamtbetrag:"76.61",kmStand:"",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"3"},
-    {id:uid(),datum:"2025-04-17",uhrzeit:"06:49",stationName:"ESSO",adresse:"Ludwigsfelde",kraftstoff:"Euro 95 (Super)",menge:"34.00",preisProLiter:"1.5456",gesamtbetrag:"64.02",kmStand:"",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"3"},
-    {id:uid(),datum:"2025-04-17",uhrzeit:"17:04",stationName:"ESSO",adresse:"Ludwigsfelde",kraftstoff:"Diesel",menge:"13.28",preisProLiter:"1.3185",gesamtbetrag:"21.07",kmStand:"",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"3"},
-    {id:uid(),datum:"2025-05-21",uhrzeit:"12:10",stationName:"TotalEnergies",adresse:"Ludwigsfelde",kraftstoff:"Euro 95 (Super)",menge:"53.42",preisProLiter:"1.4109",gesamtbetrag:"91.81",kmStand:"",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"3"},
-    {id:uid(),datum:"2025-05-23",uhrzeit:"06:11",stationName:"ESSO",adresse:"Ludwigsfelde",kraftstoff:"Euro 95 (Super)",menge:"40.25",preisProLiter:"1.4194",gesamtbetrag:"69.59",kmStand:"",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"3"},
-    {id:uid(),datum:"2025-06-17",uhrzeit:"19:44",stationName:"JET",adresse:"Potsdam",kraftstoff:"Euro 95 (Super)",menge:"24.67",preisProLiter:"1.4276",gesamtbetrag:"42.90",kmStand:"4698",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"26"},
-    {id:uid(),datum:"2025-06-17",uhrzeit:"20:32",stationName:"ESSO",adresse:"Ludwigsfelde",kraftstoff:"Diesel",menge:"50.33",preisProLiter:"1.3268",gesamtbetrag:"80.36",kmStand:"",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"3"},
-    {id:uid(),datum:"2025-07-24",uhrzeit:"16:04",stationName:"Shell",adresse:"Ludwigsfelde",kraftstoff:"Diesel",menge:"48.26",preisProLiter:"1.5315",gesamtbetrag:"88.95",kmStand:"4298",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"3"},
-    {id:uid(),datum:"2025-09-23",uhrzeit:"10:57",stationName:"Shell",adresse:"Ludwigsfelde",kraftstoff:"Euro 95 (Super)",menge:"39.67",preisProLiter:"1.6027",gesamtbetrag:"77.46",kmStand:"3062",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"3"},
-    {id:uid(),datum:"2025-11-02",uhrzeit:"14:36",stationName:"JET",adresse:"Ludwigsfelde",kraftstoff:"Euro 95 (Super)",menge:"17.50",preisProLiter:"1.4531",gesamtbetrag:"30.98",kmStand:"8919",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"3"},
-    {id:uid(),datum:"2025-11-05",uhrzeit:"17:19",stationName:"JET",adresse:"Ludwigsfelde",kraftstoff:"Euro 95 (Super)",menge:"20.03",preisProLiter:"1.4109",gesamtbetrag:"34.42",kmStand:"9653",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"3"},
-    {id:uid(),datum:"2025-11-24",uhrzeit:"09:23",stationName:"ESSO",adresse:"Ludwigsfelde",kraftstoff:"Euro 95 (Super)",menge:"67.75",preisProLiter:"1.4614",gesamtbetrag:"120.60",kmStand:"",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"3"},
-    {id:uid(),datum:"2025-11-24",uhrzeit:"13:00",stationName:"TotalEnergies",adresse:"Ludwigsfelde",kraftstoff:"Diesel",menge:"43.58",preisProLiter:"1.4027",gesamtbetrag:"73.57",kmStand:"",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"3"},
-    {id:uid(),datum:"2025-12-01",uhrzeit:"14:18",stationName:"ESSO",adresse:"Wolfsburg",kraftstoff:"Diesel",menge:"35.46",preisProLiter:"1.3522",gesamtbetrag:"57.70",kmStand:"",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV — Abholung Touareg",kmVonStandort:"230"},
-    {id:uid(),datum:"2025-12-05",uhrzeit:"15:36",stationName:"JET",adresse:"Ludwigsfelde",kraftstoff:"Diesel",menge:"47.89",preisProLiter:"1.3270",gesamtbetrag:"76.48",kmStand:"9440",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"3"},
-    {id:uid(),datum:"2025-12-05",uhrzeit:"15:36",stationName:"JET",adresse:"Ludwigsfelde",kraftstoff:"Euro 95 (Super)",menge:"25.60",preisProLiter:"1.4109",gesamtbetrag:"44.01",kmStand:"9440",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"3"},
-    {id:uid(),datum:"2025-12-12",uhrzeit:"09:28",stationName:"JET",adresse:"Ludwigsfelde",kraftstoff:"Diesel",menge:"9.07",preisProLiter:"1.4112",gesamtbetrag:"15.40",kmStand:"1577",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"3"},
-    {id:uid(),datum:"2025-12-15",uhrzeit:"05:51",stationName:"ESSO",adresse:"Ludwigsfelde",kraftstoff:"Diesel",menge:"59.73",preisProLiter:"1.3101",gesamtbetrag:"94.16",kmStand:"",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"3"},
-    {id:uid(),datum:"2025-12-20",uhrzeit:"08:30",stationName:"ESSO",adresse:"Ludwigsfelde",kraftstoff:"Euro 95 (Super)",menge:"28.68",preisProLiter:"1.4782",gesamtbetrag:"51.61",kmStand:"",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV — 28.02+0.66L",kmVonStandort:"3"},
+    {id:uid(),datum:"2025-01-31",uhrzeit:"08:08",stationName:"TotalEnergies",adresse:"Ludwigsfelde",kraftstoff:"Euro 95 (Super)",menge:"35.68",preisProLiter:"1.5706",gesamtbetrag:"68.27",kmStand:"",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"5"},
+    {id:uid(),datum:"2025-03-07",uhrzeit:"16:28",stationName:"Shell",adresse:"Ludwigsfelde",kraftstoff:"Diesel",menge:"42.34",preisProLiter:"1.5579",gesamtbetrag:"79.38",kmStand:"3479",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"2"},
+    {id:uid(),datum:"2025-03-26",uhrzeit:"13:54",stationName:"ESSO",adresse:"Ludwigsfelde",kraftstoff:"Euro 95 (Super)",menge:"33.01",preisProLiter:"1.4696",gesamtbetrag:"59.10",kmStand:"",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"4"},
+    {id:uid(),datum:"2025-03-28",uhrzeit:"12:42",stationName:"Shell",adresse:"Ludwigsfelde",kraftstoff:"Euro 95 (Super)",menge:"38.67",preisProLiter:"1.6375",gesamtbetrag:"77.13",kmStand:"",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"2"},
+    {id:uid(),datum:"2025-04-03",uhrzeit:"11:11",stationName:"TotalEnergies",adresse:"Ludwigsfelde",kraftstoff:"Euro 95 (Super)",menge:"41.22",preisProLiter:"1.5116",gesamtbetrag:"75.91",kmStand:"",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"5"},
+    {id:uid(),datum:"2025-04-14",uhrzeit:"16:47",stationName:"TotalEnergies",adresse:"Ludwigsfelde",kraftstoff:"Euro 95 (Super)",menge:"44.31",preisProLiter:"1.4193",gesamtbetrag:"76.61",kmStand:"",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"5"},
+    {id:uid(),datum:"2025-04-17",uhrzeit:"06:49",stationName:"ESSO",adresse:"Ludwigsfelde",kraftstoff:"Euro 95 (Super)",menge:"34.00",preisProLiter:"1.5456",gesamtbetrag:"64.02",kmStand:"",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"4"},
+    {id:uid(),datum:"2025-04-17",uhrzeit:"17:04",stationName:"ESSO",adresse:"Ludwigsfelde",kraftstoff:"Diesel",menge:"13.28",preisProLiter:"1.3185",gesamtbetrag:"21.07",kmStand:"",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"4"},
+    {id:uid(),datum:"2025-05-21",uhrzeit:"12:10",stationName:"TotalEnergies",adresse:"Ludwigsfelde",kraftstoff:"Euro 95 (Super)",menge:"53.42",preisProLiter:"1.4109",gesamtbetrag:"91.81",kmStand:"",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"5"},
+    {id:uid(),datum:"2025-05-23",uhrzeit:"06:11",stationName:"ESSO",adresse:"Ludwigsfelde",kraftstoff:"Euro 95 (Super)",menge:"40.25",preisProLiter:"1.4194",gesamtbetrag:"69.59",kmStand:"",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"4"},
+    {id:uid(),datum:"2025-06-17",uhrzeit:"19:44",stationName:"JET",adresse:"Potsdam",kraftstoff:"Euro 95 (Super)",menge:"24.67",preisProLiter:"1.4276",gesamtbetrag:"42.90",kmStand:"4698",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"23"},
+    {id:uid(),datum:"2025-06-17",uhrzeit:"20:32",stationName:"ESSO",adresse:"Ludwigsfelde",kraftstoff:"Diesel",menge:"50.33",preisProLiter:"1.3268",gesamtbetrag:"80.36",kmStand:"",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"4"},
+    {id:uid(),datum:"2025-07-24",uhrzeit:"16:04",stationName:"Shell",adresse:"Ludwigsfelde",kraftstoff:"Diesel",menge:"48.26",preisProLiter:"1.5315",gesamtbetrag:"88.95",kmStand:"4298",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"2"},
+    {id:uid(),datum:"2025-09-23",uhrzeit:"10:57",stationName:"Shell",adresse:"Ludwigsfelde",kraftstoff:"Euro 95 (Super)",menge:"39.67",preisProLiter:"1.6027",gesamtbetrag:"77.46",kmStand:"3062",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"2"},
+    {id:uid(),datum:"2025-11-02",uhrzeit:"14:36",stationName:"JET",adresse:"Ludwigsfelde",kraftstoff:"Euro 95 (Super)",menge:"17.50",preisProLiter:"1.4531",gesamtbetrag:"30.98",kmStand:"8919",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"23"},
+    {id:uid(),datum:"2025-11-05",uhrzeit:"17:19",stationName:"JET",adresse:"Ludwigsfelde",kraftstoff:"Euro 95 (Super)",menge:"20.03",preisProLiter:"1.4109",gesamtbetrag:"34.42",kmStand:"9653",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"23"},
+    {id:uid(),datum:"2025-11-24",uhrzeit:"09:23",stationName:"ESSO",adresse:"Ludwigsfelde",kraftstoff:"Euro 95 (Super)",menge:"67.75",preisProLiter:"1.4614",gesamtbetrag:"120.60",kmStand:"",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"4"},
+    {id:uid(),datum:"2025-11-24",uhrzeit:"13:00",stationName:"TotalEnergies",adresse:"Ludwigsfelde",kraftstoff:"Diesel",menge:"43.58",preisProLiter:"1.4027",gesamtbetrag:"73.57",kmStand:"",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"5"},
+    {id:uid(),datum:"2025-12-01",uhrzeit:"14:18",stationName:"ESSO",adresse:"Wolfsburg",kraftstoff:"Diesel",menge:"35.46",preisProLiter:"1.3522",gesamtbetrag:"57.70",kmStand:"",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV — Abholung Touareg",kmVonStandort:"4"},
+    {id:uid(),datum:"2025-12-05",uhrzeit:"15:36",stationName:"JET",adresse:"Ludwigsfelde",kraftstoff:"Diesel",menge:"47.89",preisProLiter:"1.3270",gesamtbetrag:"76.48",kmStand:"9440",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"23"},
+    {id:uid(),datum:"2025-12-05",uhrzeit:"15:36",stationName:"JET",adresse:"Ludwigsfelde",kraftstoff:"Euro 95 (Super)",menge:"25.60",preisProLiter:"1.4109",gesamtbetrag:"44.01",kmStand:"9440",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"23"},
+    {id:uid(),datum:"2025-12-12",uhrzeit:"09:28",stationName:"JET",adresse:"Ludwigsfelde",kraftstoff:"Diesel",menge:"9.07",preisProLiter:"1.4112",gesamtbetrag:"15.40",kmStand:"1577",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"23"},
+    {id:uid(),datum:"2025-12-15",uhrzeit:"05:51",stationName:"ESSO",adresse:"Ludwigsfelde",kraftstoff:"Diesel",menge:"59.73",preisProLiter:"1.3101",gesamtbetrag:"94.16",kmStand:"",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"4"},
+    {id:uid(),datum:"2025-12-20",uhrzeit:"08:30",stationName:"ESSO",adresse:"Ludwigsfelde",kraftstoff:"Euro 95 (Super)",menge:"28.68",preisProLiter:"1.4782",gesamtbetrag:"51.61",kmStand:"",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV — 28.02+0.66L",kmVonStandort:"4"},
     // Non-DKV (Visa/Mastercard/BAR): 16 entries, 818.1L, 1542.22€
-    {id:uid(),datum:"2025-01-30",uhrzeit:"09:31",stationName:"Shell",adresse:"Parkallee 1, 14974 Ludwigsfelde",kraftstoff:"Super FuelSave E10",menge:"67.75",preisProLiter:"1.859",gesamtbetrag:"125.95",kmStand:"",zahlungsart:"Visa Debit",bonNr:"",notiz:"",kmVonStandort:"3"},
-    {id:uid(),datum:"2025-02-15",uhrzeit:"11:12",stationName:"Frankenwald-West A9",adresse:"91257 Pegnitz",kraftstoff:"Super FuelSave E10",menge:"56.76",preisProLiter:"2.119",gesamtbetrag:"120.27",kmStand:"",zahlungsart:"Visa Debit",bonNr:"",notiz:"A9 Ri. Nürnberg",kmVonStandort:""},
-    {id:uid(),datum:"2025-02-23",uhrzeit:"09:04",stationName:"ENI Deutschland",adresse:"BAB 9, 90537 Nürnberg-Feucht",kraftstoff:"Super 95 E10",menge:"53.63",preisProLiter:"2.269",gesamtbetrag:"121.69",kmStand:"",zahlungsart:"Mastercard",bonNr:"",notiz:"A9 Ri. München",kmVonStandort:""},
-    {id:uid(),datum:"2025-02-24",uhrzeit:"14:00",stationName:"ARAL",adresse:"Kurfürstendamm 28, 10711 Berlin",kraftstoff:"Super E10",menge:"60.55",preisProLiter:"1.759",gesamtbetrag:"106.51",kmStand:"",zahlungsart:"Visa Debit",bonNr:"",notiz:"",kmVonStandort:"38"},
+    {id:uid(),datum:"2025-01-30",uhrzeit:"09:31",stationName:"Shell",adresse:"Parkallee 1, 14974 Ludwigsfelde",kraftstoff:"Super FuelSave E10",menge:"67.75",preisProLiter:"1.859",gesamtbetrag:"125.95",kmStand:"",zahlungsart:"Visa Debit",bonNr:"",notiz:"",kmVonStandort:"2"},
+    {id:uid(),datum:"2025-02-15",uhrzeit:"11:12",stationName:"Frankenwald-West A9",adresse:"91257 Pegnitz",kraftstoff:"Super FuelSave E10",menge:"56.76",preisProLiter:"2.119",gesamtbetrag:"120.27",kmStand:"",zahlungsart:"Visa Debit",bonNr:"",notiz:"A9 Ri. Nürnberg",kmVonStandort:"367"},
+    {id:uid(),datum:"2025-02-23",uhrzeit:"09:04",stationName:"ENI Deutschland",adresse:"BAB 9, 90537 Nürnberg-Feucht",kraftstoff:"Super 95 E10",menge:"53.63",preisProLiter:"2.269",gesamtbetrag:"121.69",kmStand:"",zahlungsart:"Mastercard",bonNr:"",notiz:"A9 Ri. München",kmVonStandort:"425"},
+    {id:uid(),datum:"2025-02-24",uhrzeit:"14:00",stationName:"ARAL",adresse:"Kurfürstendamm 28, 10711 Berlin",kraftstoff:"Super E10",menge:"60.55",preisProLiter:"1.759",gesamtbetrag:"106.51",kmStand:"",zahlungsart:"Visa Debit",bonNr:"",notiz:"",kmVonStandort:"39"},
     {id:uid(),datum:"2025-02-25",uhrzeit:"20:03",stationName:"Sprint Tankstelle",adresse:"Chausseestr. 1, 15745 Wildau",kraftstoff:"Super bleifrei",menge:"42.73",preisProLiter:"1.709",gesamtbetrag:"73.03",kmStand:"",zahlungsart:"BAR",bonNr:"",notiz:"",kmVonStandort:"25"},
-    {id:uid(),datum:"2025-05-06",uhrzeit:"13:08",stationName:"ARAL - REWE To Go",adresse:"Hohenzollerndamm 97, 14199 Berlin",kraftstoff:"Super E10",menge:"66.33",preisProLiter:"1.649",gesamtbetrag:"109.38",kmStand:"",zahlungsart:"Visa Debit",bonNr:"",notiz:"",kmVonStandort:"38"},
-    {id:uid(),datum:"2025-05-07",uhrzeit:"12:46",stationName:"ENI Köschinger Forst",adresse:"BAB 9, 85120 Hepberg",kraftstoff:"Super Plus",menge:"57.00",preisProLiter:"2.399",gesamtbetrag:"136.74",kmStand:"",zahlungsart:"Visa Debit",bonNr:"",notiz:"A9 Ri. München",kmVonStandort:""},
-    {id:uid(),datum:"2025-05-08",uhrzeit:"15:56",stationName:"BAT Fränk. Schweiz O.",adresse:"A9 Nürnberg-Hof, 91257 Pegnitz",kraftstoff:"Super 95 E10",menge:"43.71",preisProLiter:"2.159",gesamtbetrag:"94.37",kmStand:"",zahlungsart:"Visa Debit",bonNr:"",notiz:"A9 Ri. Berlin",kmVonStandort:""},
-    {id:uid(),datum:"2025-05-15",uhrzeit:"19:42",stationName:"Aral Rasthof Brusendorf",adresse:"Am Fichtenplan Süd, 15749 Brusendorf",kraftstoff:"Super E5",menge:"38.06",preisProLiter:"1.669",gesamtbetrag:"63.52",kmStand:"",zahlungsart:"Visa Debit",bonNr:"",notiz:"A10 Süd",kmVonStandort:"20"},
-    {id:uid(),datum:"2025-05-23",uhrzeit:"16:05",stationName:"ESSO",adresse:"Zossener Landstr. 10, 14974 Ludwigsfelde",kraftstoff:"Super 95",menge:"31.94",preisProLiter:"1.709",gesamtbetrag:"54.59",kmStand:"",zahlungsart:"Visa Debit",bonNr:"",notiz:"",kmVonStandort:"3"},
-    {id:uid(),datum:"2025-07-07",uhrzeit:"17:57",stationName:"Shell",adresse:"Parkallee 1, 14974 Ludwigsfelde",kraftstoff:"Super FuelSave 95",menge:"39.80",preisProLiter:"1.759",gesamtbetrag:"70.01",kmStand:"",zahlungsart:"Mastercard",bonNr:"",notiz:"",kmVonStandort:"3"},
-    {id:uid(),datum:"2025-07-22",uhrzeit:"14:18",stationName:"Aral Storkow",adresse:"Kummersdorfer Str. 13d, 15859 Storkow",kraftstoff:"Super E10",menge:"59.15",preisProLiter:"1.689",gesamtbetrag:"99.90",kmStand:"",zahlungsart:"Visa Debit",bonNr:"",notiz:"",kmVonStandort:"40"},
-    {id:uid(),datum:"2025-08-23",uhrzeit:"11:21",stationName:"Shell Frankenwald-West",adresse:"A9, 95180 Berg-Rudolphstein",kraftstoff:"Super FuelSave E10",menge:"34.89",preisProLiter:"2.069",gesamtbetrag:"72.19",kmStand:"",zahlungsart:"Visa Debit",bonNr:"",notiz:"A9 → Toskana",kmVonStandort:""},
-    {id:uid(),datum:"2025-08-23",uhrzeit:"14:07",stationName:"Tankstelle Forster Fürholzen",adresse:"BAB 9 Fürholzen West, 85376 Fürholzen",kraftstoff:"Super FuelSave E10",menge:"33.69",preisProLiter:"2.039",gesamtbetrag:"68.69",kmStand:"",zahlungsart:"Visa Debit",bonNr:"",notiz:"A9 → Toskana",kmVonStandort:""},
-    {id:uid(),datum:"2025-10-06",uhrzeit:"10:02",stationName:"ESSO",adresse:"Zossener Landstr. 10, 14974 Ludwigsfelde",kraftstoff:"Super E10",menge:"68.24",preisProLiter:"1.759",gesamtbetrag:"120.03",kmStand:"",zahlungsart:"Visa Debit",bonNr:"",notiz:"",kmVonStandort:"3"},
-    {id:uid(),datum:"2025-12-02",uhrzeit:"12:25",stationName:"ARAL - REWE To Go",adresse:"Hohenzollerndamm 97, 14199 Berlin",kraftstoff:"Super E10",menge:"63.89",preisProLiter:"1.649",gesamtbetrag:"105.35",kmStand:"",zahlungsart:"Visa Debit",bonNr:"",notiz:"",kmVonStandort:"38"},
+    {id:uid(),datum:"2025-05-06",uhrzeit:"13:08",stationName:"ARAL - REWE To Go",adresse:"Hohenzollerndamm 97, 14199 Berlin",kraftstoff:"Super E10",menge:"66.33",preisProLiter:"1.649",gesamtbetrag:"109.38",kmStand:"",zahlungsart:"Visa Debit",bonNr:"",notiz:"",kmVonStandort:"33"},
+    {id:uid(),datum:"2025-05-07",uhrzeit:"12:46",stationName:"ENI Köschinger Forst",adresse:"BAB 9, 85120 Hepberg",kraftstoff:"Super Plus",menge:"57.00",preisProLiter:"2.399",gesamtbetrag:"136.74",kmStand:"",zahlungsart:"Visa Debit",bonNr:"",notiz:"A9 Ri. München",kmVonStandort:"480"},
+    {id:uid(),datum:"2025-05-08",uhrzeit:"15:56",stationName:"BAT Fränk. Schweiz O.",adresse:"A9 Nürnberg-Hof, 91257 Pegnitz",kraftstoff:"Super 95 E10",menge:"43.71",preisProLiter:"2.159",gesamtbetrag:"94.37",kmStand:"",zahlungsart:"Visa Debit",bonNr:"",notiz:"A9 Ri. Berlin",kmVonStandort:"359"},
+    {id:uid(),datum:"2025-05-15",uhrzeit:"19:42",stationName:"Aral Rasthof Brusendorf",adresse:"Am Fichtenplan Süd, 15749 Brusendorf",kraftstoff:"Super E5",menge:"38.06",preisProLiter:"1.669",gesamtbetrag:"63.52",kmStand:"",zahlungsart:"Visa Debit",bonNr:"",notiz:"A10 Süd",kmVonStandort:"15"},
+    {id:uid(),datum:"2025-05-23",uhrzeit:"16:05",stationName:"ESSO",adresse:"Zossener Landstr. 10, 14974 Ludwigsfelde",kraftstoff:"Super 95",menge:"31.94",preisProLiter:"1.709",gesamtbetrag:"54.59",kmStand:"",zahlungsart:"Visa Debit",bonNr:"",notiz:"",kmVonStandort:"4"},
+    {id:uid(),datum:"2025-07-07",uhrzeit:"17:57",stationName:"Shell",adresse:"Parkallee 1, 14974 Ludwigsfelde",kraftstoff:"Super FuelSave 95",menge:"39.80",preisProLiter:"1.759",gesamtbetrag:"70.01",kmStand:"",zahlungsart:"Mastercard",bonNr:"",notiz:"",kmVonStandort:"2"},
+    {id:uid(),datum:"2025-07-22",uhrzeit:"14:18",stationName:"Aral Storkow",adresse:"Kummersdorfer Str. 13d, 15859 Storkow",kraftstoff:"Super E10",menge:"59.15",preisProLiter:"1.689",gesamtbetrag:"99.90",kmStand:"",zahlungsart:"Visa Debit",bonNr:"",notiz:"",kmVonStandort:"51"},
+    {id:uid(),datum:"2025-08-23",uhrzeit:"11:21",stationName:"Shell Frankenwald-West",adresse:"A9, 95180 Berg-Rudolphstein",kraftstoff:"Super FuelSave E10",menge:"34.89",preisProLiter:"2.069",gesamtbetrag:"72.19",kmStand:"",zahlungsart:"Visa Debit",bonNr:"",notiz:"A9 → Toskana",kmVonStandort:"278"},
+    {id:uid(),datum:"2025-08-23",uhrzeit:"14:07",stationName:"Tankstelle Forster Fürholzen",adresse:"BAB 9 Fürholzen West, 85376 Fürholzen",kraftstoff:"Super FuelSave E10",menge:"33.69",preisProLiter:"2.039",gesamtbetrag:"68.69",kmStand:"",zahlungsart:"Visa Debit",bonNr:"",notiz:"A9 → Toskana",kmVonStandort:"539"},
+    {id:uid(),datum:"2025-10-06",uhrzeit:"10:02",stationName:"ESSO",adresse:"Zossener Landstr. 10, 14974 Ludwigsfelde",kraftstoff:"Super E10",menge:"68.24",preisProLiter:"1.759",gesamtbetrag:"120.03",kmStand:"",zahlungsart:"Visa Debit",bonNr:"",notiz:"",kmVonStandort:"4"},
+    {id:uid(),datum:"2025-12-02",uhrzeit:"12:25",stationName:"ARAL - REWE To Go",adresse:"Hohenzollerndamm 97, 14199 Berlin",kraftstoff:"Super E10",menge:"63.89",preisProLiter:"1.649",gesamtbetrag:"105.35",kmStand:"",zahlungsart:"Visa Debit",bonNr:"",notiz:"",kmVonStandort:"33"},
   ], waesche:[], parkplaetze:[],
   services:[
     {id:uid(), datum:"2024-10-08", typ:"Inspektion", werkstatt:"Autoservice Ludwigsfelde", adresse:"Südring, 14974 Ludwigsfelde", kmStand:"5044", betrag:"", rechnungsNr:"", faelligKm:"", faelligDatum:"", zahlungsart:"", notiz:"Service", belegFoto:""},
@@ -663,40 +661,39 @@ const makeTFAIDefault = () => ({
   standort:{name:"Büro Ludwigsfelde", adresse:"Parkallee 14, 14974 Ludwigsfelde"},
   kmStandInitial:"0",
   partner:[
-    {id:uid(), name:"ViniGrandi GmbH", adresse:"Konstanzer Str. 4, 10707 Berlin", telefon:"", kmVonStandort:"38", notiz:"Firmensitz", typ:"kunde"},
+    {id:uid(), name:"ViniGrandi GmbH", adresse:"Konstanzer Str. 4, 10707 Berlin", telefon:"", kmVonStandort:"37", notiz:"Firmensitz", typ:"kunde"},
     {id:uid(), name:"GF Berlin",                    adresse:"Konstanzer Str. 4, 10707 Berlin",        telefon:"", kmVonStandort:"37", notiz:"Unterlagen Abgeben", typ:"kunde"},
-    {id:uid(), name:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH",         adresse:"Lennéstr. 3, 10785 Berlin",              telefon:"", kmVonStandort:"35", notiz:"Dokumente unterschreiben", typ:"steuerberater"},
-    {id:uid(), name:"Jörg Wagner Zeltsysteme",      adresse:"Hauptstr. 63, 15910 Unterspreewald",     telefon:"+49 030 53217381",   kmVonStandort:"30", notiz:"Mieter — Halle II + III", typ:"mieter"},
-    {id:uid(), name:"Oppfine GmbH",                 adresse:"Zeppelinring 2, 15711 Mittenwalde",      telefon:"+49 030 53217381",   kmVonStandort:"30", notiz:"Mieter — Lagerhalle III", typ:"mieter"},
-    {id:uid(), name:"Schaubühne Berlin",             adresse:"Kurfürstendamm 153, 10709 Berlin",      telefon:"",                   kmVonStandort:"38", notiz:"Mieter — Lager I", typ:"mieter"},
-    {id:uid(), name:"tetris Modulbau GmbH",          adresse:"Zeppelinring 16, 15749 Mittenwalde-Schenkendorf", telefon:"+49 03375 9214901", kmVonStandort:"30", notiz:"Mieter — EG + 1.OG", typ:"mieter"},
-    {id:uid(), name:"Knappworst Steuerberater Potsdam", adresse:"Am Bassin 4, 14467 Potsdam", telefon:"", kmVonStandort:"26", notiz:"Steuerberater", typ:"steuerberater"},
+    {id:uid(), name:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH",         adresse:"Lennéstr. 3, 10785 Berlin",              telefon:"", kmVonStandort:"26", notiz:"Dokumente unterschreiben", typ:"steuerberater"},
+    {id:uid(), name:"Jörg Wagner Zeltsysteme",      adresse:"Hauptstr. 63, 15910 Unterspreewald",     telefon:"+49 030 53217381",   kmVonStandort:"62", notiz:"Mieter — Halle II + III", typ:"mieter"},
+    {id:uid(), name:"Oppfine GmbH",                 adresse:"Zeppelinring 2, 15711 Mittenwalde",      telefon:"+49 030 53217381",   kmVonStandort:"27", notiz:"Mieter — Lagerhalle III", typ:"mieter"},
+    {id:uid(), name:"Schaubühne Berlin",             adresse:"Kurfürstendamm 153, 10709 Berlin",      telefon:"",                   kmVonStandort:"36", notiz:"Mieter — Lager I", typ:"mieter"},
+    {id:uid(), name:"tetris Modulbau GmbH",          adresse:"Zeppelinring 16, 15749 Mittenwalde-Schenkendorf", telefon:"+49 03375 9214901", kmVonStandort:"27", notiz:"Mieter — EG + 1.OG", typ:"mieter"},
+    {id:uid(), name:"Knappworst Steuerberater Potsdam", adresse:"Am Bassin 4, 14467 Potsdam", telefon:"", kmVonStandort:"24", notiz:"Steuerberater", typ:"steuerberater"},
 
   ,
-    {id:uid(), name:"Rechtsanwälte Napiorkowski Potsdam", adresse:"Puschkinallee 3, Potsdam", telefon:"", kmVonStandort:"30", notiz:"Rechtsanwalt", typ:"anwalt"},
-    {id:uid(), name:"Rechtsanwälte Noacke Berlin", adresse:"Uhlandstr. 161, Berlin", telefon:"", kmVonStandort:"40", notiz:"Rechtsanwalt", typ:"anwalt"}],
+    {id:uid(), name:"Rechtsanwälte Napiorkowski Potsdam", adresse:"Puschkinallee 3, Potsdam", telefon:"", kmVonStandort:"24", notiz:"Rechtsanwalt", typ:"anwalt"},
+    {id:uid(), name:"Rechtsanwälte Noacke Berlin", adresse:"Uhlandstr. 161, Berlin", telefon:"", kmVonStandort:"38", notiz:"Rechtsanwalt", typ:"anwalt"}],
   messen:[
     {id:uid(), name:"Immobilienmesse Berlin 2024",  adresse:"Wiebestraße 42-45, 10553 Berlin",  datum:"2024-09-07", partnerId:"", typ:"sonstiges", notiz:"Immobilienmesse", kmVonStandort:"40"},
   ],
   standorteExtra:[
-    {id:uid(), name:"Stellantis &You Deutschland GmbH (Fiat)",   adresse:"Seesener Str. 60-61, 10709 Berlin",  notiz:"KFZ-Service",   auto:false, typ:"werkstatt", besuche:0, letzterBesuch:"", kmVonStandort:"38"},
-    {id:uid(), name:"Deutsche Post Ludwigsfelde", adresse:"Potsdamer Str. 60, 14974 Ludwigsfelde", notiz:"Briefe / Pakete", auto:false, typ:"post", besuche:0, letzterBesuch:"", kmVonStandort:"3"},
+    {id:uid(), name:"Stellantis &You Deutschland GmbH (Fiat)",   adresse:"Seesener Str. 60-61, 10709 Berlin",  notiz:"KFZ-Service",   auto:false, typ:"werkstatt", besuche:0, letzterBesuch:"", kmVonStandort:"36"},
+    {id:uid(), name:"Deutsche Post Ludwigsfelde", adresse:"Potsdamer Str. 60, 14974 Ludwigsfelde", notiz:"Briefe / Pakete", auto:false, typ:"post", besuche:0, letzterBesuch:"", kmVonStandort:"5"},
     {id:uid(), name:"MBS Sparkasse Ludwigsfelde", adresse:"Potsdamer Str. 60, 14974 Ludwigsfelde", notiz:"Bankfiliale", auto:false, typ:"bank", besuche:0, letzterBesuch:"", kmVonStandort:"5"},
-    {id:uid(), name:"Getränke Hoffmann Berlin", adresse:"Westfälische Str. 85, 10709 Berlin", notiz:"Getränkemarkt", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"38"},
-    {id:uid(), name:"Getränke Hoffmann Ludwigsfelde", adresse:"Potsdamer Str. 118, 14974 Ludwigsfelde", notiz:"Getränkemarkt", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"3"},
+    {id:uid(), name:"Getränke Hoffmann Ludwigsfelde", adresse:"Potsdamer Str. 118, 14974 Ludwigsfelde", notiz:"Getränkemarkt", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"6"},
     {id:uid(), name:"Hornbach Ludwigsfelde", adresse:"Parkallee 36, 14974 Ludwigsfelde", notiz:"Baumarkt", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"2"},
   ,
-    {id:uid(), name:"Rathaus Ludwigsfelde", adresse:"Rathausstraße 3, 14974 Ludwigsfelde", notiz:"Stadtverwaltung, Bürgeramt, Gewerbeamt", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"2"},
-    {id:uid(), name:"Finanzamt Luckenwalde", adresse:"Dr.-Georg-Schaeffler-Straße 2, 14943 Luckenwalde", notiz:"Steuererklärung, Bescheide", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"18"},
-    {id:uid(), name:"Kfz-Zulassungsstelle Luckenwalde", adresse:"Louis-Pasteur-Str. 5, 14943 Luckenwalde", notiz:"Zulassung, Ummeldung, Abmeldung", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"18"},
-    {id:uid(), name:"Kreisverwaltung Teltow-Fläming", adresse:"Am Nuthefließ 2, 14943 Luckenwalde", notiz:"Landratsamt, Bauamt, Ordnungsamt", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"18"},
-    {id:uid(), name:"IHK Potsdam", adresse:"Breite Straße 2a-c, 14467 Potsdam", notiz:"Industrie- und Handelskammer", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"26"},
-    {id:uid(), name:"Bauhaus Berlin-Halensee", adresse:"Kurfürstendamm 129a, 10711 Berlin", notiz:"Baumarkt", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"38"},
-    {id:uid(), name:"Flughafen Berlin Brandenburg (BER)", adresse:"Willy-Brandt-Platz, 12529 Schönefeld", notiz:"Terminal 1 + 2", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"25"},
-    {id:uid(), name:"Flughafen München (MUC)", adresse:"Nordallee 25, 85356 München", notiz:"Franz Josef Strauß", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"620"},
-    {id:uid(), name:"Flughafen Hamburg (HAM)", adresse:"Flughafenstraße 1-3, 22335 Hamburg", notiz:"Hamburg Airport", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"290"},
-    {id:uid(), name:"Flughafen Stuttgart (STR)", adresse:"Flughafenstraße 32, 70629 Stuttgart", notiz:"Stuttgart Airport", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"590"},
-    {id:uid(), name:"Berlin Hauptbahnhof", adresse:"Europaplatz 1, 10557 Berlin", notiz:"Fernverkehr, ICE", auto:false, typ:"bahnhof", besuche:0, letzterBesuch:"", kmVonStandort:"40"}],
+    {id:uid(), name:"Rathaus Ludwigsfelde", adresse:"Rathausstraße 3, 14974 Ludwigsfelde", notiz:"Stadtverwaltung, Bürgeramt, Gewerbeamt", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"5"},
+    {id:uid(), name:"Finanzamt Luckenwalde", adresse:"Dr.-Georg-Schaeffler-Straße 2, 14943 Luckenwalde", notiz:"Steuererklärung, Bescheide", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"33"},
+    {id:uid(), name:"Kfz-Zulassungsstelle Luckenwalde", adresse:"Louis-Pasteur-Str. 5, 14943 Luckenwalde", notiz:"Zulassung, Ummeldung, Abmeldung", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"37"},
+    {id:uid(), name:"Kreisverwaltung Teltow-Fläming", adresse:"Am Nuthefließ 2, 14943 Luckenwalde", notiz:"Landratsamt, Bauamt, Ordnungsamt", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"41"},
+    {id:uid(), name:"IHK Potsdam", adresse:"Breite Straße 2a-c, 14467 Potsdam", notiz:"Industrie- und Handelskammer", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"24"},
+    {id:uid(), name:"Bauhaus Berlin-Halensee", adresse:"Kurfürstendamm 129a, 10711 Berlin", notiz:"Baumarkt", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"35"},
+    {id:uid(), name:"Flughafen Berlin Brandenburg (BER)", adresse:"Willy-Brandt-Platz, 12529 Schönefeld", notiz:"Terminal 1 + 2", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"29"},
+    {id:uid(), name:"Flughafen München (MUC)", adresse:"Nordallee 25, 85356 München", notiz:"Franz Josef Strauß", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"557"},
+    {id:uid(), name:"Flughafen Hamburg (HAM)", adresse:"Flughafenstraße 1-3, 22335 Hamburg", notiz:"Hamburg Airport", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"334"},
+    {id:uid(), name:"Flughafen Stuttgart (STR)", adresse:"Flughafenstraße 32, 70629 Stuttgart", notiz:"Stuttgart Airport", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"627"},
+    {id:uid(), name:"Berlin Hauptbahnhof", adresse:"Europaplatz 1, 10557 Berlin", notiz:"Fernverkehr, ICE", auto:false, typ:"bahnhof", besuche:0, letzterBesuch:"", kmVonStandort:"29"}],
   strafen:[
     {id:uid(), datum:"2025-11-21", uhrzeit:"09:50", typ:"Parkverstoß", betrag:"10", tatort:"Konstanzer Str. an Ecke Duisburger Str.", tatortAdresse:"10707 Berlin", behoerde:"Polizei Berlin, Bußgeldstelle", adresseBehoerde:"", aktenzeichen:"58.26.698762.3", frist:"", bezahlt:false, notiz:"Parken weniger als 5m hinter Einmündung (BA CW ORD B)", belegFoto:""},
   ], tankstellen:[], waesche:[], parkplaetze:[], services:[],
@@ -723,54 +720,53 @@ const makeTouaregDefault = () => ({
   standort:{name:"Büro Ludwigsfelde", adresse:"Seestr. 33, 14974 Ludwigsfelde"},
   kmStandInitial:"0",
   partner:[
-    {id:uid(), name:"ViniGrandi GmbH", adresse:"Konstanzer Str. 4, 10707 Berlin", telefon:"", kmVonStandort:"38", notiz:"Firmensitz", typ:"kunde"},
-    {id:uid(), name:"GF Berlin (Seydelstr.)",       adresse:"Seydelstr. 24, Berlin",                    telefon:"", kmVonStandort:"49", notiz:"Unterlagen an GF", typ:"kunde"},
-    {id:uid(), name:"Immo Gottschalk",              adresse:"Bussardweg 9, Oranienburg",                telefon:"", kmVonStandort:"87", notiz:"Immobilienkunde", typ:"makler"},
+    {id:uid(), name:"ViniGrandi GmbH", adresse:"Konstanzer Str. 4, 10707 Berlin", telefon:"", kmVonStandort:"37", notiz:"Firmensitz", typ:"kunde"},
+    {id:uid(), name:"GF Berlin (Seydelstr.)",       adresse:"Seydelstr. 24, Berlin",                    telefon:"", kmVonStandort:"26", notiz:"Unterlagen an GF", typ:"kunde"},
+    {id:uid(), name:"Immo Gottschalk",              adresse:"Bussardweg 9, Oranienburg",                telefon:"", kmVonStandort:"101", notiz:"Immobilienkunde", typ:"makler"},
     {id:uid(), name:"T & T",                        adresse:"Jägerstr. 4, 14974 Ludwigsfelde",          telefon:"", kmVonStandort:"4",  notiz:"Geschäftspartner", typ:"kunde"},
-    {id:uid(), name:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH", adresse:"Lennéstr. 3, Berlin", telefon:"", kmVonStandort:"42", notiz:"Steuerberater", typ:"steuerberater"},
-    {id:uid(), name:"Rohrer Immobilien München",    adresse:"Lessingstr. 9, 80336 München",             telefon:"", kmVonStandort:"610",notiz:"Immobilienmakler", typ:"makler"},
-    {id:uid(), name:"WOGE Immobilien Nürnberg",     adresse:"Parsifalstr. 8, 90461 Nürnberg",           telefon:"", kmVonStandort:"420",notiz:"Immobilien", typ:"makler"},
-    {id:uid(), name:"Rainbow Sanierung Berlin",     adresse:"Platanenstr. 163 / Nauenstr. 34, Berlin",  telefon:"", kmVonStandort:"52", notiz:"Sanierungsfirma", typ:"handwerker"},
-    {id:uid(), name:"Rechtsanwälte Napiorkowski Potsdam", adresse:"Puschkinallee 3, Potsdam",           telefon:"", kmVonStandort:"30", notiz:"Rechtsanwalt", typ:"anwalt"},
-    {id:uid(), name:"Rechtsanwälte Noacke Berlin",  adresse:"Uhlandstr. 161, Berlin",                   telefon:"", kmVonStandort:"40", notiz:"Rechtsanwalt", typ:"anwalt"},
-    {id:uid(), name:"Knappworst Steuerberater Potsdam", adresse:"Am Bassin 4, 14467 Potsdam",           telefon:"", kmVonStandort:"26", notiz:"Steuerberater", typ:"steuerberater"},
+    {id:uid(), name:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH", adresse:"Lennéstr. 3, Berlin", telefon:"", kmVonStandort:"26", notiz:"Steuerberater", typ:"steuerberater"},
+    {id:uid(), name:"Rohrer Immobilien München",    adresse:"Lessingstr. 9, 80336 München",             telefon:"", kmVonStandort:"569",notiz:"Immobilienmakler", typ:"makler"},
+    {id:uid(), name:"WOGE Immobilien Nürnberg",     adresse:"Parsifalstr. 8, 90461 Nürnberg",           telefon:"", kmVonStandort:"417",notiz:"Immobilien", typ:"makler"},
+    {id:uid(), name:"Rainbow Sanierung Berlin",     adresse:"Platanenstr. 163 / Nauenstr. 34, Berlin",  telefon:"", kmVonStandort:"53", notiz:"Sanierungsfirma", typ:"handwerker"},
+    {id:uid(), name:"Rechtsanwälte Napiorkowski Potsdam", adresse:"Puschkinallee 3, Potsdam",           telefon:"", kmVonStandort:"24", notiz:"Rechtsanwalt", typ:"anwalt"},
+    {id:uid(), name:"Rechtsanwälte Noacke Berlin",  adresse:"Uhlandstr. 161, Berlin",                   telefon:"", kmVonStandort:"38", notiz:"Rechtsanwalt", typ:"anwalt"},
+    {id:uid(), name:"Knappworst Steuerberater Potsdam", adresse:"Am Bassin 4, 14467 Potsdam",           telefon:"", kmVonStandort:"24", notiz:"Steuerberater", typ:"steuerberater"},
   ],
   messen:[
     {id:uid(), name:"Immobilienmesse Berlin 2024",  adresse:"Wiebestr. 42, Berlin",  datum:"2024-09-07", partnerId:"", notiz:"Immobilienmesse", kmVonStandort:"44"},
-    {id:uid(), name:"Münchner Immobilien Messe (MIM) 2026", adresse:"MTC München, Ingolstädter Str. 45, 80807 München", datum:"2026-03-20", datumBis:"2026-03-22", partnerId:"", notiz:"Regionale Wohnimmobilienmesse, Fr–So", kmVonStandort:"590"},
-    {id:uid(), name:"Immobilienmesse Alpen-Adria 2026", adresse:"Messe Klagenfurt, Messeplatz 1, 9020 Klagenfurt, Österreich", datum:"2026-02-20", datumBis:"2026-02-22", partnerId:"", notiz:"Immobilienprojekte Alpen-Adria Raum", kmVonStandort:"780"},
-    {id:uid(), name:"MAPIC Italy 2026", adresse:"Fiera Milano Rho, SS 33 del Sempione 28, 20017 Rho, Italien", datum:"2026-05-27", datumBis:"2026-05-28", partnerId:"", notiz:"Fachmesse Retail Real Estate, Mailand", kmVonStandort:"1000"},
-    {id:uid(), name:"RE ITALY Convention 2026", adresse:"Borsa Italiana, Piazza degli Affari 6, 20123 Milano, Italien", datum:"2026-06-10", datumBis:"2026-06-10", partnerId:"", notiz:"Real Estate Convention, 27. Ausgabe", kmVonStandort:"1000"},
-    {id:uid(), name:"Real Estate Arena 2026", adresse:"Messegelände Hannover, Hermesallee 1, 30521 Hannover", datum:"2026-06-10", datumBis:"2026-06-11", partnerId:"", notiz:"Deutschlands Immobilienmesse und Zukunftskonferenz, 7.500+ Fachbesucher", kmVonStandort:"280"},
-    {id:uid(), name:"EXPO REAL 2026", adresse:"Messe München, Am Messesee 2, 81829 München", datum:"2026-10-05", datumBis:"2026-10-07", partnerId:"", notiz:"Europas wichtigste Immobilienmesse, 3 Tage", kmVonStandort:"600"},
-    {id:uid(), name:"ProWein 2025", adresse:"Messe Düsseldorf, Stockumer Kirchstr. 61, 40474 Düsseldorf", datum:"2025-03-17", datumBis:"2025-03-18", partnerId:"", notiz:"Weltleitmesse Wein & Spirituosen, 6.000 Aussteller — Einladung ViniGrandi", kmVonStandort:"560"},
-    {id:uid(), name:"Vinitaly 2025", adresse:"Veronafiere, Viale del Lavoro 8, 37135 Verona, Italien", datum:"2025-04-07", datumBis:"2025-04-09", partnerId:"", notiz:"Internationale Weinfachmesse, 4.000 Aussteller, 97.000 Besucher — Einladung ViniGrandi", kmVonStandort:"1050"},
-    {id:uid(), name:"ProWein 2026", adresse:"Messe Düsseldorf, Stockumer Kirchstr. 61, 40474 Düsseldorf", datum:"2026-03-16", datumBis:"2026-03-17", partnerId:"", notiz:"Weltleitmesse Wein & Spirituosen — Einladung ViniGrandi", kmVonStandort:"560"},
-    {id:uid(), name:"Vinitaly 2026", adresse:"Veronafiere, Viale del Lavoro 8, 37135 Verona, Italien", datum:"2026-04-13", datumBis:"2026-04-15", partnerId:"", notiz:"Internationale Weinfachmesse Verona — Einladung ViniGrandi", kmVonStandort:"1050"},
+    {id:uid(), name:"Münchner Immobilien Messe (MIM) 2026", adresse:"MTC München, Ingolstädter Str. 45, 80807 München", datum:"2026-03-20", datumBis:"2026-03-22", partnerId:"", notiz:"Regionale Wohnimmobilienmesse, Fr–So", kmVonStandort:"560"},
+    {id:uid(), name:"Immobilienmesse Alpen-Adria 2026", adresse:"Messe Klagenfurt, Messeplatz 1, 9020 Klagenfurt, Österreich", datum:"2026-02-20", datumBis:"2026-02-22", partnerId:"", notiz:"Immobilienprojekte Alpen-Adria Raum", kmVonStandort:"915"},
+    {id:uid(), name:"MAPIC Italy 2026", adresse:"Fiera Milano Rho, SS 33 del Sempione 28, 20017 Rho, Italien", datum:"2026-05-27", datumBis:"2026-05-28", partnerId:"", notiz:"Fachmesse Retail Real Estate, Mailand", kmVonStandort:"1007"},
+    {id:uid(), name:"RE ITALY Convention 2026", adresse:"Borsa Italiana, Piazza degli Affari 6, 20123 Milano, Italien", datum:"2026-06-10", datumBis:"2026-06-10", partnerId:"", notiz:"Real Estate Convention, 27. Ausgabe", kmVonStandort:"1015"},
+    {id:uid(), name:"Real Estate Arena 2026", adresse:"Messegelände Hannover, Hermesallee 1, 30521 Hannover", datum:"2026-06-10", datumBis:"2026-06-11", partnerId:"", notiz:"Deutschlands Immobilienmesse und Zukunftskonferenz, 7.500+ Fachbesucher", kmVonStandort:"268"},
+    {id:uid(), name:"EXPO REAL 2026", adresse:"Messe München, Am Messesee 2, 81829 München", datum:"2026-10-05", datumBis:"2026-10-07", partnerId:"", notiz:"Europas wichtigste Immobilienmesse, 3 Tage", kmVonStandort:"572"},
+    {id:uid(), name:"ProWein 2025", adresse:"Messe Düsseldorf, Stockumer Kirchstr. 61, 40474 Düsseldorf", datum:"2025-03-17", datumBis:"2025-03-18", partnerId:"", notiz:"Weltleitmesse Wein & Spirituosen, 6.000 Aussteller — Einladung ViniGrandi", kmVonStandort:"541"},
+    {id:uid(), name:"Vinitaly 2025", adresse:"Veronafiere, Viale del Lavoro 8, 37135 Verona, Italien", datum:"2025-04-07", datumBis:"2025-04-09", partnerId:"", notiz:"Internationale Weinfachmesse, 4.000 Aussteller, 97.000 Besucher — Einladung ViniGrandi", kmVonStandort:"999"},
+    {id:uid(), name:"ProWein 2026", adresse:"Messe Düsseldorf, Stockumer Kirchstr. 61, 40474 Düsseldorf", datum:"2026-03-16", datumBis:"2026-03-17", partnerId:"", notiz:"Weltleitmesse Wein & Spirituosen — Einladung ViniGrandi", kmVonStandort:"541"},
+    {id:uid(), name:"Vinitaly 2026", adresse:"Veronafiere, Viale del Lavoro 8, 37135 Verona, Italien", datum:"2026-04-13", datumBis:"2026-04-15", partnerId:"", notiz:"Internationale Weinfachmesse Verona — Einladung ViniGrandi", kmVonStandort:"999"},
   ],
   standorteExtra:[
-    {id:uid(), name:"Autoservice Ludwigsfelde",  adresse:"Südring, 14974 Ludwigsfelde", notiz:"KFZ-Service", auto:false, typ:"werkstatt", besuche:0, letzterBesuch:"", kmVonStandort:"2"},
-    {id:uid(), name:"Deutsche Post Ludwigsfelde", adresse:"Potsdamer Str. 60, 14974 Ludwigsfelde", notiz:"Briefe / Pakete", auto:false, typ:"post", besuche:0, letzterBesuch:"", kmVonStandort:"3"},
-    {id:uid(), name:"Autohaus Berolina Berlin", adresse:"Cicerostr. 34, 10709 Berlin-Halensee", notiz:"Fahrzeugabholung", auto:false, typ:"werkstatt", besuche:0, letzterBesuch:"", kmVonStandort:"45"},
+    {id:uid(), name:"Autoservice Ludwigsfelde",  adresse:"Südring, 14974 Ludwigsfelde", notiz:"KFZ-Service", auto:false, typ:"werkstatt", besuche:0, letzterBesuch:"", kmVonStandort:"9"},
+    {id:uid(), name:"Deutsche Post Ludwigsfelde", adresse:"Potsdamer Str. 60, 14974 Ludwigsfelde", notiz:"Briefe / Pakete", auto:false, typ:"post", besuche:0, letzterBesuch:"", kmVonStandort:"5"},
+    {id:uid(), name:"Autohaus Berolina Berlin", adresse:"Cicerostr. 34, 10709 Berlin-Halensee", notiz:"Fahrzeugabholung", auto:false, typ:"werkstatt", besuche:0, letzterBesuch:"", kmVonStandort:"36"},
     {id:uid(), name:"MBS Sparkasse Ludwigsfelde", adresse:"Potsdamer Str. 60, 14974 Ludwigsfelde", notiz:"Bankfiliale", auto:false, typ:"bank", besuche:0, letzterBesuch:"", kmVonStandort:"5"},
     {id:uid(), name:"Hornbach Ludwigsfelde", adresse:"Parkallee 36, 14974 Ludwigsfelde", notiz:"Baumarkt", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"2"},
-    {id:uid(), name:"Getränke Hoffmann Berlin", adresse:"Westfälische Str. 85, 10709 Berlin", notiz:"Getränkemarkt", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"38"},
-    {id:uid(), name:"Getränke Hoffmann Ludwigsfelde", adresse:"Potsdamer Str. 118, 14974 Ludwigsfelde", notiz:"Getränkemarkt", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"3"},
+    {id:uid(), name:"Getränke Hoffmann Ludwigsfelde", adresse:"Potsdamer Str. 118, 14974 Ludwigsfelde", notiz:"Getränkemarkt", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"6"},
   ,
-    {id:uid(), name:"Rathaus Ludwigsfelde", adresse:"Rathausstraße 3, 14974 Ludwigsfelde", notiz:"Stadtverwaltung, Bürgeramt, Gewerbeamt", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"2"},
-    {id:uid(), name:"Finanzamt Luckenwalde", adresse:"Dr.-Georg-Schaeffler-Straße 2, 14943 Luckenwalde", notiz:"Steuererklärung, Bescheide", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"18"},
-    {id:uid(), name:"Kfz-Zulassungsstelle Luckenwalde", adresse:"Louis-Pasteur-Str. 5, 14943 Luckenwalde", notiz:"Zulassung, Ummeldung, Abmeldung", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"18"},
-    {id:uid(), name:"Kreisverwaltung Teltow-Fläming", adresse:"Am Nuthefließ 2, 14943 Luckenwalde", notiz:"Landratsamt, Bauamt, Ordnungsamt", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"18"},
-    {id:uid(), name:"IHK Potsdam", adresse:"Breite Straße 2a-c, 14467 Potsdam", notiz:"Industrie- und Handelskammer", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"26"},
-    {id:uid(), name:"Bauhaus Berlin-Halensee", adresse:"Kurfürstendamm 129a, 10711 Berlin", notiz:"Baumarkt", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"38"},
-    {id:uid(), name:"Flughafen Berlin Brandenburg (BER)", adresse:"Willy-Brandt-Platz, 12529 Schönefeld", notiz:"Terminal 1 + 2", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"25"},
-    {id:uid(), name:"Flughafen München (MUC)", adresse:"Nordallee 25, 85356 München", notiz:"Franz Josef Strauß", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"620"},
-    {id:uid(), name:"Flughafen Hamburg (HAM)", adresse:"Flughafenstraße 1-3, 22335 Hamburg", notiz:"Hamburg Airport", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"290"},
-    {id:uid(), name:"Flughafen Stuttgart (STR)", adresse:"Flughafenstraße 32, 70629 Stuttgart", notiz:"Stuttgart Airport", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"590"},
-    {id:uid(), name:"Berlin Hauptbahnhof", adresse:"Europaplatz 1, 10557 Berlin", notiz:"Fernverkehr, ICE", auto:false, typ:"bahnhof", besuche:0, letzterBesuch:"", kmVonStandort:"40"},
-    {id:uid(), name:"Autostadt Wolfsburg", adresse:"Stadtbrücke, 38440 Wolfsburg", notiz:"Fahrzeugabholung TF-IV 601", auto:false, typ:"sonstiges", besuche:1, letzterBesuch:"2025-12-01", kmVonStandort:"230"},
-    {id:uid(), name:"Auto-Scholz AHG Bamberg", adresse:"Kronacher Str. 38, 96052 Bamberg", notiz:"VW Händler", auto:false, typ:"werkstatt", besuche:0, letzterBesuch:"", kmVonStandort:"400"},
-    {id:uid(), name:"Premio Reifen + Autoservice", adresse:"Am Birkengrund 21-23, 14974 Ludwigsfelde", notiz:"Reifenservice", auto:false, typ:"werkstatt", besuche:1, letzterBesuch:"2025-12-01", kmVonStandort:"3"}],
+    {id:uid(), name:"Rathaus Ludwigsfelde", adresse:"Rathausstraße 3, 14974 Ludwigsfelde", notiz:"Stadtverwaltung, Bürgeramt, Gewerbeamt", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"5"},
+    {id:uid(), name:"Finanzamt Luckenwalde", adresse:"Dr.-Georg-Schaeffler-Straße 2, 14943 Luckenwalde", notiz:"Steuererklärung, Bescheide", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"33"},
+    {id:uid(), name:"Kfz-Zulassungsstelle Luckenwalde", adresse:"Louis-Pasteur-Str. 5, 14943 Luckenwalde", notiz:"Zulassung, Ummeldung, Abmeldung", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"37"},
+    {id:uid(), name:"Kreisverwaltung Teltow-Fläming", adresse:"Am Nuthefließ 2, 14943 Luckenwalde", notiz:"Landratsamt, Bauamt, Ordnungsamt", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"41"},
+    {id:uid(), name:"IHK Potsdam", adresse:"Breite Straße 2a-c, 14467 Potsdam", notiz:"Industrie- und Handelskammer", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"24"},
+    {id:uid(), name:"Bauhaus Berlin-Halensee", adresse:"Kurfürstendamm 129a, 10711 Berlin", notiz:"Baumarkt", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"35"},
+    {id:uid(), name:"Flughafen Berlin Brandenburg (BER)", adresse:"Willy-Brandt-Platz, 12529 Schönefeld", notiz:"Terminal 1 + 2", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"29"},
+    {id:uid(), name:"Flughafen München (MUC)", adresse:"Nordallee 25, 85356 München", notiz:"Franz Josef Strauß", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"557"},
+    {id:uid(), name:"Flughafen Hamburg (HAM)", adresse:"Flughafenstraße 1-3, 22335 Hamburg", notiz:"Hamburg Airport", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"334"},
+    {id:uid(), name:"Flughafen Stuttgart (STR)", adresse:"Flughafenstraße 32, 70629 Stuttgart", notiz:"Stuttgart Airport", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"627"},
+    {id:uid(), name:"Berlin Hauptbahnhof", adresse:"Europaplatz 1, 10557 Berlin", notiz:"Fernverkehr, ICE", auto:false, typ:"bahnhof", besuche:0, letzterBesuch:"", kmVonStandort:"29"},
+    {id:uid(), name:"Autostadt Wolfsburg", adresse:"Stadtbrücke, 38440 Wolfsburg", notiz:"Fahrzeugabholung TF-IV 601", auto:false, typ:"sonstiges", besuche:1, letzterBesuch:"2025-12-01", kmVonStandort:"210"},
+    {id:uid(), name:"Auto-Scholz AHG Bamberg", adresse:"Kronacher Str. 38, 96052 Bamberg", notiz:"VW Händler", auto:false, typ:"werkstatt", besuche:0, letzterBesuch:"", kmVonStandort:"381"},
+    {id:uid(), name:"Premio Reifen + Autoservice", adresse:"Am Birkengrund 21-23, 14974 Ludwigsfelde", notiz:"Reifenservice", auto:false, typ:"werkstatt", besuche:1, letzterBesuch:"2025-12-01", kmVonStandort:"1"}],
   strafen:[
     {id:uid(), datum:"2025-12-30", uhrzeit:"10:01", typ:"Geschwindigkeitsüberschreitung (bis 10 km/h)", betrag:"20", tatort:"BAB 111, km 0,65, Richtung Hamburg", tatortAdresse:"Brandenburg", behoerde:"Zentraldienst der Polizei Brandenburg, ZBSt Gransee", adresseBehoerde:"Oranienburger Str. 31a, 16775 Gransee", aktenzeichen:"474/26/0016537/6", frist:"", bezahlt:false, notiz:"Außerorts 100er-Zone, gemessen 109 km/h (nach Toleranzabzug)", belegFoto:""},
     {id:uid(), datum:"2026-02-09", uhrzeit:"13:13", typ:"Geschwindigkeitsüberschreitung (11–15 km/h)", betrag:"40", tatort:"L 40, Abschnitt 185, km 0,4, zw. B 101 und Potsdam", tatortAdresse:"Brandenburg", behoerde:"Zentraldienst der Polizei Brandenburg, ZBSt Gransee", adresseBehoerde:"Oranienburger Str. 31a, 16775 Gransee", aktenzeichen:"774/26/0044003/7", frist:"", bezahlt:false, notiz:"Außerorts 100er-Zone, gemessen 112 km/h (nach Toleranzabzug)", belegFoto:""},
@@ -804,38 +800,38 @@ const makeNissanDefault = () => ({
   kmStandInitial:"0",
   partner:[
     {id:uid(), name:"ViniGrandi GmbH",               adresse:"Konstanzer Str. 4, 10707 Berlin",          telefon:"", kmVonStandort:"37", notiz:"Firmensitz", typ:"kunde"},
-    {id:uid(), name:"ALPAGI Wine&Food GmbH",          adresse:"Westfälische Str. 29, 10709 Berlin",       telefon:"", kmVonStandort:"38", notiz:"Wein & Feinkost", typ:"kunde"},
-    {id:uid(), name:"8000 Vintages",                  adresse:"Großbeerenstraße 27A, 10963 Berlin",       telefon:"", kmVonStandort:"35", notiz:"Weinhandel", typ:"kunde"},
-    {id:uid(), name:"Ristorante Bragato Vini & Gastronomia", adresse:"Dahlmannstraße 7, 10629 Berlin",   telefon:"", kmVonStandort:"38", notiz:"Restaurant / Gastronomie", typ:"kunde"},
-    {id:uid(), name:"Enoiteca Il Calice",             adresse:"Walter-Benjamin-Platz 4, 10629 Berlin",    telefon:"", kmVonStandort:"38", notiz:"Weinbar / Enoteca", typ:"kunde"},
-    {id:uid(), name:"Enab-Berlin GmbH",               adresse:"Chausseestr. 86, 10115 Berlin",            telefon:"", kmVonStandort:"34", notiz:"Weinimport", typ:"kunde"},
-    {id:uid(), name:"Bar lambretta",                   adresse:"Revaler Straße 14, 10245 Berlin",          telefon:"", kmVonStandort:"40", notiz:"Bar", typ:"kunde"},
-    {id:uid(), name:"Bar Proskauer",                   adresse:"Proskauer Straße 13, 10247 Berlin",        telefon:"", kmVonStandort:"40", notiz:"Bar", typ:"kunde"},
-    {id:uid(), name:"Teliani Europe GmbH",             adresse:"Kurfürstendamm 167/168, 10707 Berlin",    telefon:"", kmVonStandort:"37", notiz:"Weinimport / Distribution", typ:"kunde"},
+    {id:uid(), name:"ALPAGI Wine&Food GmbH",          adresse:"Westfälische Str. 29, 10709 Berlin",       telefon:"", kmVonStandort:"36", notiz:"Wein & Feinkost", typ:"kunde"},
+    {id:uid(), name:"8000 Vintages",                  adresse:"Großbeerenstraße 27A, 10963 Berlin",       telefon:"", kmVonStandort:"24", notiz:"Weinhandel", typ:"kunde"},
+    {id:uid(), name:"Ristorante Bragato Vini & Gastronomia", adresse:"Dahlmannstraße 7, 10629 Berlin",   telefon:"", kmVonStandort:"36", notiz:"Restaurant / Gastronomie", typ:"kunde"},
+    {id:uid(), name:"Enoiteca Il Calice",             adresse:"Walter-Benjamin-Platz 4, 10629 Berlin",    telefon:"", kmVonStandort:"37", notiz:"Weinbar / Enoteca", typ:"kunde"},
+    {id:uid(), name:"Enab-Berlin GmbH",               adresse:"Chausseestr. 86, 10115 Berlin",            telefon:"", kmVonStandort:"49", notiz:"Weinimport", typ:"kunde"},
+    {id:uid(), name:"Bar lambretta",                   adresse:"Revaler Straße 14, 10245 Berlin",          telefon:"", kmVonStandort:"44", notiz:"Bar", typ:"kunde"},
+    {id:uid(), name:"Bar Proskauer",                   adresse:"Proskauer Straße 13, 10247 Berlin",        telefon:"", kmVonStandort:"46", notiz:"Bar", typ:"kunde"},
+    {id:uid(), name:"Teliani Europe GmbH",             adresse:"Kurfürstendamm 167/168, 10707 Berlin",    telefon:"", kmVonStandort:"36", notiz:"Weinimport / Distribution", typ:"kunde"},
   ,
-    {id:uid(), name:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH", adresse:"Lennéstr. 3, 10785 Berlin", telefon:"", kmVonStandort:"35", notiz:"Steuerberater", typ:"steuerberater"},
-    {id:uid(), name:"Knappworst Steuerberater Potsdam", adresse:"Am Bassin 4, 14467 Potsdam", telefon:"", kmVonStandort:"26", notiz:"Steuerberater", typ:"steuerberater"},
-    {id:uid(), name:"Rechtsanwälte Napiorkowski Potsdam", adresse:"Puschkinallee 3, Potsdam", telefon:"", kmVonStandort:"30", notiz:"Rechtsanwalt", typ:"anwalt"},
-    {id:uid(), name:"Rechtsanwälte Noacke Berlin", adresse:"Uhlandstr. 161, Berlin", telefon:"", kmVonStandort:"40", notiz:"Rechtsanwalt", typ:"anwalt"}],
+    {id:uid(), name:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH", adresse:"Lennéstr. 3, 10785 Berlin", telefon:"", kmVonStandort:"26", notiz:"Steuerberater", typ:"steuerberater"},
+    {id:uid(), name:"Knappworst Steuerberater Potsdam", adresse:"Am Bassin 4, 14467 Potsdam", telefon:"", kmVonStandort:"24", notiz:"Steuerberater", typ:"steuerberater"},
+    {id:uid(), name:"Rechtsanwälte Napiorkowski Potsdam", adresse:"Puschkinallee 3, Potsdam", telefon:"", kmVonStandort:"24", notiz:"Rechtsanwalt", typ:"anwalt"},
+    {id:uid(), name:"Rechtsanwälte Noacke Berlin", adresse:"Uhlandstr. 161, Berlin", telefon:"", kmVonStandort:"38", notiz:"Rechtsanwalt", typ:"anwalt"}],
   messen:[
-    {id:uid(), name:"ProWein 2025", adresse:"Messe Düsseldorf, Stockumer Kirchstr. 61, 40474 Düsseldorf", datum:"2025-03-17", datumBis:"2025-03-18", partnerId:"", notiz:"Weltleitmesse Wein & Spirituosen — Einladung ViniGrandi", kmVonStandort:"560"},
-    {id:uid(), name:"Vinitaly 2025", adresse:"Veronafiere, Viale del Lavoro 8, 37135 Verona, Italien", datum:"2025-04-07", datumBis:"2025-04-09", partnerId:"", notiz:"Internationale Weinfachmesse — Einladung ViniGrandi", kmVonStandort:"1050"},
-    {id:uid(), name:"ProWein 2026", adresse:"Messe Düsseldorf, Stockumer Kirchstr. 61, 40474 Düsseldorf", datum:"2026-03-16", datumBis:"2026-03-17", partnerId:"", notiz:"Weltleitmesse Wein & Spirituosen — Einladung ViniGrandi", kmVonStandort:"560"},
-    {id:uid(), name:"Vinitaly 2026", adresse:"Veronafiere, Viale del Lavoro 8, 37135 Verona, Italien", datum:"2026-04-13", datumBis:"2026-04-15", partnerId:"", notiz:"Internationale Weinfachmesse Verona — Einladung ViniGrandi", kmVonStandort:"1050"},
+    {id:uid(), name:"ProWein 2025", adresse:"Messe Düsseldorf, Stockumer Kirchstr. 61, 40474 Düsseldorf", datum:"2025-03-17", datumBis:"2025-03-18", partnerId:"", notiz:"Weltleitmesse Wein & Spirituosen — Einladung ViniGrandi", kmVonStandort:"541"},
+    {id:uid(), name:"Vinitaly 2025", adresse:"Veronafiere, Viale del Lavoro 8, 37135 Verona, Italien", datum:"2025-04-07", datumBis:"2025-04-09", partnerId:"", notiz:"Internationale Weinfachmesse — Einladung ViniGrandi", kmVonStandort:"999"},
+    {id:uid(), name:"ProWein 2026", adresse:"Messe Düsseldorf, Stockumer Kirchstr. 61, 40474 Düsseldorf", datum:"2026-03-16", datumBis:"2026-03-17", partnerId:"", notiz:"Weltleitmesse Wein & Spirituosen — Einladung ViniGrandi", kmVonStandort:"541"},
+    {id:uid(), name:"Vinitaly 2026", adresse:"Veronafiere, Viale del Lavoro 8, 37135 Verona, Italien", datum:"2026-04-13", datumBis:"2026-04-15", partnerId:"", notiz:"Internationale Weinfachmesse Verona — Einladung ViniGrandi", kmVonStandort:"999"},
   ],
   standorteExtra:[
-    {id:uid(), name:"Rathaus Ludwigsfelde", adresse:"Rathausstraße 3, 14974 Ludwigsfelde", notiz:"Stadtverwaltung, Bürgeramt, Gewerbeamt", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"2"},
-    {id:uid(), name:"Finanzamt Luckenwalde", adresse:"Dr.-Georg-Schaeffler-Straße 2, 14943 Luckenwalde", notiz:"Steuererklärung, Bescheide", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"18"},
-    {id:uid(), name:"Kfz-Zulassungsstelle Luckenwalde", adresse:"Louis-Pasteur-Str. 5, 14943 Luckenwalde", notiz:"Zulassung, Ummeldung, Abmeldung", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"18"},
-    {id:uid(), name:"Kreisverwaltung Teltow-Fläming", adresse:"Am Nuthefließ 2, 14943 Luckenwalde", notiz:"Landratsamt, Bauamt, Ordnungsamt", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"18"},
-    {id:uid(), name:"IHK Potsdam", adresse:"Breite Straße 2a-c, 14467 Potsdam", notiz:"Industrie- und Handelskammer", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"26"},
+    {id:uid(), name:"Rathaus Ludwigsfelde", adresse:"Rathausstraße 3, 14974 Ludwigsfelde", notiz:"Stadtverwaltung, Bürgeramt, Gewerbeamt", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"5"},
+    {id:uid(), name:"Finanzamt Luckenwalde", adresse:"Dr.-Georg-Schaeffler-Straße 2, 14943 Luckenwalde", notiz:"Steuererklärung, Bescheide", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"33"},
+    {id:uid(), name:"Kfz-Zulassungsstelle Luckenwalde", adresse:"Louis-Pasteur-Str. 5, 14943 Luckenwalde", notiz:"Zulassung, Ummeldung, Abmeldung", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"37"},
+    {id:uid(), name:"Kreisverwaltung Teltow-Fläming", adresse:"Am Nuthefließ 2, 14943 Luckenwalde", notiz:"Landratsamt, Bauamt, Ordnungsamt", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"41"},
+    {id:uid(), name:"IHK Potsdam", adresse:"Breite Straße 2a-c, 14467 Potsdam", notiz:"Industrie- und Handelskammer", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"24"},
   ,
-    {id:uid(), name:"Bauhaus Berlin-Halensee", adresse:"Kurfürstendamm 129a, 10711 Berlin", notiz:"Baumarkt", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"38"},
-    {id:uid(), name:"Flughafen Berlin Brandenburg (BER)", adresse:"Willy-Brandt-Platz, 12529 Schönefeld", notiz:"Terminal 1 + 2", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"25"},
-    {id:uid(), name:"Flughafen München (MUC)", adresse:"Nordallee 25, 85356 München", notiz:"Franz Josef Strauß", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"620"},
-    {id:uid(), name:"Flughafen Hamburg (HAM)", adresse:"Flughafenstraße 1-3, 22335 Hamburg", notiz:"Hamburg Airport", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"290"},
-    {id:uid(), name:"Flughafen Stuttgart (STR)", adresse:"Flughafenstraße 32, 70629 Stuttgart", notiz:"Stuttgart Airport", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"590"},
-    {id:uid(), name:"Berlin Hauptbahnhof", adresse:"Europaplatz 1, 10557 Berlin", notiz:"Fernverkehr, ICE", auto:false, typ:"bahnhof", besuche:0, letzterBesuch:"", kmVonStandort:"40"}],
+    {id:uid(), name:"Bauhaus Berlin-Halensee", adresse:"Kurfürstendamm 129a, 10711 Berlin", notiz:"Baumarkt", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"35"},
+    {id:uid(), name:"Flughafen Berlin Brandenburg (BER)", adresse:"Willy-Brandt-Platz, 12529 Schönefeld", notiz:"Terminal 1 + 2", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"29"},
+    {id:uid(), name:"Flughafen München (MUC)", adresse:"Nordallee 25, 85356 München", notiz:"Franz Josef Strauß", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"557"},
+    {id:uid(), name:"Flughafen Hamburg (HAM)", adresse:"Flughafenstraße 1-3, 22335 Hamburg", notiz:"Hamburg Airport", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"334"},
+    {id:uid(), name:"Flughafen Stuttgart (STR)", adresse:"Flughafenstraße 32, 70629 Stuttgart", notiz:"Stuttgart Airport", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"627"},
+    {id:uid(), name:"Berlin Hauptbahnhof", adresse:"Europaplatz 1, 10557 Berlin", notiz:"Fernverkehr, ICE", auto:false, typ:"bahnhof", besuche:0, letzterBesuch:"", kmVonStandort:"29"}],
   strafen:[], tankstellen:[], waesche:[], parkplaetze:[], services:[],
   fahrten:[],
 });
@@ -860,65 +856,64 @@ const makeRenaultDefault = () => ({
   standort:{name:"Büro Ludwigsfelde", adresse:"Parkallee 14, 14974 Ludwigsfelde"},
   kmStandInitial:"61378",
   partner:[
-    {id:uid(), name:"ViniGrandi GmbH",               adresse:"Konstanzer Str. 4, 10707 Berlin",          telefon:"", kmVonStandort:"38", notiz:"Firmensitz", typ:"kunde"},
-    {id:uid(), name:"ALPAGI Wine&Food GmbH",          adresse:"Westfälische Str. 29, 10709 Berlin",       telefon:"", kmVonStandort:"38", notiz:"Wein & Feinkost", typ:"kunde"},
-    {id:uid(), name:"8000 Vintages",                  adresse:"Großbeerenstraße 27A, 10963 Berlin",       telefon:"", kmVonStandort:"35", notiz:"Weinhandel", typ:"kunde"},
-    {id:uid(), name:"Ristorante Bragato Vini & Gastronomia", adresse:"Dahlmannstraße 7, 10629 Berlin",   telefon:"", kmVonStandort:"38", notiz:"Restaurant / Gastronomie", typ:"kunde"},
-    {id:uid(), name:"Enoiteca Il Calice",             adresse:"Walter-Benjamin-Platz 4, 10629 Berlin",    telefon:"", kmVonStandort:"38", notiz:"Weinbar / Enoteca", typ:"kunde"},
-    {id:uid(), name:"Enab-Berlin GmbH",               adresse:"Chausseestr. 86, 10115 Berlin",            telefon:"", kmVonStandort:"34", notiz:"Weinimport", typ:"kunde"},
-    {id:uid(), name:"Bar lambretta",                   adresse:"Revaler Straße 14, 10245 Berlin",          telefon:"", kmVonStandort:"40", notiz:"Bar", typ:"kunde"},
-    {id:uid(), name:"Bar Proskauer",                   adresse:"Proskauer Straße 13, 10247 Berlin",        telefon:"", kmVonStandort:"40", notiz:"Bar", typ:"kunde"},
-    {id:uid(), name:"Teliani Europe GmbH",             adresse:"Kurfürstendamm 167/168, 10707 Berlin",    telefon:"", kmVonStandort:"37", notiz:"Weinimport / Distribution", typ:"kunde"},
-    {id:uid(), name:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH", adresse:"Lennéstr. 3, 10785 Berlin", telefon:"", kmVonStandort:"35", notiz:"Steuerberater", typ:"steuerberater"},
-    {id:uid(), name:"Knappworst Steuerberater Potsdam", adresse:"Am Bassin 4, 14467 Potsdam", telefon:"", kmVonStandort:"26", notiz:"Steuerberater", typ:"steuerberater"},
-    {id:uid(), name:"Rechtsanwälte Napiorkowski Potsdam", adresse:"Puschkinallee 3, Potsdam", telefon:"", kmVonStandort:"30", notiz:"Rechtsanwalt", typ:"anwalt"},
-    {id:uid(), name:"Rechtsanwälte Noacke Berlin", adresse:"Uhlandstr. 161, Berlin", telefon:"", kmVonStandort:"40", notiz:"Rechtsanwalt", typ:"anwalt"},
+    {id:uid(), name:"ViniGrandi GmbH",               adresse:"Konstanzer Str. 4, 10707 Berlin",          telefon:"", kmVonStandort:"37", notiz:"Firmensitz", typ:"kunde"},
+    {id:uid(), name:"ALPAGI Wine&Food GmbH",          adresse:"Westfälische Str. 29, 10709 Berlin",       telefon:"", kmVonStandort:"36", notiz:"Wein & Feinkost", typ:"kunde"},
+    {id:uid(), name:"8000 Vintages",                  adresse:"Großbeerenstraße 27A, 10963 Berlin",       telefon:"", kmVonStandort:"24", notiz:"Weinhandel", typ:"kunde"},
+    {id:uid(), name:"Ristorante Bragato Vini & Gastronomia", adresse:"Dahlmannstraße 7, 10629 Berlin",   telefon:"", kmVonStandort:"36", notiz:"Restaurant / Gastronomie", typ:"kunde"},
+    {id:uid(), name:"Enoiteca Il Calice",             adresse:"Walter-Benjamin-Platz 4, 10629 Berlin",    telefon:"", kmVonStandort:"37", notiz:"Weinbar / Enoteca", typ:"kunde"},
+    {id:uid(), name:"Enab-Berlin GmbH",               adresse:"Chausseestr. 86, 10115 Berlin",            telefon:"", kmVonStandort:"49", notiz:"Weinimport", typ:"kunde"},
+    {id:uid(), name:"Bar lambretta",                   adresse:"Revaler Straße 14, 10245 Berlin",          telefon:"", kmVonStandort:"44", notiz:"Bar", typ:"kunde"},
+    {id:uid(), name:"Bar Proskauer",                   adresse:"Proskauer Straße 13, 10247 Berlin",        telefon:"", kmVonStandort:"46", notiz:"Bar", typ:"kunde"},
+    {id:uid(), name:"Teliani Europe GmbH",             adresse:"Kurfürstendamm 167/168, 10707 Berlin",    telefon:"", kmVonStandort:"36", notiz:"Weinimport / Distribution", typ:"kunde"},
+    {id:uid(), name:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH", adresse:"Lennéstr. 3, 10785 Berlin", telefon:"", kmVonStandort:"26", notiz:"Steuerberater", typ:"steuerberater"},
+    {id:uid(), name:"Knappworst Steuerberater Potsdam", adresse:"Am Bassin 4, 14467 Potsdam", telefon:"", kmVonStandort:"24", notiz:"Steuerberater", typ:"steuerberater"},
+    {id:uid(), name:"Rechtsanwälte Napiorkowski Potsdam", adresse:"Puschkinallee 3, Potsdam", telefon:"", kmVonStandort:"24", notiz:"Rechtsanwalt", typ:"anwalt"},
+    {id:uid(), name:"Rechtsanwälte Noacke Berlin", adresse:"Uhlandstr. 161, Berlin", telefon:"", kmVonStandort:"38", notiz:"Rechtsanwalt", typ:"anwalt"},
   ],
   messen:[
-    {id:uid(), name:"ProWein 2025", adresse:"Messe Düsseldorf, Stockumer Kirchstr. 61, 40474 Düsseldorf", datum:"2025-03-17", datumBis:"2025-03-18", partnerId:"", notiz:"Weltleitmesse Wein & Spirituosen — Einladung ViniGrandi", kmVonStandort:"560"},
-    {id:uid(), name:"Vinitaly 2025", adresse:"Veronafiere, Viale del Lavoro 8, 37135 Verona, Italien", datum:"2025-04-07", datumBis:"2025-04-09", partnerId:"", notiz:"Internationale Weinfachmesse — Einladung ViniGrandi", kmVonStandort:"1050"},
-    {id:uid(), name:"ProWein 2026", adresse:"Messe Düsseldorf, Stockumer Kirchstr. 61, 40474 Düsseldorf", datum:"2026-03-16", datumBis:"2026-03-17", partnerId:"", notiz:"Weltleitmesse Wein & Spirituosen — Einladung ViniGrandi", kmVonStandort:"560"},
-    {id:uid(), name:"Vinitaly 2026", adresse:"Veronafiere, Viale del Lavoro 8, 37135 Verona, Italien", datum:"2026-04-13", datumBis:"2026-04-15", partnerId:"", notiz:"Internationale Weinfachmesse Verona — Einladung ViniGrandi", kmVonStandort:"1050"},
+    {id:uid(), name:"ProWein 2025", adresse:"Messe Düsseldorf, Stockumer Kirchstr. 61, 40474 Düsseldorf", datum:"2025-03-17", datumBis:"2025-03-18", partnerId:"", notiz:"Weltleitmesse Wein & Spirituosen — Einladung ViniGrandi", kmVonStandort:"541"},
+    {id:uid(), name:"Vinitaly 2025", adresse:"Veronafiere, Viale del Lavoro 8, 37135 Verona, Italien", datum:"2025-04-07", datumBis:"2025-04-09", partnerId:"", notiz:"Internationale Weinfachmesse — Einladung ViniGrandi", kmVonStandort:"999"},
+    {id:uid(), name:"ProWein 2026", adresse:"Messe Düsseldorf, Stockumer Kirchstr. 61, 40474 Düsseldorf", datum:"2026-03-16", datumBis:"2026-03-17", partnerId:"", notiz:"Weltleitmesse Wein & Spirituosen — Einladung ViniGrandi", kmVonStandort:"541"},
+    {id:uid(), name:"Vinitaly 2026", adresse:"Veronafiere, Viale del Lavoro 8, 37135 Verona, Italien", datum:"2026-04-13", datumBis:"2026-04-15", partnerId:"", notiz:"Internationale Weinfachmesse Verona — Einladung ViniGrandi", kmVonStandort:"999"},
   ],
   standorteExtra:[
-    {id:uid(), name:"Rathaus Ludwigsfelde", adresse:"Rathausstraße 3, 14974 Ludwigsfelde", notiz:"Stadtverwaltung, Bürgeramt, Gewerbeamt", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"2"},
-    {id:uid(), name:"Finanzamt Luckenwalde", adresse:"Dr.-Georg-Schaeffler-Straße 2, 14943 Luckenwalde", notiz:"Steuererklärung, Bescheide", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"18"},
-    {id:uid(), name:"Kfz-Zulassungsstelle Luckenwalde", adresse:"Louis-Pasteur-Str. 5, 14943 Luckenwalde", notiz:"Zulassung, Ummeldung, Abmeldung", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"18"},
-    {id:uid(), name:"Kreisverwaltung Teltow-Fläming", adresse:"Am Nuthefließ 2, 14943 Luckenwalde", notiz:"Landratsamt, Bauamt, Ordnungsamt", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"18"},
-    {id:uid(), name:"IHK Potsdam", adresse:"Breite Straße 2a-c, 14467 Potsdam", notiz:"Industrie- und Handelskammer", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"26"},
+    {id:uid(), name:"Rathaus Ludwigsfelde", adresse:"Rathausstraße 3, 14974 Ludwigsfelde", notiz:"Stadtverwaltung, Bürgeramt, Gewerbeamt", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"5"},
+    {id:uid(), name:"Finanzamt Luckenwalde", adresse:"Dr.-Georg-Schaeffler-Straße 2, 14943 Luckenwalde", notiz:"Steuererklärung, Bescheide", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"33"},
+    {id:uid(), name:"Kfz-Zulassungsstelle Luckenwalde", adresse:"Louis-Pasteur-Str. 5, 14943 Luckenwalde", notiz:"Zulassung, Ummeldung, Abmeldung", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"37"},
+    {id:uid(), name:"Kreisverwaltung Teltow-Fläming", adresse:"Am Nuthefließ 2, 14943 Luckenwalde", notiz:"Landratsamt, Bauamt, Ordnungsamt", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"41"},
+    {id:uid(), name:"IHK Potsdam", adresse:"Breite Straße 2a-c, 14467 Potsdam", notiz:"Industrie- und Handelskammer", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"24"},
   ,
-    {id:uid(), name:"Autoservice Ludwigsfelde",  adresse:"Südring, 14974 Ludwigsfelde", notiz:"KFZ-Service", auto:false, typ:"werkstatt", besuche:0, letzterBesuch:"", kmVonStandort:"2"},
-    {id:uid(), name:"Deutsche Post Ludwigsfelde", adresse:"Potsdamer Str. 60, 14974 Ludwigsfelde", notiz:"Briefe / Pakete", auto:false, typ:"post", besuche:0, letzterBesuch:"", kmVonStandort:"3"},
-    {id:uid(), name:"Autohaus Berolina Berlin", adresse:"Cicerostr. 34, 10709 Berlin-Halensee", notiz:"Fahrzeugabholung", auto:false, typ:"werkstatt", besuche:0, letzterBesuch:"", kmVonStandort:"45"},
+    {id:uid(), name:"Autoservice Ludwigsfelde",  adresse:"Südring, 14974 Ludwigsfelde", notiz:"KFZ-Service", auto:false, typ:"werkstatt", besuche:0, letzterBesuch:"", kmVonStandort:"9"},
+    {id:uid(), name:"Deutsche Post Ludwigsfelde", adresse:"Potsdamer Str. 60, 14974 Ludwigsfelde", notiz:"Briefe / Pakete", auto:false, typ:"post", besuche:0, letzterBesuch:"", kmVonStandort:"5"},
+    {id:uid(), name:"Autohaus Berolina Berlin", adresse:"Cicerostr. 34, 10709 Berlin-Halensee", notiz:"Fahrzeugabholung", auto:false, typ:"werkstatt", besuche:0, letzterBesuch:"", kmVonStandort:"36"},
     {id:uid(), name:"MBS Sparkasse Ludwigsfelde", adresse:"Potsdamer Str. 60, 14974 Ludwigsfelde", notiz:"Bankfiliale", auto:false, typ:"bank", besuche:0, letzterBesuch:"", kmVonStandort:"5"},
     {id:uid(), name:"Hornbach Ludwigsfelde", adresse:"Parkallee 36, 14974 Ludwigsfelde", notiz:"Baumarkt", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"2"},
-    {id:uid(), name:"Getränke Hoffmann Berlin", adresse:"Westfälische Str. 85, 10709 Berlin", notiz:"Getränkemarkt", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"38"},
-    {id:uid(), name:"Getränke Hoffmann Ludwigsfelde", adresse:"Potsdamer Str. 118, 14974 Ludwigsfelde", notiz:"Getränkemarkt", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"3"},
-    {id:uid(), name:"Bauhaus Berlin-Halensee", adresse:"Kurfürstendamm 129a, 10711 Berlin", notiz:"Baumarkt", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"38"},
-    {id:uid(), name:"Flughafen Berlin Brandenburg (BER)", adresse:"Willy-Brandt-Platz, 12529 Schönefeld", notiz:"Terminal 1 + 2", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"25"},
-    {id:uid(), name:"Flughafen München (MUC)", adresse:"Nordallee 25, 85356 München", notiz:"Franz Josef Strauß", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"620"},
-    {id:uid(), name:"Flughafen Hamburg (HAM)", adresse:"Flughafenstraße 1-3, 22335 Hamburg", notiz:"Hamburg Airport", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"290"},
-    {id:uid(), name:"Flughafen Stuttgart (STR)", adresse:"Flughafenstraße 32, 70629 Stuttgart", notiz:"Stuttgart Airport", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"590"},
-    {id:uid(), name:"Berlin Hauptbahnhof", adresse:"Europaplatz 1, 10557 Berlin", notiz:"Fernverkehr, ICE", auto:false, typ:"bahnhof", besuche:0, letzterBesuch:"", kmVonStandort:"40"},
-    {id:uid(), name:"KfZ-Meisterbetrieb Klaus & Mike", adresse:"Ruhlsdorfer Str. 100, 14513 Teltow", notiz:"Werkstatt TF-VG 2016", auto:false, typ:"werkstatt", besuche:2, letzterBesuch:"2025-12-08", kmVonStandort:"20"},
-    {id:uid(), name:"ARAL - REWE To Go", adresse:"Hohenzollerndamm 97, 14199 Berlin", notiz:"Tankstelle + REWE", auto:false, typ:"tankstelle", besuche:3, letzterBesuch:"2025-11-21", kmVonStandort:"38"},
+    {id:uid(), name:"Getränke Hoffmann Ludwigsfelde", adresse:"Potsdamer Str. 118, 14974 Ludwigsfelde", notiz:"Getränkemarkt", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"6"},
+    {id:uid(), name:"Bauhaus Berlin-Halensee", adresse:"Kurfürstendamm 129a, 10711 Berlin", notiz:"Baumarkt", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"35"},
+    {id:uid(), name:"Flughafen Berlin Brandenburg (BER)", adresse:"Willy-Brandt-Platz, 12529 Schönefeld", notiz:"Terminal 1 + 2", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"29"},
+    {id:uid(), name:"Flughafen München (MUC)", adresse:"Nordallee 25, 85356 München", notiz:"Franz Josef Strauß", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"557"},
+    {id:uid(), name:"Flughafen Hamburg (HAM)", adresse:"Flughafenstraße 1-3, 22335 Hamburg", notiz:"Hamburg Airport", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"334"},
+    {id:uid(), name:"Flughafen Stuttgart (STR)", adresse:"Flughafenstraße 32, 70629 Stuttgart", notiz:"Stuttgart Airport", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"627"},
+    {id:uid(), name:"Berlin Hauptbahnhof", adresse:"Europaplatz 1, 10557 Berlin", notiz:"Fernverkehr, ICE", auto:false, typ:"bahnhof", besuche:0, letzterBesuch:"", kmVonStandort:"29"},
+    {id:uid(), name:"KfZ-Meisterbetrieb Klaus & Mike", adresse:"Ruhlsdorfer Str. 100, 14513 Teltow", notiz:"Werkstatt TF-VG 2016", auto:false, typ:"werkstatt", besuche:2, letzterBesuch:"2025-12-08", kmVonStandort:"10"},
+    {id:uid(), name:"ARAL - REWE To Go", adresse:"Hohenzollerndamm 97, 14199 Berlin", notiz:"Tankstelle + REWE", auto:false, typ:"tankstelle", besuche:3, letzterBesuch:"2025-11-21", kmVonStandort:"33"},
     {id:uid(), name:"Sprint Tankstelle Wildau", adresse:"Chausseestr. 1, 15745 Wildau", notiz:"Tankstelle", auto:false, typ:"tankstelle", besuche:1, letzterBesuch:"2025-09-04", kmVonStandort:"25"},
     {id:uid(), name:"Kaufland Wildau", adresse:"Chausseestraße 1, 15745 Wildau", notiz:"Supermarkt", auto:false, typ:"laden", besuche:2, letzterBesuch:"2025-11-07", kmVonStandort:"25"},
-    {id:uid(), name:"Kaufland Ludwigsfelde", adresse:"Potsdamer Straße 51-53, 14974 Ludwigsfelde", notiz:"Supermarkt", auto:false, typ:"laden", besuche:1, letzterBesuch:"2025-12-01", kmVonStandort:"3"},
-    {id:uid(), name:"Blumen-Koch", adresse:"Westfälische Str. 38, 10711 Berlin", notiz:"Blumenladen", auto:false, typ:"laden", besuche:1, letzterBesuch:"2025-10-22", kmVonStandort:"38"},
+    {id:uid(), name:"Kaufland Ludwigsfelde", adresse:"Potsdamer Straße 51-53, 14974 Ludwigsfelde", notiz:"Supermarkt", auto:false, typ:"laden", besuche:1, letzterBesuch:"2025-12-01", kmVonStandort:"6"},
+    {id:uid(), name:"Blumen-Koch", adresse:"Westfälische Str. 38, 10711 Berlin", notiz:"Blumenladen", auto:false, typ:"laden", besuche:1, letzterBesuch:"2025-10-22", kmVonStandort:"35"},
     {id:uid(), name:"Blume 2000", adresse:"Breite Straße 14a, 14199 Berlin", notiz:"Blumenladen", auto:false, typ:"laden", besuche:1, letzterBesuch:"2025-11-07", kmVonStandort:"38"},
-    {id:uid(), name:"Berliner Schlüsseldienst", adresse:"Konstanzer Str. 50, 10707 Berlin", notiz:"Schlüssel / Schlösser", auto:false, typ:"laden", besuche:1, letzterBesuch:"2025-11-21", kmVonStandort:"38"}],
+    {id:uid(), name:"Berliner Schlüsseldienst", adresse:"Konstanzer Str. 50, 10707 Berlin", notiz:"Schlüssel / Schlösser", auto:false, typ:"laden", besuche:1, letzterBesuch:"2025-11-21", kmVonStandort:"37"}],
   strafen:[],
   tankstellen:[
-    {id:uid(),datum:"2025-06-21",uhrzeit:"09:28",stationName:"ARAL - REWE To Go",adresse:"Hohenzollerndamm 97, 14199 Berlin",kraftstoff:"Super E10",menge:"55.03",preisProLiter:"1.699",gesamtbetrag:"93.50",kmStand:"",zahlungsart:"EC-Karte",bonNr:"",notiz:"",kmVonStandort:"38"},
-    {id:uid(),datum:"2025-06-22",uhrzeit:"12:21",stationName:"ENI Deutschland GmbH",adresse:"BAB 9 Richtung München, 90537 Nürnberg-Feucht",kraftstoff:"Super E10",menge:"46.78",preisProLiter:"2.219",gesamtbetrag:"103.80",kmStand:"",zahlungsart:"EC-Karte",bonNr:"",notiz:"Autobahn A9",kmVonStandort:"450"},
-    {id:uid(),datum:"2025-06-27",uhrzeit:"13:03",stationName:"Tankstelle Forster",adresse:"BAB 9 Fürholzen Ost, 85376 Fürholzen",kraftstoff:"Super E10",menge:"41.66",preisProLiter:"2.199",gesamtbetrag:"91.61",kmStand:"",zahlungsart:"EC-Karte",bonNr:"",notiz:"Autobahn A9",kmVonStandort:"580"},
-    {id:uid(),datum:"2025-06-27",uhrzeit:"16:48",stationName:"ENI Service Station",adresse:"An der BAB 9, 07927 Hirschberg",kraftstoff:"Super E10",menge:"31.75",preisProLiter:"1.989",gesamtbetrag:"63.15",kmStand:"",zahlungsart:"EC-Karte",bonNr:"",notiz:"Autobahn A9, Rückfahrt",kmVonStandort:"250"},
-    {id:uid(),datum:"2025-08-22",uhrzeit:"14:05",stationName:"ARAL - REWE To Go",adresse:"Hohenzollerndamm 97, 14199 Berlin",kraftstoff:"Super E10",menge:"49.43",preisProLiter:"1.629",gesamtbetrag:"80.52",kmStand:"",zahlungsart:"EC-Karte",bonNr:"",notiz:"",kmVonStandort:"38"},
+    {id:uid(),datum:"2025-06-21",uhrzeit:"09:28",stationName:"ARAL - REWE To Go",adresse:"Hohenzollerndamm 97, 14199 Berlin",kraftstoff:"Super E10",menge:"55.03",preisProLiter:"1.699",gesamtbetrag:"93.50",kmStand:"",zahlungsart:"EC-Karte",bonNr:"",notiz:"",kmVonStandort:"33"},
+    {id:uid(),datum:"2025-06-22",uhrzeit:"12:21",stationName:"ENI Deutschland GmbH",adresse:"BAB 9 Richtung München, 90537 Nürnberg-Feucht",kraftstoff:"Super E10",menge:"46.78",preisProLiter:"2.219",gesamtbetrag:"103.80",kmStand:"",zahlungsart:"EC-Karte",bonNr:"",notiz:"Autobahn A9",kmVonStandort:"425"},
+    {id:uid(),datum:"2025-06-27",uhrzeit:"13:03",stationName:"Tankstelle Forster",adresse:"BAB 9 Fürholzen Ost, 85376 Fürholzen",kraftstoff:"Super E10",menge:"41.66",preisProLiter:"2.199",gesamtbetrag:"91.61",kmStand:"",zahlungsart:"EC-Karte",bonNr:"",notiz:"Autobahn A9",kmVonStandort:"545"},
+    {id:uid(),datum:"2025-06-27",uhrzeit:"16:48",stationName:"ENI Service Station",adresse:"An der BAB 9, 07927 Hirschberg",kraftstoff:"Super E10",menge:"31.75",preisProLiter:"1.989",gesamtbetrag:"63.15",kmStand:"",zahlungsart:"EC-Karte",bonNr:"",notiz:"Autobahn A9, Rückfahrt",kmVonStandort:"272"},
+    {id:uid(),datum:"2025-08-22",uhrzeit:"14:05",stationName:"ARAL - REWE To Go",adresse:"Hohenzollerndamm 97, 14199 Berlin",kraftstoff:"Super E10",menge:"49.43",preisProLiter:"1.629",gesamtbetrag:"80.52",kmStand:"",zahlungsart:"EC-Karte",bonNr:"",notiz:"",kmVonStandort:"33"},
     {id:uid(),datum:"2025-09-04",uhrzeit:"12:10",stationName:"Sprint Tankstelle",adresse:"Chausseestr. 1, 15745 Wildau",kraftstoff:"Super E10",menge:"24.26",preisProLiter:"1.649",gesamtbetrag:"40.00",kmStand:"",zahlungsart:"EC-Karte",bonNr:"",notiz:"",kmVonStandort:"25"},
-    {id:uid(),datum:"2025-09-14",uhrzeit:"09:40",stationName:"Shell Tankstelle",adresse:"Zur Achmühle 9, 91171 Greding",kraftstoff:"Super E10",menge:"54.56",preisProLiter:"2.239",gesamtbetrag:"122.16",kmStand:"",zahlungsart:"EC-Karte",bonNr:"",notiz:"Autobahn A9",kmVonStandort:"480"},
-    {id:uid(),datum:"2025-11-21",uhrzeit:"08:27",stationName:"ARAL - REWE To Go",adresse:"Hohenzollerndamm 97, 14199 Berlin",kraftstoff:"Super E10",menge:"53.74",preisProLiter:"1.939",gesamtbetrag:"115.19",kmStand:"",zahlungsart:"EC-Karte",bonNr:"",notiz:"Inkl. Aral Klare Sicht 10,99 € (Scheibenwischwasser)",kmVonStandort:"38"},
-    {id:uid(),datum:"2025-11-22",uhrzeit:"09:39",stationName:"Shell Tankstellen GmbH",adresse:"BAB 9 / Westseite, 06682 Teuchern",kraftstoff:"Super E10",menge:"26.08",preisProLiter:"1.809",gesamtbetrag:"47.18",kmStand:"",zahlungsart:"EC-Karte",bonNr:"",notiz:"Autobahn A9",kmVonStandort:"170"},
+    {id:uid(),datum:"2025-09-14",uhrzeit:"09:40",stationName:"Shell Tankstelle",adresse:"Zur Achmühle 9, 91171 Greding",kraftstoff:"Super E10",menge:"54.56",preisProLiter:"2.239",gesamtbetrag:"122.16",kmStand:"",zahlungsart:"EC-Karte",bonNr:"",notiz:"Autobahn A9",kmVonStandort:"465"},
+    {id:uid(),datum:"2025-11-21",uhrzeit:"08:27",stationName:"ARAL - REWE To Go",adresse:"Hohenzollerndamm 97, 14199 Berlin",kraftstoff:"Super E10",menge:"53.74",preisProLiter:"1.939",gesamtbetrag:"115.19",kmStand:"",zahlungsart:"EC-Karte",bonNr:"",notiz:"Inkl. Aral Klare Sicht 10,99 € (Scheibenwischwasser)",kmVonStandort:"33"},
+    {id:uid(),datum:"2025-11-22",uhrzeit:"09:39",stationName:"Shell Tankstellen GmbH",adresse:"BAB 9 / Westseite, 06682 Teuchern",kraftstoff:"Super E10",menge:"26.08",preisProLiter:"1.809",gesamtbetrag:"47.18",kmStand:"",zahlungsart:"EC-Karte",bonNr:"",notiz:"Autobahn A9",kmVonStandort:"185"},
   ],
   waesche:[], parkplaetze:[],
   services:[
@@ -2209,7 +2204,20 @@ function StandortePanel({aktiv, patchAktiv, setConfirmDel, setFData, setFForm, s
         const isManual=!o.auto;
         const tagColor = o.isStamm ? C.steel : (ST_TYP_COLORS[o.typ]||o.katColor||C.standort);
         const tagColorDk = o.isStamm ? C.steelDk : (ST_TYP_COLORS_DK[o.typ]||C.standortDk);
-        const kmVal = parseFloat(o.kmVonStandort)||0;
+        // Entfernung: own kmVonStandort or lookup from factory standorte
+        const kmRaw = parseFloat(o.kmVonStandort) || 0;
+        const entf = kmRaw || (() => {
+          const match = [...(aktiv.standorte||[]),...(aktiv.standorteExtra||[])].find(s=>s.adresse&&o.adresse&&s.adresse.toLowerCase()===o.adresse.toLowerCase());
+          return match ? parseFloat(match.kmVonStandort)||0 : 0;
+        })();
+        // Fahrten + Gesamt km
+        const oName=(o.name||"").toLowerCase(), oAddr=(o.adresse||"").toLowerCase();
+        const matchedF = (aktiv.fahrten||[]).filter(f=>{
+          const zn=(f.zielName||"").toLowerCase();
+          return (oName.length>3 && zn.includes(oName)) || (oAddr.length>5 && zn.includes(oAddr));
+        });
+        const tripCount = o.isStamm ? (aktiv.fahrten||[]).length : matchedF.length;
+        const gesamtKm = o.isStamm ? (aktiv.fahrten||[]).reduce((s,f)=>s+(parseFloat(f.km)||0),0) : matchedF.reduce((s,f)=>s+(parseFloat(f.km)||0),0);
         return (
           <div key={o.id} style={{background:C.surface,borderLeft:`2px solid ${tagColor}`,padding:"11px 16px",boxShadow:C.shadow,display:"flex",alignItems:"center",gap:12,minHeight:62,boxSizing:"border-box"}}>
             <div style={{flex:1,minWidth:0}}>
@@ -2222,20 +2230,24 @@ function StandortePanel({aktiv, patchAktiv, setConfirmDel, setFData, setFForm, s
                 <span style={{fontSize:14,color:C.text,display:"flex",alignItems:"center",gap:3,fontFamily:SANS}}>
                   <Ico name="mapPin" size={13} color={C.steelMid}/>{o.adresse}
                 </span>
-                {o.besuche>0&&<><span style={{color:C.border}}>·</span>
-                  <span style={{fontSize:13,color:C.text,fontFamily:SANS}}>{o.besuche}× besucht{o.letzterBesuch?`, zuletzt ${formatDatum(o.letzterBesuch)}`:""}</span></>}
                 {o.notiz&&<><span style={{color:C.border}}>·</span>
                   <span style={{fontSize:14,color:C.text,fontStyle:"italic",fontFamily:SANS}}>{o.notiz}</span></>}
               </div>
             </div>
-            <div style={{display:"flex",gap:14,flexShrink:0,alignItems:"center"}}>
-              {kmVal>0&&<div style={{textAlign:"right"}}>
-                <div style={{fontSize:16,fontWeight:800,color:tagColorDk,fontFamily:SANS,lineHeight:1}}>{kmVal}</div>
-                <div style={{fontSize:13,color:C.text,letterSpacing:2,textTransform:"uppercase"}}>km</div>
-              </div>}
-              {o.besuche>0&&<div style={{textAlign:"right"}}>
-                <div style={{fontSize:16,fontWeight:800,color:tagColorDk,fontFamily:SANS,lineHeight:1}}>{o.besuche}</div>
-                <div style={{fontSize:13,color:C.text,letterSpacing:2,textTransform:"uppercase"}}>Besuche</div>
+            <div style={{display:"flex",gap:8,flexShrink:0,alignItems:"center"}}>
+              {(entf>0||tripCount>0||gesamtKm>0)&&<div style={{display:"flex",flexDirection:"column",gap:2,alignItems:"flex-end",minWidth:70}}>
+                {entf>0&&<div style={{display:"flex",alignItems:"baseline",gap:4}}>
+                  <span style={{fontSize:15,fontWeight:800,color:tagColorDk,fontFamily:SANS}}>{entf}</span>
+                  <span style={{fontSize:10,color:C.muted,letterSpacing:1,textTransform:"uppercase",fontFamily:SANS}}>km ⟵</span>
+                </div>}
+                {tripCount>0&&<div style={{display:"flex",alignItems:"baseline",gap:4}}>
+                  <span style={{fontSize:15,fontWeight:800,color:tagColorDk,fontFamily:SANS}}>{tripCount}</span>
+                  <span style={{fontSize:10,color:C.muted,letterSpacing:1,textTransform:"uppercase",fontFamily:SANS}}>Fahrten</span>
+                </div>}
+                {gesamtKm>0&&<div style={{display:"flex",alignItems:"baseline",gap:4}}>
+                  <span style={{fontSize:15,fontWeight:800,color:tagColorDk,fontFamily:SANS}}>{Math.round(gesamtKm)}</span>
+                  <span style={{fontSize:10,color:C.muted,letterSpacing:1,textTransform:"uppercase",fontFamily:SANS}}>km ↔</span>
+                </div>}
               </div>}
               {isManual&&(
                 <div style={{display:"flex",gap:2,flexShrink:0}}>
@@ -2694,7 +2706,7 @@ function StrafenListe({ items, onEdit, onDelete, onToggleBezahlt }) {
 
 // ─── MUSTERDATEN FACTORY ─────────────────────────────────────────────────────
 // Вынесено из компонента: статические данные не должны жить внутри render-функции
-const MUSTER_VERSION = 68; // v68: TF-IA 2006 Fahrten km-chain recalc (178 trips, 3 anchor points)
+const MUSTER_VERSION = 69; // v68: TF-IA 2006 Fahrten km-chain recalc (178 trips, 3 anchor points)
 function createMusterDaten() {
   // ── fz1: BMW 520d Touring — München ─────────────────────────────────────────
   const fz={
@@ -2730,7 +2742,7 @@ function createMusterDaten() {
       {id:uid(), name:"ADAC Parkhaus Zentrum",         adresse:"Hansastr. 19, 80686 München",            kmVonStandort:"5",  besuche:8,  typ:"laden"},
     ],
     messen:[
-      {id:uid(), name:"EXPO REAL 2025", adresse:"Messe München, Am Messesee 2, 81829 München", datum:"2025-10-06", datumBis:"2025-10-08", partnerId:"", notiz:"Europas führende Immobilienmesse", kmVonStandort:"14"},
+      {id:uid(), name:"EXPO REAL 2025", adresse:"Messe München, Am Messesee 2, 81829 München", datum:"2025-10-06", datumBis:"2025-10-08", partnerId:"", notiz:"Europas führende Immobilienmesse", kmVonStandort:"572"},
     ],
     tankstellen:[
       {id:uid(), datum:"2024-10-05", uhrzeit:"08:12", stationName:"Shell Schwabing",     adresse:"Leopoldstr. 120, München",    kraftstoff:"Diesel", menge:"48.2", preisProLiter:"1.659", gesamtbetrag:"79.96", kmStand:"44320", zahlungsart:"EC-Karte", bonNr:"SH-88120", notiz:"", kmVonStandort:"2"},
@@ -2814,7 +2826,7 @@ function createMusterDaten() {
       {id:uid(), name:"SB Waschanlage Altona",        adresse:"Große Elbstr. 212, 22767 Hamburg",   kmVonStandort:"6",  besuche:5,  typ:"auto"},
     ],
     messen:[
-      {id:uid(), name:"Real Estate Arena 2025",  adresse:"Messegelände Hannover, Hermesallee 1, 30521 Hannover", datum:"2025-05-14", datumBis:"2025-05-15", partnerId:"", notiz:"Deutschlands Immobilienmesse", kmVonStandort:"155"},
+      {id:uid(), name:"Real Estate Arena 2025",  adresse:"Messegelände Hannover, Hermesallee 1, 30521 Hannover", datum:"2025-05-14", datumBis:"2025-05-15", partnerId:"", notiz:"Deutschlands Immobilienmesse", kmVonStandort:"268"},
     ],
     tankstellen:[
       {id:uid(), datum:"2024-11-08", uhrzeit:"07:50", stationName:"Aral Lombardsbrücke",     adresse:"Lombardsbrücke 1, Hamburg",    kraftstoff:"Diesel", menge:"45.0", preisProLiter:"1.669", gesamtbetrag:"75.11", kmStand:"28400", zahlungsart:"Firmen-Tankkarte", bonNr:"AR-HH-2240", notiz:"", kmVonStandort:"2"},
@@ -2889,7 +2901,7 @@ function createMusterDaten() {
       {id:uid(), name:"Waschstraße Ehrenfeld",     adresse:"Venloer Str. 400, 50825 Köln",          kmVonStandort:"4",  besuche:7,  typ:"auto"},
     ],
     messen:[
-      {id:uid(), name:"EXPO REAL 2025", adresse:"Messe München, Am Messesee 2, 81829 München", datum:"2025-10-06", datumBis:"2025-10-08", partnerId:"", notiz:"Immobilienmesse München", kmVonStandort:"580"},
+      {id:uid(), name:"EXPO REAL 2025", adresse:"Messe München, Am Messesee 2, 81829 München", datum:"2025-10-06", datumBis:"2025-10-08", partnerId:"", notiz:"Immobilienmesse München", kmVonStandort:"572"},
     ],
     tankstellen:[
       {id:uid(), datum:"2024-10-20", uhrzeit:"08:00", stationName:"Aral Hohenzollernring",  adresse:"Hohenzollernring 100, Köln",  kraftstoff:"Diesel", menge:"42.5", preisProLiter:"1.659", gesamtbetrag:"70.51", kmStand:"15400", zahlungsart:"EC-Karte", bonNr:"AR-K-1190", notiz:"", kmVonStandort:"1"},
@@ -4206,19 +4218,19 @@ function FahrtenbuchApp({authUser, onLogout, themeId, setThemeId}) {
       let updated = partners;
       // ViniGrandi для ALLE Fahrzeuge
       if(!names.includes("vinigrandi gmbh")) {
-        updated = [...updated, {id:uid(),name:"ViniGrandi GmbH",adresse:"Konstanzer Str. 4, 10707 Berlin",telefon:"",kmVonStandort:"38",notiz:"Firmensitz",typ:"kunde"}];
+        updated = [...updated, {id:uid(),name:"ViniGrandi GmbH",adresse:"Konstanzer Str. 4, 10707 Berlin",telefon:"",kmVonStandort:"37",notiz:"Firmensitz",typ:"kunde"}];
       }
       // Kunden nur für TF-KF 2128
       if(f.kennzeichen==="TF-KF 2128") {
         const add = [
-          {id:uid(),name:"ALPAGI Wine&Food GmbH",adresse:"Westfälische Str. 29, 10709 Berlin",telefon:"",kmVonStandort:"38",notiz:"Wein & Feinkost",typ:"kunde"},
-          {id:uid(),name:"8000 Vintages",adresse:"Großbeerenstraße 27A, 10963 Berlin",telefon:"",kmVonStandort:"35",notiz:"Weinhandel",typ:"kunde"},
-          {id:uid(),name:"Ristorante Bragato Vini & Gastronomia",adresse:"Dahlmannstraße 7, 10629 Berlin",telefon:"",kmVonStandort:"38",notiz:"Restaurant / Gastronomie",typ:"kunde"},
-          {id:uid(),name:"Enoiteca Il Calice",adresse:"Walter-Benjamin-Platz 4, 10629 Berlin",telefon:"",kmVonStandort:"38",notiz:"Weinbar / Enoteca",typ:"kunde"},
-          {id:uid(),name:"Enab-Berlin GmbH",adresse:"Chausseestr. 86, 10115 Berlin",telefon:"",kmVonStandort:"34",notiz:"Weinimport",typ:"kunde"},
-          {id:uid(),name:"Bar lambretta",adresse:"Revaler Straße 14, 10245 Berlin",telefon:"",kmVonStandort:"40",notiz:"Bar",typ:"kunde"},
-          {id:uid(),name:"Bar Proskauer",adresse:"Proskauer Straße 13, 10247 Berlin",telefon:"",kmVonStandort:"40",notiz:"Bar",typ:"kunde"},
-          {id:uid(),name:"Teliani Europe GmbH",adresse:"Kurfürstendamm 167/168, 10707 Berlin",telefon:"",kmVonStandort:"37",notiz:"Weinimport / Distribution",typ:"kunde"},
+          {id:uid(),name:"ALPAGI Wine&Food GmbH",adresse:"Westfälische Str. 29, 10709 Berlin",telefon:"",kmVonStandort:"36",notiz:"Wein & Feinkost",typ:"kunde"},
+          {id:uid(),name:"8000 Vintages",adresse:"Großbeerenstraße 27A, 10963 Berlin",telefon:"",kmVonStandort:"24",notiz:"Weinhandel",typ:"kunde"},
+          {id:uid(),name:"Ristorante Bragato Vini & Gastronomia",adresse:"Dahlmannstraße 7, 10629 Berlin",telefon:"",kmVonStandort:"36",notiz:"Restaurant / Gastronomie",typ:"kunde"},
+          {id:uid(),name:"Enoiteca Il Calice",adresse:"Walter-Benjamin-Platz 4, 10629 Berlin",telefon:"",kmVonStandort:"37",notiz:"Weinbar / Enoteca",typ:"kunde"},
+          {id:uid(),name:"Enab-Berlin GmbH",adresse:"Chausseestr. 86, 10115 Berlin",telefon:"",kmVonStandort:"49",notiz:"Weinimport",typ:"kunde"},
+          {id:uid(),name:"Bar lambretta",adresse:"Revaler Straße 14, 10245 Berlin",telefon:"",kmVonStandort:"44",notiz:"Bar",typ:"kunde"},
+          {id:uid(),name:"Bar Proskauer",adresse:"Proskauer Straße 13, 10247 Berlin",telefon:"",kmVonStandort:"46",notiz:"Bar",typ:"kunde"},
+          {id:uid(),name:"Teliani Europe GmbH",adresse:"Kurfürstendamm 167/168, 10707 Berlin",telefon:"",kmVonStandort:"36",notiz:"Weinimport / Distribution",typ:"kunde"},
         ].filter(p=>!names.includes(p.name.toLowerCase()));
         updated = [...updated, ...add];
       }
@@ -4228,10 +4240,10 @@ function FahrtenbuchApp({authUser, onLogout, themeId, setThemeId}) {
       const partners = f.partner||[];
       const names = partners.map(p=>(p.name||"").toLowerCase());
       const shared = [
-        {id:uid(),name:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH",adresse:"Lennéstr. 3, 10785 Berlin",telefon:"",kmVonStandort:"35",notiz:"Steuerberater",typ:"steuerberater"},
-        {id:uid(),name:"Knappworst Steuerberater Potsdam",adresse:"Am Bassin 4, 14467 Potsdam",telefon:"",kmVonStandort:"26",notiz:"Steuerberater",typ:"steuerberater"},
-        {id:uid(),name:"Rechtsanwälte Napiorkowski Potsdam",adresse:"Puschkinallee 3, Potsdam",telefon:"",kmVonStandort:"30",notiz:"Rechtsanwalt",typ:"anwalt"},
-        {id:uid(),name:"Rechtsanwälte Noacke Berlin",adresse:"Uhlandstr. 161, Berlin",telefon:"",kmVonStandort:"40",notiz:"Rechtsanwalt",typ:"anwalt"},
+        {id:uid(),name:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH",adresse:"Lennéstr. 3, 10785 Berlin",telefon:"",kmVonStandort:"26",notiz:"Steuerberater",typ:"steuerberater"},
+        {id:uid(),name:"Knappworst Steuerberater Potsdam",adresse:"Am Bassin 4, 14467 Potsdam",telefon:"",kmVonStandort:"24",notiz:"Steuerberater",typ:"steuerberater"},
+        {id:uid(),name:"Rechtsanwälte Napiorkowski Potsdam",adresse:"Puschkinallee 3, Potsdam",telefon:"",kmVonStandort:"24",notiz:"Rechtsanwalt",typ:"anwalt"},
+        {id:uid(),name:"Rechtsanwälte Noacke Berlin",adresse:"Uhlandstr. 161, Berlin",telefon:"",kmVonStandort:"38",notiz:"Rechtsanwalt",typ:"anwalt"},
       ].filter(p=>!names.some(n=>n.includes(p.name.split(",")[0].toLowerCase())));
       return shared.length ? {...f, partner:[...partners,...shared]} : f;
     }) },
@@ -4239,14 +4251,14 @@ function FahrtenbuchApp({authUser, onLogout, themeId, setThemeId}) {
       if(f.kennzeichen!=="TF-VG 2016") return f;
       const names = (f.partner||[]).map(p=>(p.name||"").toLowerCase());
       const add = [
-        {id:uid(),name:"ALPAGI Wine&Food GmbH",adresse:"Westfälische Str. 29, 10709 Berlin",telefon:"",kmVonStandort:"38",notiz:"Wein & Feinkost",typ:"kunde"},
-        {id:uid(),name:"8000 Vintages",adresse:"Großbeerenstraße 27A, 10963 Berlin",telefon:"",kmVonStandort:"35",notiz:"Weinhandel",typ:"kunde"},
-        {id:uid(),name:"Ristorante Bragato Vini & Gastronomia",adresse:"Dahlmannstraße 7, 10629 Berlin",telefon:"",kmVonStandort:"38",notiz:"Restaurant / Gastronomie",typ:"kunde"},
-        {id:uid(),name:"Enoiteca Il Calice",adresse:"Walter-Benjamin-Platz 4, 10629 Berlin",telefon:"",kmVonStandort:"38",notiz:"Weinbar / Enoteca",typ:"kunde"},
-        {id:uid(),name:"Enab-Berlin GmbH",adresse:"Chausseestr. 86, 10115 Berlin",telefon:"",kmVonStandort:"34",notiz:"Weinimport",typ:"kunde"},
-        {id:uid(),name:"Bar lambretta",adresse:"Revaler Straße 14, 10245 Berlin",telefon:"",kmVonStandort:"40",notiz:"Bar",typ:"kunde"},
-        {id:uid(),name:"Bar Proskauer",adresse:"Proskauer Straße 13, 10247 Berlin",telefon:"",kmVonStandort:"40",notiz:"Bar",typ:"kunde"},
-        {id:uid(),name:"Teliani Europe GmbH",adresse:"Kurfürstendamm 167/168, 10707 Berlin",telefon:"",kmVonStandort:"37",notiz:"Weinimport / Distribution",typ:"kunde"},
+        {id:uid(),name:"ALPAGI Wine&Food GmbH",adresse:"Westfälische Str. 29, 10709 Berlin",telefon:"",kmVonStandort:"36",notiz:"Wein & Feinkost",typ:"kunde"},
+        {id:uid(),name:"8000 Vintages",adresse:"Großbeerenstraße 27A, 10963 Berlin",telefon:"",kmVonStandort:"24",notiz:"Weinhandel",typ:"kunde"},
+        {id:uid(),name:"Ristorante Bragato Vini & Gastronomia",adresse:"Dahlmannstraße 7, 10629 Berlin",telefon:"",kmVonStandort:"36",notiz:"Restaurant / Gastronomie",typ:"kunde"},
+        {id:uid(),name:"Enoiteca Il Calice",adresse:"Walter-Benjamin-Platz 4, 10629 Berlin",telefon:"",kmVonStandort:"37",notiz:"Weinbar / Enoteca",typ:"kunde"},
+        {id:uid(),name:"Enab-Berlin GmbH",adresse:"Chausseestr. 86, 10115 Berlin",telefon:"",kmVonStandort:"49",notiz:"Weinimport",typ:"kunde"},
+        {id:uid(),name:"Bar lambretta",adresse:"Revaler Straße 14, 10245 Berlin",telefon:"",kmVonStandort:"44",notiz:"Bar",typ:"kunde"},
+        {id:uid(),name:"Bar Proskauer",adresse:"Proskauer Straße 13, 10247 Berlin",telefon:"",kmVonStandort:"46",notiz:"Bar",typ:"kunde"},
+        {id:uid(),name:"Teliani Europe GmbH",adresse:"Kurfürstendamm 167/168, 10707 Berlin",telefon:"",kmVonStandort:"36",notiz:"Weinimport / Distribution",typ:"kunde"},
       ].filter(p=>!names.includes(p.name.toLowerCase()));
       return add.length ? {...f, partner:[...(f.partner||[]),...add]} : f;
     }) },
@@ -4254,10 +4266,10 @@ function FahrtenbuchApp({authUser, onLogout, themeId, setThemeId}) {
       if(f.kennzeichen!=="TF-IV 601"&&f.kennzeichen!=="TF-VG 2016") return f;
       const names = (f.messen||[]).map(m=>(m.name||"").toLowerCase());
       const add = [
-        {id:uid(),name:"ProWein 2025",adresse:"Messe Düsseldorf, Stockumer Kirchstr. 61, 40474 Düsseldorf",datum:"2025-03-17",datumBis:"2025-03-18",partnerId:"",notiz:"Weltleitmesse Wein & Spirituosen — Einladung ViniGrandi",kmVonStandort:"560"},
-        {id:uid(),name:"Vinitaly 2025",adresse:"Veronafiere, Viale del Lavoro 8, 37135 Verona, Italien",datum:"2025-04-07",datumBis:"2025-04-09",partnerId:"",notiz:"Internationale Weinfachmesse — Einladung ViniGrandi",kmVonStandort:"1050"},
-        {id:uid(),name:"ProWein 2026",adresse:"Messe Düsseldorf, Stockumer Kirchstr. 61, 40474 Düsseldorf",datum:"2026-03-16",datumBis:"2026-03-17",partnerId:"",notiz:"Weltleitmesse Wein & Spirituosen — Einladung ViniGrandi",kmVonStandort:"560"},
-        {id:uid(),name:"Vinitaly 2026",adresse:"Veronafiere, Viale del Lavoro 8, 37135 Verona, Italien",datum:"2026-04-13",datumBis:"2026-04-15",partnerId:"",notiz:"Internationale Weinfachmesse Verona — Einladung ViniGrandi",kmVonStandort:"1050"},
+        {id:uid(),name:"ProWein 2025",adresse:"Messe Düsseldorf, Stockumer Kirchstr. 61, 40474 Düsseldorf",datum:"2025-03-17",datumBis:"2025-03-18",partnerId:"",notiz:"Weltleitmesse Wein & Spirituosen — Einladung ViniGrandi",kmVonStandort:"541"},
+        {id:uid(),name:"Vinitaly 2025",adresse:"Veronafiere, Viale del Lavoro 8, 37135 Verona, Italien",datum:"2025-04-07",datumBis:"2025-04-09",partnerId:"",notiz:"Internationale Weinfachmesse — Einladung ViniGrandi",kmVonStandort:"999"},
+        {id:uid(),name:"ProWein 2026",adresse:"Messe Düsseldorf, Stockumer Kirchstr. 61, 40474 Düsseldorf",datum:"2026-03-16",datumBis:"2026-03-17",partnerId:"",notiz:"Weltleitmesse Wein & Spirituosen — Einladung ViniGrandi",kmVonStandort:"541"},
+        {id:uid(),name:"Vinitaly 2026",adresse:"Veronafiere, Viale del Lavoro 8, 37135 Verona, Italien",datum:"2026-04-13",datumBis:"2026-04-15",partnerId:"",notiz:"Internationale Weinfachmesse Verona — Einladung ViniGrandi",kmVonStandort:"999"},
       ].filter(m=>!names.includes(m.name.toLowerCase()));
       return add.length ? {...f, messen:[...(f.messen||[]),...add]} : f;
     }) },
@@ -4265,10 +4277,10 @@ function FahrtenbuchApp({authUser, onLogout, themeId, setThemeId}) {
       if(f.kennzeichen!=="TF-KF 2128") return f;
       const names = (f.messen||[]).map(m=>(m.name||"").toLowerCase());
       const add = [
-        {id:uid(),name:"ProWein 2025",adresse:"Messe Düsseldorf, Stockumer Kirchstr. 61, 40474 Düsseldorf",datum:"2025-03-17",datumBis:"2025-03-18",partnerId:"",notiz:"Weltleitmesse Wein & Spirituosen — Einladung ViniGrandi",kmVonStandort:"560"},
-        {id:uid(),name:"Vinitaly 2025",adresse:"Veronafiere, Viale del Lavoro 8, 37135 Verona, Italien",datum:"2025-04-07",datumBis:"2025-04-09",partnerId:"",notiz:"Internationale Weinfachmesse — Einladung ViniGrandi",kmVonStandort:"1050"},
-        {id:uid(),name:"ProWein 2026",adresse:"Messe Düsseldorf, Stockumer Kirchstr. 61, 40474 Düsseldorf",datum:"2026-03-16",datumBis:"2026-03-17",partnerId:"",notiz:"Weltleitmesse Wein & Spirituosen — Einladung ViniGrandi",kmVonStandort:"560"},
-        {id:uid(),name:"Vinitaly 2026",adresse:"Veronafiere, Viale del Lavoro 8, 37135 Verona, Italien",datum:"2026-04-13",datumBis:"2026-04-15",partnerId:"",notiz:"Internationale Weinfachmesse Verona — Einladung ViniGrandi",kmVonStandort:"1050"},
+        {id:uid(),name:"ProWein 2025",adresse:"Messe Düsseldorf, Stockumer Kirchstr. 61, 40474 Düsseldorf",datum:"2025-03-17",datumBis:"2025-03-18",partnerId:"",notiz:"Weltleitmesse Wein & Spirituosen — Einladung ViniGrandi",kmVonStandort:"541"},
+        {id:uid(),name:"Vinitaly 2025",adresse:"Veronafiere, Viale del Lavoro 8, 37135 Verona, Italien",datum:"2025-04-07",datumBis:"2025-04-09",partnerId:"",notiz:"Internationale Weinfachmesse — Einladung ViniGrandi",kmVonStandort:"999"},
+        {id:uid(),name:"ProWein 2026",adresse:"Messe Düsseldorf, Stockumer Kirchstr. 61, 40474 Düsseldorf",datum:"2026-03-16",datumBis:"2026-03-17",partnerId:"",notiz:"Weltleitmesse Wein & Spirituosen — Einladung ViniGrandi",kmVonStandort:"541"},
+        {id:uid(),name:"Vinitaly 2026",adresse:"Veronafiere, Viale del Lavoro 8, 37135 Verona, Italien",datum:"2026-04-13",datumBis:"2026-04-15",partnerId:"",notiz:"Internationale Weinfachmesse Verona — Einladung ViniGrandi",kmVonStandort:"999"},
       ].filter(m=>!names.includes(m.name.toLowerCase()));
       return add.length ? {...f, messen:[...(f.messen||[]),...add]} : f;
     }) },
@@ -4282,11 +4294,11 @@ function FahrtenbuchApp({authUser, onLogout, themeId, setThemeId}) {
       const extra = f.standorteExtra||[];
       const names = extra.map(s=>(s.name||"").toLowerCase());
       const add = [
-        {id:uid(),name:"Rathaus Ludwigsfelde",adresse:"Rathausstraße 3, 14974 Ludwigsfelde",notiz:"Stadtverwaltung, Bürgeramt, Gewerbeamt",auto:false,typ:"behoerde",besuche:0,letzterBesuch:"",kmVonStandort:"2"},
-        {id:uid(),name:"Finanzamt Luckenwalde",adresse:"Dr.-Georg-Schaeffler-Straße 2, 14943 Luckenwalde",notiz:"Steuererklärung, Bescheide",auto:false,typ:"behoerde",besuche:0,letzterBesuch:"",kmVonStandort:"18"},
-        {id:uid(),name:"Kfz-Zulassungsstelle Luckenwalde",adresse:"Louis-Pasteur-Str. 5, 14943 Luckenwalde",notiz:"Zulassung, Ummeldung, Abmeldung",auto:false,typ:"behoerde",besuche:0,letzterBesuch:"",kmVonStandort:"18"},
-        {id:uid(),name:"Kreisverwaltung Teltow-Fläming",adresse:"Am Nuthefließ 2, 14943 Luckenwalde",notiz:"Landratsamt, Bauamt, Ordnungsamt",auto:false,typ:"behoerde",besuche:0,letzterBesuch:"",kmVonStandort:"18"},
-        {id:uid(),name:"IHK Potsdam",adresse:"Breite Straße 2a-c, 14467 Potsdam",notiz:"Industrie- und Handelskammer",auto:false,typ:"behoerde",besuche:0,letzterBesuch:"",kmVonStandort:"26"},
+        {id:uid(),name:"Rathaus Ludwigsfelde",adresse:"Rathausstraße 3, 14974 Ludwigsfelde",notiz:"Stadtverwaltung, Bürgeramt, Gewerbeamt",auto:false,typ:"behoerde",besuche:0,letzterBesuch:"",kmVonStandort:"5"},
+        {id:uid(),name:"Finanzamt Luckenwalde",adresse:"Dr.-Georg-Schaeffler-Straße 2, 14943 Luckenwalde",notiz:"Steuererklärung, Bescheide",auto:false,typ:"behoerde",besuche:0,letzterBesuch:"",kmVonStandort:"33"},
+        {id:uid(),name:"Kfz-Zulassungsstelle Luckenwalde",adresse:"Louis-Pasteur-Str. 5, 14943 Luckenwalde",notiz:"Zulassung, Ummeldung, Abmeldung",auto:false,typ:"behoerde",besuche:0,letzterBesuch:"",kmVonStandort:"37"},
+        {id:uid(),name:"Kreisverwaltung Teltow-Fläming",adresse:"Am Nuthefließ 2, 14943 Luckenwalde",notiz:"Landratsamt, Bauamt, Ordnungsamt",auto:false,typ:"behoerde",besuche:0,letzterBesuch:"",kmVonStandort:"41"},
+        {id:uid(),name:"IHK Potsdam",adresse:"Breite Straße 2a-c, 14467 Potsdam",notiz:"Industrie- und Handelskammer",auto:false,typ:"behoerde",besuche:0,letzterBesuch:"",kmVonStandort:"24"},
       ].filter(s=>!names.includes(s.name.toLowerCase()));
       return add.length ? {...f, standorteExtra:[...extra,...add]} : f;
     }) },
@@ -4295,13 +4307,12 @@ function FahrtenbuchApp({authUser, onLogout, themeId, setThemeId}) {
       const extra = f.standorteExtra||[];
       const names = extra.map(s=>(s.name||"").toLowerCase());
       const add = [
-        {id:uid(),name:"Autoservice Ludwigsfelde",adresse:"Südring, 14974 Ludwigsfelde",notiz:"KFZ-Service",auto:false,typ:"werkstatt",besuche:0,letzterBesuch:"",kmVonStandort:"2"},
-        {id:uid(),name:"Deutsche Post Ludwigsfelde",adresse:"Potsdamer Str. 60, 14974 Ludwigsfelde",notiz:"Briefe / Pakete",auto:false,typ:"post",besuche:0,letzterBesuch:"",kmVonStandort:"3"},
-        {id:uid(),name:"Autohaus Berolina Berlin",adresse:"Cicerostr. 34, 10709 Berlin-Halensee",notiz:"Fahrzeugabholung",auto:false,typ:"werkstatt",besuche:0,letzterBesuch:"",kmVonStandort:"45"},
+        {id:uid(),name:"Autoservice Ludwigsfelde",adresse:"Südring, 14974 Ludwigsfelde",notiz:"KFZ-Service",auto:false,typ:"werkstatt",besuche:0,letzterBesuch:"",kmVonStandort:"9"},
+        {id:uid(),name:"Deutsche Post Ludwigsfelde",adresse:"Potsdamer Str. 60, 14974 Ludwigsfelde",notiz:"Briefe / Pakete",auto:false,typ:"post",besuche:0,letzterBesuch:"",kmVonStandort:"5"},
+        {id:uid(),name:"Autohaus Berolina Berlin",adresse:"Cicerostr. 34, 10709 Berlin-Halensee",notiz:"Fahrzeugabholung",auto:false,typ:"werkstatt",besuche:0,letzterBesuch:"",kmVonStandort:"36"},
         {id:uid(),name:"MBS Sparkasse Ludwigsfelde",adresse:"Potsdamer Str. 60, 14974 Ludwigsfelde",notiz:"Bankfiliale",auto:false,typ:"bank",besuche:0,letzterBesuch:"",kmVonStandort:"5"},
         {id:uid(),name:"Hornbach Ludwigsfelde",adresse:"Parkallee 36, 14974 Ludwigsfelde",notiz:"Baumarkt",auto:false,typ:"laden",besuche:0,letzterBesuch:"",kmVonStandort:"2"},
-        {id:uid(),name:"Getränke Hoffmann Berlin",adresse:"Westfälische Str. 85, 10709 Berlin",notiz:"Getränkemarkt",auto:false,typ:"laden",besuche:0,letzterBesuch:"",kmVonStandort:"38"},
-        {id:uid(),name:"Getränke Hoffmann Ludwigsfelde",adresse:"Potsdamer Str. 118, 14974 Ludwigsfelde",notiz:"Getränkemarkt",auto:false,typ:"laden",besuche:0,letzterBesuch:"",kmVonStandort:"3"},
+        {id:uid(),name:"Getränke Hoffmann Ludwigsfelde",adresse:"Potsdamer Str. 118, 14974 Ludwigsfelde",notiz:"Getränkemarkt",auto:false,typ:"laden",besuche:0,letzterBesuch:"",kmVonStandort:"6"},
       ].filter(s=>!names.includes(s.name.toLowerCase()));
       return add.length ? {...f, standorteExtra:[...extra,...add]} : f;
     }) },
@@ -4309,18 +4320,18 @@ function FahrtenbuchApp({authUser, onLogout, themeId, setThemeId}) {
       const extra = f.standorteExtra||[];
       if(extra.some(s=>(s.name||"").toLowerCase().includes("bauhaus"))) return f;
       return {...f, standorteExtra:[...extra,
-        {id:uid(),name:"Bauhaus Berlin-Halensee",adresse:"Kurfürstendamm 129a, 10711 Berlin",notiz:"Baumarkt",auto:false,typ:"laden",besuche:0,letzterBesuch:"",kmVonStandort:"38"}
+        {id:uid(),name:"Bauhaus Berlin-Halensee",adresse:"Kurfürstendamm 129a, 10711 Berlin",notiz:"Baumarkt",auto:false,typ:"laden",besuche:0,letzterBesuch:"",kmVonStandort:"35"}
       ]};
     }) },
     { v:19, run: fzs => fzs.map(f=>{
       const extra = f.standorteExtra||[];
       const names = extra.map(s=>(s.name||"").toLowerCase());
       const add = [
-        {id:uid(),name:"Flughafen Berlin Brandenburg (BER)",adresse:"Willy-Brandt-Platz, 12529 Schönefeld",notiz:"Terminal 1 + 2",auto:false,typ:"flughafen",besuche:0,letzterBesuch:"",kmVonStandort:"25"},
-        {id:uid(),name:"Flughafen München (MUC)",adresse:"Nordallee 25, 85356 München",notiz:"Franz Josef Strauß",auto:false,typ:"flughafen",besuche:0,letzterBesuch:"",kmVonStandort:"620"},
-        {id:uid(),name:"Flughafen Hamburg (HAM)",adresse:"Flughafenstraße 1-3, 22335 Hamburg",notiz:"Hamburg Airport",auto:false,typ:"flughafen",besuche:0,letzterBesuch:"",kmVonStandort:"290"},
-        {id:uid(),name:"Flughafen Stuttgart (STR)",adresse:"Flughafenstraße 32, 70629 Stuttgart",notiz:"Stuttgart Airport",auto:false,typ:"flughafen",besuche:0,letzterBesuch:"",kmVonStandort:"590"},
-        {id:uid(),name:"Berlin Hauptbahnhof",adresse:"Europaplatz 1, 10557 Berlin",notiz:"Fernverkehr, ICE",auto:false,typ:"bahnhof",besuche:0,letzterBesuch:"",kmVonStandort:"40"},
+        {id:uid(),name:"Flughafen Berlin Brandenburg (BER)",adresse:"Willy-Brandt-Platz, 12529 Schönefeld",notiz:"Terminal 1 + 2",auto:false,typ:"flughafen",besuche:0,letzterBesuch:"",kmVonStandort:"29"},
+        {id:uid(),name:"Flughafen München (MUC)",adresse:"Nordallee 25, 85356 München",notiz:"Franz Josef Strauß",auto:false,typ:"flughafen",besuche:0,letzterBesuch:"",kmVonStandort:"557"},
+        {id:uid(),name:"Flughafen Hamburg (HAM)",adresse:"Flughafenstraße 1-3, 22335 Hamburg",notiz:"Hamburg Airport",auto:false,typ:"flughafen",besuche:0,letzterBesuch:"",kmVonStandort:"334"},
+        {id:uid(),name:"Flughafen Stuttgart (STR)",adresse:"Flughafenstraße 32, 70629 Stuttgart",notiz:"Stuttgart Airport",auto:false,typ:"flughafen",besuche:0,letzterBesuch:"",kmVonStandort:"627"},
+        {id:uid(),name:"Berlin Hauptbahnhof",adresse:"Europaplatz 1, 10557 Berlin",notiz:"Fernverkehr, ICE",auto:false,typ:"bahnhof",besuche:0,letzterBesuch:"",kmVonStandort:"29"},
       ].filter(s=>!names.some(n=>n.includes(s.name.split("(")[0].trim().toLowerCase())));
       return add.length ? {...f, standorteExtra:[...extra,...add]} : f;
     }) },
@@ -4370,15 +4381,15 @@ function FahrtenbuchApp({authUser, onLogout, themeId, setThemeId}) {
       // Tankstellen: inject 9 entries only if empty
       if(!(f.tankstellen||[]).length) {
         patch.tankstellen = [
-          {id:uid(),datum:"2025-06-21",uhrzeit:"09:28",stationName:"ARAL - REWE To Go",adresse:"Hohenzollerndamm 97, 14199 Berlin",kraftstoff:"Super E10",menge:"55.03",preisProLiter:"1.699",gesamtbetrag:"93.50",kmStand:"",zahlungsart:"EC-Karte",bonNr:"",notiz:"",kmVonStandort:"38"},
-          {id:uid(),datum:"2025-06-22",uhrzeit:"12:21",stationName:"ENI Deutschland GmbH",adresse:"BAB 9 Richtung München, 90537 Nürnberg-Feucht",kraftstoff:"Super E10",menge:"46.78",preisProLiter:"2.219",gesamtbetrag:"103.80",kmStand:"",zahlungsart:"EC-Karte",bonNr:"",notiz:"Autobahn A9",kmVonStandort:"450"},
-          {id:uid(),datum:"2025-06-27",uhrzeit:"13:03",stationName:"Tankstelle Forster",adresse:"BAB 9 Fürholzen Ost, 85376 Fürholzen",kraftstoff:"Super E10",menge:"41.66",preisProLiter:"2.199",gesamtbetrag:"91.61",kmStand:"",zahlungsart:"EC-Karte",bonNr:"",notiz:"Autobahn A9",kmVonStandort:"580"},
-          {id:uid(),datum:"2025-06-27",uhrzeit:"16:48",stationName:"ENI Service Station",adresse:"An der BAB 9, 07927 Hirschberg",kraftstoff:"Super E10",menge:"31.75",preisProLiter:"1.989",gesamtbetrag:"63.15",kmStand:"",zahlungsart:"EC-Karte",bonNr:"",notiz:"Autobahn A9, Rückfahrt",kmVonStandort:"250"},
-          {id:uid(),datum:"2025-08-22",uhrzeit:"14:05",stationName:"ARAL - REWE To Go",adresse:"Hohenzollerndamm 97, 14199 Berlin",kraftstoff:"Super E10",menge:"49.43",preisProLiter:"1.629",gesamtbetrag:"80.52",kmStand:"",zahlungsart:"EC-Karte",bonNr:"",notiz:"",kmVonStandort:"38"},
+          {id:uid(),datum:"2025-06-21",uhrzeit:"09:28",stationName:"ARAL - REWE To Go",adresse:"Hohenzollerndamm 97, 14199 Berlin",kraftstoff:"Super E10",menge:"55.03",preisProLiter:"1.699",gesamtbetrag:"93.50",kmStand:"",zahlungsart:"EC-Karte",bonNr:"",notiz:"",kmVonStandort:"33"},
+          {id:uid(),datum:"2025-06-22",uhrzeit:"12:21",stationName:"ENI Deutschland GmbH",adresse:"BAB 9 Richtung München, 90537 Nürnberg-Feucht",kraftstoff:"Super E10",menge:"46.78",preisProLiter:"2.219",gesamtbetrag:"103.80",kmStand:"",zahlungsart:"EC-Karte",bonNr:"",notiz:"Autobahn A9",kmVonStandort:"425"},
+          {id:uid(),datum:"2025-06-27",uhrzeit:"13:03",stationName:"Tankstelle Forster",adresse:"BAB 9 Fürholzen Ost, 85376 Fürholzen",kraftstoff:"Super E10",menge:"41.66",preisProLiter:"2.199",gesamtbetrag:"91.61",kmStand:"",zahlungsart:"EC-Karte",bonNr:"",notiz:"Autobahn A9",kmVonStandort:"545"},
+          {id:uid(),datum:"2025-06-27",uhrzeit:"16:48",stationName:"ENI Service Station",adresse:"An der BAB 9, 07927 Hirschberg",kraftstoff:"Super E10",menge:"31.75",preisProLiter:"1.989",gesamtbetrag:"63.15",kmStand:"",zahlungsart:"EC-Karte",bonNr:"",notiz:"Autobahn A9, Rückfahrt",kmVonStandort:"272"},
+          {id:uid(),datum:"2025-08-22",uhrzeit:"14:05",stationName:"ARAL - REWE To Go",adresse:"Hohenzollerndamm 97, 14199 Berlin",kraftstoff:"Super E10",menge:"49.43",preisProLiter:"1.629",gesamtbetrag:"80.52",kmStand:"",zahlungsart:"EC-Karte",bonNr:"",notiz:"",kmVonStandort:"33"},
           {id:uid(),datum:"2025-09-04",uhrzeit:"12:10",stationName:"Sprint Tankstelle",adresse:"Chausseestr. 1, 15745 Wildau",kraftstoff:"Super E10",menge:"24.26",preisProLiter:"1.649",gesamtbetrag:"40.00",kmStand:"",zahlungsart:"EC-Karte",bonNr:"",notiz:"",kmVonStandort:"25"},
-          {id:uid(),datum:"2025-09-14",uhrzeit:"09:40",stationName:"Shell Tankstelle",adresse:"Zur Achmühle 9, 91171 Greding",kraftstoff:"Super E10",menge:"54.56",preisProLiter:"2.239",gesamtbetrag:"122.16",kmStand:"",zahlungsart:"EC-Karte",bonNr:"",notiz:"Autobahn A9",kmVonStandort:"480"},
-          {id:uid(),datum:"2025-11-21",uhrzeit:"08:27",stationName:"ARAL - REWE To Go",adresse:"Hohenzollerndamm 97, 14199 Berlin",kraftstoff:"Super E10",menge:"53.74",preisProLiter:"1.939",gesamtbetrag:"115.19",kmStand:"",zahlungsart:"EC-Karte",bonNr:"",notiz:"Inkl. Aral Klare Sicht 10,99 € (Scheibenwischwasser)",kmVonStandort:"38"},
-          {id:uid(),datum:"2025-11-22",uhrzeit:"09:39",stationName:"Shell Tankstellen GmbH",adresse:"BAB 9 / Westseite, 06682 Teuchern",kraftstoff:"Super E10",menge:"26.08",preisProLiter:"1.809",gesamtbetrag:"47.18",kmStand:"",zahlungsart:"EC-Karte",bonNr:"",notiz:"Autobahn A9",kmVonStandort:"170"},
+          {id:uid(),datum:"2025-09-14",uhrzeit:"09:40",stationName:"Shell Tankstelle",adresse:"Zur Achmühle 9, 91171 Greding",kraftstoff:"Super E10",menge:"54.56",preisProLiter:"2.239",gesamtbetrag:"122.16",kmStand:"",zahlungsart:"EC-Karte",bonNr:"",notiz:"Autobahn A9",kmVonStandort:"465"},
+          {id:uid(),datum:"2025-11-21",uhrzeit:"08:27",stationName:"ARAL - REWE To Go",adresse:"Hohenzollerndamm 97, 14199 Berlin",kraftstoff:"Super E10",menge:"53.74",preisProLiter:"1.939",gesamtbetrag:"115.19",kmStand:"",zahlungsart:"EC-Karte",bonNr:"",notiz:"Inkl. Aral Klare Sicht 10,99 € (Scheibenwischwasser)",kmVonStandort:"33"},
+          {id:uid(),datum:"2025-11-22",uhrzeit:"09:39",stationName:"Shell Tankstellen GmbH",adresse:"BAB 9 / Westseite, 06682 Teuchern",kraftstoff:"Super E10",menge:"26.08",preisProLiter:"1.809",gesamtbetrag:"47.18",kmStand:"",zahlungsart:"EC-Karte",bonNr:"",notiz:"Autobahn A9",kmVonStandort:"185"},
         ];
       }
       // Services: inject 2 entries only if empty
@@ -4425,7 +4436,7 @@ function FahrtenbuchApp({authUser, onLogout, themeId, setThemeId}) {
         const svcs = f.services||[];
         if(!svcs.some(s=>s.rechnungsNr==="GR0089042")) {
           const extra = [...(f.standorteExtra||[])];
-          if(!extra.some(e=>(e.name||"").includes("Premio"))) extra.push({id:uid(),name:"Premio Reifen + Autoservice",adresse:"Am Birkengrund 21-23, 14974 Ludwigsfelde",notiz:"Reifenservice",auto:false,typ:"werkstatt",besuche:1,letzterBesuch:"2025-04-16",kmVonStandort:"3"});
+          if(!extra.some(e=>(e.name||"").includes("Premio"))) extra.push({id:uid(),name:"Premio Reifen + Autoservice",adresse:"Am Birkengrund 21-23, 14974 Ludwigsfelde",notiz:"Reifenservice",auto:false,typ:"werkstatt",besuche:1,letzterBesuch:"2025-04-16",kmVonStandort:"1"});
           return {...f, services:[...svcs,
             {id:uid(),datum:"2025-04-16",typ:"Reifenwechsel Sommer",werkstatt:"Premio Reifen + Autoservice",adresse:"Am Birkengrund 21-23, 14974 Ludwigsfelde",kmStand:"9384",betrag:"56.12",rechnungsNr:"GR0089042",faelligKm:"",faelligDatum:"",zahlungsart:"Überweisung",notiz:"Radwechsel 21 Zoll (4x) + Nabenreinigung PKW/SUV (4x)",belegFoto:""},
           ], standorteExtra:extra};
@@ -4465,13 +4476,13 @@ function FahrtenbuchApp({authUser, onLogout, themeId, setThemeId}) {
           );
         }
         const extra = [...(f.standorteExtra||[])];
-        if(!extra.some(e=>(e.name||"").includes("Autostadt"))) extra.push({id:uid(),name:"Autostadt Wolfsburg",adresse:"Stadtbrücke, 38440 Wolfsburg",notiz:"Fahrzeugabholung TF-IV 601",auto:false,typ:"sonstiges",besuche:1,letzterBesuch:"2025-12-01",kmVonStandort:"230"});
-        if(!extra.some(e=>(e.name||"").includes("Auto-Scholz"))) extra.push({id:uid(),name:"Auto-Scholz AHG Bamberg",adresse:"Kronacher Str. 38, 96052 Bamberg",notiz:"VW Händler",auto:false,typ:"werkstatt",besuche:0,letzterBesuch:"",kmVonStandort:"400"});
+        if(!extra.some(e=>(e.name||"").includes("Autostadt"))) extra.push({id:uid(),name:"Autostadt Wolfsburg",adresse:"Stadtbrücke, 38440 Wolfsburg",notiz:"Fahrzeugabholung TF-IV 601",auto:false,typ:"sonstiges",besuche:1,letzterBesuch:"2025-12-01",kmVonStandort:"210"});
+        if(!extra.some(e=>(e.name||"").includes("Auto-Scholz"))) extra.push({id:uid(),name:"Auto-Scholz AHG Bamberg",adresse:"Kronacher Str. 38, 96052 Bamberg",notiz:"VW Händler",auto:false,typ:"werkstatt",besuche:0,letzterBesuch:"",kmVonStandort:"381"});
         return {...f, ...patch, fahrten, standorteExtra:extra};
       }
       if(f.kennzeichen === "TF-VI 601") {
         const extra = [...(f.standorteExtra||[])];
-        if(!extra.some(e=>(e.name||"").includes("Auto-Scholz"))) extra.push({id:uid(),name:"Auto-Scholz AHG Bamberg",adresse:"Kronacher Str. 38, 96052 Bamberg",notiz:"VW Händler",auto:false,typ:"werkstatt",besuche:0,letzterBesuch:"",kmVonStandort:"400"});
+        if(!extra.some(e=>(e.name||"").includes("Auto-Scholz"))) extra.push({id:uid(),name:"Auto-Scholz AHG Bamberg",adresse:"Kronacher Str. 38, 96052 Bamberg",notiz:"VW Händler",auto:false,typ:"werkstatt",besuche:0,letzterBesuch:"",kmVonStandort:"381"});
         return {...f,
           modell:"(Leasing beendet 29.12.2025, km 18.693)",
           halterName:"ImmoPrim GmbH",
@@ -4485,7 +4496,7 @@ function FahrtenbuchApp({authUser, onLogout, themeId, setThemeId}) {
       if(f.kennzeichen !== "TF-VI 601" && f.kennzeichen !== "TF-IV 601") return f;
       const extra = [...(f.standorteExtra||[])];
       if(!extra.some(e=>(e.name||"").includes("Auto-Scholz"))) {
-        extra.push({id:uid(),name:"Auto-Scholz AHG Bamberg",adresse:"Kronacher Str. 38, 96052 Bamberg",notiz:"VW Händler",auto:false,typ:"werkstatt",besuche:0,letzterBesuch:"",kmVonStandort:"400"});
+        extra.push({id:uid(),name:"Auto-Scholz AHG Bamberg",adresse:"Kronacher Str. 38, 96052 Bamberg",notiz:"VW Händler",auto:false,typ:"werkstatt",besuche:0,letzterBesuch:"",kmVonStandort:"381"});
         return {...f, standorteExtra:extra};
       }
       return f;
@@ -4495,30 +4506,30 @@ function FahrtenbuchApp({authUser, onLogout, themeId, setThemeId}) {
       if(f.kennzeichen !== "TF-VI 601") return f;
       if((f.tankstellen||[]).length) return f;
       return {...f, tankstellen:[
-        {id:uid(),datum:"2025-01-31",uhrzeit:"08:08",stationName:"TotalEnergies",adresse:"Ludwigsfelde",kraftstoff:"Euro 95 (Super)",menge:"35.68",preisProLiter:"1.5706",gesamtbetrag:"68.27",kmStand:"",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"3"},
-        {id:uid(),datum:"2025-03-07",uhrzeit:"16:28",stationName:"Shell",adresse:"Ludwigsfelde",kraftstoff:"Diesel",menge:"42.34",preisProLiter:"1.5579",gesamtbetrag:"79.38",kmStand:"3479",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"3"},
-        {id:uid(),datum:"2025-03-26",uhrzeit:"13:54",stationName:"ESSO",adresse:"Ludwigsfelde",kraftstoff:"Euro 95 (Super)",menge:"33.01",preisProLiter:"1.4696",gesamtbetrag:"59.10",kmStand:"",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"3"},
-        {id:uid(),datum:"2025-03-28",uhrzeit:"12:42",stationName:"Shell",adresse:"Ludwigsfelde",kraftstoff:"Euro 95 (Super)",menge:"38.67",preisProLiter:"1.6375",gesamtbetrag:"77.13",kmStand:"",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"3"},
-        {id:uid(),datum:"2025-04-03",uhrzeit:"11:11",stationName:"TotalEnergies",adresse:"Ludwigsfelde",kraftstoff:"Euro 95 (Super)",menge:"41.22",preisProLiter:"1.5116",gesamtbetrag:"75.91",kmStand:"",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"3"},
-        {id:uid(),datum:"2025-04-14",uhrzeit:"16:47",stationName:"TotalEnergies",adresse:"Ludwigsfelde",kraftstoff:"Euro 95 (Super)",menge:"44.31",preisProLiter:"1.4193",gesamtbetrag:"76.61",kmStand:"",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"3"},
-        {id:uid(),datum:"2025-04-17",uhrzeit:"06:49",stationName:"ESSO",adresse:"Ludwigsfelde",kraftstoff:"Euro 95 (Super)",menge:"34.00",preisProLiter:"1.5456",gesamtbetrag:"64.02",kmStand:"",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"3"},
-        {id:uid(),datum:"2025-04-17",uhrzeit:"17:04",stationName:"ESSO",adresse:"Ludwigsfelde",kraftstoff:"Diesel",menge:"13.28",preisProLiter:"1.3185",gesamtbetrag:"21.07",kmStand:"",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"3"},
-        {id:uid(),datum:"2025-05-21",uhrzeit:"12:10",stationName:"TotalEnergies",adresse:"Ludwigsfelde",kraftstoff:"Euro 95 (Super)",menge:"53.42",preisProLiter:"1.4109",gesamtbetrag:"91.81",kmStand:"",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"3"},
-        {id:uid(),datum:"2025-05-23",uhrzeit:"06:11",stationName:"ESSO",adresse:"Ludwigsfelde",kraftstoff:"Euro 95 (Super)",menge:"40.25",preisProLiter:"1.4194",gesamtbetrag:"69.59",kmStand:"",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"3"},
-        {id:uid(),datum:"2025-06-17",uhrzeit:"19:44",stationName:"JET",adresse:"Potsdam",kraftstoff:"Euro 95 (Super)",menge:"24.67",preisProLiter:"1.4276",gesamtbetrag:"42.90",kmStand:"4698",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"26"},
-        {id:uid(),datum:"2025-06-17",uhrzeit:"20:32",stationName:"ESSO",adresse:"Ludwigsfelde",kraftstoff:"Diesel",menge:"50.33",preisProLiter:"1.3268",gesamtbetrag:"80.36",kmStand:"",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"3"},
-        {id:uid(),datum:"2025-07-24",uhrzeit:"16:04",stationName:"Shell",adresse:"Ludwigsfelde",kraftstoff:"Diesel",menge:"48.26",preisProLiter:"1.5315",gesamtbetrag:"88.95",kmStand:"4298",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"3"},
-        {id:uid(),datum:"2025-09-23",uhrzeit:"10:57",stationName:"Shell",adresse:"Ludwigsfelde",kraftstoff:"Euro 95 (Super)",menge:"39.67",preisProLiter:"1.6027",gesamtbetrag:"77.46",kmStand:"3062",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"3"},
-        {id:uid(),datum:"2025-11-02",uhrzeit:"14:36",stationName:"JET",adresse:"Ludwigsfelde",kraftstoff:"Euro 95 (Super)",menge:"17.50",preisProLiter:"1.4531",gesamtbetrag:"30.98",kmStand:"8919",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"3"},
-        {id:uid(),datum:"2025-11-05",uhrzeit:"17:19",stationName:"JET",adresse:"Ludwigsfelde",kraftstoff:"Euro 95 (Super)",menge:"20.03",preisProLiter:"1.4109",gesamtbetrag:"34.42",kmStand:"9653",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"3"},
-        {id:uid(),datum:"2025-11-24",uhrzeit:"09:23",stationName:"ESSO",adresse:"Ludwigsfelde",kraftstoff:"Euro 95 (Super)",menge:"67.75",preisProLiter:"1.4614",gesamtbetrag:"120.60",kmStand:"",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"3"},
-        {id:uid(),datum:"2025-11-24",uhrzeit:"13:00",stationName:"TotalEnergies",adresse:"Ludwigsfelde",kraftstoff:"Diesel",menge:"43.58",preisProLiter:"1.4027",gesamtbetrag:"73.57",kmStand:"",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"3"},
-        {id:uid(),datum:"2025-12-01",uhrzeit:"14:18",stationName:"ESSO",adresse:"Wolfsburg",kraftstoff:"Diesel",menge:"35.46",preisProLiter:"1.3522",gesamtbetrag:"57.70",kmStand:"",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV — Abholung Touareg",kmVonStandort:"230"},
-        {id:uid(),datum:"2025-12-05",uhrzeit:"15:36",stationName:"JET",adresse:"Ludwigsfelde",kraftstoff:"Diesel",menge:"47.89",preisProLiter:"1.3270",gesamtbetrag:"76.48",kmStand:"9440",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"3"},
-        {id:uid(),datum:"2025-12-05",uhrzeit:"15:36",stationName:"JET",adresse:"Ludwigsfelde",kraftstoff:"Euro 95 (Super)",menge:"25.60",preisProLiter:"1.4109",gesamtbetrag:"44.01",kmStand:"9440",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"3"},
-        {id:uid(),datum:"2025-12-12",uhrzeit:"09:28",stationName:"JET",adresse:"Ludwigsfelde",kraftstoff:"Diesel",menge:"9.07",preisProLiter:"1.4112",gesamtbetrag:"15.40",kmStand:"1577",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"3"},
-        {id:uid(),datum:"2025-12-15",uhrzeit:"05:51",stationName:"ESSO",adresse:"Ludwigsfelde",kraftstoff:"Diesel",menge:"59.73",preisProLiter:"1.3101",gesamtbetrag:"94.16",kmStand:"",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"3"},
-        {id:uid(),datum:"2025-12-20",uhrzeit:"08:30",stationName:"ESSO",adresse:"Ludwigsfelde",kraftstoff:"Euro 95 (Super)",menge:"28.68",preisProLiter:"1.4782",gesamtbetrag:"51.61",kmStand:"",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV — 28.02+0.66L",kmVonStandort:"3"},
+        {id:uid(),datum:"2025-01-31",uhrzeit:"08:08",stationName:"TotalEnergies",adresse:"Ludwigsfelde",kraftstoff:"Euro 95 (Super)",menge:"35.68",preisProLiter:"1.5706",gesamtbetrag:"68.27",kmStand:"",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"5"},
+        {id:uid(),datum:"2025-03-07",uhrzeit:"16:28",stationName:"Shell",adresse:"Ludwigsfelde",kraftstoff:"Diesel",menge:"42.34",preisProLiter:"1.5579",gesamtbetrag:"79.38",kmStand:"3479",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"2"},
+        {id:uid(),datum:"2025-03-26",uhrzeit:"13:54",stationName:"ESSO",adresse:"Ludwigsfelde",kraftstoff:"Euro 95 (Super)",menge:"33.01",preisProLiter:"1.4696",gesamtbetrag:"59.10",kmStand:"",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"4"},
+        {id:uid(),datum:"2025-03-28",uhrzeit:"12:42",stationName:"Shell",adresse:"Ludwigsfelde",kraftstoff:"Euro 95 (Super)",menge:"38.67",preisProLiter:"1.6375",gesamtbetrag:"77.13",kmStand:"",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"2"},
+        {id:uid(),datum:"2025-04-03",uhrzeit:"11:11",stationName:"TotalEnergies",adresse:"Ludwigsfelde",kraftstoff:"Euro 95 (Super)",menge:"41.22",preisProLiter:"1.5116",gesamtbetrag:"75.91",kmStand:"",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"5"},
+        {id:uid(),datum:"2025-04-14",uhrzeit:"16:47",stationName:"TotalEnergies",adresse:"Ludwigsfelde",kraftstoff:"Euro 95 (Super)",menge:"44.31",preisProLiter:"1.4193",gesamtbetrag:"76.61",kmStand:"",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"5"},
+        {id:uid(),datum:"2025-04-17",uhrzeit:"06:49",stationName:"ESSO",adresse:"Ludwigsfelde",kraftstoff:"Euro 95 (Super)",menge:"34.00",preisProLiter:"1.5456",gesamtbetrag:"64.02",kmStand:"",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"4"},
+        {id:uid(),datum:"2025-04-17",uhrzeit:"17:04",stationName:"ESSO",adresse:"Ludwigsfelde",kraftstoff:"Diesel",menge:"13.28",preisProLiter:"1.3185",gesamtbetrag:"21.07",kmStand:"",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"4"},
+        {id:uid(),datum:"2025-05-21",uhrzeit:"12:10",stationName:"TotalEnergies",adresse:"Ludwigsfelde",kraftstoff:"Euro 95 (Super)",menge:"53.42",preisProLiter:"1.4109",gesamtbetrag:"91.81",kmStand:"",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"5"},
+        {id:uid(),datum:"2025-05-23",uhrzeit:"06:11",stationName:"ESSO",adresse:"Ludwigsfelde",kraftstoff:"Euro 95 (Super)",menge:"40.25",preisProLiter:"1.4194",gesamtbetrag:"69.59",kmStand:"",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"4"},
+        {id:uid(),datum:"2025-06-17",uhrzeit:"19:44",stationName:"JET",adresse:"Potsdam",kraftstoff:"Euro 95 (Super)",menge:"24.67",preisProLiter:"1.4276",gesamtbetrag:"42.90",kmStand:"4698",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"23"},
+        {id:uid(),datum:"2025-06-17",uhrzeit:"20:32",stationName:"ESSO",adresse:"Ludwigsfelde",kraftstoff:"Diesel",menge:"50.33",preisProLiter:"1.3268",gesamtbetrag:"80.36",kmStand:"",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"4"},
+        {id:uid(),datum:"2025-07-24",uhrzeit:"16:04",stationName:"Shell",adresse:"Ludwigsfelde",kraftstoff:"Diesel",menge:"48.26",preisProLiter:"1.5315",gesamtbetrag:"88.95",kmStand:"4298",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"2"},
+        {id:uid(),datum:"2025-09-23",uhrzeit:"10:57",stationName:"Shell",adresse:"Ludwigsfelde",kraftstoff:"Euro 95 (Super)",menge:"39.67",preisProLiter:"1.6027",gesamtbetrag:"77.46",kmStand:"3062",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"2"},
+        {id:uid(),datum:"2025-11-02",uhrzeit:"14:36",stationName:"JET",adresse:"Ludwigsfelde",kraftstoff:"Euro 95 (Super)",menge:"17.50",preisProLiter:"1.4531",gesamtbetrag:"30.98",kmStand:"8919",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"23"},
+        {id:uid(),datum:"2025-11-05",uhrzeit:"17:19",stationName:"JET",adresse:"Ludwigsfelde",kraftstoff:"Euro 95 (Super)",menge:"20.03",preisProLiter:"1.4109",gesamtbetrag:"34.42",kmStand:"9653",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"23"},
+        {id:uid(),datum:"2025-11-24",uhrzeit:"09:23",stationName:"ESSO",adresse:"Ludwigsfelde",kraftstoff:"Euro 95 (Super)",menge:"67.75",preisProLiter:"1.4614",gesamtbetrag:"120.60",kmStand:"",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"4"},
+        {id:uid(),datum:"2025-11-24",uhrzeit:"13:00",stationName:"TotalEnergies",adresse:"Ludwigsfelde",kraftstoff:"Diesel",menge:"43.58",preisProLiter:"1.4027",gesamtbetrag:"73.57",kmStand:"",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"5"},
+        {id:uid(),datum:"2025-12-01",uhrzeit:"14:18",stationName:"ESSO",adresse:"Wolfsburg",kraftstoff:"Diesel",menge:"35.46",preisProLiter:"1.3522",gesamtbetrag:"57.70",kmStand:"",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV — Abholung Touareg",kmVonStandort:"4"},
+        {id:uid(),datum:"2025-12-05",uhrzeit:"15:36",stationName:"JET",adresse:"Ludwigsfelde",kraftstoff:"Diesel",menge:"47.89",preisProLiter:"1.3270",gesamtbetrag:"76.48",kmStand:"9440",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"23"},
+        {id:uid(),datum:"2025-12-05",uhrzeit:"15:36",stationName:"JET",adresse:"Ludwigsfelde",kraftstoff:"Euro 95 (Super)",menge:"25.60",preisProLiter:"1.4109",gesamtbetrag:"44.01",kmStand:"9440",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"23"},
+        {id:uid(),datum:"2025-12-12",uhrzeit:"09:28",stationName:"JET",adresse:"Ludwigsfelde",kraftstoff:"Diesel",menge:"9.07",preisProLiter:"1.4112",gesamtbetrag:"15.40",kmStand:"1577",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"23"},
+        {id:uid(),datum:"2025-12-15",uhrzeit:"05:51",stationName:"ESSO",adresse:"Ludwigsfelde",kraftstoff:"Diesel",menge:"59.73",preisProLiter:"1.3101",gesamtbetrag:"94.16",kmStand:"",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV",kmVonStandort:"4"},
+        {id:uid(),datum:"2025-12-20",uhrzeit:"08:30",stationName:"ESSO",adresse:"Ludwigsfelde",kraftstoff:"Euro 95 (Super)",menge:"28.68",preisProLiter:"1.4782",gesamtbetrag:"51.61",kmStand:"",zahlungsart:"DKV-Karte",bonNr:"",notiz:"DKV — 28.02+0.66L",kmVonStandort:"4"},
       ]};
     }) },
     // v30: TF-VI 601 — clear fahrer + remove (Fahrer: ...) from notiz
@@ -4538,7 +4549,7 @@ function FahrtenbuchApp({authUser, onLogout, themeId, setThemeId}) {
       const svcs = f.services||[];
       if(svcs.some(s=>s.rechnungsNr==="GR0094059")) return f;
       const extra = [...(f.standorteExtra||[])];
-      if(!extra.some(e=>(e.name||"").includes("Premio"))) extra.push({id:uid(),name:"Premio Reifen + Autoservice",adresse:"Am Birkengrund 21-23, 14974 Ludwigsfelde",notiz:"Reifenservice",auto:false,typ:"werkstatt",besuche:1,letzterBesuch:"2025-12-01",kmVonStandort:"3"});
+      if(!extra.some(e=>(e.name||"").includes("Premio"))) extra.push({id:uid(),name:"Premio Reifen + Autoservice",adresse:"Am Birkengrund 21-23, 14974 Ludwigsfelde",notiz:"Reifenservice",auto:false,typ:"werkstatt",besuche:1,letzterBesuch:"2025-12-01",kmVonStandort:"1"});
       return {...f,
         reifendruckVorne:"2.2", reifendruckHinten:"2.3",
         services:[...svcs,
@@ -4601,6 +4612,48 @@ function FahrtenbuchApp({authUser, onLogout, themeId, setThemeId}) {
       const standorteExtra = (f.standorteExtra||[]).map(s => s.name&&FIX(s.name)!==s.name ? {...s, name:FIX(s.name)} : s);
       const services = (f.services||[]).map(s => s.werkstatt&&FIX(s.werkstatt)!==s.werkstatt ? {...s, werkstatt:FIX(s.werkstatt)} : s);
       return {...f, standorte, standorteExtra, services};
+    }) },
+    // v36: Google Maps km correction — update ALL kmVonStandort + TF-IA 2006 fahrten
+    { v:36, run: fzs => {
+      const KM={
+        "Kurfürstendamm 153":"36","Konstanzer Str. 4":"37","Seesener Str. 60":"36",
+        "Lennéstr. 3":"26","Seydelstr.":"26","Zeppelinring 2":"27","Zeppelinring 16":"27","Hauptstr. 63":"62",
+        "Am Bassin 4":"24","Puschkinallee":"24","Uhlandstr. 161":"38","Potsdamer Str. 60":"5","Potsdamer Str. 118":"6",
+        "Potsdamer Str. 51":"6","Parkallee 36":"2","Rathausstraße 3":"5","Europaplatz 1":"29","Möckernstr.":"28",
+        "Kurfürstendamm 129":"35","Willy-Brandt":"29","Flughafenstr. 1-3":"334","Nordallee 25":"557",
+        "Flughafenstr. 32":"627","Jägerstr. 4":"4","Bussardweg":"101","Cicerostr.":"36","Hohenzollerndamm":"33",
+        "Breite Str. 14a":"38","Breite Straße 2a":"24","Großbeerenstr.":"24","Chausseestr. 86":"49",
+        "Walter-Benjamin":"37","Westfälische Str. 29":"36","Westfälische Str. 38":"35","Dahlmannstr.":"36",
+        "Konstanzer Str. 50":"37","Kurfürstendamm 167":"36","Revaler":"44","Proskauer":"46",
+        "Am Birkengrund":"1","Südring":"9","Am Nuthefließ":"41","Louis-Pasteur":"37","Dr.-Georg-Schaeffler":"33",
+        "Kronacher Str.":"381","Stadtbrücke":"210","Lessingstr. 9":"569","Parsifalstr.":"417",
+        "Platanenstr.":"53","Chausseestr. 1":"25","Ruhlsdorfer":"10","Storkow":"64","Bad Saarow":"64",
+        "Pontedera":"1258","Stockumer Kirchstr.":"541","Messegelände Hannover":"268","Messe München":"572",
+        "Messe Wien":"665","Superstudio":"1027","Piazza degli Affari":"1015","Fiera Milano":"1007",
+        "Veronafiere":"999","Ingolstädter Str.":"560","Messe Klagenfurt":"915",
+      };
+      const fix = addr => { for(const [k,v] of Object.entries(KM)) if(addr.includes(k)) return v; return null; };
+      return fzs.map(f => {
+        const partner = (f.partner||[]).map(p => { const nk=fix(p.adresse||""); return nk?{...p,kmVonStandort:nk}:p; });
+        const standorte = (f.standorte||[]).map(s => { const nk=fix(s.adresse||""); return nk?{...s,kmVonStandort:nk}:s; });
+        const standorteExtra = (f.standorteExtra||[]).map(s => { const nk=fix(s.adresse||""); return nk?{...s,kmVonStandort:nk}:s; });
+        const messen = (f.messen||[]).map(m => { const nk=fix(m.adresse||""); return nk?{...m,kmVonStandort:nk}:m; });
+        let fahrten = f.fahrten;
+        if(f.kennzeichen==="TF-IA 2006") { const fresh=makeFiatDefault(); fahrten=fresh.fahrten; }
+        return {...f, partner, standorte, standorteExtra, messen, fahrten};
+      });
+    } },
+    // v37: Remove "Getränke Hoffmann Berlin" (Westfälische) from standorte + replace in fahrten → GF Berlin
+    { v:37, run: fzs => fzs.map(f => {
+      const dropGH = arr => (arr||[]).filter(s => !(s.name||"").includes("Getränke Hoffmann") || !(s.adresse||"").includes("Westfälische"));
+      const standorte = dropGH(f.standorte);
+      const standorteExtra = dropGH(f.standorteExtra);
+      const fahrten = (f.fahrten||[]).map(t => {
+        if((t.zielName||"").includes("Getränke Hoffmann") && (t.zielName||"").includes("Westfälische"))
+          return {...t, zielName:"GF Berlin, Konstanzer Str. 4, 10707 Berlin", notiz:"GF Berlin — Unterlagen abgeben", kategorie:"partner"};
+        return t;
+      });
+      return {...f, standorte, standorteExtra, fahrten};
     }) },
   ];
   const DATA_VERSION = DATA_MIGRATIONS.length ? DATA_MIGRATIONS[DATA_MIGRATIONS.length-1].v : 0;
@@ -6316,12 +6369,14 @@ input[type=number] { -moz-appearance:textfield; }
                       return fb-fa||(a.name||"").localeCompare(b.name||"");
                     })
                     .map(p=>{
-                    const km=stats.nP[p.id]||parseFloat(p.kmVonStandort)||0;
-                    const anz=(aktiv.fahrten||[]).filter(f=>{
+                    const entf=parseFloat(p.kmVonStandort)||0;
+                    const matchedFP=(aktiv.fahrten||[]).filter(f=>{
                       if(f.zielId===p.id) return true;
                       const combo=((f.zielName||"")+" "+(f.notiz||"")).toLowerCase();
                       return wMatch(p.name, combo);
-                    }).length;
+                    });
+                    const anz=matchedFP.length;
+                    const gesamtKm=matchedFP.reduce((s,f)=>s+(parseFloat(f.km)||0),0);
                     const typColor=PARTNER_TYP_COLORS[p.typ]||C.red;
                     const typColorDk=PARTNER_TYP_COLORS_DK[p.typ]||C.redDk;
                     return (
@@ -6345,15 +6400,21 @@ input[type=number] { -moz-appearance:textfield; }
                               <span style={{fontSize:14,color:C.text,fontStyle:"italic",fontFamily:SANS}}>{p.notiz}</span></>}
                           </div>
                         </div>
-                        <div style={{display:"flex",gap:14,flexShrink:0,alignItems:"center"}}>
-                          <div style={{textAlign:"right"}}>
-                            <div style={{fontSize:16,fontWeight:800,color:km>0?typColorDk:C.border,fontFamily:SANS,lineHeight:1}}>{km.toFixed(1)}</div>
-                            <div style={{fontSize:13,color:C.text,letterSpacing:2,textTransform:"uppercase"}}>km</div>
-                          </div>
-                          <div style={{textAlign:"right"}}>
-                            <div style={{fontSize:16,fontWeight:800,color:anz>0?typColorDk:C.border,fontFamily:SANS,lineHeight:1}}>{anz}</div>
-                            <div style={{fontSize:13,color:C.text,letterSpacing:2,textTransform:"uppercase"}}>Fahrten</div>
-                          </div>
+                        <div style={{display:"flex",gap:8,flexShrink:0,alignItems:"center"}}>
+                          {(entf>0||anz>0||gesamtKm>0)&&<div style={{display:"flex",flexDirection:"column",gap:2,alignItems:"flex-end",minWidth:70}}>
+                            {entf>0&&<div style={{display:"flex",alignItems:"baseline",gap:4}}>
+                              <span style={{fontSize:15,fontWeight:800,color:typColorDk,fontFamily:SANS}}>{entf}</span>
+                              <span style={{fontSize:10,color:C.muted,letterSpacing:1,textTransform:"uppercase",fontFamily:SANS}}>km ⟵</span>
+                            </div>}
+                            {anz>0&&<div style={{display:"flex",alignItems:"baseline",gap:4}}>
+                              <span style={{fontSize:15,fontWeight:800,color:typColorDk,fontFamily:SANS}}>{anz}</span>
+                              <span style={{fontSize:10,color:C.muted,letterSpacing:1,textTransform:"uppercase",fontFamily:SANS}}>Fahrten</span>
+                            </div>}
+                            {gesamtKm>0&&<div style={{display:"flex",alignItems:"baseline",gap:4}}>
+                              <span style={{fontSize:15,fontWeight:800,color:typColorDk,fontFamily:SANS}}>{Math.round(gesamtKm)}</span>
+                              <span style={{fontSize:10,color:C.muted,letterSpacing:1,textTransform:"uppercase",fontFamily:SANS}}>km ↔</span>
+                            </div>}
+                          </div>}
                           <div style={{display:"flex",gap:2,flexShrink:0}}>
                             <IcoBtn icon="edit"  color={C.steelMid} title="Bearbeiten" onClick={()=>{setPForm(p.id);setPData({...p});}}/>
                             <IcoBtn icon="trash" color={C.red}      title="Löschen" onClick={()=>setConfirmDel({type:"partner",id:p.id})}/>
@@ -6408,7 +6469,8 @@ input[type=number] { -moz-appearance:textfield; }
                       const combo=((f.zielName||"")+" "+(f.notiz||"")).toLowerCase();
                       return wMatch(m.name, combo);
                     });
-                    const kmM=stats.nM?.[m.id]||sumKm(fts)||parseFloat(m.kmVonStandort)||0;
+                    const entfM=parseFloat(m.kmVonStandort)||0;
+                    const gesamtKmM=sumKm(fts);
                     return (
                       <div key={m.id} style={{background:C.surface,borderLeft:`2px solid ${C.gold}`,padding:"11px 16px",boxShadow:C.shadow,display:"flex",alignItems:"center",gap:12,minHeight:62,boxSizing:"border-box"}}>
                         {/* Левая часть */}
@@ -6435,15 +6497,21 @@ input[type=number] { -moz-appearance:textfield; }
                           </div>
                         </div>
                         {/* Правая часть — статистика */}
-                        <div style={{display:"flex",gap:14,flexShrink:0,alignItems:"center"}}>
-                          <div style={{textAlign:"right"}}>
-                            <div style={{fontSize:16,fontWeight:800,color:kmM>0?C.goldDk:C.border,fontFamily:SANS,lineHeight:1}}>{kmM.toFixed(1)}</div>
-                            <div style={{fontSize:13,color:C.text,letterSpacing:2,textTransform:"uppercase"}}>km</div>
-                          </div>
-                          <div style={{textAlign:"right"}}>
-                            <div style={{fontSize:16,fontWeight:800,color:fts.length>0?C.goldDk:C.border,fontFamily:SANS,lineHeight:1}}>{fts.length}</div>
-                            <div style={{fontSize:13,color:C.text,letterSpacing:2,textTransform:"uppercase"}}>Fahrten</div>
-                          </div>
+                        <div style={{display:"flex",gap:8,flexShrink:0,alignItems:"center"}}>
+                          {(entfM>0||fts.length>0||gesamtKmM>0)&&<div style={{display:"flex",flexDirection:"column",gap:2,alignItems:"flex-end",minWidth:70}}>
+                            {entfM>0&&<div style={{display:"flex",alignItems:"baseline",gap:4}}>
+                              <span style={{fontSize:15,fontWeight:800,color:C.goldDk,fontFamily:SANS}}>{entfM}</span>
+                              <span style={{fontSize:10,color:C.muted,letterSpacing:1,textTransform:"uppercase",fontFamily:SANS}}>km ⟵</span>
+                            </div>}
+                            {fts.length>0&&<div style={{display:"flex",alignItems:"baseline",gap:4}}>
+                              <span style={{fontSize:15,fontWeight:800,color:C.goldDk,fontFamily:SANS}}>{fts.length}</span>
+                              <span style={{fontSize:10,color:C.muted,letterSpacing:1,textTransform:"uppercase",fontFamily:SANS}}>Fahrten</span>
+                            </div>}
+                            {gesamtKmM>0&&<div style={{display:"flex",alignItems:"baseline",gap:4}}>
+                              <span style={{fontSize:15,fontWeight:800,color:C.goldDk,fontFamily:SANS}}>{Math.round(gesamtKmM)}</span>
+                              <span style={{fontSize:10,color:C.muted,letterSpacing:1,textTransform:"uppercase",fontFamily:SANS}}>km ↔</span>
+                            </div>}
+                          </div>}
                           <div style={{display:"flex",gap:2,flexShrink:0}}>
                             <IcoBtn icon="edit"  color={C.steelMid} title="Bearbeiten" onClick={()=>{setMForm(m.id);setMData({...m});}}/>
                             <IcoBtn icon="trash" color={C.gold}     title="Löschen" onClick={()=>setConfirmDel({type:"messe",id:m.id})}/>
