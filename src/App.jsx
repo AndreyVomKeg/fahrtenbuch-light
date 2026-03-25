@@ -2235,7 +2235,7 @@ function StandortePanel({aktiv, patchAktiv, setConfirmDel, setFData, setFForm, s
               </div>
             </div>
             <div style={{display:"flex",gap:8,flexShrink:0,alignItems:"center"}}>
-              {(entf>0||tripCount>0||gesamtKm>0)&&<div style={{display:"flex",flexDirection:"column",gap:2,alignItems:"flex-end",minWidth:70}}>
+              {(entf>0||tripCount>0||gesamtKm>0)&&<div style={{display:"flex",flexDirection:"column",gap:6,alignItems:"flex-end",minWidth:70}}>
                 {entf>0&&<div style={{display:"flex",alignItems:"baseline",gap:4}}>
                   <span style={{fontSize:15,fontWeight:800,color:tagColorDk,fontFamily:SANS}}>{entf}</span>
                   <span style={{fontSize:10,color:C.muted,letterSpacing:1,textTransform:"uppercase",fontFamily:SANS}}>km ⟵</span>
@@ -6401,7 +6401,7 @@ input[type=number] { -moz-appearance:textfield; }
                           </div>
                         </div>
                         <div style={{display:"flex",gap:8,flexShrink:0,alignItems:"center"}}>
-                          {(entf>0||anz>0||gesamtKm>0)&&<div style={{display:"flex",flexDirection:"column",gap:2,alignItems:"flex-end",minWidth:70}}>
+                          {(entf>0||anz>0||gesamtKm>0)&&<div style={{display:"flex",flexDirection:"column",gap:6,alignItems:"flex-end",minWidth:70}}>
                             {entf>0&&<div style={{display:"flex",alignItems:"baseline",gap:4}}>
                               <span style={{fontSize:15,fontWeight:800,color:typColorDk,fontFamily:SANS}}>{entf}</span>
                               <span style={{fontSize:10,color:C.muted,letterSpacing:1,textTransform:"uppercase",fontFamily:SANS}}>km ⟵</span>
@@ -6498,7 +6498,7 @@ input[type=number] { -moz-appearance:textfield; }
                         </div>
                         {/* Правая часть — статистика */}
                         <div style={{display:"flex",gap:8,flexShrink:0,alignItems:"center"}}>
-                          {(entfM>0||fts.length>0||gesamtKmM>0)&&<div style={{display:"flex",flexDirection:"column",gap:2,alignItems:"flex-end",minWidth:70}}>
+                          {(entfM>0||fts.length>0||gesamtKmM>0)&&<div style={{display:"flex",flexDirection:"column",gap:6,alignItems:"flex-end",minWidth:70}}>
                             {entfM>0&&<div style={{display:"flex",alignItems:"baseline",gap:4}}>
                               <span style={{fontSize:15,fontWeight:800,color:C.goldDk,fontFamily:SANS}}>{entfM}</span>
                               <span style={{fontSize:10,color:C.muted,letterSpacing:1,textTransform:"uppercase",fontFamily:SANS}}>km ⟵</span>
