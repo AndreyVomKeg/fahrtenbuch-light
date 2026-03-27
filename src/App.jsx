@@ -221,7 +221,7 @@ const ZWECK_OPTIONS = {
 };
 const makeFahrzeug = (idx=0) => ({
   id:uid(), name:"", kennzeichen:"", farbe:FARBEN[idx%FARBEN.length],
-  marke:"", modell:"", kraftstoff:"Diesel", tuvDatum:"",
+  marke:"", modell:"", kraftstoff:"Diesel", tuvDatum:"", erstzulassung:"",
   kfzBriefNr:"", fahrgestellNr:"",
   reifendruckVorne:"", reifendruckHinten:"",
   halterName:"", halterAnschrift:"", halterTelPrivat:"", halterTelFirma:"",
@@ -230,6 +230,7 @@ const makeFahrzeug = (idx=0) => ({
   kmStandInitial:"",
   partner:[], messen:[], strafen:[], tankstellen:[],
   waesche:[], services:[], parkplaetze:[], fahrten:[],
+  jahresAbschluss:{},
 });
 
 // ─── REAL CAR DEFAULT: Fiat 500e (Zulassungsbescheinigung TF-IA 2006) ─────────
@@ -240,7 +241,7 @@ const makeFiatDefault = () => ({
   marke:"FIAT", modell:"500e",
   farbe:"#6A9E7E",
   kraftstoff:"Elektro",
-  tuvDatum:"2025-10-01",
+  tuvDatum:"01.10.2025", erstzulassung:"11.10.2022",
   kfzBriefNr:"AVN00342",
   fahrgestellNr:"ZFAEFAR45NX101220",
   reifendruckVorne:"2.5", reifendruckHinten:"2.5",
@@ -269,6 +270,10 @@ const makeFiatDefault = () => ({
     {id:uid(), name:"Objektbesichtigung Scharmützelsee", adresse:"Storkow / Bad Saarow, 15859 Brandenburg", telefon:"", kmVonStandort:"64", notiz:"Immobilienbesichtigung Seegrundstücke — Objektakquise ImmoPrim", typ:"kunde"}],
   messen:[
     {id:uid(), name:"Tag der Immobilienwirtschaft 2024",  adresse:"Tempodrom, Möckernstr. 10, 10963 Berlin",   datum:"2024-06-11", partnerId:"", notiz:"ZIA — 2500 Branchenvertreter", kmVonStandort:"44"},
+    {id:uid(), name:"EXPO REAL 2025", adresse:"Messe München, Am Messesee 2, 81829 München", datum:"2025-10-06", datumBis:"2025-10-08", partnerId:"", notiz:"Internationale Fachmesse für Immobilien und Investitionen", kmVonStandort:"580"},
+    {id:uid(), name:"Dach+Holz International 2026", adresse:"Messe Stuttgart, Messepiazza 1, 70629 Stuttgart", datum:"2026-02-24", datumBis:"2026-02-27", partnerId:"", notiz:"Internationale Fachmesse für Holz- und Dachbau", kmVonStandort:"630"},
+    {id:uid(), name:"Light+Building 2026", adresse:"Messe Frankfurt, Ludwig-Erhard-Anlage 1, 60327 Frankfurt", datum:"2026-03-08", datumBis:"2026-03-13", partnerId:"", notiz:"Internationale Fachmesse für Licht und Gebäudetechnik", kmVonStandort:"540"},
+  ,
   ],
   standorteExtra:[
     {id:uid(), name:"Stellantis &You Deutschland GmbH (Fiat)",   adresse:"Seesener Str. 60-61, 10709 Berlin",  notiz:"KFZ-Service, Berater: Rene Steinfurth",   auto:false, typ:"werkstatt", besuche:0, letzterBesuch:"", kmVonStandort:"36"},
@@ -462,10 +467,10 @@ const makeVWDefault = () => ({
   ...makeFahrzeug(1),
   name:"VW Firmenwagen",
   kennzeichen:"TF-VI 601",
-  marke:"Volkswagen", modell:"(Leasing beendet 29.12.2025, km 18.693)",
+  marke:"Volkswagen", modell:"Touareg",
   farbe:"#6C7E97",
   kraftstoff:"Benzin",
-  tuvDatum:"",
+  tuvDatum:"", erstzulassung:"07.05.2024",
   kfzBriefNr:"CRTD010207", fahrgestellNr:"WVGZZZCR9TD010207",
   reifendruckVorne:"2.2", reifendruckHinten:"2.3",
   halterName:"ImmoPrim GmbH",
@@ -497,6 +502,8 @@ const makeVWDefault = () => ({
     {id:uid(), name:"Real Estate Arena 2025", adresse:"Messegelände Hannover, Hermesallee 1, 30521 Hannover", datum:"2025-05-14", datumBis:"2025-05-15", partnerId:"", notiz:"Deutschlands Immobilienmesse, 7.500 Fachbesucher, 400 Aussteller", kmVonStandort:"268"},
     {id:uid(), name:"RE ITALY Convention 2025", adresse:"Borsa Italiana, Piazza degli Affari 6, 20123 Milano, Italien", datum:"2025-06-10", datumBis:"2025-06-10", partnerId:"", notiz:"Real Estate Convention, 26. Ausgabe", kmVonStandort:"1015"},
     {id:uid(), name:"EXPO REAL 2025", adresse:"Messe München, Am Messesee 2, 81829 München", datum:"2025-10-06", datumBis:"2025-10-08", partnerId:"", notiz:"Europas wichtigste Immobilienmesse, 45.000 Teilnehmer, 2.100 Aussteller", kmVonStandort:"572"},
+    {id:uid(), name:"Dach+Holz International 2026", adresse:"Messe Stuttgart, Messepiazza 1, 70629 Stuttgart", datum:"2026-02-24", datumBis:"2026-02-27", partnerId:"", notiz:"Internationale Fachmesse für Holz- und Dachbau", kmVonStandort:"630"},
+    {id:uid(), name:"Light+Building 2026", adresse:"Messe Frankfurt, Ludwig-Erhard-Anlage 1, 60327 Frankfurt", datum:"2026-03-08", datumBis:"2026-03-13", partnerId:"", notiz:"Internationale Fachmesse für Licht und Gebäudetechnik", kmVonStandort:"540"},
   ],
   standorteExtra:[
     {id:uid(), name:"Autoservice Ludwigsfelde",  adresse:"Südring, 14974 Ludwigsfelde", notiz:"KFZ-Service", auto:false, typ:"werkstatt", besuche:0, letzterBesuch:"", kmVonStandort:"9"},
@@ -613,6 +620,7 @@ const makeVWDefault = () => ({
     {id:uid(), datum:"2025-08-23", zeitStr:"06:00-18:00", kategorie:"partner", zielId:"", zielName:"Rohrer Immobilien Toskana, Via Tosco Romagnola, 56025 Pontedera (PI), Italien", km:"1200", dauerMin:"", rueckfahrt:false, notiz:"Hinfahrt Ludwigsfelde → Toskana (über A9/Brenner/A1) — Immobilienbesichtigungen", kmTyp:"geschaeftlich", kmStart:"7710", kmEnd:"8910"},
     {id:uid(), datum:"2025-08-24", zeitStr:"09:00-18:00", kategorie:"partner", zielId:"", zielName:"Immobilienbesichtigungen Provincia di Pisa, Toskana", km:"180", dauerMin:"", rueckfahrt:false, notiz:"Objektbesichtigungen Pontedera / Montopoli / Pisa", kmTyp:"geschaeftlich", kmStart:"8910", kmEnd:"9090"},
     {id:uid(), datum:"2025-08-25", zeitStr:"07:00-19:00", kategorie:"partner", zielId:"", zielName:"Büro Ludwigsfelde, Seestr. 33, 14974 Ludwigsfelde", km:"1200", dauerMin:"", rueckfahrt:false, notiz:"Rückfahrt Toskana → Ludwigsfelde (über A1/Brenner/A9)", kmTyp:"geschaeftlich", kmStart:"9090", kmEnd:"10290"},
+    {id:uid(), datum:"2025-12-01", zeitStr:"08:00-14:15", kategorie:"sonstige", zielId:"", zielName:"Auto-Scholz AHG GmbH & Co. KG, Kronacher Str. 38, 96052 Bamberg", km:"381", dauerMin:"", rueckfahrt:false, notiz:"Fahrzeugübergabe Leasing-Ende — Abholschein Autostadt, Bevollmächtigter Dennis Golz", kmTyp:"geschaeftlich", kmStart:"18312", kmEnd:"18693"},
   ],
 });
 
@@ -622,6 +630,7 @@ const makeTFAIDefault = () => ({
   name:"Firmenwagen TF-AI",
   kennzeichen:"TF-AI 2006",
   marke:"", modell:"",
+  erstzulassung:"30.10.2025",
   farbe:"#7493B2",
   kraftstoff:"Benzin",
   tuvDatum:"",
@@ -650,6 +659,10 @@ const makeTFAIDefault = () => ({
     {id:uid(), name:"Rechtsanwälte Noacke Berlin", adresse:"Uhlandstr. 161, Berlin", telefon:"", kmVonStandort:"38", notiz:"Rechtsanwalt", typ:"anwalt"}],
   messen:[
     {id:uid(), name:"Immobilienmesse Berlin 2024",  adresse:"Wiebestraße 42-45, 10553 Berlin",  datum:"2024-09-07", partnerId:"", typ:"sonstiges", notiz:"Immobilienmesse", kmVonStandort:"40"},
+    {id:uid(), name:"EXPO REAL 2025", adresse:"Messe München, Am Messesee 2, 81829 München", datum:"2025-10-06", datumBis:"2025-10-08", partnerId:"", notiz:"Internationale Fachmesse für Immobilien und Investitionen", kmVonStandort:"580"},
+    {id:uid(), name:"Dach+Holz International 2026", adresse:"Messe Stuttgart, Messepiazza 1, 70629 Stuttgart", datum:"2026-02-24", datumBis:"2026-02-27", partnerId:"", notiz:"Internationale Fachmesse für Holz- und Dachbau", kmVonStandort:"630"},
+    {id:uid(), name:"Light+Building 2026", adresse:"Messe Frankfurt, Ludwig-Erhard-Anlage 1, 60327 Frankfurt", datum:"2026-03-08", datumBis:"2026-03-13", partnerId:"", notiz:"Internationale Fachmesse für Licht und Gebäudetechnik", kmVonStandort:"540"},
+  ,
   ],
   standorteExtra:[
     {id:uid(), name:"Stellantis &You Deutschland GmbH (Fiat)",   adresse:"Seesener Str. 60-61, 10709 Berlin",  notiz:"KFZ-Service",   auto:false, typ:"werkstatt", besuche:0, letzterBesuch:"", kmVonStandort:"36"},
@@ -677,15 +690,15 @@ const makeTFAIDefault = () => ({
   ],
 });
 
-// ─── REAL CAR #4: VW Touareg R-Line TF-IV 601 (ImmoPrim GmbH) ───────────────────
+// ─── REAL CAR #4: VW Touareg TF-IV 601 (ImmoPrim GmbH) ───────────────────
 const makeTouaregDefault = () => ({
   ...makeFahrzeug(3),
   name:"VW Touareg",
   kennzeichen:"TF-IV 601",
-  marke:"Volkswagen", modell:"Touareg R-Line 3.0 V6 TDI SCR 4MOTION",
+  marke:"New VW", modell:"Touareg",
   farbe:"#758975",
   kraftstoff:"Diesel",
-  tuvDatum:"",
+  tuvDatum:"", erstzulassung:"28.11.2025",
   kfzBriefNr:"", fahrgestellNr:"",
   reifendruckVorne:"", reifendruckHinten:"",
   halterName:"ImmoPrim GmbH",
@@ -721,6 +734,10 @@ const makeTouaregDefault = () => ({
     {id:uid(), name:"Vinitaly 2025", adresse:"Veronafiere, Viale del Lavoro 8, 37135 Verona, Italien", datum:"2025-04-07", datumBis:"2025-04-09", partnerId:"", notiz:"Internationale Weinfachmesse, 4.000 Aussteller, 97.000 Besucher — Einladung ViniGrandi", kmVonStandort:"999"},
     {id:uid(), name:"ProWein 2026", adresse:"Messe Düsseldorf, Stockumer Kirchstr. 61, 40474 Düsseldorf", datum:"2026-03-16", datumBis:"2026-03-17", partnerId:"", notiz:"Weltleitmesse Wein & Spirituosen — Einladung ViniGrandi", kmVonStandort:"541"},
     {id:uid(), name:"Vinitaly 2026", adresse:"Veronafiere, Viale del Lavoro 8, 37135 Verona, Italien", datum:"2026-04-13", datumBis:"2026-04-15", partnerId:"", notiz:"Internationale Weinfachmesse Verona — Einladung ViniGrandi", kmVonStandort:"999"},
+    {id:uid(), name:"EXPO REAL 2025", adresse:"Messe München, Am Messesee 2, 81829 München", datum:"2025-10-06", datumBis:"2025-10-08", partnerId:"", notiz:"Internationale Fachmesse für Immobilien und Investitionen", kmVonStandort:"580"},
+    {id:uid(), name:"Dach+Holz International 2026", adresse:"Messe Stuttgart, Messepiazza 1, 70629 Stuttgart", datum:"2026-02-24", datumBis:"2026-02-27", partnerId:"", notiz:"Internationale Fachmesse für Holz- und Dachbau", kmVonStandort:"630"},
+    {id:uid(), name:"Light+Building 2026", adresse:"Messe Frankfurt, Ludwig-Erhard-Anlage 1, 60327 Frankfurt", datum:"2026-03-08", datumBis:"2026-03-13", partnerId:"", notiz:"Internationale Fachmesse für Licht und Gebäudetechnik", kmVonStandort:"540"},
+  ,
   ],
   standorteExtra:[
     {id:uid(), name:"Autoservice Ludwigsfelde",  adresse:"Südring, 14974 Ludwigsfelde", notiz:"KFZ-Service", auto:false, typ:"werkstatt", besuche:0, letzterBesuch:"", kmVonStandort:"9"},
@@ -751,7 +768,7 @@ const makeTouaregDefault = () => ({
     {id:uid(), datum:"2025-12-01", typ:"Reifenwechsel Winter", werkstatt:"Premio Reifen + Autoservice", adresse:"Am Birkengrund 21-23, 14974 Ludwigsfelde", kmStand:"233", betrag:"45.51", rechnungsNr:"GR0094059", faelligKm:"", faelligDatum:"", zahlungsart:"Rechnung", notiz:"Montagepaket 19: Radwechsel (4x) + Nabenreinigung PKW/SUV (4x). Nächste HU 01.11.28", belegFoto:""},
   ],
   fahrten:[
-    {id:uid(), datum:"2025-12-01", zeitStr:"08:00-14:15", kategorie:"sonstige", zielId:"", zielName:"Autostadt Wolfsburg, Stadtbrücke, 38440 Wolfsburg", km:"230", dauerMin:"", rueckfahrt:false, notiz:"Fahrzeugabholung VW Touareg R-Line — Autostadt Wolfsburg (Dennis Golz, Vollmacht ImmoPrim GmbH)", kmTyp:"geschaeftlich", kmStart:"0", kmEnd:"230"},
+    {id:uid(), datum:"2025-12-01", zeitStr:"08:00-14:15", kategorie:"sonstige", zielId:"", zielName:"Autostadt Wolfsburg, Stadtbrücke, 38440 Wolfsburg", km:"230", dauerMin:"", rueckfahrt:false, notiz:"Fahrzeugabholung VW Touareg — Autostadt Wolfsburg (Dennis Golz, Vollmacht ImmoPrim GmbH)", kmTyp:"geschaeftlich", kmStart:"0", kmEnd:"230"},
     {id:uid(), datum:"2025-12-01", zeitStr:"15:00-18:00", kategorie:"sonstige", zielId:"", zielName:"Büro Ludwigsfelde, Seestr. 33, 14974 Ludwigsfelde", km:"230", dauerMin:"", rueckfahrt:false, notiz:"Rückfahrt Wolfsburg → Ludwigsfelde (Neuwagen)", kmTyp:"geschaeftlich", kmStart:"230", kmEnd:"460"},
   ],
 });
@@ -761,10 +778,10 @@ const makeNissanDefault = () => ({
   ...makeFahrzeug(4),
   name:"Nissan Qashqai",
   kennzeichen:"TF-KF 2128",
-  marke:"NISSAN", modell:"Qashqai J12",
-  farbe:"#898989",
+  marke:"NISSAN", modell:"Qashqai",
+  farbe:"#1a1a1a",
   kraftstoff:"Hybrid (Benzin/Elektro)",
-  tuvDatum:"2027-01-12",
+  tuvDatum:"19.01.2028", erstzulassung:"12.01.2023",
   kfzBriefNr:"AAB000483", fahrgestellNr:"SJNTAAJ12U1202663",
   reifendruckVorne:"2.3", reifendruckHinten:"2.3",
   halterName:"ImmoPrim GmbH",
@@ -801,6 +818,10 @@ const makeNissanDefault = () => ({
     {id:uid(), name:"Vinitaly 2025", adresse:"Veronafiere, Viale del Lavoro 8, 37135 Verona, Italien", datum:"2025-04-07", datumBis:"2025-04-09", partnerId:"", notiz:"Internationale Weinfachmesse — Einladung ViniGrandi", kmVonStandort:"999"},
     {id:uid(), name:"ProWein 2026", adresse:"Messe Düsseldorf, Stockumer Kirchstr. 61, 40474 Düsseldorf", datum:"2026-03-16", datumBis:"2026-03-17", partnerId:"", notiz:"Weltleitmesse Wein & Spirituosen — Einladung ViniGrandi", kmVonStandort:"541"},
     {id:uid(), name:"Vinitaly 2026", adresse:"Veronafiere, Viale del Lavoro 8, 37135 Verona, Italien", datum:"2026-04-13", datumBis:"2026-04-15", partnerId:"", notiz:"Internationale Weinfachmesse Verona — Einladung ViniGrandi", kmVonStandort:"999"},
+    {id:uid(), name:"EXPO REAL 2025", adresse:"Messe München, Am Messesee 2, 81829 München", datum:"2025-10-06", datumBis:"2025-10-08", partnerId:"", notiz:"Internationale Fachmesse für Immobilien und Investitionen", kmVonStandort:"580"},
+    {id:uid(), name:"Dach+Holz International 2026", adresse:"Messe Stuttgart, Messepiazza 1, 70629 Stuttgart", datum:"2026-02-24", datumBis:"2026-02-27", partnerId:"", notiz:"Internationale Fachmesse für Holz- und Dachbau", kmVonStandort:"630"},
+    {id:uid(), name:"Light+Building 2026", adresse:"Messe Frankfurt, Ludwig-Erhard-Anlage 1, 60327 Frankfurt", datum:"2026-03-08", datumBis:"2026-03-13", partnerId:"", notiz:"Internationale Fachmesse für Licht und Gebäudetechnik", kmVonStandort:"540"},
+  ,
   ],
   standorteExtra:[
     {id:uid(), name:"Rathaus Ludwigsfelde", adresse:"Rathausstraße 3, 14974 Ludwigsfelde", notiz:"Stadtverwaltung, Bürgeramt, Gewerbeamt", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"5"},
@@ -823,7 +844,11 @@ const makeNissanDefault = () => ({
     {id:uid(), name:"Saturn Berlin", adresse:"Alexanderplatz, 10178 Berlin", notiz:"Elektronik", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"34"},
     {id:uid(), name:"Lidl Ludwigsfelde", adresse:"Am Bahnhof 2a, 14974 Ludwigsfelde", notiz:"Einkauf", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"3"},
     {id:uid(), name:"Autoservice Ludwigsfelde", adresse:"Am Birkengrund 21, 14974 Ludwigsfelde", notiz:"Reifenservice", auto:false, typ:"werkstatt", besuche:0, letzterBesuch:"", kmVonStandort:"2"}],
-  strafen:[], tankstellen:[], waesche:[], parkplaetze:[], services:[],
+  strafen:[], tankstellen:[], waesche:[], parkplaetze:[],
+  services:[
+    {id:uid(), datum:"2025-01-27", typ:"UVV-Prüfung", werkstatt:"Autohaus Wegener", adresse:"Zossener Landstr. 12, 14974 Ludwigsfelde", kmStand:"13152", betrag:"34.51", rechnungsNr:"119610-2150273", faelligKm:"", faelligDatum:"", zahlungsart:"Überweisung", notiz:"UVV-Fahrzeugprüfung gemäß DGUV 70 im Rahmen der Wartung", belegFoto:""},
+    {id:uid(), datum:"2026-01-19", typ:"HU + AU (TÜV)", werkstatt:"Autohaus Wegener", adresse:"Zossener Landstr. 12, 14974 Ludwigsfelde", kmStand:"18772", betrag:"185.00", rechnungsNr:"119610-2160220", faelligKm:"33152", faelligDatum:"2027-01-13", zahlungsart:"Überweisung", notiz:"Hauptuntersuchung + Abgasuntersuchung — nächste HU 01/28", belegFoto:""},
+  ],
   fahrten:[
     {id:uid(), datum:"2024-01-09", zeitStr:"08:00-10:30", kategorie:"partner", zielId:"", zielName:"GF Berlin (Seydelstr.), Seydelstr. 24, Berlin", km:"96", dauerMin:"", rueckfahrt:true, notiz:"Unterlagen an GF", kmTyp:"geschaeftlich", kmStart:"7070", kmEnd:"7166"},
     {id:uid(), datum:"2024-01-12", zeitStr:"13.10 -14.00", kategorie:"standorte", zielId:"", zielName:"MBS Sparkasse Ludwigsfelde, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"9", dauerMin:"", rueckfahrt:true, notiz:"Banktermin", kmTyp:"geschaeftlich", kmStart:"7166", kmEnd:"7175"},
@@ -881,6 +906,7 @@ const makeNissanDefault = () => ({
     {id:uid(), datum:"2025-01-15", zeitStr:"13:10-14:00", kategorie:"standorte", zielId:"", zielName:"MBS Sparkasse Ludwigsfelde, Potsdamer Str. 60, 14974 Ludwigsfelde", km:"9", dauerMin:"", rueckfahrt:true, notiz:"Banktermin", kmTyp:"geschaeftlich", kmStart:"12890", kmEnd:"12899"},
     {id:uid(), datum:"2025-01-21", zeitStr:"", kategorie:"standorte", zielId:"", zielName:"Autohaus Wegener, Zossener Landstr. 12, 14974 Ludwigsfelde", km:"14", dauerMin:"", rueckfahrt:true, notiz:"Fahrzeugprüfung", kmTyp:"geschaeftlich", kmStart:"12899", kmEnd:"12913"}
   ],
+  jahresAbschluss:{"2024":{kmEnde:"12794",datum:"27.12.2024",gesperrt:true}},
 });
 
 // ─── REAL CAR #6: Renault Megane TF-VG 2016 (ViniGrandi GmbH) ────────────────────
@@ -888,10 +914,10 @@ const makeRenaultDefault = () => ({
   ...makeFahrzeug(5),
   name:"Renault Megane",
   kennzeichen:"TF-VG 2016",
-  marke:"RENAULT", modell:"Megane Kombilimousine",
+  marke:"RENAULT", modell:"Megane",
   farbe:"#669AD6",
   kraftstoff:"Benzin",
-  tuvDatum:"",
+  tuvDatum:"", erstzulassung:"22.06.2018",
   kfzBriefNr:"", fahrgestellNr:"VF1RFB00660551560",
   reifendruckVorne:"2.2", reifendruckHinten:"2.2",
   halterName:"ViniGrandi GmbH",
@@ -922,6 +948,10 @@ const makeRenaultDefault = () => ({
     {id:uid(), name:"Vinitaly 2025", adresse:"Veronafiere, Viale del Lavoro 8, 37135 Verona, Italien", datum:"2025-04-07", datumBis:"2025-04-09", partnerId:"", notiz:"Internationale Weinfachmesse — Einladung ViniGrandi", kmVonStandort:"999"},
     {id:uid(), name:"ProWein 2026", adresse:"Messe Düsseldorf, Stockumer Kirchstr. 61, 40474 Düsseldorf", datum:"2026-03-16", datumBis:"2026-03-17", partnerId:"", notiz:"Weltleitmesse Wein & Spirituosen — Einladung ViniGrandi", kmVonStandort:"541"},
     {id:uid(), name:"Vinitaly 2026", adresse:"Veronafiere, Viale del Lavoro 8, 37135 Verona, Italien", datum:"2026-04-13", datumBis:"2026-04-15", partnerId:"", notiz:"Internationale Weinfachmesse Verona — Einladung ViniGrandi", kmVonStandort:"999"},
+    {id:uid(), name:"EXPO REAL 2025", adresse:"Messe München, Am Messesee 2, 81829 München", datum:"2025-10-06", datumBis:"2025-10-08", partnerId:"", notiz:"Internationale Fachmesse für Immobilien und Investitionen", kmVonStandort:"580"},
+    {id:uid(), name:"Dach+Holz International 2026", adresse:"Messe Stuttgart, Messepiazza 1, 70629 Stuttgart", datum:"2026-02-24", datumBis:"2026-02-27", partnerId:"", notiz:"Internationale Fachmesse für Holz- und Dachbau", kmVonStandort:"630"},
+    {id:uid(), name:"Light+Building 2026", adresse:"Messe Frankfurt, Ludwig-Erhard-Anlage 1, 60327 Frankfurt", datum:"2026-03-08", datumBis:"2026-03-13", partnerId:"", notiz:"Internationale Fachmesse für Licht und Gebäudetechnik", kmVonStandort:"540"},
+  ,
   ],
   standorteExtra:[
     {id:uid(), name:"Rathaus Ludwigsfelde", adresse:"Rathausstraße 3, 14974 Ludwigsfelde", notiz:"Stadtverwaltung, Bürgeramt, Gewerbeamt", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"5"},
@@ -1113,6 +1143,125 @@ const makeRenaultDefault = () => ({
     ],
 });
 
+// ─── REAL CAR #7: Renault Clio TF-LT 95 (TRID GmbH) ─────────────────────────
+const makeClioDefault = () => ({
+  ...makeFahrzeug(6),
+  name:"Renault Clio",
+  kennzeichen:"TF-LT 95",
+  marke:"RENAULT", modell:"Clio",
+  farbe:"#808080",
+  kraftstoff:"Benzin",
+  tuvDatum:"01.11.2017", erstzulassung:"08.06.2006",
+  kfzBriefNr:"AA0000225", fahrgestellNr:"VE1BR1JOH3S882388",
+  reifendruckVorne:"2.1", reifendruckHinten:"2.1",
+  halterName:"TRID GmbH",
+  halterAnschrift:"Parkallee 14, 14974 Ludwigsfelde",
+  halterTelPrivat:"", halterTelFirma:"",
+  fahrer:"",
+  fahrerAnschrift:"",
+  fahrerTelPrivat:"", fahrerTelFirma:"",
+  standort:{name:"Büro Ludwigsfelde", adresse:"Parkallee 14, 14974 Ludwigsfelde"},
+  kmStandInitial:"0",
+  partner:[
+    {id:uid(), name:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH", adresse:"Lennéstr. 3, 10785 Berlin", telefon:"", kmVonStandort:"26", notiz:"Steuerberater", typ:"steuerberater"},
+    {id:uid(), name:"Knappworst Steuerberater Potsdam", adresse:"Am Bassin 4, 14467 Potsdam", telefon:"", kmVonStandort:"24", notiz:"Steuerberater", typ:"steuerberater"},
+    {id:uid(), name:"Rechtsanwälte Napiorkowski Potsdam", adresse:"Puschkinallee 3, Potsdam", telefon:"", kmVonStandort:"24", notiz:"Rechtsanwalt", typ:"anwalt"},
+    {id:uid(), name:"Rechtsanwälte Noacke Berlin", adresse:"Uhlandstr. 161, Berlin", telefon:"", kmVonStandort:"38", notiz:"Rechtsanwalt", typ:"anwalt"},
+  ],
+  messen:[
+    {id:uid(), name:"EXPO REAL 2025", adresse:"Messe München, Am Messesee 2, 81829 München", datum:"2025-10-06", datumBis:"2025-10-08", partnerId:"", notiz:"Internationale Fachmesse für Immobilien und Investitionen", kmVonStandort:"580"},
+    {id:uid(), name:"Dach+Holz International 2026", adresse:"Messe Stuttgart, Messepiazza 1, 70629 Stuttgart", datum:"2026-02-24", datumBis:"2026-02-27", partnerId:"", notiz:"Internationale Fachmesse für Holz- und Dachbau", kmVonStandort:"630"},
+    {id:uid(), name:"Light+Building 2026", adresse:"Messe Frankfurt, Ludwig-Erhard-Anlage 1, 60327 Frankfurt", datum:"2026-03-08", datumBis:"2026-03-13", partnerId:"", notiz:"Internationale Fachmesse für Licht und Gebäudetechnik", kmVonStandort:"540"},
+  ],
+  standorteExtra:[
+    {id:uid(), name:"Autohaus König Teltow (Renault)", adresse:"Oderstr. 55, 14513 Teltow", notiz:"Renault-Vertragshändler, Service & Werkstatt", auto:false, typ:"werkstatt", besuche:0, letzterBesuch:"", kmVonStandort:"15"},
+    {id:uid(), name:"Deutsche Post Ludwigsfelde", adresse:"Potsdamer Str. 60, 14974 Ludwigsfelde", notiz:"Briefe / Pakete", auto:false, typ:"post", besuche:0, letzterBesuch:"", kmVonStandort:"5"},
+    {id:uid(), name:"MBS Sparkasse Ludwigsfelde", adresse:"Potsdamer Str. 60, 14974 Ludwigsfelde", notiz:"Bankfiliale", auto:false, typ:"bank", besuche:0, letzterBesuch:"", kmVonStandort:"5"},
+    {id:uid(), name:"Getränke Hoffmann Ludwigsfelde", adresse:"Potsdamer Str. 118, 14974 Ludwigsfelde", notiz:"Getränkemarkt", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"6"},
+    {id:uid(), name:"Hornbach Ludwigsfelde", adresse:"Parkallee 36, 14974 Ludwigsfelde", notiz:"Baumarkt", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"2"},
+  ,
+    {id:uid(), name:"Rathaus Ludwigsfelde", adresse:"Rathausstraße 3, 14974 Ludwigsfelde", notiz:"Stadtverwaltung, Bürgeramt, Gewerbeamt", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"5"},
+    {id:uid(), name:"Finanzamt Luckenwalde", adresse:"Dr.-Georg-Schaeffler-Straße 2, 14943 Luckenwalde", notiz:"Steuererklärung, Bescheide", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"33"},
+    {id:uid(), name:"Kfz-Zulassungsstelle Luckenwalde", adresse:"Louis-Pasteur-Str. 5, 14943 Luckenwalde", notiz:"Zulassung, Ummeldung, Abmeldung", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"37"},
+    {id:uid(), name:"Kreisverwaltung Teltow-Fläming", adresse:"Am Nuthefließ 2, 14943 Luckenwalde", notiz:"Landratsamt, Bauamt, Ordnungsamt", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"41"},
+    {id:uid(), name:"IHK Potsdam", adresse:"Breite Straße 2a-c, 14467 Potsdam", notiz:"Industrie- und Handelskammer", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"24"},
+    {id:uid(), name:"Bauhaus Berlin-Halensee", adresse:"Kurfürstendamm 129a, 10711 Berlin", notiz:"Baumarkt", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"35"},
+    {id:uid(), name:"Flughafen Berlin Brandenburg (BER)", adresse:"Willy-Brandt-Platz, 12529 Schönefeld", notiz:"Terminal 1 + 2", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"29"},
+    {id:uid(), name:"Flughafen München (MUC)", adresse:"Nordallee 25, 85356 München", notiz:"Franz Josef Strauß", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"557"},
+    {id:uid(), name:"Flughafen Hamburg (HAM)", adresse:"Flughafenstraße 1-3, 22335 Hamburg", notiz:"Hamburg Airport", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"334"},
+    {id:uid(), name:"Flughafen Stuttgart (STR)", adresse:"Flughafenstraße 32, 70629 Stuttgart", notiz:"Stuttgart Airport", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"627"},
+    {id:uid(), name:"Berlin Hauptbahnhof", adresse:"Europaplatz 1, 10557 Berlin", notiz:"Fernverkehr, ICE", auto:false, typ:"bahnhof", besuche:0, letzterBesuch:"", kmVonStandort:"29"}],
+  strafen:[], tankstellen:[], waesche:[], parkplaetze:[], services:[],
+  fahrten:[],
+});
+
+// ─── REAL CAR #8: Renault Captur TF-TR 6666 (TRID GmbH) ─────────────────────
+const makeCapturDefault = () => ({
+  ...makeFahrzeug(7),
+  name:"Renault Captur",
+  kennzeichen:"TF-TR 6666",
+  marke:"RENAULT", modell:"Captur",
+  farbe:"#2B2B2B",
+  kraftstoff:"Benzin",
+  tuvDatum:"26.07.2020", erstzulassung:"26.07.2013",
+  kfzBriefNr:"BRK000179", fahrgestellNr:"VF1ZR4O1E4R776784",
+  reifendruckVorne:"2.2", reifendruckHinten:"2.2",
+  halterName:"TRID GmbH",
+  halterAnschrift:"Parkallee 14, 14974 Ludwigsfelde",
+  halterTelPrivat:"", halterTelFirma:"",
+  fahrer:"",
+  fahrerAnschrift:"",
+  fahrerTelPrivat:"", fahrerTelFirma:"",
+  standort:{name:"Büro Ludwigsfelde", adresse:"Parkallee 14, 14974 Ludwigsfelde"},
+  kmStandInitial:"0",
+  partner:[
+    {id:uid(), name:"Hecht, von Luxburg Steuerberatungsgesellschaft mbH", adresse:"Lennéstr. 3, 10785 Berlin", telefon:"", kmVonStandort:"26", notiz:"Steuerberater", typ:"steuerberater"},
+    {id:uid(), name:"Knappworst Steuerberater Potsdam", adresse:"Am Bassin 4, 14467 Potsdam", telefon:"", kmVonStandort:"24", notiz:"Steuerberater", typ:"steuerberater"},
+    {id:uid(), name:"Rechtsanwälte Napiorkowski Potsdam", adresse:"Puschkinallee 3, Potsdam", telefon:"", kmVonStandort:"24", notiz:"Rechtsanwalt", typ:"anwalt"},
+    {id:uid(), name:"Rechtsanwälte Noacke Berlin", adresse:"Uhlandstr. 161, Berlin", telefon:"", kmVonStandort:"38", notiz:"Rechtsanwalt", typ:"anwalt"},
+  ],
+  messen:[
+    {id:uid(), name:"EXPO REAL 2025", adresse:"Messe München, Am Messesee 2, 81829 München", datum:"2025-10-06", datumBis:"2025-10-08", partnerId:"", notiz:"Internationale Fachmesse für Immobilien und Investitionen", kmVonStandort:"580"},
+    {id:uid(), name:"Dach+Holz International 2026", adresse:"Messe Stuttgart, Messepiazza 1, 70629 Stuttgart", datum:"2026-02-24", datumBis:"2026-02-27", partnerId:"", notiz:"Internationale Fachmesse für Holz- und Dachbau", kmVonStandort:"630"},
+    {id:uid(), name:"Light+Building 2026", adresse:"Messe Frankfurt, Ludwig-Erhard-Anlage 1, 60327 Frankfurt", datum:"2026-03-08", datumBis:"2026-03-13", partnerId:"", notiz:"Internationale Fachmesse für Licht und Gebäudetechnik", kmVonStandort:"540"},
+  ],
+  standorteExtra:[
+    {id:uid(), name:"Autohaus König Teltow (Renault)", adresse:"Oderstr. 55, 14513 Teltow", notiz:"Renault-Vertragshändler, Service & Werkstatt", auto:false, typ:"werkstatt", besuche:0, letzterBesuch:"", kmVonStandort:"15"},
+    {id:uid(), name:"Deutsche Post Ludwigsfelde", adresse:"Potsdamer Str. 60, 14974 Ludwigsfelde", notiz:"Briefe / Pakete", auto:false, typ:"post", besuche:0, letzterBesuch:"", kmVonStandort:"5"},
+    {id:uid(), name:"MBS Sparkasse Ludwigsfelde", adresse:"Potsdamer Str. 60, 14974 Ludwigsfelde", notiz:"Bankfiliale", auto:false, typ:"bank", besuche:0, letzterBesuch:"", kmVonStandort:"5"},
+    {id:uid(), name:"Getränke Hoffmann Ludwigsfelde", adresse:"Potsdamer Str. 118, 14974 Ludwigsfelde", notiz:"Getränkemarkt", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"6"},
+    {id:uid(), name:"Hornbach Ludwigsfelde", adresse:"Parkallee 36, 14974 Ludwigsfelde", notiz:"Baumarkt", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"2"},
+  ,
+    {id:uid(), name:"Rathaus Ludwigsfelde", adresse:"Rathausstraße 3, 14974 Ludwigsfelde", notiz:"Stadtverwaltung, Bürgeramt, Gewerbeamt", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"5"},
+    {id:uid(), name:"Finanzamt Luckenwalde", adresse:"Dr.-Georg-Schaeffler-Straße 2, 14943 Luckenwalde", notiz:"Steuererklärung, Bescheide", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"33"},
+    {id:uid(), name:"Kfz-Zulassungsstelle Luckenwalde", adresse:"Louis-Pasteur-Str. 5, 14943 Luckenwalde", notiz:"Zulassung, Ummeldung, Abmeldung", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"37"},
+    {id:uid(), name:"Kreisverwaltung Teltow-Fläming", adresse:"Am Nuthefließ 2, 14943 Luckenwalde", notiz:"Landratsamt, Bauamt, Ordnungsamt", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"41"},
+    {id:uid(), name:"IHK Potsdam", adresse:"Breite Straße 2a-c, 14467 Potsdam", notiz:"Industrie- und Handelskammer", auto:false, typ:"behoerde", besuche:0, letzterBesuch:"", kmVonStandort:"24"},
+    {id:uid(), name:"Bauhaus Berlin-Halensee", adresse:"Kurfürstendamm 129a, 10711 Berlin", notiz:"Baumarkt", auto:false, typ:"laden", besuche:0, letzterBesuch:"", kmVonStandort:"35"},
+    {id:uid(), name:"Flughafen Berlin Brandenburg (BER)", adresse:"Willy-Brandt-Platz, 12529 Schönefeld", notiz:"Terminal 1 + 2", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"29"},
+    {id:uid(), name:"Flughafen München (MUC)", adresse:"Nordallee 25, 85356 München", notiz:"Franz Josef Strauß", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"557"},
+    {id:uid(), name:"Flughafen Hamburg (HAM)", adresse:"Flughafenstraße 1-3, 22335 Hamburg", notiz:"Hamburg Airport", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"334"},
+    {id:uid(), name:"Flughafen Stuttgart (STR)", adresse:"Flughafenstraße 32, 70629 Stuttgart", notiz:"Stuttgart Airport", auto:false, typ:"flughafen", besuche:0, letzterBesuch:"", kmVonStandort:"627"},
+    {id:uid(), name:"Berlin Hauptbahnhof", adresse:"Europaplatz 1, 10557 Berlin", notiz:"Fernverkehr, ICE", auto:false, typ:"bahnhof", besuche:0, letzterBesuch:"", kmVonStandort:"29"}],
+  strafen:[],
+  tankstellen:[
+    {id:uid(), datum:"2025-02-06", uhrzeit:"11:44", stationName:"SHELL", adresse:"Ludwigsfelde", kraftstoff:"Benzin", menge:"41.56", preisProLiter:"1.989", gesamtbetrag:"84.61", kmStand:"50543", zahlungsart:"DKV-Karte", bonNr:"", notiz:"DKV — EURO 95 (SUPER)", kmVonStandort:"4"},
+    {id:uid(), datum:"2025-02-28", uhrzeit:"14:25", stationName:"JET", adresse:"Ludwigsfelde", kraftstoff:"Benzin", menge:"37.68", preisProLiter:"1.729", gesamtbetrag:"66.70", kmStand:"", zahlungsart:"DKV-Karte", bonNr:"", notiz:"DKV — EURO 95 (SUPER)", kmVonStandort:"4"},
+    {id:uid(), datum:"2025-05-19", uhrzeit:"15:03", stationName:"JET", adresse:"Ludwigsfelde", kraftstoff:"Benzin", menge:"40.84", preisProLiter:"1.679", gesamtbetrag:"70.19", kmStand:"", zahlungsart:"DKV-Karte", bonNr:"", notiz:"DKV — EURO 95 (SUPER)", kmVonStandort:"4"},
+    {id:uid(), datum:"2025-06-12", uhrzeit:"16:55", stationName:"SPRINT", adresse:"Wildau", kraftstoff:"Benzin", menge:"26.29", preisProLiter:"1.669", gesamtbetrag:"44.91", kmStand:"52060", zahlungsart:"DKV-Karte", bonNr:"", notiz:"DKV — EURO 95 (SUPER)", kmVonStandort:"25"},
+    {id:uid(), datum:"2025-06-21", uhrzeit:"19:40", stationName:"SPRINT", adresse:"Wildau", kraftstoff:"Benzin", menge:"32.26", preisProLiter:"1.709", gesamtbetrag:"56.44", kmStand:"52420", zahlungsart:"DKV-Karte", bonNr:"", notiz:"DKV — EURO 95 (SUPER)", kmVonStandort:"25"},
+    {id:uid(), datum:"2025-07-01", uhrzeit:"20:13", stationName:"SPRINT", adresse:"Wildau", kraftstoff:"Benzin", menge:"42.58", preisProLiter:"1.619", gesamtbetrag:"70.57", kmStand:"53190", zahlungsart:"DKV-Karte", bonNr:"", notiz:"DKV — EURO 95 (SUPER)", kmVonStandort:"25"},
+    {id:uid(), datum:"2025-10-20", uhrzeit:"12:49", stationName:"SPRINT", adresse:"Wildau", kraftstoff:"Benzin", menge:"35.09", preisProLiter:"1.669", gesamtbetrag:"59.96", kmStand:"53713", zahlungsart:"DKV-Karte", bonNr:"", notiz:"DKV — EURO 95 (SUPER)", kmVonStandort:"25"},
+    {id:uid(), datum:"2025-10-21", uhrzeit:"20:35", stationName:"SPRINT", adresse:"Wildau", kraftstoff:"Benzin", menge:"45.76", preisProLiter:"1.659", gesamtbetrag:"77.72", kmStand:"53820", zahlungsart:"DKV-Karte", bonNr:"", notiz:"DKV — EURO 95 (SUPER)", kmVonStandort:"25"},
+    {id:uid(), datum:"2025-12-03", uhrzeit:"10:48", stationName:"JET", adresse:"Ludwigsfelde", kraftstoff:"Benzin", menge:"35.17", preisProLiter:"1.719", gesamtbetrag:"61.89", kmStand:"", zahlungsart:"DKV-Karte", bonNr:"", notiz:"DKV — EURO 95 (SUPER)", kmVonStandort:"4"},
+  ],
+  waesche:[
+    {id:uid(), datum:"2025-02-28", typ:"Außenwäsche", ort:"JET Ludwigsfelde", betrag:"11.00", zahlungsart:"DKV-Karte", notiz:"DKV Reinigungsservice (PKW)"},
+  ],
+  parkplaetze:[], services:[],
+  fahrten:[],
+  jahresAbschluss:{},
+});
 // ─── BASE STYLES ──────────────────────────────────────────────────────────────
 // height:40 + boxSizing:border-box унифицирует все поля
 const inp_f = () => ({
@@ -1497,6 +1646,7 @@ function FzEditForm({fz,onSave,onCancel,accent}) {
     farbe:fz.farbe||FARBEN[0],
     kraftstoff:fz.kraftstoff||"Diesel",
     tuvDatum:fz.tuvDatum||"",
+    erstzulassung:fz.erstzulassung||"",
     kfzBriefNr:fz.kfzBriefNr||"",
     fahrgestellNr:fz.fahrgestellNr||"",
     reifendruckVorne:fz.reifendruckVorne||"",
@@ -1546,10 +1696,13 @@ function FzEditForm({fz,onSave,onCancel,accent}) {
       </FormRow>
       <FormRow cols={2}>
         <LS label="Kraftstoffart" value={f.kraftstoff} onChange={v=>setF({...f,kraftstoff:v})} accent={ac} options={OPT_KRAFTSTOFF2}/>
-        <F label="TÜV bis" type="text" value={f.tuvDatum} onChange={v=>setF({...f,tuvDatum:v})} placeholder="08.2026" accent={ac}/>
+        <F label="Erstzulassung" type="text" value={f.erstzulassung} onChange={v=>setF({...f,erstzulassung:v})} placeholder="01.2023" accent={ac}/>
       </FormRow>
       <FormRow cols={2}>
+        <F label="TÜV bis" type="text" value={f.tuvDatum} onChange={v=>setF({...f,tuvDatum:v})} placeholder="08.2026" accent={ac}/>
         <F label="KFZ-Brief Nr." value={f.kfzBriefNr} onChange={v=>setF({...f,kfzBriefNr:v})} placeholder="KFZ-2025-00447" accent={ac}/>
+      </FormRow>
+      <FormRow cols={1}>
         <F label="Fahrgestell-Nr. (VIN)" value={f.fahrgestellNr} onChange={v=>setF({...f,fahrgestellNr:v})} placeholder="WBA52AG070NC12345" accent={ac}/>
       </FormRow>
       <FormRow cols={2}>
@@ -2501,7 +2654,7 @@ function FahrzeugScan({onResult}) {
           model:"claude-sonnet-4-6",max_tokens:1000,
           messages:[{role:"user",content:[
             contentBlock,
-            {type:"text",text:`Analysiere diesen Fahrzeugschein / Zulassungsbescheinigung und extrahiere die Fahrzeugdaten als JSON. Gib NUR ein valides JSON-Objekt zurück, ohne Markdown oder Erklärungen. Felder (alle optional): kennzeichen (amtl. Kennzeichen), marke (Hersteller/Marke), modell (Typ/Modell), fahrgestellNr (VIN / Fahrgestellnummer), kfzBriefNr (Zulassungsbescheinigung-Nr.), kraftstoff (Kraftstoffart: Diesel/Benzin/Elektro/Hybrid), halterName (Name des Halters / Firma), halterAnschrift (vollständige Adresse des Halters), tuvDatum (nächste HU/TÜV im Format MM.YYYY wenn erkennbar).`}
+            {type:"text",text:`Analysiere diesen Fahrzeugschein / Zulassungsbescheinigung und extrahiere die Fahrzeugdaten als JSON. Gib NUR ein valides JSON-Objekt zurück, ohne Markdown oder Erklärungen. Felder (alle optional): kennzeichen (amtl. Kennzeichen), marke (Hersteller/Marke), modell (Typ/Modell), fahrgestellNr (VIN / Fahrgestellnummer), kfzBriefNr (Zulassungsbescheinigung-Nr.), kraftstoff (Kraftstoffart: Diesel/Benzin/Elektro/Hybrid), halterName (Name des Halters / Firma), halterAnschrift (vollständige Adresse des Halters), tuvDatum (nächste HU/TÜV im Format MM.YYYY wenn erkennbar), erstzulassung (Datum der Erstzulassung Feld B im Format DD.MM.YYYY).`}
           ]}]
         });
       const data=resp;
@@ -2763,7 +2916,7 @@ function createMusterDaten() {
     marke:"BMW", modell:"520d Touring",
     farbe:"#7E8993",
     kraftstoff:"Diesel",
-    tuvDatum:"2026-11-20",
+    tuvDatum:"20.11.2026",
     kfzBriefNr:"WBA5E31040G998712",
     fahrgestellNr:"WBA52CJ09RCK88021",
     reifendruckVorne:"2.3", reifendruckHinten:"2.5",
@@ -2849,7 +3002,7 @@ function createMusterDaten() {
     marke:"Mercedes-Benz", modell:"E 220d",
     farbe:"#7493B2",
     kraftstoff:"Diesel",
-    tuvDatum:"2026-04-10",
+    tuvDatum:"10.04.2026",
     kfzBriefNr:"WDD2130021A445566",
     fahrgestellNr:"WDD2130021A445566",
     reifendruckVorne:"2.4", reifendruckHinten:"2.6",
@@ -2923,7 +3076,7 @@ function createMusterDaten() {
     marke:"Audi", modell:"A4 Avant 40 TDI",
     farbe:"#937EB2",
     kraftstoff:"Diesel",
-    tuvDatum:"2027-01-15",
+    tuvDatum:"15.01.2027",
     kfzBriefNr:"WAUZZZF4XNA112233",
     fahrgestellNr:"WAUZZZF4XNA112233",
     reifendruckVorne:"2.3", reifendruckHinten:"2.5",
@@ -4511,7 +4664,7 @@ function FahrtenbuchApp({authUser, onLogout, themeId, setThemeId}) {
     { v:27, run: fzs => fzs.map(f => {
       if(f.kennzeichen === "TF-IV 601") {
         const patch = {
-          modell:"Touareg R-Line 3.0 V6 TDI SCR 4MOTION",
+          modell:"Touareg",
           fahrgestellNr:"WVGZZZCR9TD010207",
           kfzBriefNr:"CRTD010207",
           halterName:"ImmoPrim GmbH",
@@ -4519,7 +4672,7 @@ function FahrtenbuchApp({authUser, onLogout, themeId, setThemeId}) {
         const fahrten = f.fahrten||[];
         if(!fahrten.some(ft=>ft.datum==="2025-12-01")) {
           fahrten.push(
-            {id:uid(),datum:"2025-12-01",zeitStr:"08:00-14:15",kategorie:"sonstige",zielId:"",zielName:"Autostadt Wolfsburg, Stadtbrücke, 38440 Wolfsburg",km:"230",dauerMin:"",rueckfahrt:false,notiz:"Fahrzeugabholung VW Touareg R-Line — Autostadt Wolfsburg",kmTyp:"geschaeftlich",kmStart:"0",kmEnd:"230"},
+            {id:uid(),datum:"2025-12-01",zeitStr:"08:00-14:15",kategorie:"sonstige",zielId:"",zielName:"Autostadt Wolfsburg, Stadtbrücke, 38440 Wolfsburg",km:"230",dauerMin:"",rueckfahrt:false,notiz:"Fahrzeugabholung VW Touareg — Autostadt Wolfsburg",kmTyp:"geschaeftlich",kmStart:"0",kmEnd:"230"},
             {id:uid(),datum:"2025-12-01",zeitStr:"15:00-18:00",kategorie:"sonstige",zielId:"",zielName:"Büro Ludwigsfelde, Seestr. 33, 14974 Ludwigsfelde",km:"230",dauerMin:"",rueckfahrt:false,notiz:"Rückfahrt Wolfsburg → Ludwigsfelde (Neuwagen)",kmTyp:"geschaeftlich",kmStart:"230",kmEnd:"460"},
           );
         }
@@ -4760,6 +4913,158 @@ function FahrtenbuchApp({authUser, onLogout, themeId, setThemeId}) {
       if(f.kennzeichen==="TF-IA 2006") { const fresh=makeFiatDefault(); return {...f, fahrten:fresh.fahrten}; }
       return f;
     }) },
+    // v48: TF-KF 2128 — 2 services (UVV 27.01.2025 km=13152, HU+AU 19.01.2026 km=18772), tuvDatum=2028-01, farbe=schwarz
+    { v:48, run: fzs => fzs.map(f => {
+      if(f.kennzeichen!=="TF-KF 2128") return f;
+      const fresh=makeNissanDefault();
+      return {...f, services:fresh.services, tuvDatum:"19.01.2028",
+        modell:"Qashqai", farbe:"#1a1a1a"};
+    }) },
+    // v49: All cars — add EXPO REAL 2025, Dach+Holz 2026, Light+Building 2026 to messen
+    { v:49, run: fzs => {
+      const NEW=[
+        {id:uid(),name:"EXPO REAL 2025",adresse:"Messe München, Am Messesee 2, 81829 München",datum:"2025-10-06",datumBis:"2025-10-08",partnerId:"",notiz:"Internationale Fachmesse für Immobilien und Investitionen",kmVonStandort:"580"},
+        {id:uid(),name:"Dach+Holz International 2026",adresse:"Messe Stuttgart, Messepiazza 1, 70629 Stuttgart",datum:"2026-02-24",datumBis:"2026-02-27",partnerId:"",notiz:"Internationale Fachmesse für Holz- und Dachbau",kmVonStandort:"630"},
+        {id:uid(),name:"Light+Building 2026",adresse:"Messe Frankfurt, Ludwig-Erhard-Anlage 1, 60327 Frankfurt",datum:"2026-03-08",datumBis:"2026-03-13",partnerId:"",notiz:"Internationale Fachmesse für Licht und Gebäudetechnik",kmVonStandort:"540"},
+      ];
+      return fzs.map(f => {
+        const existing = (f.messen||[]).map(m=>m.name);
+        const toAdd = NEW.filter(m=>!existing.includes(m.name));
+        return {...f, messen:[...(f.messen||[]), ...toAdd]};
+      });
+    } },
+    // v50: Add 2 new cars: Renault Clio TF-LT 95 + Renault Captur TF-TR 6666 (TRID GmbH)
+    { v:50, run: fzs => {
+      const existing = fzs.map(f=>f.kennzeichen);
+      const toAdd = [];
+      if(!existing.includes("TF-LT 95")) toAdd.push(makeClioDefault());
+      if(!existing.includes("TF-TR 6666")) toAdd.push(makeCapturDefault());
+      return [...fzs, ...toAdd];
+    } },
+    // v51: Fix swapped models — TF-LT 95 = Clio, TF-TR 6666 = Captur
+    { v:51, run: fzs => fzs.map(f => {
+      if(f.kennzeichen==="TF-LT 95") {
+        const fresh=makeClioDefault();
+        return {...f, name:fresh.name, marke:fresh.marke, modell:fresh.modell, farbe:fresh.farbe,
+          kfzBriefNr:fresh.kfzBriefNr, fahrgestellNr:fresh.fahrgestellNr, tuvDatum:fresh.tuvDatum,
+          reifendruckVorne:fresh.reifendruckVorne, reifendruckHinten:fresh.reifendruckHinten};
+      }
+      if(f.kennzeichen==="TF-TR 6666") {
+        const fresh=makeCapturDefault();
+        return {...f, name:fresh.name, marke:fresh.marke, modell:fresh.modell, farbe:fresh.farbe,
+          kfzBriefNr:fresh.kfzBriefNr, fahrgestellNr:fresh.fahrgestellNr, tuvDatum:fresh.tuvDatum,
+          reifendruckVorne:fresh.reifendruckVorne, reifendruckHinten:fresh.reifendruckHinten};
+      }
+      return f;
+    }) },
+    // v52: Add erstzulassung field to all cars
+    { v:52, run: fzs => fzs.map(f => {
+      const EZ = {"TF-KF 2128":"12.01.2023","TF-LT 95":"08.06.2006","TF-TR 6666":"26.07.2013"};
+      return {...f, erstzulassung: f.erstzulassung || EZ[f.kennzeichen] || ""};
+    }) },
+    // v53: Clean modell names — remove technical codes
+    { v:53, run: fzs => fzs.map(f => {
+      const FIX={"Qashqai MY22 1.3 DIG-T MHEV":"Qashqai","Megane Kombilimousine":"Megane",
+        "Clio BR1J Schräghecklimousine":"Clio","Captur ZR4O 0.9 TCe":"Captur"};
+      return FIX[f.modell] ? {...f, modell:FIX[f.modell]} : f;
+    }) },
+    // v54: Erstzulassung for all remaining cars
+    { v:54, run: fzs => fzs.map(f => {
+      const EZ={"TF-IA 2006":"11.10.2022","TF-AI 2006":"30.10.2025","TF-VI 601":"07.05.2024",
+        "TF-IV 601":"28.11.2025","TF-VG 2016":"22.06.2018",
+        "TF-KF 2128":"12.01.2023","TF-LT 95":"08.06.2006","TF-TR 6666":"26.07.2013"};
+      return EZ[f.kennzeichen] ? {...f, erstzulassung: EZ[f.kennzeichen]} : f;
+    }) },
+    // v55: Convert all dates (tuvDatum, erstzulassung) from YYYY-MM-DD to DD.MM.YYYY
+    { v:55, run: fzs => fzs.map(f => {
+      const flip = d => {
+        if(!d || !d.match(/^\d{4}-\d{2}-\d{2}$/)) return d;
+        const [y,m,dd] = d.split("-");
+        return `${dd}.${m}.${y}`;
+      };
+      return {...f, tuvDatum:flip(f.tuvDatum||""), erstzulassung:flip(f.erstzulassung||"")};
+    }) },
+    // v56: TF-VI 601 — last trip to Bamberg 01.12.2025 + fix modell
+    { v:56, run: fzs => fzs.map(f => {
+      if(f.kennzeichen!=="TF-VI 601") return f;
+      const fresh=makeVWDefault();
+      return {...f, fahrten:fresh.fahrten, modell:fresh.modell};
+    }) },
+    // v57: TF-VI 601 — Bamberg kmStart=18312, kmEnd=18693 (Hard Anchor: Leasing-Ende Odometer)
+    { v:57, run: fzs => fzs.map(f => {
+      if(f.kennzeichen!=="TF-VI 601") return f;
+      const fresh=makeVWDefault();
+      return {...f, fahrten:fresh.fahrten};
+    }) },
+    // v58: TF-LT 95 + TF-TR 6666 — copy standorteExtra from TF-IA 2006
+    { v:58, run: fzs => {
+      const fiat = fzs.find(f=>f.kennzeichen==="TF-IA 2006");
+      const se = fiat?.standorteExtra||[];
+      return fzs.map(f => {
+        if(f.kennzeichen==="TF-LT 95"||f.kennzeichen==="TF-TR 6666") {
+          if(!f.standorteExtra||f.standorteExtra.length===0) return {...f, standorteExtra:se.map(s=>({...s,id:uid()}))};
+        }
+        return f;
+      });
+    } },
+    // v59: TF-LT 95 + TF-TR 6666 — replace Stellantis with Autohaus König Teltow (Renault)
+    { v:59, run: fzs => fzs.map(f => {
+      if(f.kennzeichen!=="TF-LT 95"&&f.kennzeichen!=="TF-TR 6666") return f;
+      const se = (f.standorteExtra||[]).map(s =>
+        s.name?.includes("Stellantis") ? {...s, name:"Autohaus König Teltow (Renault)", adresse:"Oderstr. 55, 14513 Teltow", notiz:"Renault-Vertragshändler, Service & Werkstatt", kmVonStandort:"15"} : s
+      );
+      return {...f, standorteExtra:se};
+    }) },
+    // v60: TF-LT 95 + TF-TR 6666 — add Steuerberater + Anwälte (same as TF-IA 2006)
+    { v:60, run: fzs => fzs.map(f => {
+      if(f.kennzeichen!=="TF-LT 95"&&f.kennzeichen!=="TF-TR 6666") return f;
+      if((f.partner||[]).length>0) return f;
+      const fresh = f.kennzeichen==="TF-LT 95" ? makeClioDefault() : makeCapturDefault();
+      return {...f, partner:fresh.partner};
+    }) },
+    // v61: Clean Touareg modell names
+    { v:61, run: fzs => fzs.map(f => {
+      if(f.modell?.includes("Touareg R-Line")) return {...f, modell:"Touareg"};
+      return f;
+    }) },
+    // v62: TF-IV 601 — marke VW, modell New Touareg
+    { v:62, run: fzs => fzs.map(f => {
+      if(f.kennzeichen!=="TF-IV 601") return f;
+      return {...f, marke:"New VW", modell:"Touareg"};
+    }) },
+    // v63: TF-IV 601 — fix: marke "New VW", modell "Touareg"
+    { v:63, run: fzs => fzs.map(f => {
+      if(f.kennzeichen!=="TF-IV 601") return f;
+      return {...f, marke:"New VW", modell:"Touareg"};
+    }) },
+    // v64: Add jahreAbgeschlossen field to all cars
+    { v:64, run: fzs => fzs.map(f => ({...f, jahreAbgeschlossen: f.jahreAbgeschlossen || []})) },
+    // v65: TF-KF 2128 — freeze 2024 (legacy)
+    { v:65, run: fzs => fzs.map(f => {
+      if(f.kennzeichen!=="TF-KF 2128") return f;
+      const ja = f.jahreAbgeschlossen || [];
+      return ja.includes("2024") ? f : {...f, jahreAbgeschlossen:[...ja,"2024"].sort()};
+    }) },
+    // v66: Convert jahreAbgeschlossen[] → jahresAbschluss{} + add field to all
+    { v:66, run: fzs => fzs.map(f => {
+      const old = f.jahreAbgeschlossen || [];
+      const ja = f.jahresAbschluss || {};
+      old.forEach(jahr => {
+        if(!ja[jahr]) {
+          const yt = (f.fahrten||[]).filter(x=>x.datum?.startsWith(jahr)).sort((a,b)=>(b.datum||"").localeCompare(a.datum||""));
+          ja[jahr] = {kmEnde:yt[0]?.kmEnd||"", datum:yt[0]?.datum||"", gesperrt:true, fahrten:yt.length};
+        }
+      });
+      const out = {...f, jahresAbschluss:ja};
+      delete out.jahreAbgeschlossen;
+      return out;
+    }) },
+    // v67: TF-TR 6666 — 9 DKV tankstellen + 1 wäsche from DKV invoice 2025
+    { v:67, run: fzs => fzs.map(f => {
+      if(f.kennzeichen!=="TF-TR 6666") return f;
+      const fresh=makeCapturDefault();
+      return {...f, tankstellen:fresh.tankstellen, waesche:fresh.waesche};
+    }) },
   ];
   const DATA_VERSION = DATA_MIGRATIONS.length ? DATA_MIGRATIONS[DATA_MIGRATIONS.length-1].v : 0;
   const applyMigrations = (fahrzeuge, fromV) => {
@@ -4792,8 +5097,8 @@ function FahrtenbuchApp({authUser, onLogout, themeId, setThemeId}) {
         try { const raw=localStorage.getItem("fb2_real"); if(raw) tryLoad(JSON.parse(raw)); } catch(e){/*ok*/}
         if(!loaded) { try { const r=await window.storage.get("fb2_real"); if(r?.value) tryLoad(JSON.parse(r.value)); } catch(e){/*ok*/} }
         if(!loaded) {
-          const fz=makeFiatDefault(), vw=makeVWDefault(), tfai=makeTFAIDefault(), touareg=makeTouaregDefault(), nissan=makeNissanDefault(), renault=makeRenaultDefault();
-          setState({fahrzeuge:sanitizeAll([fz,vw,tfai,touareg,nissan,renault]), aktivId:fz.id, _musterVersion:MUSTER_VERSION, _dataVersion:DATA_VERSION});
+          const fz=makeFiatDefault(), vw=makeVWDefault(), tfai=makeTFAIDefault(), touareg=makeTouaregDefault(), nissan=makeNissanDefault(), renault=makeRenaultDefault(), clio=makeClioDefault(), captur=makeCapturDefault();
+          setState({fahrzeuge:sanitizeAll([fz,vw,tfai,touareg,nissan,renault,clio,captur]), aktivId:fz.id, _musterVersion:MUSTER_VERSION, _dataVersion:DATA_VERSION});
         }
         try { localStorage.removeItem("fb2"); } catch(e){/*ok*/}
       }
@@ -4840,6 +5145,17 @@ function FahrtenbuchApp({authUser, onLogout, themeId, setThemeId}) {
     const exists = list.find(x=>x.id===fData.id);
     patchAktiv({fahrten: exists ? list.map(x=>x.id===fData.id?{...fData}:x) : [...list,{...fData,id:fData.id||uid()}]});
     setFForm(null); setFData({});
+  };
+  const toggleJahresAbschluss = (jahr) => {
+    const ja = {...(aktiv.jahresAbschluss||{})};
+    if(ja[jahr]?.gesperrt) {
+      ja[jahr] = {...ja[jahr], gesperrt:false};
+    } else {
+      const yearTrips = (aktiv.fahrten||[]).filter(f=>f.datum?.startsWith(jahr)).sort((a,b)=>(b.datum||"").localeCompare(a.datum||""));
+      const last = yearTrips[0];
+      ja[jahr] = {kmEnde:last?.kmEnd||"", datum:last?.datum||"", gesperrt:true, fahrten:yearTrips.length};
+    }
+    patchAktiv({jahresAbschluss:ja});
   };
   const savePartner = () => {
     if(!pData.name) return;
@@ -5077,7 +5393,7 @@ function FahrtenbuchApp({authUser, onLogout, themeId, setThemeId}) {
       name:"update_fahrzeug",
       description:"Aktualisiert Daten des aktiven Fahrzeugs (Kennzeichen, Fahrer, Standort, TÜV, etc.).",
       input_schema:{type:"object",required:["updates"],properties:{
-        updates:{type:"object", description:"Felder die aktualisiert werden sollen. Mögliche Felder: kennzeichen, marke, modell, kraftstoff, tuvDatum, fahrer, fahrerAnschrift, fahrerTelPrivat, fahrerTelFirma, halterName, halterAnschrift, kmStandInitial, reifendruckVorne, reifendruckHinten, kfzBriefNr, fahrgestellNr. Für Standort: standort_name und standort_adresse."},
+        updates:{type:"object", description:"Felder die aktualisiert werden sollen. Mögliche Felder: kennzeichen, marke, modell, kraftstoff, tuvDatum, fahrer, fahrerAnschrift, fahrerTelPrivat, fahrerTelFirma, halterName, halterAnschrift, kmStandInitial, reifendruckVorne, reifendruckHinten, kfzBriefNr, fahrgestellNr. Für Standort: standort_name und standort_adresse. Jahr abschließen: jahrAbschliessen (z.B. '2024')."},
       }}
     },
     {
@@ -5211,7 +5527,7 @@ function FahrtenbuchApp({authUser, onLogout, themeId, setThemeId}) {
       const u = inp.updates||{};
       const patch = {};
       // Direct fields
-      const directFields = ["kennzeichen","marke","modell","kraftstoff","tuvDatum","fahrer","fahrerAnschrift",
+      const directFields = ["kennzeichen","marke","modell","kraftstoff","tuvDatum","erstzulassung","fahrer","fahrerAnschrift",
         "fahrerTelPrivat","fahrerTelFirma","halterName","halterAnschrift","halterTelPrivat","halterTelFirma",
         "kmStandInitial","reifendruckVorne","reifendruckHinten","kfzBriefNr","fahrgestellNr","farbe","name"];
       directFields.forEach(f=>{ if(u[f]!==undefined) patch[f]=u[f]; });
@@ -5221,6 +5537,15 @@ function FahrtenbuchApp({authUser, onLogout, themeId, setThemeId}) {
           name: u.standort_name || aktiv.standort?.name || "",
           adresse: u.standort_adresse || aktiv.standort?.adresse || "",
         };
+      }
+      // Jahr abschließen
+      if(u.jahrAbschliessen) {
+        const jahr = String(u.jahrAbschliessen);
+        const ja = {...(aktiv.jahresAbschluss||{})};
+        const yearTrips = (aktiv.fahrten||[]).filter(f=>f.datum?.startsWith(jahr)).sort((a,b)=>(b.datum||"").localeCompare(a.datum||""));
+        const last = yearTrips[0];
+        ja[jahr] = {kmEnde:last?.kmEnd||"", datum:last?.datum||"", gesperrt:true, fahrten:yearTrips.length};
+        patch.jahresAbschluss = ja;
       }
       if(Object.keys(patch).length===0) return "Keine Änderungen angegeben.";
       patchAktiv(patch);
@@ -5496,6 +5821,7 @@ FAHRZEUG-DATEN (update_fahrzeug):
 - Nutzer kann Fahrzeugdaten per Chat ändern: "Mein neuer Fahrer heißt Klaus"
 - Standort ändern: update_fahrzeug mit standort_name und standort_adresse
 - TÜV-Datum aktualisieren: "TÜV ist jetzt bis 10/2027"
+- Jahr abschließen: "Jahr 2024 abschließen" → update_fahrzeug mit jahrAbschliessen:"2024". Abgeschlossene Jahre werden NIEMALS verändert.
 
 ENTFERNUNGEN (calc_distance):
 - Für jeden Partner, Standort und jede Messe die Entfernung vom Stammstandort berechnen/schätzen
@@ -5721,7 +6047,7 @@ WICHTIG — WANN UI-TOOLS NUTZEN:
       name: n, kennzeichen: f.kennzeichen,
       marke: f.marke||"", modell: f.modell||"",
       kraftstoff: f.kraftstoff||"Diesel", farbe: f.farbe||FARBEN[0],
-      tuvDatum: f.tuvDatum||"", kfzBriefNr: f.kfzBriefNr||"",
+      tuvDatum: f.tuvDatum||"", erstzulassung: f.erstzulassung||"", kfzBriefNr: f.kfzBriefNr||"",
       fahrgestellNr: f.fahrgestellNr||"",
       standort:{name:f.stName||"", adresse:f.stAdr||""},
       kmStandInitial: f.kmStandInitial||"", fahrer: f.fahrer||"",
@@ -5742,7 +6068,7 @@ WICHTIG — WANN UI-TOOLS NUTZEN:
       name: n, kennzeichen: f.kennzeichen,
       marke: f.marke||"", modell: f.modell||"",
       kraftstoff: f.kraftstoff||"Diesel", farbe: f.farbe||FARBEN[0],
-      tuvDatum: f.tuvDatum||"", kfzBriefNr: f.kfzBriefNr||"",
+      tuvDatum: f.tuvDatum||"", erstzulassung: f.erstzulassung||"", kfzBriefNr: f.kfzBriefNr||"",
       fahrgestellNr: f.fahrgestellNr||"",
       standort:{name:f.stName||"", adresse:f.stAdr||""},
       kmStandInitial: f.kmStandInitial||"", fahrer: f.fahrer||"",
@@ -5791,7 +6117,9 @@ WICHTIG — WANN UI-TOOLS NUTZEN:
       URL.revokeObjectURL(url);
     } catch(err) { setIErr("Export fehlgeschlagen."); }
   };
+  const gesperrteJahre=useMemo(()=>{const ja=aktiv.jahresAbschluss||{};return new Set(Object.keys(ja).filter(y=>ja[y]?.gesperrt));},[aktiv.jahresAbschluss]);
   const gefFahrten=useMemo(()=>(aktiv.fahrten||[]).filter(f=>{
+    if(gesperrteJahre.size&&gesperrteJahre.has(f.datum?.slice(0,4))) return false;
     const q=fQ.toLowerCase();
     if(q){
       const p=(aktiv.partner||[]).find(x=>x.id===f.zielId);
@@ -5801,7 +6129,7 @@ WICHTIG — WANN UI-TOOLS NUTZEN:
       if(!name.includes(q)&&!notiz.includes(q)) return false;
     }
     return (fMonat?f.datum?.startsWith(fMonat):true)&&(fKat==="alle"?true:f.kategorie===fKat);
-  }).sort((a,b)=>(b?.datum||"").localeCompare(a?.datum||"")),[aktiv.fahrten,fMonat,fKat,fQ,aktiv.partner,aktiv.messen]);
+  }).sort((a,b)=>(b?.datum||"").localeCompare(a?.datum||"")),[aktiv.fahrten,fMonat,fKat,fQ,aktiv.partner,aktiv.messen,gesperrteJahre]);
   const SKIP_WORDS=new Set(["gmbh","mbh","kg","ohg","ug","co","ag","gbr","e.v.","berlin","münchen","potsdam","nürnberg","ludwigsfelde","mittenwalde","schenkendorf","unterspreewald"]);
   const keyW=s=>(s||"").trim().toLowerCase().split(/[\s,./&-]+/).filter(w=>w.length>1&&!SKIP_WORDS.has(w)&&!/^\d+$/.test(w));
   const wMatch=(name,text)=>{const ws=keyW(name);if(!ws.length)return false;const hits=ws.filter(w=>text.includes(w));return hits.length>=Math.min(2,ws.length);};
@@ -6025,9 +6353,8 @@ input[type=number] { -moz-appearance:textfield; }
         </div>
         <div style={{display:"flex",alignItems:"center",gap:6}}>
           <div style={{marginRight:44}}><LiveClock accent={acc} accentDk={accDk}/></div>
-          {(()=>{const now=new Date();const nowYM=now.getFullYear()*12+now.getMonth();const alertFz=[aktiv].filter(fz=>{if(!fz.tuvDatum)return false;const[y,m]=fz.tuvDatum.split("-").map(Number);return(y*12+(m-1))-nowYM<=2;});if(!alertFz.length)return null;return(
+          {(()=>{const now=new Date();const nowYM=now.getFullYear()*12+now.getMonth();const parseTuv=d=>{if(!d)return null;if(d.includes(".")){const p=d.split(".").map(Number);return p.length>=3?{y:p[2],m:p[1]}:p.length===2?{y:p[1],m:p[0]}:null;}if(d.includes("-")){const[y,m]=d.split("-").map(Number);return{y,m};}return null;};const alertFz=[aktiv].filter(fz=>{const t=parseTuv(fz.tuvDatum);if(!t)return false;return(t.y*12+(t.m-1))-nowYM<=2;});const offeneStrafen=(aktiv.strafen||[]).filter(s=>!s.bezahlt);const totalAlerts=alertFz.length+offeneStrafen.length;if(!totalAlerts)return null;return(
               <div ref={tuvRef} style={{position:"relative"}}>
-                {/* Кнопка — только иконка + красная точка */}
                 <button onClick={()=>setTuvPopup(v=>!v)}
                   style={{width:40,height:40,background:tuvPopup?"rgba(0,0,0,0.08)":"transparent",border:"none",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",position:"relative",transition:"background 0.12s",borderRadius:C.inputRadius||8}}
                   onMouseEnter={e=>{if(!tuvPopup)e.currentTarget.style.background="rgba(0,0,0,0.08)"}}
@@ -6035,9 +6362,8 @@ input[type=number] { -moz-appearance:textfield; }
                   onMouseDown={e=>e.currentTarget.style.background="rgba(0,0,0,0.14)"}
                   onMouseUp={e=>e.currentTarget.style.background="rgba(0,0,0,0.08)"}>
                   <Ico name="bell" size={20} color={C.redDk}/>
-                  <span style={{position:"absolute",top:6,right:6,width:7,height:7,borderRadius:"50%",background:C.red,border:`1.5px solid ${C.bg}`}}/>
+                  <span style={{position:"absolute",top:4,right:2,minWidth:16,height:16,borderRadius:8,background:C.red,border:`1.5px solid ${C.bg}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:9,fontWeight:900,color:"#fff",fontFamily:SANS,padding:"0 3px"}}>{totalAlerts}</span>
                 </button>
-                {/* Попап */}
                 {tuvPopup&&(
                   <div style={{
                     position:"absolute",top:"calc(100% + 10px)",right:0,
@@ -6045,65 +6371,55 @@ input[type=number] { -moz-appearance:textfield; }
                     borderRadius:C.inputRadius||8,
                     border:`1px solid ${C.border}`,
                     boxShadow:"0 16px 48px rgba(0,0,0,0.18), 0 2px 8px rgba(0,0,0,0.08)",
-                    minWidth:280,zIndex:200,overflow:"hidden",
+                    minWidth:300,maxWidth:360,zIndex:200,overflow:"hidden",
                     animation:"modalIn 0.2s cubic-bezier(0.34,1.36,0.64,1)",
                   }}>
-                    {/* Header */}
                     <div style={{
                       padding:"14px 16px 12px",
                       display:"flex",alignItems:"center",justifyContent:"space-between",
                       borderBottom:`1px solid ${C.border}`,
                     }}>
                       <div style={{display:"flex",alignItems:"center",gap:8}}>
-                        <div style={{
-                          width:28,height:28,borderRadius:C.inputRadius||8,background:C.redLight,
-                          display:"flex",alignItems:"center",justifyContent:"center",
-                        }}>
+                        <div style={{width:28,height:28,borderRadius:C.inputRadius||8,background:C.redLight,display:"flex",alignItems:"center",justifyContent:"center"}}>
                           <Ico name="bell" size={15} color={C.redDk}/>
                         </div>
                         <span style={{fontSize:13,fontWeight:800,color:C.text,fontFamily:SANS,letterSpacing:-0.1}}>
-                          TÜV-Fälligkeiten
+                          Warnungen ({totalAlerts})
                         </span>
                       </div>
                       <IcoBtn icon="x" color={C.muted} size={15} title="Schließen" onClick={()=>setTuvPopup(false)}/>
                     </div>
-                    {/* Rows */}
+                    {alertFz.length>0&&<div style={{padding:"8px 16px 4px",fontSize:11,fontWeight:800,color:C.muted,letterSpacing:0.5,fontFamily:SANS}}>TÜV / HU</div>}
                     {alertFz.map(fz=>{
-                      const [y,m]=fz.tuvDatum.split("-").map(Number);
-                      const diff=(y*12+(m-1))-nowYM;
+                      const t=parseTuv(fz.tuvDatum);
+                      const diff=(t.y*12+(t.m-1))-nowYM;
                       const expired=diff<0;
                       const statusColor=expired||diff===0?C.red:C.gold;
                       const statusBg=expired||diff===0?C.redLight:C.goldLight;
-                      const statusLabel=expired?"Abgelaufen":diff===0?"Diesen Monat":`in ${diff} Monat${diff>1?"en":""}`;
+                      const statusLabel=expired?"Abgelaufen":diff===0?"Diesen Monat":`in ${diff} Mon.`;
                       const label=[fz.marke,fz.modell].filter(Boolean).join(" ")||"—";
                       return (
-                        <div key={fz.id} style={{
-                          padding:"12px 16px",
-                          borderBottom:`1px solid ${C.border}`,
-                          display:"flex",alignItems:"center",justifyContent:"space-between",gap:12,
-                        }}>
+                        <div key={"tuv-"+fz.id} style={{padding:"10px 16px",borderBottom:`1px solid ${C.border}`,display:"flex",alignItems:"center",justifyContent:"space-between",gap:12}}>
                           <div>
-                            <div style={{fontSize:15,fontWeight:900,color:C.text,fontFamily:SANS,letterSpacing:1.2,marginBottom:2}}>
-                              {fz.kennzeichen}
-                            </div>
-                            <div style={{fontSize:14,color:C.muted,fontFamily:SANS}}>
-                              {label} · {String(m).padStart(2,"0")}/{y}
-                            </div>
+                            <div style={{fontSize:14,fontWeight:900,color:C.text,fontFamily:SANS,letterSpacing:1.2,marginBottom:1}}>{fz.kennzeichen}</div>
+                            <div style={{fontSize:13,color:C.muted,fontFamily:SANS}}>{label} · {String(t.m).padStart(2,"0")}/{t.y}</div>
                           </div>
-                          <span
-                            onClick={()=>{setTuvPopup(false);setTab("einstellungen");setEditFzId(fz.id);setAddingFz(false);}}
-                            style={{
-                              fontSize:14,fontWeight:700,color:statusColor,fontFamily:SANS,
-                              whiteSpace:"nowrap",cursor:"pointer",
-                              background:statusBg,borderRadius:C.inputRadius||8,
-                              padding:"4px 8px",transition:"opacity 0.15s",
-                            }}
-                            onMouseEnter={e=>e.currentTarget.style.opacity="0.75"}
-                            onMouseLeave={e=>e.currentTarget.style.opacity="1"}
+                          <span onClick={()=>{setTuvPopup(false);setTab("einstellungen");setEditFzId(fz.id);setAddingFz(false);}}
+                            style={{fontSize:13,fontWeight:700,color:statusColor,fontFamily:SANS,whiteSpace:"nowrap",cursor:"pointer",background:statusBg,borderRadius:C.inputRadius||8,padding:"3px 8px"}}
                           >{statusLabel}</span>
-                        </div>
-                      );
+                        </div>);
                     })}
+                    {offeneStrafen.length>0&&<div style={{padding:"8px 16px 4px",fontSize:11,fontWeight:800,color:C.muted,letterSpacing:0.5,fontFamily:SANS}}>OFFENE STRAFEN</div>}
+                    {offeneStrafen.slice(0,5).map(s=>(
+                      <div key={"str-"+s.id} style={{padding:"10px 16px",borderBottom:`1px solid ${C.border}`,display:"flex",alignItems:"center",justifyContent:"space-between",gap:12}}>
+                        <div>
+                          <div style={{fontSize:13,fontWeight:700,color:C.text,fontFamily:SANS}}>{s.typ}</div>
+                          <div style={{fontSize:12,color:C.muted,fontFamily:SANS}}>{formatDatum(s.datum)} · {s.tatort?.substring(0,30)}</div>
+                        </div>
+                        <span style={{fontSize:13,fontWeight:800,color:C.strafe,fontFamily:SANS,whiteSpace:"nowrap"}}>{s.betrag?`${s.betrag} €`:"offen"}</span>
+                      </div>
+                    ))}
+                    {offeneStrafen.length>5&&<div style={{padding:"8px 16px",fontSize:12,color:C.muted,fontFamily:SANS}}>+{offeneStrafen.length-5} weitere…</div>}
                   </div>
                 )}
               </div>
@@ -6264,11 +6580,31 @@ input[type=number] { -moz-appearance:textfield; }
 
             {/* Fahrt list */}
             <div className="fb-stagger">
-            {gefFahrten.map(f=>{
+            {gefFahrten.map((f,idx)=>{
               const ak=katAccent[f.kategorie]||C.strafe;
               const isEditing=fForm===f.id;
+              const curYear=f.datum?.slice(0,4)||"";
+              const prevYear=idx>0?gefFahrten[idx-1]?.datum?.slice(0,4)||"":"";
+              const showSep=idx>0&&prevYear&&curYear&&prevYear!==curYear;
+              const ja=aktiv.jahresAbschluss||{};
+              const sepYear=showSep?curYear:"";
+              const sepData=showSep?ja[curYear]:null;
+              const yearTrips=(aktiv.fahrten||[]).filter(x=>x.datum?.startsWith(curYear));
+              const lastOfYear=yearTrips.sort((a,b)=>(b.datum||"").localeCompare(a.datum||""))[0];
               return (
                 <div key={f.id}>
+                  {showSep&&(
+                    <div style={{background:sepData?.gesperrt?(acc+"18"):C.surfaceAlt,borderLeft:`4px solid ${sepData?.gesperrt?acc:C.border}`,padding:"12px 16px",marginBottom:2,display:"flex",alignItems:"center",justifyContent:"space-between",boxShadow:C.shadow}}>
+                      <div style={{display:"flex",alignItems:"center",gap:10}}>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={sepData?.gesperrt?accDk:C.muted} strokeWidth="2.5" strokeLinecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/>{sepData?.gesperrt?<path d="M7 11V7a5 5 0 0 1 10 0v4"/>:<path d="M7 11V7a5 5 0 0 1 9.9-1"/>}</svg>
+                        <div>
+                          <span style={{fontSize:15,fontWeight:800,color:sepData?.gesperrt?accDk:C.text,fontFamily:SANS,letterSpacing:0.5}}>{sepData?.gesperrt?`${sepYear} ABGESCHLOSSEN`:`ENDE ${sepYear}`}</span>
+                          <span style={{fontSize:13,color:sepData?.gesperrt?acc:C.muted,marginLeft:10}}>{yearTrips.length} Fahrten · km {Number(lastOfYear?.kmEnd||sepData?.kmEnde||0).toLocaleString("de-DE")}</span>
+                        </div>
+                      </div>
+                      <button onClick={()=>toggleJahresAbschluss(sepYear)} style={{fontSize:12,color:sepData?.gesperrt?accDk:"#fff",background:sepData?.gesperrt?"transparent":acc,border:`1px solid ${sepData?.gesperrt?acc:acc}`,borderRadius:C.inputRadius||8,height:40,width:130,padding:"0 8px",marginRight:8,cursor:"pointer",fontWeight:700,fontFamily:SANS,letterSpacing:0.5,textTransform:"uppercase"}}>{sepData?.gesperrt?"Entsperren":"Abschließen"}</button>
+                    </div>
+                  )}
                   {isEditing&&(
                     <FormPanel accent={acc} title="Fahrt bearbeiten" icon="car" onSave={saveFahrt}>
                       <FormRow cols={2}>
@@ -6379,8 +6715,39 @@ input[type=number] { -moz-appearance:textfield; }
                 </div>
               );
             })}
+            {/* Trailing separators: oldest visible year + all locked years */}
+            {(()=>{
+              const ja=aktiv.jahresAbschluss||{};
+              const lockedYears=Object.keys(ja).filter(y=>ja[y]?.gesperrt).sort((a,b)=>b.localeCompare(a));
+              const visibleYears=[...new Set(gefFahrten.map(f=>f.datum?.slice(0,4)).filter(Boolean))].sort((a,b)=>b.localeCompare(a));
+              const oldestVisible=visibleYears[visibleYears.length-1];
+              const rows=[];
+              if(oldestVisible&&!ja[oldestVisible]?.gesperrt){
+                const yt=(aktiv.fahrten||[]).filter(x=>x.datum?.startsWith(oldestVisible));
+                const last=[...yt].sort((a,b)=>(b.datum||"").localeCompare(a.datum||""))[0];
+                rows.push({year:oldestVisible,locked:false,count:yt.length,km:last?.kmEnd||""});
+              }
+              lockedYears.forEach(y=>{
+                const yt=(aktiv.fahrten||[]).filter(x=>x.datum?.startsWith(y));
+                const last=[...yt].sort((a,b)=>(b.datum||"").localeCompare(a.datum||""))[0];
+                rows.push({year:y,locked:true,count:yt.length,km:last?.kmEnd||ja[y]?.kmEnde||""});
+              });
+              if(!rows.length) return null;
+              return rows.map(r=>(
+                <div key={"ja-"+r.year} style={{background:r.locked?(acc+"18"):C.surfaceAlt,borderLeft:`4px solid ${r.locked?acc:C.border}`,padding:"12px 16px",marginBottom:2,display:"flex",alignItems:"center",justifyContent:"space-between",boxShadow:C.shadow}}>
+                  <div style={{display:"flex",alignItems:"center",gap:10}}>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={r.locked?accDk:C.muted} strokeWidth="2.5" strokeLinecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/>{r.locked?<path d="M7 11V7a5 5 0 0 1 10 0v4"/>:<path d="M7 11V7a5 5 0 0 1 9.9-1"/>}</svg>
+                    <div>
+                      <span style={{fontSize:15,fontWeight:800,color:r.locked?accDk:C.text,fontFamily:SANS,letterSpacing:0.5}}>{r.locked?`${r.year} ABGESCHLOSSEN`:`ENDE ${r.year}`}</span>
+                      <span style={{fontSize:13,color:r.locked?acc:C.muted,marginLeft:10}}>{r.count} Fahrten · km {Number(r.km||0).toLocaleString("de-DE")}</span>
+                    </div>
+                  </div>
+                  <button onClick={()=>toggleJahresAbschluss(r.year)} style={{fontSize:12,color:r.locked?accDk:"#fff",background:r.locked?"transparent":acc,border:`1px solid ${acc}`,borderRadius:C.inputRadius||8,height:40,width:130,padding:"0 8px",marginRight:8,cursor:"pointer",fontWeight:700,fontFamily:SANS,letterSpacing:0.5,textTransform:"uppercase"}}>{r.locked?"Entsperren":"Abschließen"}</button>
+                </div>
+              ));
+            })()}
             </div>
-            {!gefFahrten.length&&!!(aktiv.fahrten||[]).length&&<EmptyState icon="car" accent={C.muted} accentDk={C.mutedDk} text="Keine Fahrten für diesen Filter" hint="Filter anpassen oder zurücksetzen"/>}
+            {!gefFahrten.length&&!!(aktiv.fahrten||[]).length&&!gesperrteJahre.size&&<EmptyState icon="car" accent={C.muted} accentDk={C.mutedDk} text="Keine Fahrten für diesen Filter" hint="Filter anpassen oder zurücksetzen"/>}
           </div>
         )}
 
@@ -6990,6 +7357,7 @@ input[type=number] { -moz-appearance:textfield; }
                 {/* ── Einstellungen ── */}
         {tab==="einstellungen"&&(
           <div style={{maxWidth:860}}>
+            <div id="fz-block"/>
             <div style={{display:"flex",alignItems:"center",gap:16,marginBottom:10,paddingBottom:10}}>
               <div style={{width:52,height:52,background:acc,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,borderRadius:C.inputRadius||8}}>
                 <Ico name="settings" size={26} color="#fff"/>
@@ -7021,6 +7389,7 @@ input[type=number] { -moz-appearance:textfield; }
                           {fz.halterName&&<div style={{fontSize:14,color:C.text,marginTop:1}}>{fz.halterName}</div>}
                         </div>
                         {isActive&&<span style={{fontSize:11,letterSpacing:1.5,color:"#fff",background:fzAcc,padding:"2px 8px",fontFamily:SANS,fontWeight:700,lineHeight:1,borderRadius:20,display:"inline-flex",alignItems:"center",whiteSpace:"nowrap"}}>AKTIV</span>}
+                        {(()=>{const ja=fz.jahresAbschluss||{};const last=Object.keys(ja).filter(y=>ja[y]?.gesperrt).sort().pop();if(!last)return null;return <span style={{fontSize:10,letterSpacing:0.5,color:fzAcc,background:fzAcc+"18",padding:"2px 7px",fontFamily:SANS,fontWeight:700,lineHeight:1,borderRadius:20,display:"inline-flex",alignItems:"center",whiteSpace:"nowrap",gap:2}}><Ico name="check" size={10} color={fzAcc}/>{last}</span>;})()}
                         {canAdmin&&<div style={{display:"flex",gap:2,flexShrink:0}} onClick={e=>e.stopPropagation()}>
                           <IcoBtn icon="edit" color={C.steelMid} title="Bearbeiten" onClick={()=>{setEditFzId(isEditing?null:fz.id);setAddingFz(false);}}/>
                           <IcoBtn icon="trash" color={C.red} title="Löschen" onClick={()=>setConfirmDel({type:"fahrzeug",id:fz.id})}/>
@@ -7031,10 +7400,14 @@ input[type=number] { -moz-appearance:textfield; }
                 })}
               </div>
               {canAdmin&&editFzId&&state.fahrzeuge.find(f=>f.id===editFzId)&&(
-                <FzEditForm key={editFzId} fz={state.fahrzeuge.find(f=>f.id===editFzId)} accent={state.fahrzeuge.find(f=>f.id===editFzId)?.farbe||C.steel} onSave={f=>saveFzInline(editFzId,f)} onCancel={()=>setEditFzId(null)}/>
+                <div ref={el=>{if(el)setTimeout(()=>{const y=el.getBoundingClientRect().top+window.scrollY-150;window.scrollTo({top:y,behavior:"smooth"});},100);}}>
+                <FzEditForm key={editFzId} fz={state.fahrzeuge.find(f=>f.id===editFzId)} accent={state.fahrzeuge.find(f=>f.id===editFzId)?.farbe||C.steel} onSave={f=>{saveFzInline(editFzId,f);setTimeout(()=>{const el=document.getElementById("fz-block");if(el){const y=el.getBoundingClientRect().top+window.scrollY-150;window.scrollTo({top:y,behavior:"smooth"});}},150);}} onCancel={()=>{setEditFzId(null);setTimeout(()=>{const el=document.getElementById("fz-block");if(el){const y=el.getBoundingClientRect().top+window.scrollY-150;window.scrollTo({top:y,behavior:"smooth"});}},150);}}/>
+                </div>
               )}
               {canAdmin&&!editFzId&&(addingFz?(
-                <FzEditForm fz={makeFahrzeug(state.fahrzeuge.length)} accent={C.red} onSave={addFzInline} onCancel={()=>setAddingFz(false)}/>
+                <div ref={el=>{if(el)setTimeout(()=>{const y=el.getBoundingClientRect().top+window.scrollY-150;window.scrollTo({top:y,behavior:"smooth"});},100);}}>
+                <FzEditForm fz={makeFahrzeug(state.fahrzeuge.length)} accent={C.red} onSave={f=>{addFzInline(f);setTimeout(()=>{const el=document.getElementById("fz-block");if(el){const y=el.getBoundingClientRect().top+window.scrollY-150;window.scrollTo({top:y,behavior:"smooth"});}},150);}} onCancel={()=>{setAddingFz(false);setTimeout(()=>{const el=document.getElementById("fz-block");if(el){const y=el.getBoundingClientRect().top+window.scrollY-150;window.scrollTo({top:y,behavior:"smooth"});}},150);}}/>
+                </div>
               ):(
                 <SpringBtn onClick={()=>{setAddingFz(true);setEditFzId(null);}} style={{...btnSolid(C.redDk),marginTop:4}}><Ico name="plus" size={15} color="#fff"/>NEUES FAHRZEUG</SpringBtn>
               ))}
