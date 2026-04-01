@@ -17,24 +17,24 @@ let { katAccent, katAccentDk, katBg, ST_TYP_COLORS, ST_TYP_COLORS_DK } = syncThe
 const GLASS_MODE = true;
 
 const GLASS = {
-  background: 'rgba(255,255,255,0.08)',
-  backdropFilter: 'blur(20px) saturate(1.4)',
-  WebkitBackdropFilter: 'blur(20px) saturate(1.4)',
-  border: '1px solid rgba(255,255,255,0.12)',
-  borderLeft: '1px solid rgba(255,255,255,0.18)',
-  borderRight: '1px solid rgba(255,255,255,0.18)',
+  background: 'rgba(255,255,255,0.72)',
+  backdropFilter: 'blur(24px) saturate(1.6)',
+  WebkitBackdropFilter: 'blur(24px) saturate(1.6)',
+  border: '1px solid rgba(255,255,255,0.5)',
+  borderLeft: '1px solid rgba(255,255,255,0.65)',
+  borderRight: '1px solid rgba(255,255,255,0.65)',
   borderRadius: 16,
-  boxShadow: '0 8px 32px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.08)',
+  boxShadow: '0 8px 32px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.6)',
 };
 
 const GLASS_BG = `
   linear-gradient(135deg,
-    rgba(15,15,25,0.97) 0%,
-    rgba(25,30,45,0.95) 30%,
-    rgba(20,25,35,0.96) 60%,
-    rgba(10,15,25,0.98) 100%
+    rgba(230,235,245,0.82) 0%,
+    rgba(220,228,240,0.78) 30%,
+    rgba(225,232,242,0.80) 60%,
+    rgba(235,240,248,0.85) 100%
   ),
-  url('https://images.unsplash.com/photo-1682490440880-7bcfb4607e75?w=1920&q=40&auto=format&fit=crop') center/cover fixed no-repeat
+  url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1920&q=60&auto=format&fit=crop') center/cover fixed no-repeat
 `;
 
 // ─── TYPOGRAPHY TOKENS (desktop scale) ───────────────────────────────────────
@@ -1338,7 +1338,7 @@ const iBtn = (color=C.muted) => ({
 function IcoBtn({color=C.muted, size=16, icon, onClick, title}) {
   const [hov,setHov]=useState(false);
   const [pressed,setPressed]=useState(false);
-  const bg=pressed?(GLASS_MODE?"rgba(255,255,255,0.14)":"rgba(0,0,0,0.14)"):hov?(GLASS_MODE?"rgba(255,255,255,0.08)":"rgba(0,0,0,0.08)"):"transparent";
+  const bg=pressed?(GLASS_MODE?"rgba(0,0,0,0.08)":"rgba(0,0,0,0.14)"):hov?(GLASS_MODE?"rgba(0,0,0,0.05)":"rgba(0,0,0,0.08)"):"transparent";
   return (
     <button className="fb-ico-btn" title={title||"Auswählen"}
       onClick={onClick}
@@ -1465,11 +1465,11 @@ function KpiCard({wert, unit, label, akzent, akzentDk, icon}) {
       {(C.useGradients||GLASS_MODE)&&<div style={{position:"absolute",top:0,left:0,right:0,height:3,background:`linear-gradient(90deg, ${akzentDk||akzent}, ${akzent})`,opacity:GLASS_MODE?0.7:1}}/>}
       <div style={{position:"absolute",top:isMobile?6:10,right:isMobile?8:12,opacity:GLASS_MODE?0.25:0.18}}><Ico name={icon} size={isMobile?32:44} color={akzent}/></div>
       <div style={{display:"flex",alignItems:"baseline",gap:4,marginBottom:isMobile?3:5,minWidth:0}}>
-        <div style={{fontSize:isMobile?22:28,fontWeight:800,color:GLASS_MODE?'#fff':(akzentDk||akzent),fontFamily:SANS,
+        <div style={{fontSize:isMobile?22:28,fontWeight:800,color:GLASS_MODE?(akzentDk||akzent):(akzentDk||akzent),fontFamily:SANS,
           lineHeight:1,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{display}</div>
         {unit&&<div style={{fontSize:isMobile?12:14,fontWeight:700,color:GLASS_MODE?akzent:(akzentDk||akzent),fontFamily:SANS,flexShrink:0}}>{unit}</div>}
       </div>
-      <div style={{fontSize:isMobile?11:14,fontWeight:700,color:GLASS_MODE?'rgba(255,255,255,0.6)':C.text,letterSpacing:isMobile?1:2,textTransform:"uppercase",
+      <div style={{fontSize:isMobile?11:14,fontWeight:700,color:GLASS_MODE?C.text:C.text,letterSpacing:isMobile?1:2,textTransform:"uppercase",
         fontFamily:SANS,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{label}</div>
     </div>
   );
@@ -2513,8 +2513,8 @@ function SettingsBtn({active, accent, onClick}) {
   const toRgba=(hex,a)=>{const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);return `rgba(${r},${g},${b},${a})`;};
   // Фон меняется ТОЛЬКО в активном состоянии (acc цвет) — без hover фона, чтобы избежать
   // SVG transparency bleed-through. Иконка затемняется через CSS filter на самом SVG.
-  const bg = active ? toRgba(accent,0.14) : pressed ? (GLASS_MODE?"rgba(255,255,255,0.14)":"rgba(0,0,0,0.14)") : hov ? (GLASS_MODE?"rgba(255,255,255,0.08)":"rgba(0,0,0,0.08)") : "transparent";
-  const svgFilter = active ? "none" : pressed ? (GLASS_MODE?"brightness(1.6)":"brightness(0.3)") : hov ? (GLASS_MODE?"brightness(1.3)":"brightness(0.45)") : "none";
+  const bg = active ? toRgba(accent,0.14) : pressed ? (GLASS_MODE?"rgba(0,0,0,0.08)":"rgba(0,0,0,0.14)") : hov ? (GLASS_MODE?"rgba(0,0,0,0.05)":"rgba(0,0,0,0.08)") : "transparent";
+  const svgFilter = active ? "none" : pressed ? (GLASS_MODE?"brightness(0.3)":"brightness(0.3)") : hov ? (GLASS_MODE?"brightness(0.45)":"brightness(0.45)") : "none";
   return (
     <button onClick={onClick}
       style={{width:40,height:40,background:bg,border:"none",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",borderRadius:C.inputRadius||8,transition:"background 0.12s"}}
@@ -2591,14 +2591,14 @@ function BaseModal({onClose, title, icon, accent=C.red, maxWidth=520, children})
   return (
     <div onClick={onClose} style={{
       position:"fixed",inset:0,zIndex:900,padding:isMobile?0:"16px",
-      background:GLASS_MODE?"rgba(5,5,15,0.65)":"rgba(15,15,15,0.50)",
+      background:GLASS_MODE?"rgba(0,0,0,0.35)":"rgba(15,15,15,0.50)",
       backdropFilter:"blur(6px)",WebkitBackdropFilter:"blur(6px)",
       display:"flex",alignItems:isMobile?"stretch":"center",justifyContent:"center",
       animation:"overlayIn 0.18s ease",
     }}>
       <div onClick={e=>e.stopPropagation()} style={{
         ...(GLASS_MODE?GLASS:{}),
-        background:GLASS_MODE?'rgba(20,20,35,0.85)':C.surface,
+        background:GLASS_MODE?'rgba(255,255,255,0.88)':C.surface,
         backdropFilter:GLASS_MODE?'blur(24px) saturate(1.4)':undefined,
         WebkitBackdropFilter:GLASS_MODE?'blur(24px) saturate(1.4)':undefined,
         borderRadius:isMobile?0:(GLASS_MODE?16:(C.inputRadius||8)),
@@ -2606,7 +2606,7 @@ function BaseModal({onClose, title, icon, accent=C.red, maxWidth=520, children})
         maxWidth:isMobile?"100%":maxWidth,width:"100%",
         maxHeight:isMobile?"100vh":undefined,
         overflowY:isMobile?"auto":undefined,
-        boxShadow:GLASS_MODE?'0 24px 64px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1)':(isMobile?"none":"0 24px 64px rgba(0,0,0,0.20), 0 2px 8px rgba(0,0,0,0.08)"),
+        boxShadow:GLASS_MODE?'0 24px 64px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.8)':(isMobile?"none":"0 24px 64px rgba(0,0,0,0.20), 0 2px 8px rgba(0,0,0,0.08)"),
         animation:"modalIn 0.24s cubic-bezier(0.34,1.36,0.64,1)",
       }}>
         {/* Header */}
@@ -3286,7 +3286,7 @@ function UebersichtTab({stats, aktiv, acc, accDk, C, SANS, FS, katAccent, katAcc
     </div>
     <div style={{display:"grid",gridTemplateColumns:isMobile?"1fr":"1fr 1fr",gap:isMobile?6:10}}>
     {kostenCats.map(cat=>(
-    <div key={cat.label} style={{padding:"12px 14px",borderLeft:`2px solid ${cat.color}`,background:GLASS_MODE?'rgba(255,255,255,0.05)':C.surfaceAlt,borderRadius:GLASS_MODE?8:"0 6px 6px 0"}}>
+    <div key={cat.label} style={{padding:"12px 14px",borderLeft:`2px solid ${cat.color}`,background:GLASS_MODE?'rgba(255,255,255,0.5)':C.surfaceAlt,borderRadius:GLASS_MODE?8:"0 6px 6px 0"}}>
     <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:6}}>
     <Ico name={cat.icon} size={18} color={(cat.colorDk||cat.color)}/>
     <span style={{fontSize:13,fontWeight:700,letterSpacing:1.5,textTransform:"uppercase",fontFamily:SANS,color:C.text}}>{cat.label}</span>
@@ -3416,8 +3416,8 @@ function UebersichtTab({stats, aktiv, acc, accDk, C, SANS, FS, katAccent, katAcc
     <div style={{...(GLASS_MODE?GLASS:{}),background:GLASS_MODE?GLASS.background:C.surface,borderTop:GLASS_MODE?`2px solid ${C.red}60`:`2px solid ${C.red}`,padding:"16px 20px",
     display:"flex",alignItems:"center",justifyContent:"space-between",
     boxShadow:GLASS_MODE?GLASS.boxShadow:C.shadow,borderRadius:GLASS_MODE?16:(C.inputRadius||8)}}>
-    <div style={{display:"flex",alignItems:"center",gap:10,fontSize:14,color:GLASS_MODE?'#ff8888':C.redDk,fontFamily:SANS,fontWeight:600}}>
-    <Ico name="alert" size={15} color={GLASS_MODE?'#ff8888':C.redDk}/>Kein Stammstandort — bitte einrichten.
+    <div style={{display:"flex",alignItems:"center",gap:10,fontSize:14,color:GLASS_MODE?C.redDk:C.redDk,fontFamily:SANS,fontWeight:600}}>
+    <Ico name="alert" size={15} color={GLASS_MODE?C.redDk:C.redDk}/>Kein Stammstandort — bitte einrichten.
     </div>
     <button onClick={()=>setTab("einstellungen")} style={btnSolid(C.redDk)}>
     <Ico name="settings" size={15} color="#fff"/>EINSTELLUNGEN
@@ -4306,16 +4306,10 @@ export default function FahrtenbuchLight() {
   React.useEffect(()=>{try{localStorage.setItem("fb2_theme",themeId)}catch(e){/*ok*/}}, [themeId]);
   C = THEMES[themeId] || THEME_HYBRID;
   if (GLASS_MODE) {
+    // Light glass mode: keep original theme colors, only add glass-specific shadows
     C = { ...C,
-      bg: '#0f1019',
-      surface: 'rgba(255,255,255,0.08)',
-      surfaceAlt: 'rgba(255,255,255,0.04)',
-      text: '#f0f0f5',
-      muted: 'rgba(255,255,255,0.5)',
-      border: 'rgba(255,255,255,0.1)',
-      borderHi: 'rgba(255,255,255,0.15)',
-      shadow: '0 8px 32px rgba(0,0,0,0.3)',
-      shadowMd: '0 4px 16px rgba(0,0,0,0.2)',
+      shadow: '0 4px 16px rgba(0,0,0,0.06)',
+      shadowMd: '0 2px 8px rgba(0,0,0,0.04)',
     };
   }
   ({ katAccent, katAccentDk, katBg, ST_TYP_COLORS, ST_TYP_COLORS_DK } = syncTheme(C));
@@ -6458,10 +6452,10 @@ input[type=number] { -moz-appearance:textfield; }
     }
   }
 `}</style>
-    <div style={{minHeight:"100vh",background:GLASS_MODE?GLASS_BG:C.bg,backgroundColor:GLASS_MODE?'#0f1019':undefined,color:C.text,fontFamily:SANS,overflowX:"hidden",width:"100%",maxWidth:"100vw"}}>
+    <div style={{minHeight:"100vh",background:GLASS_MODE?GLASS_BG:C.bg,backgroundColor:GLASS_MODE?'#eef1f8':undefined,color:C.text,fontFamily:SANS,overflowX:"hidden",width:"100%",maxWidth:"100vw"}}>
 
       {/* ══ HEADER ══ */}
-      <header ref={headerRef} style={{background:GLASS_MODE?'rgba(15,15,25,0.75)':C.bg,backdropFilter:GLASS_MODE?'blur(20px) saturate(1.4)':undefined,WebkitBackdropFilter:GLASS_MODE?'blur(20px) saturate(1.4)':undefined,borderBottom:`0.5px solid ${GLASS_MODE?'rgba(255,255,255,0.08)':C.border}`,position:"sticky",top:0,zIndex:100,transition:"border-color 0.3s",boxShadow:GLASS_MODE?'0 8px 32px rgba(0,0,0,0.3)':'0 2px 8px rgba(0,0,0,0.10), 0 6px 24px rgba(0,0,0,0.06)'}}>
+      <header ref={headerRef} style={{background:GLASS_MODE?'rgba(255,255,255,0.72)':C.bg,backdropFilter:GLASS_MODE?'blur(20px) saturate(1.4)':undefined,WebkitBackdropFilter:GLASS_MODE?'blur(20px) saturate(1.4)':undefined,borderBottom:`0.5px solid ${GLASS_MODE?'rgba(0,0,0,0.08)':C.border}`,position:"sticky",top:0,zIndex:100,transition:"border-color 0.3s",boxShadow:GLASS_MODE?'0 4px 16px rgba(0,0,0,0.06)':'0 2px 8px rgba(0,0,0,0.10), 0 6px 24px rgba(0,0,0,0.06)'}}>
         {C.useGradients&&<div style={{height:3,background:C.headerGradient}}/>}
         <div style={{maxWidth:1200,margin:"0 auto",padding:isMobile?"10px 12px":isTablet?"14px 20px":"22px 28px",width:"100%",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
         <div style={{display:"flex",alignItems:"center",gap:isMobile?8:16,minWidth:0,flex:1}}>
@@ -6490,11 +6484,11 @@ input[type=number] { -moz-appearance:textfield; }
           {(()=>{const now=new Date();const nowYM=now.getFullYear()*12+now.getMonth();const parseTuv=d=>{if(!d)return null;if(d.includes(".")){const p=d.split(".").map(Number);return p.length>=3?{y:p[2],m:p[1]}:p.length===2?{y:p[1],m:p[0]}:null;}if(d.includes("-")){const[y,m]=d.split("-").map(Number);return{y,m};}return null;};const alertFz=[aktiv].filter(fz=>{const t=parseTuv(fz.tuvDatum);if(!t)return false;return(t.y*12+(t.m-1))-nowYM<=2;});const offeneStrafen=(aktiv.strafen||[]).filter(s=>!s.bezahlt);const totalAlerts=alertFz.length+offeneStrafen.length;if(!totalAlerts)return null;return(
               <div ref={tuvRef} style={{position:"relative"}}>
                 <button onClick={()=>setTuvPopup(v=>!v)}
-                  style={{width:40,height:40,background:tuvPopup?(GLASS_MODE?"rgba(255,255,255,0.08)":"rgba(0,0,0,0.08)"):"transparent",border:"none",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",position:"relative",transition:"background 0.12s",borderRadius:C.inputRadius||8}}
-                  onMouseEnter={e=>{if(!tuvPopup)e.currentTarget.style.background=GLASS_MODE?"rgba(255,255,255,0.08)":"rgba(0,0,0,0.08)"}}
+                  style={{width:40,height:40,background:tuvPopup?(GLASS_MODE?"rgba(0,0,0,0.05)":"rgba(0,0,0,0.08)"):"transparent",border:"none",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",position:"relative",transition:"background 0.12s",borderRadius:C.inputRadius||8}}
+                  onMouseEnter={e=>{if(!tuvPopup)e.currentTarget.style.background=GLASS_MODE?"rgba(0,0,0,0.05)":"rgba(0,0,0,0.08)"}}
                   onMouseLeave={e=>{if(!tuvPopup)e.currentTarget.style.background="transparent"}}
-                  onMouseDown={e=>e.currentTarget.style.background=GLASS_MODE?"rgba(255,255,255,0.14)":"rgba(0,0,0,0.14)"}
-                  onMouseUp={e=>e.currentTarget.style.background=GLASS_MODE?"rgba(255,255,255,0.08)":"rgba(0,0,0,0.08)"}>
+                  onMouseDown={e=>e.currentTarget.style.background=GLASS_MODE?"rgba(0,0,0,0.08)":"rgba(0,0,0,0.14)"}
+                  onMouseUp={e=>e.currentTarget.style.background=GLASS_MODE?"rgba(0,0,0,0.05)":"rgba(0,0,0,0.08)"}>
                   <Ico name="bell" size={20} color={C.redDk}/>
                   <span style={{position:"absolute",top:4,right:2,minWidth:16,height:16,borderRadius:8,background:C.red,border:`1.5px solid ${C.bg}`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:9,fontWeight:900,color:"#fff",fontFamily:SANS,padding:"0 3px"}}>{totalAlerts}</span>
                 </button>
@@ -6502,10 +6496,10 @@ input[type=number] { -moz-appearance:textfield; }
                   <div style={{
                     position:"absolute",top:"calc(100% + 10px)",right:0,
                     ...(GLASS_MODE?{backdropFilter:'blur(20px) saturate(1.4)',WebkitBackdropFilter:'blur(20px) saturate(1.4)'}:{}),
-                    background:GLASS_MODE?'rgba(20,20,35,0.9)':C.surface,
+                    background:GLASS_MODE?'rgba(255,255,255,0.92)':C.surface,
                     borderRadius:GLASS_MODE?16:(C.inputRadius||8),
-                    border:GLASS_MODE?'1px solid rgba(255,255,255,0.12)':`1px solid ${C.border}`,
-                    boxShadow:GLASS_MODE?"0 16px 48px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.08)":"0 16px 48px rgba(0,0,0,0.18), 0 2px 8px rgba(0,0,0,0.08)",
+                    border:GLASS_MODE?'1px solid rgba(255,255,255,0.6)':`1px solid ${C.border}`,
+                    boxShadow:GLASS_MODE?"0 16px 48px rgba(0,0,0,0.10), inset 0 1px 0 rgba(255,255,255,0.7)":"0 16px 48px rgba(0,0,0,0.18), 0 2px 8px rgba(0,0,0,0.08)",
                     minWidth:300,maxWidth:360,zIndex:200,overflow:"hidden",
                     animation:"modalIn 0.2s cubic-bezier(0.34,1.36,0.64,1)",
                   }}>
@@ -6563,7 +6557,7 @@ input[type=number] { -moz-appearance:textfield; }
           <SettingsBtn active={tab==="einstellungen"} accent={acc} onClick={()=>setTab("einstellungen")}/>
           <button onClick={onLogout} title="Abmelden"
             style={{width:40,height:40,background:"transparent",border:"none",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",borderRadius:C.inputRadius||8,transition:"background 0.12s",color:C.muted}}
-            onMouseEnter={e=>{e.currentTarget.style.background=GLASS_MODE?"rgba(255,255,255,0.08)":"rgba(0,0,0,0.08)";e.currentTarget.querySelector("svg").style.stroke=C.red;}}
+            onMouseEnter={e=>{e.currentTarget.style.background=GLASS_MODE?"rgba(0,0,0,0.05)":"rgba(0,0,0,0.08)";e.currentTarget.querySelector("svg").style.stroke=C.red;}}
             onMouseLeave={e=>{e.currentTarget.style.background="transparent";e.currentTarget.querySelector("svg").style.stroke=C.muted;}}>
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={C.muted} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{transition:"stroke 0.12s"}}>
               <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
@@ -6574,11 +6568,11 @@ input[type=number] { -moz-appearance:textfield; }
         </div>
         </div>
         {/* ── TABS (inside header) ── */}
-        <div style={{background:GLASS_MODE?'rgba(255,255,255,0.03)':C.bg,borderTop:GLASS_MODE?'1px solid rgba(255,255,255,0.06)':undefined,overflow:isMobile?"auto":"hidden",WebkitOverflowScrolling:"touch"}}>
+        <div style={{background:GLASS_MODE?'rgba(255,255,255,0.5)':C.bg,borderTop:GLASS_MODE?'1px solid rgba(0,0,0,0.06)':undefined,overflow:isMobile?"auto":"hidden",WebkitOverflowScrolling:"touch"}}>
           <div style={{maxWidth:1200,margin:"0 auto",display:"flex",width:isMobile?"max-content":"100%",padding:isMobile?"0 8px":isTablet?"0 20px":"0 32px",boxSizing:"border-box"}}>
             {TABS.map(t=>(
               <button key={t.id} onClick={()=>{setTab(t.id);resetForms();}}
-                style={{flex:isMobile?"none":1,padding:isMobile?"10px 14px":isTablet?"10px 8px":"12px 8px",background:GLASS_MODE&&tab===t.id?'rgba(255,255,255,0.08)':'transparent',border:"none",borderRadius:GLASS_MODE&&tab===t.id?'8px 8px 0 0':undefined,boxShadow:tab===t.id?`inset 0 ${C.useGradients?"-3":"-2"}px 0 ${GLASS_MODE?'rgba(255,255,255,0.6)':(accDk||acc)}`:"none",color:tab===t.id?(GLASS_MODE?'#fff':(accDk||acc)):(GLASS_MODE?'rgba(255,255,255,0.5)':C.text),cursor:"pointer",fontSize:isMobile?13:isTablet?14:15,fontFamily:SANS,fontWeight:700,letterSpacing:isMobile?0.5:1,textTransform:"uppercase",transition:"all 0.15s",whiteSpace:"nowrap",textAlign:"center",minWidth:0}}>
+                style={{flex:isMobile?"none":1,padding:isMobile?"10px 14px":isTablet?"10px 8px":"12px 8px",background:GLASS_MODE&&tab===t.id?'rgba(0,0,0,0.04)':'transparent',border:"none",borderRadius:GLASS_MODE&&tab===t.id?'8px 8px 0 0':undefined,boxShadow:tab===t.id?`inset 0 ${C.useGradients?"-3":"-2"}px 0 ${GLASS_MODE?(accDk||acc):(accDk||acc)}`:"none",color:tab===t.id?(GLASS_MODE?(accDk||acc):(accDk||acc)):(GLASS_MODE?C.muted:C.text),cursor:"pointer",fontSize:isMobile?13:isTablet?14:15,fontFamily:SANS,fontWeight:700,letterSpacing:isMobile?0.5:1,textTransform:"uppercase",transition:"all 0.15s",whiteSpace:"nowrap",textAlign:"center",minWidth:0}}>
                 {t.label}
               </button>
             ))}
@@ -7761,12 +7755,12 @@ input[type=number] { -moz-appearance:textfield; }
           width: isMobile ? "100%" : isTablet ? Math.min(420, screenW - 32) : 500,
           height: isMobile ? "100%" : "calc(100vh - 120px)",
           maxHeight: isMobile ? "100%" : 700,
-          background:GLASS_MODE?'rgba(15,15,30,0.85)':C.surface,
+          background:GLASS_MODE?'rgba(255,255,255,0.88)':C.surface,
           backdropFilter:GLASS_MODE?'blur(24px) saturate(1.4)':undefined,
           WebkitBackdropFilter:GLASS_MODE?'blur(24px) saturate(1.4)':undefined,
-          border: isMobile ? "none" : GLASS_MODE?'1px solid rgba(255,255,255,0.12)':`1px solid ${C.border}`,
+          border: isMobile ? "none" : GLASS_MODE?'1px solid rgba(255,255,255,0.5)':`1px solid ${C.border}`,
           borderRadius: isMobile ? 0 : isTablet ? 16 : 24,
-          boxShadow: isMobile ? "none" : GLASS_MODE?"0 8px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.08)":"0 8px 40px rgba(0,0,0,0.15), 0 2px 8px rgba(0,0,0,0.08)",
+          boxShadow: isMobile ? "none" : GLASS_MODE?"0 8px 40px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.7)":"0 8px 40px rgba(0,0,0,0.15), 0 2px 8px rgba(0,0,0,0.08)",
           display:"flex", flexDirection:"column",
           zIndex:1100, fontFamily:SANS,
           overflow:"hidden",
