@@ -25,6 +25,17 @@ const FS = {
   kpi:   22,  // числа KPI второго уровня
 };
 
+// ─── RESPONSIVE HOOK ─────────────────────────────────────────────────────────
+function useScreenSize() {
+  const [w, setW] = useState(typeof window !== 'undefined' ? window.innerWidth : 1200);
+  useEffect(() => {
+    const h = () => setW(window.innerWidth);
+    window.addEventListener('resize', h);
+    return () => window.removeEventListener('resize', h);
+  }, []);
+  return { isMobile: w <= 480, isTablet: w > 480 && w <= 1024, isDesktop: w > 1024, width: w };
+}
+
 // ─── UTILS ───────────────────────────────────────────────────────────────────
 const safeFloat = (v, fallback=0) => { const n=parseFloat(v); return isNaN(n)?fallback:n; };
 // Gradient helper: returns gradient string if C.useGradients, else solid color
@@ -1345,11 +1356,13 @@ function LS({label, value, onChange, accent, options, placeholder}) {
 }
 // FormRow — 2 or 3 column grid, always respects container width
 function FormRow({cols=2, children}) {
-  const tpl = Array(cols).fill("minmax(0,1fr)").join(" ");
-  return <div style={{display:"grid", gridTemplateColumns:tpl, gap:22, alignItems:"start"}}>{children}</div>;
+  const {isMobile} = useScreenSize();
+  const tpl = isMobile ? "1fr" : Array(cols).fill("minmax(0,1fr)").join(" ");
+  return <div style={{display:"grid", gridTemplateColumns:tpl, gap:isMobile?0:22, alignItems:"start"}}>{children}</div>;
 }
 // FormPanel — the inline form container
 function FormPanel({accent, title, icon, children, onSave}) {
+  const {isMobile} = useScreenSize();
   const handleKey = e => {
     if(e.key==="Enter" && !e.shiftKey && e.target.tagName !== "TEXTAREA" && e.target.tagName !== "SELECT") {
       e.preventDefault();
@@ -1362,8 +1375,8 @@ function FormPanel({accent, title, icon, children, onSave}) {
       border:`1px solid ${C.border}`,
       borderTop:`3px solid ${accent}`,
       borderRadius:C.inputRadius||8,
-      padding:"22px 24px 24px",
-      marginBottom:12,
+      padding:isMobile?"14px 12px 16px":"22px 24px 24px",
+      marginBottom:isMobile?8:12,
       boxShadow:"0 2px 12px rgba(0,0,0,0.06)",
       animation:"modalIn 0.18s cubic-bezier(0.34,1.3,0.64,1)",
     }}>
@@ -1402,6 +1415,7 @@ function FormActions({onSave, onCancel, accent, accentDk, saveDisabled=false}) {
 
 // ─── SHARED UI ────────────────────────────────────────────────────────────────
 function KpiCard({wert, unit, label, akzent, akzentDk, icon}) {
+  const {isMobile} = useScreenSize();
   const numVal = parseFloat(String(wert).replace(/[^0-9.\-]/g,""))||0;
   const isFloat = String(wert).includes(".");
   const decimals = isFloat ? (String(wert).split(".")[1]||"").length : 0;
@@ -1421,16 +1435,16 @@ function KpiCard({wert, unit, label, akzent, akzentDk, icon}) {
     return ()=>{ if(rafRef.current) cancelAnimationFrame(rafRef.current); };
   },[numVal]);
   return (
-    <div style={{background:C.surface, borderTop:C.useGradients?'none':`2px solid ${akzent}`, padding:"20px 22px",
+    <div style={{background:C.surface, borderTop:C.useGradients?'none':`2px solid ${akzent}`, padding:isMobile?"14px 12px":"20px 22px",
       position:"relative", overflow:"hidden", boxShadow:C.shadow, borderRadius:C.inputRadius||8}}>
       {C.useGradients&&<div style={{position:"absolute",top:0,left:0,right:0,height:3,background:`linear-gradient(90deg, ${akzentDk||akzent}, ${akzent})`}}/>}
-      <div style={{position:"absolute",top:10,right:12,opacity:0.18}}><Ico name={icon} size={44} color={akzent}/></div>
-      <div style={{display:"flex",alignItems:"baseline",gap:4,marginBottom:5,minWidth:0}}>
-        <div style={{fontSize:28,fontWeight:800,color:akzentDk||akzent,fontFamily:SANS,
+      <div style={{position:"absolute",top:isMobile?6:10,right:isMobile?8:12,opacity:0.18}}><Ico name={icon} size={isMobile?32:44} color={akzent}/></div>
+      <div style={{display:"flex",alignItems:"baseline",gap:4,marginBottom:isMobile?3:5,minWidth:0}}>
+        <div style={{fontSize:isMobile?22:28,fontWeight:800,color:akzentDk||akzent,fontFamily:SANS,
           lineHeight:1,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{display}</div>
-        {unit&&<div style={{fontSize:14,fontWeight:700,color:akzentDk||akzent,fontFamily:SANS,flexShrink:0}}>{unit}</div>}
+        {unit&&<div style={{fontSize:isMobile?12:14,fontWeight:700,color:akzentDk||akzent,fontFamily:SANS,flexShrink:0}}>{unit}</div>}
       </div>
-      <div style={{fontSize:14,fontWeight:700,color:C.text,letterSpacing:2,textTransform:"uppercase",
+      <div style={{fontSize:isMobile?11:14,fontWeight:700,color:C.text,letterSpacing:isMobile?1:2,textTransform:"uppercase",
         fontFamily:SANS,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{label}</div>
     </div>
   );
@@ -1549,7 +1563,8 @@ function Kennzeichen({value,size="md"}) {
   );
 }
 function SettingsBlock({children,accent=C.red}) {
-  return <div style={{background:C.surface,border:`1px solid ${C.border}`,borderTop:`2px solid ${accent}`,padding:"24px 28px",marginBottom:3,boxShadow:C.shadow}}>{children}</div>;
+  const {isMobile} = useScreenSize();
+  return <div style={{background:C.surface,border:`1px solid ${C.border}`,borderTop:`2px solid ${accent}`,padding:isMobile?"16px 12px":"24px 28px",marginBottom:3,boxShadow:C.shadow}}>{children}</div>;
 }
 function SettingsLabel({icon,text,sub,accent=C.muted}) {
   return (
@@ -2542,6 +2557,7 @@ function SaveToast({status}) {
 
 // ─── BASE MODAL — reusable overlay wrapper ───────────────────────────────────
 function BaseModal({onClose, title, icon, accent=C.red, maxWidth=520, children}) {
+  const {isMobile} = useScreenSize();
   useEffect(()=>{
     const h=e=>{if(e.key==="Escape") onClose();};
     document.addEventListener("keydown",h);
@@ -2549,17 +2565,19 @@ function BaseModal({onClose, title, icon, accent=C.red, maxWidth=520, children})
   },[]);
   return (
     <div onClick={onClose} style={{
-      position:"fixed",inset:0,zIndex:900,padding:"16px",
+      position:"fixed",inset:0,zIndex:900,padding:isMobile?0:"16px",
       background:"rgba(15,15,15,0.50)",
       backdropFilter:"blur(6px)",WebkitBackdropFilter:"blur(6px)",
-      display:"flex",alignItems:"center",justifyContent:"center",
+      display:"flex",alignItems:isMobile?"stretch":"center",justifyContent:"center",
       animation:"overlayIn 0.18s ease",
     }}>
       <div onClick={e=>e.stopPropagation()} style={{
-        background:C.surface,borderRadius:C.inputRadius||8,
-        padding:"24px 28px 28px",
-        maxWidth,width:"100%",
-        boxShadow:"0 24px 64px rgba(0,0,0,0.20), 0 2px 8px rgba(0,0,0,0.08)",
+        background:C.surface,borderRadius:isMobile?0:(C.inputRadius||8),
+        padding:isMobile?"16px 14px 20px":"24px 28px 28px",
+        maxWidth:isMobile?"100%":maxWidth,width:"100%",
+        maxHeight:isMobile?"100vh":undefined,
+        overflowY:isMobile?"auto":undefined,
+        boxShadow:isMobile?"none":"0 24px 64px rgba(0,0,0,0.20), 0 2px 8px rgba(0,0,0,0.08)",
         animation:"modalIn 0.24s cubic-bezier(0.34,1.36,0.64,1)",
       }}>
         {/* Header */}
@@ -2834,34 +2852,59 @@ class ErrorBoundary extends React.Component {
 
 // ─── TANKEN LISTE ─────────────────────────────────────────────────────────────
 function TankenListe({ items, onEdit, onDelete }) {
+  const {isMobile} = useScreenSize();
   return (
     <div className="fb-stagger">
       {(items||[]).slice().sort((a,b)=>(b?.datum||"").localeCompare(a?.datum||"")).map(t=>(
-        <div key={t.id} style={{background:C.surface,borderLeft:`2px solid ${C.tank}`,padding:"12px 16px",marginBottom:2,display:"flex",alignItems:"center",gap:12,boxShadow:C.shadow}}>
-          <div style={{width:96,flexShrink:0}}>
-            <div style={{fontSize:14,fontWeight:700,color:C.text}}>{formatDatum(t.datum)}</div>
-            {t.uhrzeit&&<div style={{fontSize:13,color:C.muted,marginTop:3}}>{t.uhrzeit}</div>}
-          </div>
-          <div style={{flex:1,minWidth:0}}>
-            <div style={{fontSize:16,fontWeight:700,color:C.text,marginBottom:2}}>{t.stationName||"Tankstelle"}</div>
-            {t.adresse&&<div style={{fontSize:14,color:C.text,display:"flex",alignItems:"center",gap:4,fontFamily:SANS}}><Ico name="mapPin" size={13} color={C.muted}/>{t.adresse}</div>}
-            <div style={{fontSize:13,color:C.steelMid,marginTop:2,display:"flex",gap:8,flexWrap:"wrap"}}>
-              <span style={{background:C.tank+"18",color:C.tank,border:`1px solid ${C.tank}30`,padding:"3px 10px",fontWeight:700,letterSpacing:1.5,fontSize:11,lineHeight:1,display:"inline-flex",alignItems:"center",borderRadius:20}}>{t.kraftstoff||"Kraftstoff"}</span>
-              {t.kmStand&&<span>KM: <b>{t.kmStand}</b></span>}
-              {t.zapfsaeule&&<span>Säule: {t.zapfsaeule}</span>}
-              {t.bonNr&&<span>Bon: {t.bonNr}</span>}
-              {t.zahlungsart&&<span>{t.zahlungsart}</span>}
+        <div key={t.id} style={{background:C.surface,borderLeft:`2px solid ${C.tank}`,padding:isMobile?"10px 10px":"12px 16px",marginBottom:2,display:"flex",flexDirection:isMobile?"column":"row",alignItems:isMobile?"stretch":"center",gap:isMobile?6:12,boxShadow:C.shadow}}>
+          {isMobile ? <>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
+              <div style={{minWidth:0,flex:1}}>
+                <div style={{fontSize:15,fontWeight:700,color:C.text,marginBottom:2}}>{t.stationName||"Tankstelle"}</div>
+                {t.adresse&&<div style={{fontSize:13,color:C.text,display:"flex",alignItems:"center",gap:4,fontFamily:SANS,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}><Ico name="mapPin" size={12} color={C.muted}/>{t.adresse}</div>}
+              </div>
+              <div style={{textAlign:"right",flexShrink:0,marginLeft:8}}>
+                <div style={{fontSize:18,fontWeight:800,color:C.tankDk,fontFamily:SANS,lineHeight:1}}>{(parseFloat(t.menge)||0).toFixed(2)} L</div>
+                {t.gesamtbetrag&&<div style={{fontSize:14,fontWeight:700,color:C.text,fontFamily:SANS}}>{parseFloat(t.gesamtbetrag).toFixed(2)} €</div>}
+              </div>
             </div>
-          </div>
-          <div style={{textAlign:"center",minWidth:100,flexShrink:0}}>
-            <div style={{fontSize:22,fontWeight:800,color:C.tankDk,fontFamily:SANS,lineHeight:1}}>{(parseFloat(t.menge)||0).toFixed(2)} L</div>
-            {t.preisProLiter&&<div style={{fontSize:14,color:C.text}}>{parseFloat(t.preisProLiter).toFixed(3)} €/L</div>}
-            {t.gesamtbetrag&&<div style={{fontSize:16,fontWeight:700,color:C.text,fontFamily:SANS}}>{parseFloat(t.gesamtbetrag).toFixed(2)} €</div>}
-          </div>
-          <div style={{display:"flex",gap:2,flexShrink:0}}>
-            <IcoBtn icon="edit"  color={C.steelMid} title="Bearbeiten" onClick={()=>onEdit(t)}/>
-            <IcoBtn icon="trash" color={C.tank}     title="Löschen"    onClick={()=>onDelete(t.id)}/>
-          </div>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+              <div style={{display:"flex",alignItems:"center",gap:6,fontSize:12,color:C.muted,flexWrap:"wrap"}}>
+                <span style={{fontWeight:600}}>{formatDatum(t.datum)}</span>
+                {t.uhrzeit&&<span>{t.uhrzeit}</span>}
+                <span style={{background:C.tank+"18",color:C.tank,border:`1px solid ${C.tank}30`,padding:"2px 7px",fontWeight:700,letterSpacing:1,fontSize:10,lineHeight:1,display:"inline-flex",alignItems:"center",borderRadius:20}}>{t.kraftstoff||"Kraftstoff"}</span>
+              </div>
+              <div style={{display:"flex",gap:2,flexShrink:0}}>
+                <IcoBtn icon="edit"  color={C.steelMid} title="Bearbeiten" onClick={()=>onEdit(t)}/>
+                <IcoBtn icon="trash" color={C.tank}     title="Löschen"    onClick={()=>onDelete(t.id)}/>
+              </div>
+            </div>
+          </> : <>
+            <div style={{width:96,flexShrink:0}}>
+              <div style={{fontSize:14,fontWeight:700,color:C.text}}>{formatDatum(t.datum)}</div>
+              {t.uhrzeit&&<div style={{fontSize:13,color:C.muted,marginTop:3}}>{t.uhrzeit}</div>}
+            </div>
+            <div style={{flex:1,minWidth:0}}>
+              <div style={{fontSize:16,fontWeight:700,color:C.text,marginBottom:2}}>{t.stationName||"Tankstelle"}</div>
+              {t.adresse&&<div style={{fontSize:14,color:C.text,display:"flex",alignItems:"center",gap:4,fontFamily:SANS}}><Ico name="mapPin" size={13} color={C.muted}/>{t.adresse}</div>}
+              <div style={{fontSize:13,color:C.steelMid,marginTop:2,display:"flex",gap:8,flexWrap:"wrap"}}>
+                <span style={{background:C.tank+"18",color:C.tank,border:`1px solid ${C.tank}30`,padding:"3px 10px",fontWeight:700,letterSpacing:1.5,fontSize:11,lineHeight:1,display:"inline-flex",alignItems:"center",borderRadius:20}}>{t.kraftstoff||"Kraftstoff"}</span>
+                {t.kmStand&&<span>KM: <b>{t.kmStand}</b></span>}
+                {t.zapfsaeule&&<span>Säule: {t.zapfsaeule}</span>}
+                {t.bonNr&&<span>Bon: {t.bonNr}</span>}
+                {t.zahlungsart&&<span>{t.zahlungsart}</span>}
+              </div>
+            </div>
+            <div style={{textAlign:"center",minWidth:100,flexShrink:0}}>
+              <div style={{fontSize:22,fontWeight:800,color:C.tankDk,fontFamily:SANS,lineHeight:1}}>{(parseFloat(t.menge)||0).toFixed(2)} L</div>
+              {t.preisProLiter&&<div style={{fontSize:14,color:C.text}}>{parseFloat(t.preisProLiter).toFixed(3)} €/L</div>}
+              {t.gesamtbetrag&&<div style={{fontSize:16,fontWeight:700,color:C.text,fontFamily:SANS}}>{parseFloat(t.gesamtbetrag).toFixed(2)} €</div>}
+            </div>
+            <div style={{display:"flex",gap:2,flexShrink:0}}>
+              <IcoBtn icon="edit"  color={C.steelMid} title="Bearbeiten" onClick={()=>onEdit(t)}/>
+              <IcoBtn icon="trash" color={C.tank}     title="Löschen"    onClick={()=>onDelete(t.id)}/>
+            </div>
+          </>}
         </div>
       ))}
     </div>
@@ -2870,34 +2913,66 @@ function TankenListe({ items, onEdit, onDelete }) {
 
 // ─── STRAFEN LISTE ────────────────────────────────────────────────────────────
 function StrafenListe({ items, onEdit, onDelete, onToggleBezahlt }) {
+  const {isMobile} = useScreenSize();
   return (
     <div className="fb-stagger">
       {(items||[]).slice().sort((a,b)=>(b?.datum||"").localeCompare(a?.datum||"")).map(s=>(
-        <div key={s.id} style={{background:C.surface,borderLeft:`2px solid ${s.bezahlt?C.border:C.strafe}`,padding:"12px 16px",marginBottom:2,display:"flex",alignItems:"center",gap:12,boxShadow:C.shadow}}>
-          <label title="Bezahlt umschalten" style={{display:"flex",alignItems:"center",cursor:"pointer",flexShrink:0}}>
-            <input type="checkbox" checked={!!s.bezahlt} onChange={()=>onToggleBezahlt(s.id)}
-              style={{width:18,height:18,cursor:"pointer",accentColor:C.strafe,flexShrink:0,margin:0}}/>
-          </label>
-          <div style={{width:96,flexShrink:0}}>
-            <div style={{fontSize:14,fontWeight:700,color:C.text}}>{formatDatum(s.datum)}</div>
-            {s.uhrzeit&&<div style={{fontSize:13,color:C.muted,marginTop:3}}>{s.uhrzeit}</div>}
-          </div>
-          <div style={{flex:1,minWidth:0}}>
-            <div style={{fontSize:16,fontWeight:700,color:C.text,marginBottom:2,wordBreak:"break-word"}}>{s.typ||"Strafe"}</div>
-            {(s.tatort||s.tatortAdresse)&&<div style={{fontSize:14,color:C.text,display:"flex",alignItems:"center",gap:4,fontFamily:SANS}}><Ico name="mapPin" size={13} color={C.strafe}/>{[s.tatort,s.tatortAdresse].filter(Boolean).join(", ")}</div>}
-            {s.behoerde&&<div style={{fontSize:14,color:C.text,display:"flex",alignItems:"center",gap:4,fontFamily:SANS}}><Ico name="building" size={13} color={C.muted}/>{s.behoerde}</div>}
-            {s.aktenzeichen&&<div style={{fontSize:14,color:C.muted,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>Az: {s.aktenzeichen}</div>}
-            {s.frist&&!s.bezahlt&&<div style={{fontSize:13,color:new Date(s.frist)<new Date()?C.red:C.gold,fontWeight:700,display:"flex",alignItems:"center",gap:4}}><Ico name="clock" size={12} color={(new Date(s.frist)<new Date()?C.redDk:C.goldDk)}/>Frist: {formatDatum(s.frist)}</div>}
-          </div>
-          <div style={{textAlign:"center",minWidth:88,flexShrink:0}}>
-            <div style={{fontSize:22,fontWeight:800,color:(s.bezahlt?C.mutedDk:C.strafeDk),fontFamily:SANS,lineHeight:1}}>{(parseFloat(s.betrag)||0).toFixed(2)} €</div>
-            {!s.bezahlt&&<div style={{fontSize:11,color:C.strafe,letterSpacing:1,textTransform:"uppercase",marginTop:2}}>offen</div>}
-            {s.bezahlt&&<div style={{fontSize:13,color:C.muted,letterSpacing:1}}>BEZAHLT</div>}
-          </div>
-          <div style={{display:"flex",gap:2,flexShrink:0}}>
-            <IcoBtn icon="edit"  color={C.steelMid} title="Bearbeiten" onClick={()=>onEdit(s)}/>
-            <IcoBtn icon="trash" color={C.strafe}   title="Löschen"    onClick={()=>onDelete(s.id)}/>
-          </div>
+        <div key={s.id} style={{background:C.surface,borderLeft:`2px solid ${s.bezahlt?C.border:C.strafe}`,padding:isMobile?"10px 10px":"12px 16px",marginBottom:2,display:"flex",flexDirection:isMobile?"column":"row",alignItems:isMobile?"stretch":"center",gap:isMobile?6:12,boxShadow:C.shadow}}>
+          {isMobile ? <>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
+              <div style={{display:"flex",alignItems:"flex-start",gap:8,minWidth:0,flex:1}}>
+                <label title="Bezahlt umschalten" style={{display:"flex",alignItems:"center",cursor:"pointer",flexShrink:0,marginTop:2}}>
+                  <input type="checkbox" checked={!!s.bezahlt} onChange={()=>onToggleBezahlt(s.id)}
+                    style={{width:18,height:18,cursor:"pointer",accentColor:C.strafe,flexShrink:0,margin:0}}/>
+                </label>
+                <div style={{minWidth:0}}>
+                  <div style={{fontSize:15,fontWeight:700,color:C.text,wordBreak:"break-word"}}>{s.typ||"Strafe"}</div>
+                  {(s.tatort||s.tatortAdresse)&&<div style={{fontSize:12,color:C.muted,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",maxWidth:"55vw"}}>{[s.tatort,s.tatortAdresse].filter(Boolean).join(", ")}</div>}
+                </div>
+              </div>
+              <div style={{textAlign:"right",flexShrink:0}}>
+                <div style={{fontSize:18,fontWeight:800,color:(s.bezahlt?C.mutedDk:C.strafeDk),fontFamily:SANS,lineHeight:1}}>{(parseFloat(s.betrag)||0).toFixed(2)} €</div>
+                {!s.bezahlt&&<div style={{fontSize:10,color:C.strafe,letterSpacing:1,textTransform:"uppercase",marginTop:1}}>offen</div>}
+                {s.bezahlt&&<div style={{fontSize:11,color:C.muted,letterSpacing:1}}>BEZAHLT</div>}
+              </div>
+            </div>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+              <div style={{display:"flex",alignItems:"center",gap:6,fontSize:12,color:C.muted}}>
+                <span style={{fontWeight:600}}>{formatDatum(s.datum)}</span>
+                {s.uhrzeit&&<span>{s.uhrzeit}</span>}
+                {s.frist&&!s.bezahlt&&<span style={{color:new Date(s.frist)<new Date()?C.red:C.gold,fontWeight:700}}>Frist: {formatDatum(s.frist)}</span>}
+              </div>
+              <div style={{display:"flex",gap:2,flexShrink:0}}>
+                <IcoBtn icon="edit"  color={C.steelMid} title="Bearbeiten" onClick={()=>onEdit(s)}/>
+                <IcoBtn icon="trash" color={C.strafe}   title="Löschen"    onClick={()=>onDelete(s.id)}/>
+              </div>
+            </div>
+          </> : <>
+            <label title="Bezahlt umschalten" style={{display:"flex",alignItems:"center",cursor:"pointer",flexShrink:0}}>
+              <input type="checkbox" checked={!!s.bezahlt} onChange={()=>onToggleBezahlt(s.id)}
+                style={{width:18,height:18,cursor:"pointer",accentColor:C.strafe,flexShrink:0,margin:0}}/>
+            </label>
+            <div style={{width:96,flexShrink:0}}>
+              <div style={{fontSize:14,fontWeight:700,color:C.text}}>{formatDatum(s.datum)}</div>
+              {s.uhrzeit&&<div style={{fontSize:13,color:C.muted,marginTop:3}}>{s.uhrzeit}</div>}
+            </div>
+            <div style={{flex:1,minWidth:0}}>
+              <div style={{fontSize:16,fontWeight:700,color:C.text,marginBottom:2,wordBreak:"break-word"}}>{s.typ||"Strafe"}</div>
+              {(s.tatort||s.tatortAdresse)&&<div style={{fontSize:14,color:C.text,display:"flex",alignItems:"center",gap:4,fontFamily:SANS}}><Ico name="mapPin" size={13} color={C.strafe}/>{[s.tatort,s.tatortAdresse].filter(Boolean).join(", ")}</div>}
+              {s.behoerde&&<div style={{fontSize:14,color:C.text,display:"flex",alignItems:"center",gap:4,fontFamily:SANS}}><Ico name="building" size={13} color={C.muted}/>{s.behoerde}</div>}
+              {s.aktenzeichen&&<div style={{fontSize:14,color:C.muted,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>Az: {s.aktenzeichen}</div>}
+              {s.frist&&!s.bezahlt&&<div style={{fontSize:13,color:new Date(s.frist)<new Date()?C.red:C.gold,fontWeight:700,display:"flex",alignItems:"center",gap:4}}><Ico name="clock" size={12} color={(new Date(s.frist)<new Date()?C.redDk:C.goldDk)}/>Frist: {formatDatum(s.frist)}</div>}
+            </div>
+            <div style={{textAlign:"center",minWidth:88,flexShrink:0}}>
+              <div style={{fontSize:22,fontWeight:800,color:(s.bezahlt?C.mutedDk:C.strafeDk),fontFamily:SANS,lineHeight:1}}>{(parseFloat(s.betrag)||0).toFixed(2)} €</div>
+              {!s.bezahlt&&<div style={{fontSize:11,color:C.strafe,letterSpacing:1,textTransform:"uppercase",marginTop:2}}>offen</div>}
+              {s.bezahlt&&<div style={{fontSize:13,color:C.muted,letterSpacing:1}}>BEZAHLT</div>}
+            </div>
+            <div style={{display:"flex",gap:2,flexShrink:0}}>
+              <IcoBtn icon="edit"  color={C.steelMid} title="Bearbeiten" onClick={()=>onEdit(s)}/>
+              <IcoBtn icon="trash" color={C.strafe}   title="Löschen"    onClick={()=>onDelete(s.id)}/>
+            </div>
+          </>}
         </div>
       ))}
     </div>
@@ -3152,7 +3227,7 @@ function createMusterDaten() {
 }
 
 // ─── ÜBERSICHT TAB ───────────────────────────────────────────────────────────
-function UebersichtTab({stats, aktiv, acc, accDk, C, SANS, FS, katAccent, katAccentDk, setTab, setFForm, setFData, E_F, patchAktiv, safeFloat, formatDatum, getZielName, getZielAdr}) {
+function UebersichtTab({stats, aktiv, acc, accDk, C, SANS, FS, katAccent, katAccentDk, setTab, setFForm, setFData, E_F, patchAktiv, safeFloat, formatDatum, getZielName, getZielAdr, isMobile, isTablet}) {
   const kostenCats=[
   {label:"Tanken",  color:C.tank, colorDk:C.tankDk, betrag:stats.tankKosten,   count:(aktiv.tankstellen||[]).length, icon:"droplet"},
   {label:"Service", color:C.service, colorDk:C.serviceDk, betrag:stats.serviceKosten,count:(aktiv.services||[]).length,    icon:"tool"},
@@ -3164,7 +3239,7 @@ function UebersichtTab({stats, aktiv, acc, accDk, C, SANS, FS, katAccent, katAcc
     <div>
 
     {/* ── ZONE 2: 4 Haupt-KPIs — 2 строки по 2 ── */}
-    <div style={{display:"grid",gridTemplateColumns:"repeat(4,minmax(0,1fr))",gap:12,marginBottom:12}}>
+    <div style={{display:"grid",gridTemplateColumns:isMobile?"repeat(2,minmax(0,1fr))":isTablet?"repeat(2,minmax(0,1fr))":"repeat(4,minmax(0,1fr))",gap:isMobile?8:12,marginBottom:isMobile?8:12}}>
     <KpiCard wert={stats.gesamtKosten.toFixed(2)} unit="€" label="GESAMTKOSTEN" akzent={C.steel} akzentDk={C.steelDk} icon="download"/>
     <KpiCard wert={stats.gKm.toFixed(1)}          unit="km" label="GEFAHRENE KM" akzent={C.red} akzentDk={C.redDk}   icon="road"/>
     <KpiCard wert={(aktiv.fahrten||[]).length}                     label="FAHRTEN"      akzent={C.gold} akzentDk={C.goldDk}  icon="car"/>
@@ -3172,15 +3247,15 @@ function UebersichtTab({stats, aktiv, acc, accDk, C, SANS, FS, katAccent, katAcc
     </div>
 
     {/* ── ZONE 3: Kosten-Breakdown + KM nach Kat ── */}
-    <div style={{display:"grid",gridTemplateColumns:"minmax(0,3fr) minmax(0,2fr)",gap:12,marginBottom:12}}>
+    <div style={{display:"grid",gridTemplateColumns:isMobile?"1fr":isTablet?"1fr":"minmax(0,3fr) minmax(0,2fr)",gap:isMobile?8:12,marginBottom:isMobile?8:12}}>
 
     {/* Kosten Breakdown */}
-    <div style={{background:C.surface,padding:"18px 20px",borderLeft:`2px solid ${C.steel}`,boxShadow:C.shadow,borderRadius:C.inputRadius||8}}>
-    <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",marginBottom:16}}>
-    <div style={{fontSize:13,color:C.text,letterSpacing:2,textTransform:"uppercase",fontWeight:700,fontFamily:SANS}}>KOSTEN ÜBERSICHT</div>
-    <div style={{fontSize:20,fontWeight:800,color:C.text,fontFamily:SANS}}>{stats.gesamtKosten.toFixed(2)} €</div>
+    <div style={{background:C.surface,padding:isMobile?"14px 12px":"18px 20px",borderLeft:`2px solid ${C.steel}`,boxShadow:C.shadow,borderRadius:C.inputRadius||8}}>
+    <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",marginBottom:isMobile?10:16,flexWrap:"wrap",gap:4}}>
+    <div style={{fontSize:isMobile?12:13,color:C.text,letterSpacing:2,textTransform:"uppercase",fontWeight:700,fontFamily:SANS}}>KOSTEN ÜBERSICHT</div>
+    <div style={{fontSize:isMobile?18:20,fontWeight:800,color:C.text,fontFamily:SANS}}>{stats.gesamtKosten.toFixed(2)} €</div>
     </div>
-    <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+    <div style={{display:"grid",gridTemplateColumns:isMobile?"1fr":"1fr 1fr",gap:isMobile?6:10}}>
     {kostenCats.map(cat=>(
     <div key={cat.label} style={{padding:"12px 14px",borderLeft:`2px solid ${cat.color}`,background:C.surfaceAlt,borderRadius:"0 6px 6px 0"}}>
     <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:6}}>
@@ -3218,13 +3293,13 @@ function UebersichtTab({stats, aktiv, acc, accDk, C, SANS, FS, katAccent, katAcc
     </div>
 
     {/* ── ZONE 4: KM / Monat Chart ── */}
-    <div style={{background:C.surface,padding:"18px 20px",borderLeft:`2px solid ${C.red}`,boxShadow:C.shadow,borderRadius:C.inputRadius||8,marginBottom:12}}>
+    <div style={{background:C.surface,padding:isMobile?"14px 12px":"18px 20px",borderLeft:`2px solid ${C.red}`,boxShadow:C.shadow,borderRadius:C.inputRadius||8,marginBottom:isMobile?8:12}}>
     <div style={{fontSize:13,color:C.text,letterSpacing:1.5,textTransform:"uppercase",fontWeight:700,marginBottom:4,fontFamily:SANS}}>KM / MONAT</div>
     <MonatsChart kmByMonth={stats.kmByMonth} accent={C.red}/>
     </div>
 
     {/* ── ZONE 5: Nächste Fälligkeiten + Top Besucht ── */}
-    <div style={{display:"grid",gridTemplateColumns:"minmax(0,1fr) minmax(0,1fr)",gap:12,marginBottom:12}}>
+    <div style={{display:"grid",gridTemplateColumns:isMobile?"1fr":"minmax(0,1fr) minmax(0,1fr)",gap:isMobile?8:12,marginBottom:isMobile?8:12}}>
 
     {/* Nächste Fälligkeiten */}
     <div style={{background:C.surface,padding:"18px 20px",borderLeft:`2px solid ${C.service}`,boxShadow:C.shadow,borderRadius:C.inputRadius||8}}>
@@ -3281,9 +3356,9 @@ function UebersichtTab({stats, aktiv, acc, accDk, C, SANS, FS, katAccent, katAcc
     </div>
 
     {/* ── ZONE 6: Letzte Fahrten ── */}
-    <div style={{background:C.surface,padding:"18px 20px",borderLeft:`2px solid ${C.red}`,boxShadow:C.shadow,borderRadius:C.inputRadius||8}}>
-    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
-    <div style={{fontSize:13,color:C.text,letterSpacing:2,textTransform:"uppercase",fontWeight:700,fontFamily:SANS}}>LETZTE FAHRTEN</div>
+    <div style={{background:C.surface,padding:isMobile?"14px 12px":"18px 20px",borderLeft:`2px solid ${C.red}`,boxShadow:C.shadow,borderRadius:C.inputRadius||8}}>
+    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:isMobile?8:12}}>
+    <div style={{fontSize:isMobile?12:13,color:C.text,letterSpacing:2,textTransform:"uppercase",fontWeight:700,fontFamily:SANS}}>LETZTE FAHRTEN</div>
     <button onClick={()=>{setTab("fahrten");setFForm("new");setFData(E_F());}} style={btnSolid(C.redDk)}>
     <Ico name="plus" size={15} color="#fff"/>FAHRT
     </button>
@@ -4010,6 +4085,7 @@ const DEMO_USERS = [
 
 // ─── AUTH FORM ────────────────────────────────────────────────────────────────
 function AuthForm({onLogin, onMuster}) {
+  const {isMobile, isTablet} = useScreenSize();
   const [email,    setEmail]    = React.useState("");
   const [password, setPassword] = React.useState("");
   const [role,     setRole]     = React.useState("admin");
@@ -4077,11 +4153,11 @@ function AuthForm({onLogin, onMuster}) {
     },800);
   }
 
-  const euW=72;
+  const euW=isMobile?48:72;
   const fieldBase={
     flex:1, border:"2px solid #D8D8D4", borderRadius:7,
-    outline:"none", height:40, padding:"0 12px",
-    fontFamily:SANS, fontSize:14, fontWeight:600,
+    outline:"none", height:isMobile?44:40, padding:"0 12px",
+    fontFamily:SANS, fontSize:isMobile?16:14, fontWeight:600,
     letterSpacing:1, color:"#111", background:"#fff",
     transition:"border-color 0.18s,box-shadow 0.18s",
   };
@@ -4106,20 +4182,20 @@ function AuthForm({onLogin, onMuster}) {
       minHeight:"100vh", background:C.bg,
       display:"flex", flexDirection:"column",
       alignItems:"center", justifyContent:"center",
-      padding:"32px 16px", gap:10, fontFamily:SANS,
+      padding:isMobile?"16px 10px":"32px 16px", gap:isMobile?8:10, fontFamily:SANS,
     }}>
       <style>{`@keyframes authShake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}`}</style>
 
       {/* Заголовок */}
-      <div style={{width:"100%",maxWidth:500,textAlign:"center",paddingBottom:4}}>
-        <div ref={titleRef} style={{fontFamily:SANS,fontSize:12,fontWeight:700,letterSpacing:"3px",textTransform:"uppercase",color:"#111"}}>Fahrtenbuch</div>
-        <div style={{fontSize:10,letterSpacing:"2px",textTransform:"uppercase",color:C.muted,marginTop:3}}>Fahrzeugverwaltung · Deutschland</div>
+      <div style={{width:"100%",maxWidth:isMobile?360:isTablet?440:500,textAlign:"center",paddingBottom:4}}>
+        <div ref={titleRef} style={{fontFamily:SANS,fontSize:isMobile?11:12,fontWeight:700,letterSpacing:"3px",textTransform:"uppercase",color:"#111"}}>Fahrtenbuch</div>
+        <div style={{fontSize:isMobile?9:10,letterSpacing:"2px",textTransform:"uppercase",color:C.muted,marginTop:3}}>Fahrzeugverwaltung · Deutschland</div>
       </div>
 
       {/* Знак — embossed double border */}
       <div ref={kzRef} style={{
-        border:"1px solid #555", borderRadius:10, overflow:"hidden",
-        display:"flex", width:"100%", maxWidth:508, padding:3,
+        border:"1px solid #555", borderRadius:isMobile?8:10, overflow:"hidden",
+        display:"flex", width:"100%", maxWidth:isMobile?360:isTablet?440:508, padding:isMobile?2:3,
         background:"#e8e8e4",
         boxShadow:"0 4px 20px rgba(0,0,0,0.12), 0 1px 4px rgba(0,0,0,0.08)",
         animation:shaking?"authShake 0.32s ease":undefined,
@@ -4130,14 +4206,14 @@ function AuthForm({onLogin, onMuster}) {
         border:"0.5px solid #999", overflow:"hidden", background:"#fff",
        }}>
         {/* EU полоса */}
-        <div style={{width:euW,minWidth:euW,background:"#003399",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"space-between",padding:"10px 0 9px",flexShrink:0}}>
+        <div style={{width:euW,minWidth:euW,background:"#003399",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"space-between",padding:isMobile?"6px 0 5px":"10px 0 9px",flexShrink:0}}>
           <svg width={euW} height={euW} viewBox={"0 0 "+euW+" "+euW} style={{display:"block"}}>
             {euStars}
           </svg>
           <span style={{fontFamily:"'EuroPlate',"+SANS,fontSize:Math.round(euW*0.47),fontWeight:800,color:"#fff",lineHeight:1,letterSpacing:1,marginBottom:2}}>D</span>
         </div>
         {/* Белое поле */}
-        <div style={{flex:1,padding:"14px 18px",display:"flex",flexDirection:"column",gap:10,borderLeft:"0.7px solid #555",justifyContent:"center"}}>
+        <div style={{flex:1,padding:isMobile?"10px 12px":"14px 18px",display:"flex",flexDirection:"column",gap:isMobile?8:10,borderLeft:"0.7px solid #555",justifyContent:"center"}}>
           <div style={{display:"flex",alignItems:"center",gap:9}}>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#003399" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0,opacity:eFocus?0.9:0.28}}>
               <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
@@ -4164,26 +4240,26 @@ function AuthForm({onLogin, onMuster}) {
       </div>
 
       {/* Под знаком */}
-      <div style={{width:"100%",maxWidth:500,display:"flex",flexDirection:"column",gap:8}}>
+      <div style={{width:"100%",maxWidth:isMobile?360:isTablet?440:500,display:"flex",flexDirection:"column",gap:isMobile?6:8}}>
         <div style={{minHeight:16,textAlign:"center"}}>
           {err&&<span style={{fontSize:11,color:C.redDk,fontWeight:500,fontFamily:SANS}}>{err}</span>}
           {ok &&<span style={{fontSize:11,color:C.tankDk,fontWeight:600,fontFamily:SANS}}>{ok}</span>}
         </div>
         <button ref={btnRef} title="Anmelden"
                   onClick={doLogin} disabled={busy}
-          style={{width:"100%",height:40,background:ok?"#0F6E56":"#003399",color:ok?"#fff":"#FFD700",border:"none",borderRadius:6,fontFamily:SANS,fontSize:12,fontWeight:700,letterSpacing:"3px",textTransform:"uppercase",cursor:busy?"default":"pointer",transition:"background 0.15s",opacity:busy&&!ok?0.8:1}}>
+          style={{width:"100%",height:isMobile?48:40,background:ok?"#0F6E56":"#003399",color:ok?"#fff":"#FFD700",border:"none",borderRadius:6,fontFamily:SANS,fontSize:isMobile?13:12,fontWeight:700,letterSpacing:"3px",textTransform:"uppercase",cursor:busy?"default":"pointer",transition:"background 0.15s",opacity:busy&&!ok?0.8:1}}>
           {ok?"✓ Angemeldet":busy?"Prüfe…":"Anmelden"}
         </button>
         <div style={{display:"flex",gap:6}}>
           {["admin","fahrer","buchhalter"].map(r=>(
             <button key={r} onClick={()=>setRole(r)} disabled={busy}
-              style={{flex:1,padding:"7px 0",border:`1px solid ${role===r?"#003399":"#D8D8D4"}`,borderRadius:20,fontFamily:SANS,fontSize:10,fontWeight:600,letterSpacing:"1.5px",textTransform:"uppercase",cursor:"pointer",background:role===r?"#003399":"#fff",color:role===r?"#FFD700":"#888",transition:"all 0.15s",textAlign:"center"}}>
+              style={{flex:1,padding:isMobile?"9px 0":"7px 0",border:`1px solid ${role===r?"#003399":"#D8D8D4"}`,borderRadius:20,fontFamily:SANS,fontSize:isMobile?11:10,fontWeight:600,letterSpacing:"1.5px",textTransform:"uppercase",cursor:"pointer",background:role===r?"#003399":"#fff",color:role===r?"#FFD700":"#888",transition:"all 0.15s",textAlign:"center"}}>
               {r.charAt(0).toUpperCase()+r.slice(1)}
             </button>
           ))}
         </div>
         <button onClick={doMuster} disabled={busy}
-          style={{width:"100%",height:38,background:"#fff",border:"1px solid #D8D8D4",borderRadius:6,color:C.muted,fontFamily:SANS,fontSize:11,fontWeight:600,letterSpacing:"1.5px",textTransform:"uppercase",cursor:busy?"default":"pointer",transition:"all 0.15s",display:"flex",alignItems:"center",justifyContent:"center",gap:7}}
+          style={{width:"100%",height:isMobile?44:38,background:"#fff",border:"1px solid #D8D8D4",borderRadius:6,color:C.muted,fontFamily:SANS,fontSize:11,fontWeight:600,letterSpacing:"1.5px",textTransform:"uppercase",cursor:busy?"default":"pointer",transition:"all 0.15s",display:"flex",alignItems:"center",justifyContent:"center",gap:7}}
           onMouseEnter={e=>{e.currentTarget.style.borderColor="#003399";e.currentTarget.style.color="#003399";}}
           onMouseLeave={e=>{e.currentTarget.style.borderColor="#D8D8D4";e.currentTarget.style.color="#888";}}>
           <svg width="11" height="11" viewBox="0 0 24 24" fill="#888" stroke="none"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
@@ -4229,6 +4305,7 @@ export default function FahrtenbuchLight() {
 
 // ─── Основное приложение (все хуки здесь) ─────────────────────────────────────
 function FahrtenbuchApp({authUser, onLogout, themeId, setThemeId}) {
+  const {isMobile, isTablet, isDesktop, width: screenW} = useScreenSize();
   // ── Role-based permissions ──
   const isDemo   = !!authUser?.isMuster;
   const role     = authUser?.role || "fahrer";
@@ -6324,35 +6401,42 @@ input[type=number] { -moz-appearance:textfield; }
   .fb-stagger > *:nth-child(n+9) { animation-delay:240ms; }
   .fb-ico-btn { transition: transform 0.12s ease; }
   .fb-ico-btn:hover { transform: scale(1.2); }
+  /* Mobile touch improvements */
+  @media (max-width: 480px) {
+    * { -webkit-tap-highlight-color: transparent; }
+    input, textarea, select { font-size: 16px !important; }
+    .fb-ico-btn:hover { transform: none; }
+  }
 `}</style>
     <div style={{minHeight:"100vh",background:C.bg,color:C.text,fontFamily:SANS}}>
 
       {/* ══ HEADER ══ */}
       <header ref={headerRef} style={{background:C.bg,borderBottom:`0.5px solid ${C.border}`,position:"sticky",top:0,zIndex:100,transition:"border-color 0.3s",boxShadow:"0 2px 8px rgba(0,0,0,0.10), 0 6px 24px rgba(0,0,0,0.06)"}}>
         {C.useGradients&&<div style={{height:3,background:C.headerGradient}}/>}
-        <div style={{maxWidth:1200,margin:"0 auto",padding:"22px 28px",width:"100%",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-        <div style={{display:"flex",alignItems:"center",gap:16}}>
+        <div style={{maxWidth:1200,margin:"0 auto",padding:isMobile?"10px 12px":isTablet?"14px 20px":"22px 28px",width:"100%",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+        <div style={{display:"flex",alignItems:"center",gap:isMobile?8:16,minWidth:0,flex:1}}>
           <div ref={kzBoxRef} style={{
             borderRadius:6,
             boxShadow:"0 2px 4px rgba(0,0,0,0.15), 0 6px 16px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.08)",
             position:"relative",
             lineHeight:0,
             transformStyle:"preserve-3d",
+            flexShrink:0,
           }}>
-            <Kennzeichen value={aktiv.kennzeichen||""} size="xl"/>
+            <Kennzeichen value={aktiv.kennzeichen||""} size={isMobile?"md":isTablet?"lg":"xl"}/>
           </div>
-          <div>
+          {!isMobile&&<div style={{minWidth:0}}>
             {(aktiv.marke||aktiv.modell)
               ? <>
-                  {aktiv.marke&&<div style={{fontSize:16,fontWeight:700,color:C.text,lineHeight:1,letterSpacing:0.5}}>{aktiv.marke}</div>}
-                  {aktiv.modell&&<div style={{fontSize:14,color:C.text,marginTop:3,letterSpacing:0.5}}>{aktiv.modell}</div>}
+                  {aktiv.marke&&<div style={{fontSize:isTablet?14:16,fontWeight:700,color:C.text,lineHeight:1,letterSpacing:0.5,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{aktiv.marke}</div>}
+                  {aktiv.modell&&<div style={{fontSize:isTablet?13:14,color:C.text,marginTop:3,letterSpacing:0.5,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{aktiv.modell}</div>}
                 </>
               : <div style={{fontSize:14,color:C.text,letterSpacing:1.5,textTransform:"uppercase"}}>Fahrzeug einrichten</div>
             }
-          </div>
+          </div>}
         </div>
-        <div style={{display:"flex",alignItems:"center",gap:6}}>
-          <div style={{marginRight:44}}><LiveClock accent={acc} accentDk={accDk}/></div>
+        <div style={{display:"flex",alignItems:"center",gap:isMobile?2:6,flexShrink:0}}>
+          {!isMobile&&<div style={{marginRight:isTablet?16:44}}><LiveClock accent={acc} accentDk={accDk}/></div>}
           {(()=>{const now=new Date();const nowYM=now.getFullYear()*12+now.getMonth();const parseTuv=d=>{if(!d)return null;if(d.includes(".")){const p=d.split(".").map(Number);return p.length>=3?{y:p[2],m:p[1]}:p.length===2?{y:p[1],m:p[0]}:null;}if(d.includes("-")){const[y,m]=d.split("-").map(Number);return{y,m};}return null;};const alertFz=[aktiv].filter(fz=>{const t=parseTuv(fz.tuvDatum);if(!t)return false;return(t.y*12+(t.m-1))-nowYM<=2;});const offeneStrafen=(aktiv.strafen||[]).filter(s=>!s.bezahlt);const totalAlerts=alertFz.length+offeneStrafen.length;if(!totalAlerts)return null;return(
               <div ref={tuvRef} style={{position:"relative"}}>
                 <button onClick={()=>setTuvPopup(v=>!v)}
@@ -6439,11 +6523,11 @@ input[type=number] { -moz-appearance:textfield; }
         </div>
         </div>
         {/* ── TABS (inside header) ── */}
-        <div style={{background:C.bg,overflow:"hidden"}}>
-          <div style={{maxWidth:1200,margin:"0 auto",display:"flex",width:"100%",padding:"0 32px",boxSizing:"border-box"}}>
+        <div style={{background:C.bg,overflow:isMobile?"auto":"hidden",WebkitOverflowScrolling:"touch"}}>
+          <div style={{maxWidth:1200,margin:"0 auto",display:"flex",width:isMobile?"max-content":"100%",padding:isMobile?"0 8px":isTablet?"0 20px":"0 32px",boxSizing:"border-box"}}>
             {TABS.map(t=>(
               <button key={t.id} onClick={()=>{setTab(t.id);resetForms();}}
-                style={{flex:1,padding:"12px 8px",background:"transparent",border:"none",boxShadow:tab===t.id?`inset 0 ${C.useGradients?"-3":"-2"}px 0 ${accDk||acc}`:"none",color:tab===t.id?(accDk||acc):C.text,cursor:"pointer",fontSize:15,fontFamily:SANS,fontWeight:700,letterSpacing:1,textTransform:"uppercase",transition:"all 0.15s",whiteSpace:"nowrap",textAlign:"center",minWidth:0}}>
+                style={{flex:isMobile?"none":1,padding:isMobile?"10px 14px":isTablet?"10px 8px":"12px 8px",background:"transparent",border:"none",boxShadow:tab===t.id?`inset 0 ${C.useGradients?"-3":"-2"}px 0 ${accDk||acc}`:"none",color:tab===t.id?(accDk||acc):C.text,cursor:"pointer",fontSize:isMobile?13:isTablet?14:15,fontFamily:SANS,fontWeight:700,letterSpacing:isMobile?0.5:1,textTransform:"uppercase",transition:"all 0.15s",whiteSpace:"nowrap",textAlign:"center",minWidth:0}}>
                 {t.label}
               </button>
             ))}
@@ -6452,7 +6536,7 @@ input[type=number] { -moz-appearance:textfield; }
       </header>
 
       {/* ══ CONTENT ══ */}
-      <main key={tab+sub} style={{padding:"28px 32px 40px",maxWidth:1200,margin:"0 auto",animation:"tabFade 0.18s ease-out"}}>
+      <main key={tab+sub} style={{padding:isMobile?"12px 8px 24px":isTablet?"18px 16px 32px":"28px 32px 40px",maxWidth:1200,margin:"0 auto",animation:"tabFade 0.18s ease-out"}}>
 
         {/* ── Übersicht ── */}
         {/* ── Übersicht ── */}
@@ -6463,6 +6547,7 @@ input[type=number] { -moz-appearance:textfield; }
             setFData={setFData} E_F={E_F} patchAktiv={patchAktiv}
             safeFloat={safeFloat} formatDatum={formatDatum}
             getZielName={getZielName} getZielAdr={getZielAdr}
+            isMobile={isMobile} isTablet={isTablet}
           />
         )}
 
@@ -6546,8 +6631,8 @@ input[type=number] { -moz-appearance:textfield; }
             {/* List header */}
             {!!(aktiv.fahrten||[]).length&&<>
             {/* Zeile 1: Zähler + Button */}
-            <div style={{display:"flex",alignItems:"center",marginBottom:10}}>
-              <div style={{fontSize:14,color:C.text}}>
+            <div style={{display:"flex",alignItems:"center",marginBottom:isMobile?6:10,flexWrap:isMobile?"wrap":"nowrap",gap:isMobile?6:0}}>
+              <div style={{fontSize:isMobile?13:14,color:C.text}}>
                 {gefFahrten.length !== (aktiv.fahrten||[]).length
                   ? <>{gefFahrten.length} von {(aktiv.fahrten||[]).length} · <span style={{color:acc,fontWeight:700}}>{stats.gefKm.toFixed(1)} km</span></>
                   : <>{gefFahrten.length} Fahrten · <span style={{color:acc,fontWeight:700}}>{stats.gefKm.toFixed(1)} km</span></>
@@ -6555,22 +6640,22 @@ input[type=number] { -moz-appearance:textfield; }
               </div>
               <div style={{flex:1}}/>
               {fForm===null&&(
-                <SpringBtn onClick={()=>{setFForm("new");setFData(E_F());}} style={{...btnSolid(accDk),flexShrink:0}}>
-                  <Ico name="plus" size={15} color="#fff"/>FAHRT EINTRAGEN
+                <SpringBtn onClick={()=>{setFForm("new");setFData(E_F());}} style={{...btnSolid(accDk),flexShrink:0,fontSize:isMobile?12:14,height:isMobile?38:40,padding:isMobile?"0 12px":"0 20px"}}>
+                  <Ico name="plus" size={15} color="#fff"/>{isMobile?"FAHRT":"FAHRT EINTRAGEN"}
                 </SpringBtn>
               )}
             </div>
             {/* Zeile 2: Suche + Filter */}
-            <div style={{display:"flex",gap:10,alignItems:"center",flexWrap:"wrap",marginBottom:14}}>
-              <div style={{position:"relative",flex:1,minWidth:160,display:"flex",alignItems:"center"}}>
+            <div style={{display:"flex",gap:isMobile?6:10,alignItems:"center",flexWrap:"wrap",marginBottom:isMobile?8:14}}>
+              <div style={{position:"relative",flex:isMobile?"1 1 100%":"1",minWidth:isMobile?0:160,display:"flex",alignItems:"center"}}>
                 <input value={fQ} onChange={e=>setFQ(e.target?.value ?? "")} placeholder="Suchen…"
-                  style={{width:"100%",height:40,boxSizing:"border-box",padding:"0 34px 0 36px",border:`1px solid ${C.border}`,borderRadius:C.inputRadius||8,boxShadow:"0 1px 4px rgba(0,0,0,0.06)",transition:"border-color 0.15s, box-shadow 0.15s",background:"#fff",color:"#111",fontSize:14,fontFamily:SANS,outline:"none",WebkitAppearance:"none",appearance:"none"}}/>
+                  style={{width:"100%",height:isMobile?44:40,boxSizing:"border-box",padding:"0 34px 0 36px",border:`1px solid ${C.border}`,borderRadius:C.inputRadius||8,boxShadow:"0 1px 4px rgba(0,0,0,0.06)",transition:"border-color 0.15s, box-shadow 0.15s",background:"#fff",color:"#111",fontSize:isMobile?16:14,fontFamily:SANS,outline:"none",WebkitAppearance:"none",appearance:"none"}}/>
                 <span style={{position:"absolute",left:11,top:"50%",transform:"translateY(-50%)",pointerEvents:"none",display:"flex",alignItems:"center",lineHeight:1}}><Ico name="search" size={13} color={C.muted}/></span>
                 {fQ&&<button title="Filter zurücksetzen"
                   onClick={()=>setFQ("")} style={{position:"absolute",right:8,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",cursor:"pointer",padding:2,display:"flex"}}><Ico name="close" size={13} color={C.muted}/></button>}
               </div>
-              <div style={{flex:"0 0 clamp(120px,15%,170px)"}}><CustomSelect value={fMonat} onChange={setFMonat} accent={C.border} options={[{value:"",label:"Alle Zeiträume"},...(()=>{const years=[...new Set((stats.monate||[]).map(m=>m.slice(0,4)))].sort((a,b)=>b.localeCompare(a));const opts=[];years.forEach(y=>{opts.push({value:y,label:"━ "+y+" ━"});(stats.monate||[]).filter(m=>m.startsWith(y)).sort((a,b)=>b.localeCompare(a)).forEach(m=>opts.push({value:m,label:"   "+m}));});return opts;})()]}/></div>
-              <div style={{flex:"0 0 clamp(140px,17%,200px)"}}><CustomSelect value={fKat} onChange={setFKat} options={OPT_FAHRT_KAT_F} accent={C.border}/></div>
+              <div style={{flex:isMobile?"1 1 48%":"0 0 clamp(120px,15%,170px)"}}><CustomSelect value={fMonat} onChange={setFMonat} accent={C.border} options={[{value:"",label:"Alle Zeiträume"},...(()=>{const years=[...new Set((stats.monate||[]).map(m=>m.slice(0,4)))].sort((a,b)=>b.localeCompare(a));const opts=[];years.forEach(y=>{opts.push({value:y,label:"━ "+y+" ━"});(stats.monate||[]).filter(m=>m.startsWith(y)).sort((a,b)=>b.localeCompare(a)).forEach(m=>opts.push({value:m,label:"   "+m}));});return opts;})()]}/></div>
+              <div style={{flex:isMobile?"1 1 48%":"0 0 clamp(140px,17%,200px)"}}><CustomSelect value={fKat} onChange={setFKat} options={OPT_FAHRT_KAT_F} accent={C.border}/></div>
               {(fQ||fMonat||fKat!=="alle")&&(
                 <button style={{height:40,border:`1px solid ${C.border}`,borderRadius:C.inputRadius||8,background:"#fff",color:C.muted,boxShadow:"0 1px 4px rgba(0,0,0,0.06)",fontSize:14,fontFamily:SANS,padding:"0 10px",cursor:"pointer",flexShrink:0,outline:"none"}} onClick={()=>{setFQ("");setFMonat("");setFKat("alle");}}>✕ Reset</button>
               )}
@@ -6674,42 +6759,68 @@ input[type=number] { -moz-appearance:textfield; }
                     </FormPanel>
                   )}
                   {!isEditing&&(
-                    <div style={{background:C.surface,borderLeft:`2px solid ${ak}`,padding:"12px 16px",marginBottom:2,
-                      display:"grid",gridTemplateColumns:"96px minmax(0,1fr) 72px 100px 36px 56px",
-                      alignItems:"center",gap:"0 10px",boxShadow:C.shadow,overflow:"hidden"}}>
-                      {/* Дата + время */}
-                      <div>
-                        <div style={{fontSize:14,fontWeight:700,color:C.text}}>{formatDatum(f.datum)}</div>
-                        {f.zeitStr&&<div style={{fontSize:13,color:C.muted,marginTop:3}}>{f.zeitStr}</div>}
-                      </div>
-                      {/* Маршрут + Zweck */}
-                      <div style={{overflow:"hidden",minWidth:0}}>
-                        <div style={{fontSize:15,fontWeight:700,color:C.text,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{f.zielName||f.notiz||"—"}</div>
-                        {f.notiz&&f.zielName&&<div style={{fontSize:13,color:C.steelMid,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",marginTop:1}}>{f.notiz}</div>}
-                      </div>
-                      {/* KM крупно */}
-                      <div style={{textAlign:"right"}}>
-                        <div style={{fontSize:22,fontWeight:800,color:(katAccentDk[f.kategorie]||C.strafeDk),fontFamily:SANS,lineHeight:1}}>{safeFloat(f.km).toFixed(1)}</div>
-                        <div style={{fontSize:11,color:C.muted,letterSpacing:1,textTransform:"uppercase",marginTop:2}}>km</div>
-                      </div>
-                      {/* Одометр — always present cell */}
-                      <div style={{textAlign:"center",borderLeft:`1px solid ${C.border}`,paddingLeft:10}}>
-                        {(f.kmStart||f.kmEnd)?<>
-                          <div style={{fontSize:13,fontWeight:700,color:C.text,fontFamily:SANS}}>{f.kmStart||"—"}</div>
-                          <div style={{fontSize:10,color:C.muted,margin:"1px 0"}}>→</div>
-                          <div style={{fontSize:13,fontWeight:700,color:C.text,fontFamily:SANS}}>{f.kmEnd||"—"}</div>
-                        </>:<div style={{fontSize:12,color:C.muted}}>—</div>}
-                      </div>
-                      {/* Тип — always present cell */}
-                      <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:3}}>
-                        {f.rueckfahrt&&<span style={{fontSize:11,color:C.muted,background:C.surfaceAlt,borderRadius:4,padding:"2px 6px"}}>↔</span>}
-                        {f.kmTyp&&f.kmTyp!=="geschaeftlich"&&<span style={{fontSize:11,color:f.kmTyp==="privat"?C.muted:C.gold,background:C.surfaceAlt,borderRadius:4,padding:"2px 6px"}}>{f.kmTyp==="privat"?"privat":"Arb."}</span>}
-                      </div>
-                      {/* Кнопки */}
-                      <div style={{display:"flex",gap:2,justifyContent:"flex-end"}}>
-                        <IcoBtn icon="edit" color={C.steelMid} title="Bearbeiten" onClick={()=>{setFForm(f.id);setFData({...f});}}/>
-                        <IcoBtn icon="trash" color={C.red} title="Löschen" onClick={()=>setConfirmDel({type:"fahrt",id:f.id})}/>
-                      </div>
+                    <div style={{background:C.surface,borderLeft:`2px solid ${ak}`,padding:isMobile?"10px 10px":"12px 16px",marginBottom:2,
+                      display:isMobile?"flex":"grid",flexDirection:isMobile?"column":"undefined",gridTemplateColumns:isMobile?undefined:"96px minmax(0,1fr) 72px 100px 36px 56px",
+                      alignItems:isMobile?"stretch":"center",gap:isMobile?"6px":"0 10px",boxShadow:C.shadow,overflow:"hidden"}}>
+                      {isMobile ? <>
+                        {/* Mobile: stacked card layout */}
+                        <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
+                          <div>
+                            <div style={{fontSize:15,fontWeight:700,color:C.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",maxWidth:"60vw"}}>{f.zielName||f.notiz||"—"}</div>
+                            {f.notiz&&f.zielName&&<div style={{fontSize:12,color:C.steelMid,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",maxWidth:"60vw",marginTop:1}}>{f.notiz}</div>}
+                          </div>
+                          <div style={{textAlign:"right",flexShrink:0}}>
+                            <div style={{fontSize:20,fontWeight:800,color:(katAccentDk[f.kategorie]||C.strafeDk),fontFamily:SANS,lineHeight:1}}>{safeFloat(f.km).toFixed(1)}<span style={{fontSize:11,color:C.muted,marginLeft:2}}>km</span></div>
+                          </div>
+                        </div>
+                        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                          <div style={{display:"flex",alignItems:"center",gap:8,fontSize:13,color:C.muted}}>
+                            <span style={{fontWeight:600}}>{formatDatum(f.datum)}</span>
+                            {f.zeitStr&&<span>{f.zeitStr}</span>}
+                            {f.rueckfahrt&&<span style={{fontSize:10,background:C.surfaceAlt,borderRadius:4,padding:"1px 5px"}}>↔</span>}
+                            {f.kmTyp&&f.kmTyp!=="geschaeftlich"&&<span style={{fontSize:10,color:f.kmTyp==="privat"?C.muted:C.gold,background:C.surfaceAlt,borderRadius:4,padding:"1px 5px"}}>{f.kmTyp==="privat"?"privat":"Arb."}</span>}
+                          </div>
+                          <div style={{display:"flex",gap:2,flexShrink:0}}>
+                            <IcoBtn icon="edit" color={C.steelMid} title="Bearbeiten" onClick={()=>{setFForm(f.id);setFData({...f});}}/>
+                            <IcoBtn icon="trash" color={C.red} title="Löschen" onClick={()=>setConfirmDel({type:"fahrt",id:f.id})}/>
+                          </div>
+                        </div>
+                      </> : <>
+                        {/* Desktop: grid layout */}
+                        {/* Дата + время */}
+                        <div>
+                          <div style={{fontSize:14,fontWeight:700,color:C.text}}>{formatDatum(f.datum)}</div>
+                          {f.zeitStr&&<div style={{fontSize:13,color:C.muted,marginTop:3}}>{f.zeitStr}</div>}
+                        </div>
+                        {/* Маршрут + Zweck */}
+                        <div style={{overflow:"hidden",minWidth:0}}>
+                          <div style={{fontSize:15,fontWeight:700,color:C.text,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{f.zielName||f.notiz||"—"}</div>
+                          {f.notiz&&f.zielName&&<div style={{fontSize:13,color:C.steelMid,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis",marginTop:1}}>{f.notiz}</div>}
+                        </div>
+                        {/* KM крупно */}
+                        <div style={{textAlign:"right"}}>
+                          <div style={{fontSize:22,fontWeight:800,color:(katAccentDk[f.kategorie]||C.strafeDk),fontFamily:SANS,lineHeight:1}}>{safeFloat(f.km).toFixed(1)}</div>
+                          <div style={{fontSize:11,color:C.muted,letterSpacing:1,textTransform:"uppercase",marginTop:2}}>km</div>
+                        </div>
+                        {/* Одометр — always present cell */}
+                        <div style={{textAlign:"center",borderLeft:`1px solid ${C.border}`,paddingLeft:10}}>
+                          {(f.kmStart||f.kmEnd)?<>
+                            <div style={{fontSize:13,fontWeight:700,color:C.text,fontFamily:SANS}}>{f.kmStart||"—"}</div>
+                            <div style={{fontSize:10,color:C.muted,margin:"1px 0"}}>→</div>
+                            <div style={{fontSize:13,fontWeight:700,color:C.text,fontFamily:SANS}}>{f.kmEnd||"—"}</div>
+                          </>:<div style={{fontSize:12,color:C.muted}}>—</div>}
+                        </div>
+                        {/* Тип — always present cell */}
+                        <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:3}}>
+                          {f.rueckfahrt&&<span style={{fontSize:11,color:C.muted,background:C.surfaceAlt,borderRadius:4,padding:"2px 6px"}}>↔</span>}
+                          {f.kmTyp&&f.kmTyp!=="geschaeftlich"&&<span style={{fontSize:11,color:f.kmTyp==="privat"?C.muted:C.gold,background:C.surfaceAlt,borderRadius:4,padding:"2px 6px"}}>{f.kmTyp==="privat"?"privat":"Arb."}</span>}
+                        </div>
+                        {/* Кнопки */}
+                        <div style={{display:"flex",gap:2,justifyContent:"flex-end"}}>
+                          <IcoBtn icon="edit" color={C.steelMid} title="Bearbeiten" onClick={()=>{setFForm(f.id);setFData({...f});}}/>
+                          <IcoBtn icon="trash" color={C.red} title="Löschen" onClick={()=>setConfirmDel({type:"fahrt",id:f.id})}/>
+                        </div>
+                      </>}
                     </div>
                   )}
                 </div>
@@ -6755,7 +6866,7 @@ input[type=number] { -moz-appearance:textfield; }
         {tab==="ziele"&&(
           <div>
             {/* Sub-tabs — 4 equal columns, no wrap */}
-            <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:8,marginBottom:22,width:"100%"}}>
+            <div style={{display:"grid",gridTemplateColumns:isMobile?"repeat(3,1fr)":"repeat(4,1fr)",gap:isMobile?4:8,marginBottom:isMobile?14:22,width:"100%"}}>
               {[
                 {id:"standorte", label:"Standorte", icon:"road",   color:C.standort},
                 {id:"partner",   label:"Partner",   icon:"users",  color:C.red},
@@ -6765,18 +6876,18 @@ input[type=number] { -moz-appearance:textfield; }
                 return (
                   <button key={s.id} onClick={()=>{setSub(s.id);setPForm(null);setMForm(null);}}
                     style={{
-                      padding:"12px 0",
+                      padding:isMobile?"10px 0":"12px 0",
                       background: active ? s.color : C.surface,
                       border: `1px solid ${active ? s.color : C.border}`,
                       color: active ? "#fff" : C.muted,
-                      cursor:"pointer", fontSize:14,
+                      cursor:"pointer", fontSize:isMobile?12:14,
                       fontFamily:SANS,
-                      fontWeight:700, letterSpacing:2, textTransform:"uppercase",
+                      fontWeight:700, letterSpacing:isMobile?0.5:2, textTransform:"uppercase",
                       display:"flex", alignItems:"center", justifyContent:"center",
-                      gap:7, transition:"all 0.15s", width:"100%",
+                      gap:isMobile?4:7, transition:"all 0.15s", width:"100%",
                       boxSizing:"border-box", borderRadius:C.inputRadius||8,
                     }}>
-                    <Ico name={s.icon} size={15} color={active?"#fff":s.color}/>
+                    <Ico name={s.icon} size={isMobile?13:15} color={active?"#fff":s.color}/>
                     {s.label}
                   </button>
                 );
@@ -7015,7 +7126,7 @@ input[type=number] { -moz-appearance:textfield; }
         {tab==="kosten"&&(
           <div>
             {/* Sub-tabs */}
-            <div style={{display:"grid",gridTemplateColumns:"repeat(5,1fr)",gap:"2px",marginBottom:22}}>
+            <div style={{display:"grid",gridTemplateColumns:isMobile?"repeat(3,1fr)":"repeat(5,1fr)",gap:isMobile?"4px":"2px",marginBottom:isMobile?14:22}}>
               {[
                 {id:"tanken",     label:"Tanken",    icon:"droplet",  color:C.tank},
                 {id:"parken",     label:"Parken",    icon:"park",     color:C.park},
@@ -7027,8 +7138,8 @@ input[type=number] { -moz-appearance:textfield; }
                 return (
                   <button key={s.id} title={s.label}
                   onClick={()=>{setKostenSub(s.id);setTForm(null);setSForm(null);setWForm(null);setParkForm(null);setSvForm(null);}}
-                    style={{padding:"12px 0",background:active?s.color:C.surface,border:`1px solid ${active?s.color:C.border}`,color:active?"#fff":C.muted,cursor:"pointer",fontSize:14,fontFamily:SANS,fontWeight:700,letterSpacing:1.5,textTransform:"uppercase",display:"flex",alignItems:"center",justifyContent:"center",gap:6,transition:"all 0.15s",width:"100%",boxSizing:"border-box",borderRadius:C.inputRadius||8}}>
-                    <Ico name={s.icon} size={15} color={active?"#fff":s.color}/>
+                    style={{padding:isMobile?"10px 0":"12px 0",background:active?s.color:C.surface,border:`1px solid ${active?s.color:C.border}`,color:active?"#fff":C.muted,cursor:"pointer",fontSize:isMobile?12:14,fontFamily:SANS,fontWeight:700,letterSpacing:isMobile?0.5:1.5,textTransform:"uppercase",display:"flex",alignItems:"center",justifyContent:"center",gap:isMobile?4:6,transition:"all 0.15s",width:"100%",boxSizing:"border-box",borderRadius:C.inputRadius||8}}>
+                    <Ico name={s.icon} size={isMobile?13:15} color={active?"#fff":s.color}/>
                     {s.label}
                   </button>
                 );
@@ -7124,30 +7235,53 @@ input[type=number] { -moz-appearance:textfield; }
                   {svForm===null&&<SpringBtn onClick={()=>{setSvForm("new");setSvData(E_SV());}} style={btnSolid(C.serviceDk)}><Ico name="plus" size={15} color="#fff"/>SERVICE ERFASSEN</SpringBtn>}
                 </div>}
                 <div className="fb-stagger">{(aktiv.services||[]).slice().sort((a,b)=>(b?.datum||"").localeCompare(a?.datum||"")).map(x=>(
-                  <div key={x.id} style={{background:C.surface,borderLeft:`2px solid ${C.service}`,padding:"12px 18px",marginBottom:2,display:"flex",alignItems:"center",gap:14,boxShadow:C.shadow}}>
-                    <div style={{width:96,flexShrink:0}}>
-                      <div style={{fontSize:14,fontWeight:700,color:C.text}}>{formatDatum(x.datum)}</div>
-                      {x.kmStand&&<div style={{fontSize:13,color:C.muted,marginTop:3}}>{x.kmStand} km</div>}
-                    </div>
-                    <div style={{flex:1,minWidth:0}}>
-                      <div style={{fontSize:16,fontWeight:700,color:C.text,marginBottom:2}}>{x.typ}</div>
-                      {x.werkstatt&&<div style={{fontSize:14,color:C.text,display:"flex",alignItems:"center",gap:4,fontFamily:SANS}}><Ico name="building" size={13} color={C.muted}/>{x.werkstatt}</div>}
-                      {x.adresse&&<div style={{fontSize:14,color:C.text,display:"flex",alignItems:"center",gap:4,fontFamily:SANS}}><Ico name="mapPin" size={13} color={C.muted}/>{x.adresse}</div>}
-                      <div style={{fontSize:13,color:C.steelMid,marginTop:4,display:"flex",gap:12,flexWrap:"wrap",fontFamily:SANS}}>
-                        {x.faelligDatum&&<span style={{color:C.service}}><Ico name="clock" size={13} color={C.serviceDk} style={{marginRight:3}}/>Fällig: {formatDatum(x.faelligDatum)}</span>}
-                        {x.faelligKm&&<span style={{color:C.tank}}><Ico name="settings" size={13} color={C.tankDk} style={{marginRight:3}}/>{x.faelligKm} km</span>}
-                        {x.rechnungsNr&&<span>RE: {x.rechnungsNr}</span>}
+                  <div key={x.id} style={{background:C.surface,borderLeft:`2px solid ${C.service}`,padding:isMobile?"10px 10px":"12px 18px",marginBottom:2,display:"flex",flexDirection:isMobile?"column":"row",alignItems:isMobile?"stretch":"center",gap:isMobile?6:14,boxShadow:C.shadow}}>
+                    {isMobile ? <>
+                      <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
+                        <div style={{minWidth:0,flex:1}}>
+                          <div style={{fontSize:15,fontWeight:700,color:C.text,marginBottom:2}}>{x.typ}</div>
+                          {x.werkstatt&&<div style={{fontSize:12,color:C.muted}}>{x.werkstatt}</div>}
+                        </div>
+                        <div style={{textAlign:"right",flexShrink:0,marginLeft:8}}>
+                          <div style={{fontSize:18,fontWeight:800,color:C.serviceDk,fontFamily:SANS,lineHeight:1}}>{safeFloat(x.betrag).toFixed(2)} €</div>
+                        </div>
                       </div>
-                    </div>
-                    <div style={{textAlign:"center",minWidth:90,flexShrink:0}}>
-                      <div style={{fontSize:22,fontWeight:800,color:C.serviceDk,fontFamily:SANS,lineHeight:1}}>{safeFloat(x.betrag).toFixed(2)} €</div>
-                      <div style={{fontSize:11,color:C.muted,letterSpacing:1,textTransform:"uppercase",marginTop:2}}>Kosten</div>
-                      {x.zahlungsart&&<div style={{fontSize:14,color:C.text}}>{x.zahlungsart}</div>}
-                    </div>
-                    <div style={{display:"flex",gap:2,flexShrink:0}}>
-                      <IcoBtn icon="edit" color={C.steelMid} title="Bearbeiten" onClick={()=>{setSvForm(x.id);setSvData({...x});}}/>
-                      <IcoBtn icon="trash" color={C.service} title="Löschen" onClick={()=>setConfirmDel({type:"service",id:x.id})}/>
-                    </div>
+                      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                        <div style={{display:"flex",alignItems:"center",gap:6,fontSize:12,color:C.muted,flexWrap:"wrap"}}>
+                          <span style={{fontWeight:600}}>{formatDatum(x.datum)}</span>
+                          {x.kmStand&&<span>{x.kmStand} km</span>}
+                          {x.faelligDatum&&<span style={{color:C.service}}>Fällig: {formatDatum(x.faelligDatum)}</span>}
+                        </div>
+                        <div style={{display:"flex",gap:2,flexShrink:0}}>
+                          <IcoBtn icon="edit" color={C.steelMid} title="Bearbeiten" onClick={()=>{setSvForm(x.id);setSvData({...x});}}/>
+                          <IcoBtn icon="trash" color={C.service} title="Löschen" onClick={()=>setConfirmDel({type:"service",id:x.id})}/>
+                        </div>
+                      </div>
+                    </> : <>
+                      <div style={{width:96,flexShrink:0}}>
+                        <div style={{fontSize:14,fontWeight:700,color:C.text}}>{formatDatum(x.datum)}</div>
+                        {x.kmStand&&<div style={{fontSize:13,color:C.muted,marginTop:3}}>{x.kmStand} km</div>}
+                      </div>
+                      <div style={{flex:1,minWidth:0}}>
+                        <div style={{fontSize:16,fontWeight:700,color:C.text,marginBottom:2}}>{x.typ}</div>
+                        {x.werkstatt&&<div style={{fontSize:14,color:C.text,display:"flex",alignItems:"center",gap:4,fontFamily:SANS}}><Ico name="building" size={13} color={C.muted}/>{x.werkstatt}</div>}
+                        {x.adresse&&<div style={{fontSize:14,color:C.text,display:"flex",alignItems:"center",gap:4,fontFamily:SANS}}><Ico name="mapPin" size={13} color={C.muted}/>{x.adresse}</div>}
+                        <div style={{fontSize:13,color:C.steelMid,marginTop:4,display:"flex",gap:12,flexWrap:"wrap",fontFamily:SANS}}>
+                          {x.faelligDatum&&<span style={{color:C.service}}><Ico name="clock" size={13} color={C.serviceDk} style={{marginRight:3}}/>Fällig: {formatDatum(x.faelligDatum)}</span>}
+                          {x.faelligKm&&<span style={{color:C.tank}}><Ico name="settings" size={13} color={C.tankDk} style={{marginRight:3}}/>{x.faelligKm} km</span>}
+                          {x.rechnungsNr&&<span>RE: {x.rechnungsNr}</span>}
+                        </div>
+                      </div>
+                      <div style={{textAlign:"center",minWidth:90,flexShrink:0}}>
+                        <div style={{fontSize:22,fontWeight:800,color:C.serviceDk,fontFamily:SANS,lineHeight:1}}>{safeFloat(x.betrag).toFixed(2)} €</div>
+                        <div style={{fontSize:11,color:C.muted,letterSpacing:1,textTransform:"uppercase",marginTop:2}}>Kosten</div>
+                        {x.zahlungsart&&<div style={{fontSize:14,color:C.text}}>{x.zahlungsart}</div>}
+                      </div>
+                      <div style={{display:"flex",gap:2,flexShrink:0}}>
+                        <IcoBtn icon="edit" color={C.steelMid} title="Bearbeiten" onClick={()=>{setSvForm(x.id);setSvData({...x});}}/>
+                        <IcoBtn icon="trash" color={C.service} title="Löschen" onClick={()=>setConfirmDel({type:"service",id:x.id})}/>
+                      </div>
+                    </>}
                   </div>
                 ))}</div>
                 {!(aktiv.services||[]).length&&svForm===null&&<EmptyState icon="tool" accent={C.service} accentDk={C.serviceDk} text="Keine Service-Einträge" hint="Werkstattbesuche, TÜV, Ölwechsel erfassen" btnLabel="SERVICE ERFASSEN" onBtnClick={()=>{setSvForm("new");setSvData(E_SV());}}/>}
@@ -7185,24 +7319,43 @@ input[type=number] { -moz-appearance:textfield; }
                   {wForm===null&&<SpringBtn onClick={()=>{setWForm("new");setWData(E_W());}} style={btnSolid(C.waschDk)}><Ico name="plus" size={15} color="#fff"/>WÄSCHE ERFASSEN</SpringBtn>}
                 </div>}
                 <div className="fb-stagger">{(aktiv.waesche||[]).slice().sort((a,b)=>(b?.datum||"").localeCompare(a?.datum||"")).map(x=>(
-                  <div key={x.id} style={{background:C.surface,borderLeft:`2px solid ${C.wasch}`,padding:"12px 18px",marginBottom:2,display:"flex",alignItems:"center",gap:14,boxShadow:C.shadow}}>
-                    <div style={{width:96,flexShrink:0}}>
-                      <div style={{fontSize:14,fontWeight:700,color:C.text}}>{formatDatum(x.datum)}</div>
-                      {x.uhrzeit&&<div style={{fontSize:13,color:C.muted,marginTop:3}}>{x.uhrzeit}</div>}
-                    </div>
-                    <div style={{flex:1,minWidth:0}}>
-                      <div style={{fontSize:16,fontWeight:700,color:C.text,marginBottom:2}}>{x.typ}</div>
-                      {x.adresse&&<div style={{fontSize:14,color:C.text,display:"flex",alignItems:"center",gap:4,fontFamily:SANS}}><Ico name="mapPin" size={13} color={C.muted}/>{x.adresse}</div>}
-                      {x.zahlungsart&&<div style={{fontSize:13,color:C.steelMid,marginTop:3,fontFamily:SANS}}>{x.zahlungsart}</div>}
-                    </div>
-                    <div style={{textAlign:"center",minWidth:88,flexShrink:0}}>
-                      <div style={{fontSize:22,fontWeight:800,color:C.waschDk,fontFamily:SANS,lineHeight:1}}>{safeFloat(x.betrag).toFixed(2)} €</div>
-                      <div style={{fontSize:11,color:C.muted,letterSpacing:1,textTransform:"uppercase",marginTop:2}}>Preis</div>
-                    </div>
-                    <div style={{display:"flex",gap:2,flexShrink:0}}>
-                      <IcoBtn icon="edit" color={C.steelMid} title="Bearbeiten" onClick={()=>{setWForm(x.id);setWData({...x});}}/>
-                      <IcoBtn icon="trash" color={C.wasch} title="Löschen" onClick={()=>setConfirmDel({type:"waesche",id:x.id})}/>
-                    </div>
+                  <div key={x.id} style={{background:C.surface,borderLeft:`2px solid ${C.wasch}`,padding:isMobile?"10px 10px":"12px 18px",marginBottom:2,display:"flex",flexDirection:isMobile?"column":"row",alignItems:isMobile?"stretch":"center",gap:isMobile?6:14,boxShadow:C.shadow}}>
+                    {isMobile ? <>
+                      <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
+                        <div style={{minWidth:0,flex:1}}>
+                          <div style={{fontSize:15,fontWeight:700,color:C.text,marginBottom:2}}>{x.typ}</div>
+                          {x.adresse&&<div style={{fontSize:12,color:C.muted,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{x.adresse}</div>}
+                        </div>
+                        <div style={{textAlign:"right",flexShrink:0,marginLeft:8}}>
+                          <div style={{fontSize:18,fontWeight:800,color:C.waschDk,fontFamily:SANS,lineHeight:1}}>{safeFloat(x.betrag).toFixed(2)} €</div>
+                        </div>
+                      </div>
+                      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                        <div style={{fontSize:12,color:C.muted}}><span style={{fontWeight:600}}>{formatDatum(x.datum)}</span>{x.uhrzeit&&<span style={{marginLeft:6}}>{x.uhrzeit}</span>}{x.zahlungsart&&<span style={{marginLeft:6}}>{x.zahlungsart}</span>}</div>
+                        <div style={{display:"flex",gap:2,flexShrink:0}}>
+                          <IcoBtn icon="edit" color={C.steelMid} title="Bearbeiten" onClick={()=>{setWForm(x.id);setWData({...x});}}/>
+                          <IcoBtn icon="trash" color={C.wasch} title="Löschen" onClick={()=>setConfirmDel({type:"waesche",id:x.id})}/>
+                        </div>
+                      </div>
+                    </> : <>
+                      <div style={{width:96,flexShrink:0}}>
+                        <div style={{fontSize:14,fontWeight:700,color:C.text}}>{formatDatum(x.datum)}</div>
+                        {x.uhrzeit&&<div style={{fontSize:13,color:C.muted,marginTop:3}}>{x.uhrzeit}</div>}
+                      </div>
+                      <div style={{flex:1,minWidth:0}}>
+                        <div style={{fontSize:16,fontWeight:700,color:C.text,marginBottom:2}}>{x.typ}</div>
+                        {x.adresse&&<div style={{fontSize:14,color:C.text,display:"flex",alignItems:"center",gap:4,fontFamily:SANS}}><Ico name="mapPin" size={13} color={C.muted}/>{x.adresse}</div>}
+                        {x.zahlungsart&&<div style={{fontSize:13,color:C.steelMid,marginTop:3,fontFamily:SANS}}>{x.zahlungsart}</div>}
+                      </div>
+                      <div style={{textAlign:"center",minWidth:88,flexShrink:0}}>
+                        <div style={{fontSize:22,fontWeight:800,color:C.waschDk,fontFamily:SANS,lineHeight:1}}>{safeFloat(x.betrag).toFixed(2)} €</div>
+                        <div style={{fontSize:11,color:C.muted,letterSpacing:1,textTransform:"uppercase",marginTop:2}}>Preis</div>
+                      </div>
+                      <div style={{display:"flex",gap:2,flexShrink:0}}>
+                        <IcoBtn icon="edit" color={C.steelMid} title="Bearbeiten" onClick={()=>{setWForm(x.id);setWData({...x});}}/>
+                        <IcoBtn icon="trash" color={C.wasch} title="Löschen" onClick={()=>setConfirmDel({type:"waesche",id:x.id})}/>
+                      </div>
+                    </>}
                   </div>
                 ))}</div>
                 {!(aktiv.waesche||[]).length&&wForm===null&&<EmptyState icon="wasch" accent={C.wasch} accentDk={C.waschDk} text="Keine Wäschen erfasst" hint="Autowäschen und Reinigungen dokumentieren" btnLabel="WÄSCHE ERFASSEN" onBtnClick={()=>{setWForm("new");setWData({});}}/>}
@@ -7239,24 +7392,43 @@ input[type=number] { -moz-appearance:textfield; }
                   {parkForm===null&&<SpringBtn onClick={()=>{setParkForm("new");setParkData(E_Park());}} style={btnSolid(C.parkDk)}><Ico name="plus" size={15} color="#fff"/>PARKVORGANG ERFASSEN</SpringBtn>}
                 </div>}
                 <div className="fb-stagger">{(aktiv.parkplaetze||[]).slice().sort((a,b)=>(b?.datum||"").localeCompare(a?.datum||"")).map(x=>(
-                  <div key={x.id} style={{background:C.surface,borderLeft:`2px solid ${C.park}`,padding:"12px 16px",marginBottom:2,display:"flex",alignItems:"center",gap:12,boxShadow:C.shadow}}>
-                    <div style={{width:96,flexShrink:0}}>
-                      <div style={{fontSize:14,fontWeight:700,color:C.text}}>{formatDatum(x.datum)}</div>
-                      {x.uhrzeit&&<div style={{fontSize:13,color:C.muted,marginTop:3}}>{x.uhrzeit}</div>}
-                    </div>
-                    <div style={{flex:1,minWidth:0}}>
-                      <div style={{fontSize:15,fontWeight:700,color:C.text,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{x.ort||"Parkvorgang"}</div>
-                      {x.adresse&&<div style={{fontSize:13,color:C.steelMid,display:"flex",alignItems:"center",gap:4,marginTop:2}}><Ico name="mapPin" size={12} color={C.muted}/>{x.adresse}</div>}
-                      {x.dauer&&<div style={{fontSize:13,color:C.muted,marginTop:2}}>{x.dauer} Std. · {x.zahlungsart||""}</div>}
-                    </div>
-                    <div style={{textAlign:"center",minWidth:88,flexShrink:0}}>
-                      <div style={{fontSize:22,fontWeight:800,color:C.parkDk,fontFamily:SANS,lineHeight:1}}>{safeFloat(x.betrag).toFixed(2)} €</div>
-                      <div style={{fontSize:11,color:C.muted,letterSpacing:1,textTransform:"uppercase",marginTop:2}}>Preis</div>
-                    </div>
-                    <div style={{display:"flex",gap:2,flexShrink:0}}>
-                      <IcoBtn icon="edit" color={C.steelMid} title="Bearbeiten" onClick={()=>{setParkForm(x.id);setParkData({...x});}}/>
-                      <IcoBtn icon="trash" color={C.park} title="Löschen" onClick={()=>setConfirmDel({type:"park",id:x.id})}/>
-                    </div>
+                  <div key={x.id} style={{background:C.surface,borderLeft:`2px solid ${C.park}`,padding:isMobile?"10px 10px":"12px 16px",marginBottom:2,display:"flex",flexDirection:isMobile?"column":"row",alignItems:isMobile?"stretch":"center",gap:isMobile?6:12,boxShadow:C.shadow}}>
+                    {isMobile ? <>
+                      <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
+                        <div style={{minWidth:0,flex:1}}>
+                          <div style={{fontSize:15,fontWeight:700,color:C.text}}>{x.ort||"Parkvorgang"}</div>
+                          {x.adresse&&<div style={{fontSize:12,color:C.muted,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{x.adresse}</div>}
+                        </div>
+                        <div style={{textAlign:"right",flexShrink:0,marginLeft:8}}>
+                          <div style={{fontSize:18,fontWeight:800,color:C.parkDk,fontFamily:SANS,lineHeight:1}}>{safeFloat(x.betrag).toFixed(2)} €</div>
+                        </div>
+                      </div>
+                      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                        <div style={{fontSize:12,color:C.muted}}><span style={{fontWeight:600}}>{formatDatum(x.datum)}</span>{x.uhrzeit&&<span style={{marginLeft:6}}>{x.uhrzeit}</span>}{x.dauer&&<span style={{marginLeft:6}}>{x.dauer} Std.</span>}</div>
+                        <div style={{display:"flex",gap:2,flexShrink:0}}>
+                          <IcoBtn icon="edit" color={C.steelMid} title="Bearbeiten" onClick={()=>{setParkForm(x.id);setParkData({...x});}}/>
+                          <IcoBtn icon="trash" color={C.park} title="Löschen" onClick={()=>setConfirmDel({type:"park",id:x.id})}/>
+                        </div>
+                      </div>
+                    </> : <>
+                      <div style={{width:96,flexShrink:0}}>
+                        <div style={{fontSize:14,fontWeight:700,color:C.text}}>{formatDatum(x.datum)}</div>
+                        {x.uhrzeit&&<div style={{fontSize:13,color:C.muted,marginTop:3}}>{x.uhrzeit}</div>}
+                      </div>
+                      <div style={{flex:1,minWidth:0}}>
+                        <div style={{fontSize:15,fontWeight:700,color:C.text,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{x.ort||"Parkvorgang"}</div>
+                        {x.adresse&&<div style={{fontSize:13,color:C.steelMid,display:"flex",alignItems:"center",gap:4,marginTop:2}}><Ico name="mapPin" size={12} color={C.muted}/>{x.adresse}</div>}
+                        {x.dauer&&<div style={{fontSize:13,color:C.muted,marginTop:2}}>{x.dauer} Std. · {x.zahlungsart||""}</div>}
+                      </div>
+                      <div style={{textAlign:"center",minWidth:88,flexShrink:0}}>
+                        <div style={{fontSize:22,fontWeight:800,color:C.parkDk,fontFamily:SANS,lineHeight:1}}>{safeFloat(x.betrag).toFixed(2)} €</div>
+                        <div style={{fontSize:11,color:C.muted,letterSpacing:1,textTransform:"uppercase",marginTop:2}}>Preis</div>
+                      </div>
+                      <div style={{display:"flex",gap:2,flexShrink:0}}>
+                        <IcoBtn icon="edit" color={C.steelMid} title="Bearbeiten" onClick={()=>{setParkForm(x.id);setParkData({...x});}}/>
+                        <IcoBtn icon="trash" color={C.park} title="Löschen" onClick={()=>setConfirmDel({type:"park",id:x.id})}/>
+                      </div>
+                    </>}
                   </div>
                 ))}</div>
                 {!(aktiv.parkplaetze||[]).length&&parkForm===null&&<EmptyState icon="park" accent={C.park} accentDk={C.parkDk} text="Keine Parkvorgänge" hint="Parkhaus, Parkschein, Parkgebühren erfassen" btnLabel="PARKVORGANG ERFASSEN" onBtnClick={()=>{setParkForm("new");setParkData(E_Park());}}/>}
@@ -7358,13 +7530,13 @@ input[type=number] { -moz-appearance:textfield; }
         {tab==="einstellungen"&&(
           <div style={{maxWidth:860}}>
             <div id="fz-block"/>
-            <div style={{display:"flex",alignItems:"center",gap:16,marginBottom:10,paddingBottom:10}}>
-              <div style={{width:52,height:52,background:acc,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,borderRadius:C.inputRadius||8}}>
-                <Ico name="settings" size={26} color="#fff"/>
+            <div style={{display:"flex",alignItems:"center",gap:isMobile?10:16,marginBottom:10,paddingBottom:10}}>
+              <div style={{width:isMobile?40:52,height:isMobile?40:52,background:acc,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,borderRadius:C.inputRadius||8}}>
+                <Ico name="settings" size={isMobile?20:26} color="#fff"/>
               </div>
               <div>
-                <div style={{fontSize:16,fontWeight:700,letterSpacing:2,textTransform:"uppercase",color:C.text}}>Einstellungen</div>
-                <div style={{fontSize:14,color:C.muted,letterSpacing:1,marginTop:2}}>Fuhrpark, Erscheinungsbild, Datensicherung</div>
+                <div style={{fontSize:isMobile?14:16,fontWeight:700,letterSpacing:isMobile?1:2,textTransform:"uppercase",color:C.text}}>Einstellungen</div>
+                <div style={{fontSize:isMobile?12:14,color:C.muted,letterSpacing:1,marginTop:2}}>Fuhrpark, Erscheinungsbild{isMobile?"":", Datensicherung"}</div>
               </div>
             </div>
 
@@ -7374,7 +7546,7 @@ input[type=number] { -moz-appearance:textfield; }
               <div style={{fontSize:14,color:C.muted,marginBottom:14,lineHeight:1.6}}>
                 Aktives Fahrzeug auswählen, Fahrzeugdaten bearbeiten oder neues Fahrzeug anlegen.
               </div>
-              <div style={{marginBottom:16,marginLeft:-28,marginRight:-28}}>
+              <div style={{marginBottom:16,marginLeft:isMobile?-12:-28,marginRight:isMobile?-12:-28}}>
                 {(state.fahrzeuge||[]).map(fz=>{
                   const isActive=fz.id===state.aktivId, isEditing=editFzId===fz.id;
                   const fzAcc=fz.farbe||C.steel;
@@ -7382,7 +7554,7 @@ input[type=number] { -moz-appearance:textfield; }
                   return (
                     <div key={fz.id} style={{marginBottom:2}}>
                       <div onClick={()=>{if(!isEditing){setState(prev=>({...prev,aktivId:fz.id}));flipKz();resetForms();}}}
-                        style={{background:isActive?C.surface:C.surfaceAlt,borderLeft:`2px solid ${fzAcc}`,padding:"12px 28px 12px 24px",display:"flex",alignItems:"center",gap:14,cursor:"pointer",transition:"all 0.15s"}}>
+                        style={{background:isActive?C.surface:C.surfaceAlt,borderLeft:`2px solid ${fzAcc}`,padding:isMobile?"10px 10px 10px 10px":"12px 28px 12px 24px",display:"flex",alignItems:"center",gap:isMobile?8:14,cursor:"pointer",transition:"all 0.15s"}}>
                         <div style={{borderRadius:6,boxShadow:"0 2px 4px rgba(0,0,0,0.15), 0 4px 12px rgba(0,0,0,0.10)",lineHeight:0}}><Kennzeichen value={fz.kennzeichen||"—"} size="lg"/></div>
                         <div style={{flex:1,minWidth:0}}>
                           <div style={{fontSize:16,fontWeight:700,color:C.text,fontFamily:SANS}}>{label}</div>
@@ -7509,8 +7681,8 @@ input[type=number] { -moz-appearance:textfield; }
           onClick={()=>{setChatOpen(true);setChatPos({x:null,y:null});}}
           title="KI-Assistent öffnen"
           style={{
-            position:"fixed", bottom:28, right:28,
-            width:54, height:54,
+            position:"fixed", bottom:isMobile?16:28, right:isMobile?16:28,
+            width:isMobile?48:54, height:isMobile?48:54,
             background:C.chatPrimary, border:"none", borderRadius:"50%",
             cursor:"pointer", zIndex:1200,
             display:"flex", alignItems:"center", justifyContent:"center",
@@ -7533,17 +7705,19 @@ input[type=number] { -moz-appearance:textfield; }
       {chatOpen && (
         <div style={{
           position:"fixed",
-          top: chatPos.y ?? 80,
-          left: chatPos.x ?? (typeof window!=="undefined" ? window.innerWidth - 520 : 400),
-          width:500, height:"calc(100vh - 120px)", maxHeight:700,
+          top: isMobile ? 0 : (chatPos.y ?? 80),
+          left: isMobile ? 0 : (chatPos.x ?? (typeof window!=="undefined" ? window.innerWidth - 520 : 400)),
+          width: isMobile ? "100%" : isTablet ? Math.min(420, screenW - 32) : 500,
+          height: isMobile ? "100%" : "calc(100vh - 120px)",
+          maxHeight: isMobile ? "100%" : 700,
           background:C.surface,
-          border:`1px solid ${C.border}`,
-          borderRadius:24,
-          boxShadow:"0 8px 40px rgba(0,0,0,0.15), 0 2px 8px rgba(0,0,0,0.08)",
+          border: isMobile ? "none" : `1px solid ${C.border}`,
+          borderRadius: isMobile ? 0 : isTablet ? 16 : 24,
+          boxShadow: isMobile ? "none" : "0 8px 40px rgba(0,0,0,0.15), 0 2px 8px rgba(0,0,0,0.08)",
           display:"flex", flexDirection:"column",
           zIndex:1100, fontFamily:SANS,
           overflow:"hidden",
-          animation:"chatCloudIn 0.3s cubic-bezier(0.34,1.3,0.64,1)",
+          animation: isMobile ? undefined : "chatCloudIn 0.3s cubic-bezier(0.34,1.3,0.64,1)",
         }}>
           {/* Close × */}
           <button
@@ -7568,11 +7742,11 @@ input[type=number] { -moz-appearance:textfield; }
 
           {/* Draggable Header */}
           <div
-            onMouseDown={onChatDragStart}
+            onMouseDown={isMobile ? undefined : onChatDragStart}
             style={{
-              background:C.chatPrimary, padding:"14px 48px 14px 16px",
+              background:C.chatPrimary, padding:isMobile?"12px 48px 12px 14px":"14px 48px 14px 16px",
               display:"flex", alignItems:"center", justifyContent:"space-between",
-              flexShrink:0, cursor:"grab", borderRadius:"24px 24px 0 0",
+              flexShrink:0, cursor:isMobile?"default":"grab", borderRadius:isMobile?0:"24px 24px 0 0",
               userSelect:"none",
             }}>
             <div style={{display:"flex", alignItems:"center", gap:10}}>
@@ -7597,8 +7771,8 @@ input[type=number] { -moz-appearance:textfield; }
 
           {/* Quick-Actions — SVG icons, grid 4×2 */}
           <div style={{
-            display:"grid", gridTemplateColumns:"repeat(4,1fr)",
-            gap:5, padding:"10px 12px",
+            display:"grid", gridTemplateColumns:isMobile?"repeat(4,1fr)":"repeat(4,1fr)",
+            gap:isMobile?4:5, padding:isMobile?"8px 8px":"10px 12px",
             borderBottom:"0.5px solid rgba(0,0,0,0.10)",
             flexShrink:0,
           }}>
