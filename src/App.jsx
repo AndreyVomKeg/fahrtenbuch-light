@@ -6580,7 +6580,9 @@ input[type=number] { -moz-appearance:textfield; }
       </header>
 
       {/* ══ CONTENT ══ */}
-      <main key={tab+sub} style={{padding:isMobile?"12px 8px 24px":isTablet?"18px 16px 32px":"28px 32px 40px",maxWidth:1200,margin:"0 auto",animation:"tabFade 0.18s ease-out",overflowX:"hidden",boxSizing:"border-box",width:"100%"}}>
+      <main key={tab+sub} style={{padding:isMobile?"12px 8px 24px":isTablet?"18px 16px 32px":"28px 32px 40px",maxWidth:1200,margin:"0 auto",animation:"tabFade 0.18s ease-out",overflowX:"hidden",boxSizing:"border-box",width:"100%",
+        ...(GLASS_MODE?{background:'rgba(244,244,240,0.88)',backdropFilter:'blur(20px) saturate(1.3)',WebkitBackdropFilter:'blur(20px) saturate(1.3)',borderRadius:20,boxShadow:'0 4px 24px rgba(0,0,0,0.06)',marginTop:isMobile?8:16,marginBottom:24}:{})
+      }}>
 
         {/* ── Übersicht ── */}
         {/* ── Übersicht ── */}
