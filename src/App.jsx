@@ -17,22 +17,22 @@ let { katAccent, katAccentDk, katBg, ST_TYP_COLORS, ST_TYP_COLORS_DK } = syncThe
 const GLASS_MODE = true;
 
 const GLASS = {
-  background: 'rgba(244,244,240,0.85)',
+  background: 'rgba(244,244,240,0.93)',
   backdropFilter: 'blur(24px) saturate(1.4)',
   WebkitBackdropFilter: 'blur(24px) saturate(1.4)',
-  border: '1px solid rgba(244,244,240,0.6)',
-  borderLeft: '1px solid rgba(244,244,240,0.7)',
-  borderRight: '1px solid rgba(244,244,240,0.7)',
+  border: '1px solid rgba(221,221,216,0.5)',
+  borderLeft: '1px solid rgba(221,221,216,0.6)',
+  borderRight: '1px solid rgba(221,221,216,0.6)',
   borderRadius: 16,
-  boxShadow: '0 8px 32px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.4)',
+  boxShadow: '0 8px 32px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.5)',
 };
 
 const GLASS_BG = `
   linear-gradient(135deg,
-    rgba(244,244,240,0.78) 0%,
-    rgba(240,240,235,0.74) 30%,
-    rgba(242,242,237,0.76) 60%,
-    rgba(244,244,240,0.80) 100%
+    rgba(244,244,240,0.86) 0%,
+    rgba(240,240,235,0.82) 30%,
+    rgba(242,242,237,0.84) 60%,
+    rgba(244,244,240,0.88) 100%
   ),
   url('https://plus.unsplash.com/premium_photo-1742418773972-31bfcca60540?w=1920&q=60&auto=format&fit=crop') center/cover fixed no-repeat
 `;
