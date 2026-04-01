@@ -6455,7 +6455,7 @@ input[type=number] { -moz-appearance:textfield; }
     <div style={{minHeight:"100vh",background:GLASS_MODE?GLASS_BG:C.bg,backgroundColor:GLASS_MODE?'#eef1f8':undefined,color:C.text,fontFamily:SANS,overflowX:"hidden",width:"100%",maxWidth:"100vw"}}>
 
       {/* ══ HEADER ══ */}
-      <header ref={headerRef} style={{background:GLASS_MODE?'rgba(255,255,255,0.72)':C.bg,backdropFilter:GLASS_MODE?'blur(20px) saturate(1.4)':undefined,WebkitBackdropFilter:GLASS_MODE?'blur(20px) saturate(1.4)':undefined,borderBottom:`0.5px solid ${GLASS_MODE?'rgba(0,0,0,0.08)':C.border}`,position:"sticky",top:0,zIndex:100,transition:"border-color 0.3s",boxShadow:GLASS_MODE?'0 4px 16px rgba(0,0,0,0.06)':'0 2px 8px rgba(0,0,0,0.10), 0 6px 24px rgba(0,0,0,0.06)'}}>
+      <header ref={headerRef} style={{background:C.bg,borderBottom:`0.5px solid ${C.border}`,position:"sticky",top:0,zIndex:100,transition:"border-color 0.3s",boxShadow:'0 2px 8px rgba(0,0,0,0.10), 0 6px 24px rgba(0,0,0,0.06)'}}>
         {C.useGradients&&<div style={{height:3,background:C.headerGradient}}/>}
         <div style={{maxWidth:1200,margin:"0 auto",padding:isMobile?"10px 12px":isTablet?"14px 20px":"22px 28px",width:"100%",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
         <div style={{display:"flex",alignItems:"center",gap:isMobile?8:16,minWidth:0,flex:1}}>
@@ -6495,11 +6495,10 @@ input[type=number] { -moz-appearance:textfield; }
                 {tuvPopup&&(
                   <div style={{
                     position:"absolute",top:"calc(100% + 10px)",right:0,
-                    ...(GLASS_MODE?{backdropFilter:'blur(20px) saturate(1.4)',WebkitBackdropFilter:'blur(20px) saturate(1.4)'}:{}),
-                    background:GLASS_MODE?'rgba(255,255,255,0.92)':C.surface,
-                    borderRadius:GLASS_MODE?16:(C.inputRadius||8),
-                    border:GLASS_MODE?'1px solid rgba(255,255,255,0.6)':`1px solid ${C.border}`,
-                    boxShadow:GLASS_MODE?"0 16px 48px rgba(0,0,0,0.10), inset 0 1px 0 rgba(255,255,255,0.7)":"0 16px 48px rgba(0,0,0,0.18), 0 2px 8px rgba(0,0,0,0.08)",
+                    background:C.surface,
+                    borderRadius:C.inputRadius||8,
+                    border:`1px solid ${C.border}`,
+                    boxShadow:"0 16px 48px rgba(0,0,0,0.18), 0 2px 8px rgba(0,0,0,0.08)",
                     minWidth:300,maxWidth:360,zIndex:200,overflow:"hidden",
                     animation:"modalIn 0.2s cubic-bezier(0.34,1.36,0.64,1)",
                   }}>
@@ -6557,7 +6556,7 @@ input[type=number] { -moz-appearance:textfield; }
           <SettingsBtn active={tab==="einstellungen"} accent={acc} onClick={()=>setTab("einstellungen")}/>
           <button onClick={onLogout} title="Abmelden"
             style={{width:40,height:40,background:"transparent",border:"none",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",borderRadius:C.inputRadius||8,transition:"background 0.12s",color:C.muted}}
-            onMouseEnter={e=>{e.currentTarget.style.background=GLASS_MODE?"rgba(0,0,0,0.05)":"rgba(0,0,0,0.08)";e.currentTarget.querySelector("svg").style.stroke=C.red;}}
+            onMouseEnter={e=>{e.currentTarget.style.background="rgba(0,0,0,0.08)";e.currentTarget.querySelector("svg").style.stroke=C.red;}}
             onMouseLeave={e=>{e.currentTarget.style.background="transparent";e.currentTarget.querySelector("svg").style.stroke=C.muted;}}>
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={C.muted} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{transition:"stroke 0.12s"}}>
               <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
@@ -6568,11 +6567,11 @@ input[type=number] { -moz-appearance:textfield; }
         </div>
         </div>
         {/* ── TABS (inside header) ── */}
-        <div style={{background:GLASS_MODE?'rgba(255,255,255,0.5)':C.bg,borderTop:GLASS_MODE?'1px solid rgba(0,0,0,0.06)':undefined,overflow:isMobile?"auto":"hidden",WebkitOverflowScrolling:"touch"}}>
+        <div style={{background:C.bg,borderTop:undefined,overflow:isMobile?"auto":"hidden",WebkitOverflowScrolling:"touch"}}>
           <div style={{maxWidth:1200,margin:"0 auto",display:"flex",width:isMobile?"max-content":"100%",padding:isMobile?"0 8px":isTablet?"0 20px":"0 32px",boxSizing:"border-box"}}>
             {TABS.map(t=>(
               <button key={t.id} onClick={()=>{setTab(t.id);resetForms();}}
-                style={{flex:isMobile?"none":1,padding:isMobile?"10px 14px":isTablet?"10px 8px":"12px 8px",background:GLASS_MODE&&tab===t.id?'rgba(0,0,0,0.04)':'transparent',border:"none",borderRadius:GLASS_MODE&&tab===t.id?'8px 8px 0 0':undefined,boxShadow:tab===t.id?`inset 0 ${C.useGradients?"-3":"-2"}px 0 ${GLASS_MODE?(accDk||acc):(accDk||acc)}`:"none",color:tab===t.id?(GLASS_MODE?(accDk||acc):(accDk||acc)):(GLASS_MODE?C.muted:C.text),cursor:"pointer",fontSize:isMobile?13:isTablet?14:15,fontFamily:SANS,fontWeight:700,letterSpacing:isMobile?0.5:1,textTransform:"uppercase",transition:"all 0.15s",whiteSpace:"nowrap",textAlign:"center",minWidth:0}}>
+                style={{flex:isMobile?"none":1,padding:isMobile?"10px 14px":isTablet?"10px 8px":"12px 8px",background:tab===t.id?'transparent':'transparent',border:"none",boxShadow:tab===t.id?`inset 0 ${C.useGradients?"-3":"-2"}px 0 ${accDk||acc}`:"none",color:tab===t.id?(accDk||acc):C.text,cursor:"pointer",fontSize:isMobile?13:isTablet?14:15,fontFamily:SANS,fontWeight:700,letterSpacing:isMobile?0.5:1,textTransform:"uppercase",transition:"all 0.15s",whiteSpace:"nowrap",textAlign:"center",minWidth:0}}>
                 {t.label}
               </button>
             ))}
