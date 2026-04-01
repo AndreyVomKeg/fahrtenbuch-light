@@ -34,7 +34,7 @@ const GLASS_BG = `
     rgba(225,232,242,0.80) 60%,
     rgba(235,240,248,0.85) 100%
   ),
-  url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1920&q=60&auto=format&fit=crop') center/cover fixed no-repeat
+  url('https://images.unsplash.com/photo-1563298723-dcfebaa392e3?w=1920&q=60&auto=format&fit=crop') center/cover fixed no-repeat
 `;
 
 // ─── TYPOGRAPHY TOKENS (desktop scale) ───────────────────────────────────────
