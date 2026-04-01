@@ -3250,10 +3250,10 @@ function UebersichtTab({stats, aktiv, acc, accDk, C, SANS, FS, katAccent, katAcc
     <div style={{display:"grid",gridTemplateColumns:isMobile?"1fr":isTablet?"1fr":"minmax(0,3fr) minmax(0,2fr)",gap:isMobile?8:12,marginBottom:isMobile?8:12}}>
 
     {/* Kosten Breakdown */}
-    <div style={{background:C.surface,padding:isMobile?"14px 12px":"18px 20px",borderLeft:`2px solid ${C.steel}`,boxShadow:C.shadow,borderRadius:C.inputRadius||8}}>
-    <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",marginBottom:isMobile?10:16,flexWrap:"wrap",gap:4}}>
-    <div style={{fontSize:isMobile?12:13,color:C.text,letterSpacing:2,textTransform:"uppercase",fontWeight:700,fontFamily:SANS}}>KOSTEN ÜBERSICHT</div>
-    <div style={{fontSize:isMobile?18:20,fontWeight:800,color:C.text,fontFamily:SANS}}>{stats.gesamtKosten.toFixed(2)} €</div>
+    <div style={{background:C.surface,padding:isMobile?"14px 12px":"18px 20px",borderLeft:`2px solid ${C.steel}`,boxShadow:C.shadow,borderRadius:C.inputRadius||8,overflow:"hidden",boxSizing:"border-box"}}>
+    <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",marginBottom:isMobile?10:16,flexWrap:"wrap",gap:4,overflow:"hidden"}}>
+    <div style={{fontSize:isMobile?11:13,color:C.text,letterSpacing:isMobile?1:2,textTransform:"uppercase",fontWeight:700,fontFamily:SANS,flexShrink:1,minWidth:0}}>KOSTEN ÜBERSICHT</div>
+    <div style={{fontSize:isMobile?16:20,fontWeight:800,color:C.text,fontFamily:SANS,flexShrink:0,whiteSpace:"nowrap"}}>{stats.gesamtKosten.toFixed(2)} €</div>
     </div>
     <div style={{display:"grid",gridTemplateColumns:isMobile?"1fr":"1fr 1fr",gap:isMobile?6:10}}>
     {kostenCats.map(cat=>(
@@ -6402,13 +6402,15 @@ input[type=number] { -moz-appearance:textfield; }
   .fb-ico-btn { transition: transform 0.12s ease; }
   .fb-ico-btn:hover { transform: scale(1.2); }
   /* Mobile touch improvements */
+  html, body { overflow-x: hidden; width: 100%; }
   @media (max-width: 480px) {
-    * { -webkit-tap-highlight-color: transparent; }
+    * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
+    html, body, #root { overflow-x: hidden; max-width: 100vw; }
     input, textarea, select { font-size: 16px !important; }
     .fb-ico-btn:hover { transform: none; }
   }
 `}</style>
-    <div style={{minHeight:"100vh",background:C.bg,color:C.text,fontFamily:SANS}}>
+    <div style={{minHeight:"100vh",background:C.bg,color:C.text,fontFamily:SANS,overflowX:"hidden",width:"100%",maxWidth:"100vw"}}>
 
       {/* ══ HEADER ══ */}
       <header ref={headerRef} style={{background:C.bg,borderBottom:`0.5px solid ${C.border}`,position:"sticky",top:0,zIndex:100,transition:"border-color 0.3s",boxShadow:"0 2px 8px rgba(0,0,0,0.10), 0 6px 24px rgba(0,0,0,0.06)"}}>
@@ -6536,7 +6538,7 @@ input[type=number] { -moz-appearance:textfield; }
       </header>
 
       {/* ══ CONTENT ══ */}
-      <main key={tab+sub} style={{padding:isMobile?"12px 8px 24px":isTablet?"18px 16px 32px":"28px 32px 40px",maxWidth:1200,margin:"0 auto",animation:"tabFade 0.18s ease-out"}}>
+      <main key={tab+sub} style={{padding:isMobile?"12px 8px 24px":isTablet?"18px 16px 32px":"28px 32px 40px",maxWidth:1200,margin:"0 auto",animation:"tabFade 0.18s ease-out",overflowX:"hidden",boxSizing:"border-box",width:"100%"}}>
 
         {/* ── Übersicht ── */}
         {/* ── Übersicht ── */}
