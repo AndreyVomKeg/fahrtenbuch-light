@@ -1,78 +1,54 @@
-// /api/state.js - Serverless function for Supabase state persistence
-// Uses service_role key (server-side only, never exposed to client)
+// api/state.js — Vercel Serverless Function
+// GET /api/state?user_id=fb2_real  → load state from Supabase
+// POST /api/state {user_id, state} → upsert state to Supabase
+
+import { createClient } from "@supabase/supabase-js";
+
+const supabase = createClient(
+  process.env.VITE_SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_ROLE_KEY
+);
 
 export default async function handler(req, res) {
-  // CORS headers
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end();
-  }
-
-  const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
-  const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
-
-  if (!SUPABASE_URL || !SERVICE_KEY) {
-    return res.status(500).json({ error: 'Supabase not configured' });
-  }
-
-  const supabaseRest = `${SUPABASE_URL}/rest/v1`;
-  const headers = {
-    'apikey': SERVICE_KEY,
-    'Authorization': `Bearer ${SERVICE_KEY}`,
-    'Content-Type': 'application/json',
-    'Prefer': 'return=representation'
-  };
+  // CORS
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  if (req.method === "OPTIONS") return res.status(200).end();
 
   try {
-    // GET - Load state for a user
-    if (req.method === 'GET') {
-      const { user_id } = req.query;
-      if (!user_id) {
-        return res.status(400).json({ error: 'user_id required' });
-      }
+    if (req.method === "GET") {
+      const user_id = req.query.user_id;
+      if (!user_id) return res.status(400).json({ error: "user_id required" });
 
-      const resp = await fetch(
-        `${supabaseRest}/user_state?user_id=eq.${encodeURIComponent(user_id)}&select=state,updated_at`,
-        { headers }
-      );
-      const data = await resp.json();
-      
-      if (data.length === 0) {
-        return res.status(200).json({ state: null });
+      const { data, error } = await supabase
+        .from("user_state")
+        .select("state")
+        .eq("user_id", user_id)
+        .single();
+
+      if (error && error.code !== "PGRST116") {
+        return res.status(500).json({ error: error.message });
       }
-      return res.status(200).json({ state: data[0].state, updated_at: data[0].updated_at });
+      return res.status(200).json({ state: data?.state || null });
     }
 
-    // POST - Save state for a user (upsert)
-    if (req.method === 'POST') {
+    if (req.method === "POST") {
       const { user_id, state } = req.body;
       if (!user_id || !state) {
-        return res.status(400).json({ error: 'user_id and state required' });
+        return res.status(400).json({ error: "user_id and state required" });
       }
 
-      // Upsert: insert or update on conflict
-      const resp = await fetch(
-        `${supabaseRest}/user_state?on_conflict=user_id`,
-        {
-          method: 'POST',
-          headers: { ...headers, 'Prefer': 'resolution=merge-duplicates,return=representation' },
-          body: JSON.stringify({ user_id, state })
-        }
-      );
-      const data = await resp.json();
-      
-      if (!resp.ok) {
-        return res.status(resp.status).json({ error: data });
-      }
-      return res.status(200).json({ success: true, updated_at: data[0]?.updated_at });
+      const { error } = await supabase
+        .from("user_state")
+        .upsert({ user_id, state }, { onConflict: "user_id" });
+
+      if (error) return res.status(500).json({ error: error.message });
+      return res.status(200).json({ ok: true });
     }
 
-    return res.status(405).json({ error: 'Method not allowed' });
-  } catch (err) {
-    console.error('State API error:', err);
-    return res.status(500).json({ error: err.message });
+    return res.status(405).json({ error: "Method not allowed" });
+  } catch (e) {
+    return res.status(500).json({ error: e.message });
   }
 }
