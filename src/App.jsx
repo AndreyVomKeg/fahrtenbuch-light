@@ -17,22 +17,22 @@ let { katAccent, katAccentDk, katBg, ST_TYP_COLORS, ST_TYP_COLORS_DK } = syncThe
 const GLASS_MODE = true;
 
 const GLASS = {
-  background: 'rgba(255,255,255,0.72)',
-  backdropFilter: 'blur(24px) saturate(1.6)',
-  WebkitBackdropFilter: 'blur(24px) saturate(1.6)',
-  border: '1px solid rgba(255,255,255,0.5)',
-  borderLeft: '1px solid rgba(255,255,255,0.65)',
-  borderRight: '1px solid rgba(255,255,255,0.65)',
+  background: 'rgba(244,244,240,0.85)',
+  backdropFilter: 'blur(24px) saturate(1.4)',
+  WebkitBackdropFilter: 'blur(24px) saturate(1.4)',
+  border: '1px solid rgba(244,244,240,0.6)',
+  borderLeft: '1px solid rgba(244,244,240,0.7)',
+  borderRight: '1px solid rgba(244,244,240,0.7)',
   borderRadius: 16,
-  boxShadow: '0 8px 32px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.6)',
+  boxShadow: '0 8px 32px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.4)',
 };
 
 const GLASS_BG = `
   linear-gradient(135deg,
-    rgba(230,235,245,0.82) 0%,
-    rgba(220,228,240,0.78) 30%,
-    rgba(225,232,242,0.80) 60%,
-    rgba(235,240,248,0.85) 100%
+    rgba(244,244,240,0.78) 0%,
+    rgba(240,240,235,0.74) 30%,
+    rgba(242,242,237,0.76) 60%,
+    rgba(244,244,240,0.80) 100%
   ),
   url('https://plus.unsplash.com/premium_photo-1742418773972-31bfcca60540?w=1920&q=60&auto=format&fit=crop') center/cover fixed no-repeat
 `;
@@ -6452,10 +6452,10 @@ input[type=number] { -moz-appearance:textfield; }
     }
   }
 `}</style>
-    <div style={{minHeight:"100vh",background:GLASS_MODE?GLASS_BG:C.bg,backgroundColor:GLASS_MODE?'#eef1f8':undefined,color:C.text,fontFamily:SANS,overflowX:"hidden",width:"100%",maxWidth:"100vw"}}>
+    <div style={{minHeight:"100vh",background:GLASS_MODE?GLASS_BG:C.bg,backgroundColor:GLASS_MODE?'#F4F4F0':undefined,color:C.text,fontFamily:SANS,overflowX:"hidden",width:"100%",maxWidth:"100vw"}}>
 
       {/* ══ HEADER ══ */}
-      <header ref={headerRef} style={{background:C.bg,borderBottom:`0.5px solid ${C.border}`,position:"sticky",top:0,zIndex:100,transition:"border-color 0.3s",boxShadow:'0 2px 8px rgba(0,0,0,0.10), 0 6px 24px rgba(0,0,0,0.06)'}}>
+      <header ref={headerRef} style={{background:GLASS_MODE?'rgba(244,244,240,0.92)':C.bg,backdropFilter:GLASS_MODE?'blur(24px) saturate(1.4)':undefined,WebkitBackdropFilter:GLASS_MODE?'blur(24px) saturate(1.4)':undefined,borderBottom:`0.5px solid ${GLASS_MODE?'rgba(221,221,216,0.6)':C.border}`,position:"sticky",top:0,zIndex:100,transition:"border-color 0.3s",boxShadow:'0 2px 8px rgba(0,0,0,0.10), 0 6px 24px rgba(0,0,0,0.06)'}}>
         {C.useGradients&&<div style={{height:3,background:C.headerGradient}}/>}
         <div style={{maxWidth:1200,margin:"0 auto",padding:isMobile?"10px 12px":isTablet?"14px 20px":"22px 28px",width:"100%",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
         <div style={{display:"flex",alignItems:"center",gap:isMobile?8:16,minWidth:0,flex:1}}>
@@ -6567,7 +6567,7 @@ input[type=number] { -moz-appearance:textfield; }
         </div>
         </div>
         {/* ── TABS (inside header) ── */}
-        <div style={{background:C.bg,borderTop:undefined,overflow:isMobile?"auto":"hidden",WebkitOverflowScrolling:"touch"}}>
+        <div style={{background:GLASS_MODE?'transparent':C.bg,borderTop:undefined,overflow:isMobile?"auto":"hidden",WebkitOverflowScrolling:"touch"}}>
           <div style={{maxWidth:1200,margin:"0 auto",display:"flex",width:isMobile?"max-content":"100%",padding:isMobile?"0 8px":isTablet?"0 20px":"0 32px",boxSizing:"border-box"}}>
             {TABS.map(t=>(
               <button key={t.id} onClick={()=>{setTab(t.id);resetForms();}}
