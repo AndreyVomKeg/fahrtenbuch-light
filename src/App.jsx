@@ -3315,8 +3315,8 @@ function UebersichtTab({stats, aktiv, acc, accDk, C, SANS, FS, katAccent, katAcc
     <KpiCard wert={stats.strafenOffen}                        label="OFF. STRAFEN" akzent={stats.strafenOffen>0?C.strafe:C.muted} akzentDk={stats.strafenOffen>0?C.strafeDk:C.mutedDk} icon="alert"/>
     </div>
 
-    {/* ── ROW 2: Kosten (3fr) + KM nach Kat with Donut (2fr) ── */}
-    <div style={{display:"grid",gridTemplateColumns:isMobile?"1fr":isTablet?"1fr":"minmax(0,3fr) minmax(0,2fr)",gap:isMobile?8:10,marginBottom:isMobile?8:10}}>
+    {/* ── ROW 2: Kosten + KM nach Kat — equal halves ── */}
+    <div style={{display:"grid",gridTemplateColumns:isMobile?"1fr":isTablet?"1fr":"minmax(0,1fr) minmax(0,1fr)",gap:isMobile?8:10,marginBottom:isMobile?8:10}}>
 
     {/* Kosten — compact 2×2+1 grid with % */}
     <div style={{...gls,background:glsBg,padding:isMobile?"14px 12px":"16px 18px",borderLeft:glsBl(C.steel),boxShadow:glsSh,borderRadius:glsR,overflow:"hidden",boxSizing:"border-box"}}>
