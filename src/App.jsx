@@ -3350,31 +3350,31 @@ function UebersichtTab({stats, aktiv, acc, accDk, C, SANS, FS, katAccent, katAcc
     <div style={{fontSize:isMobile?11:12,color:C.text,letterSpacing:1.5,textTransform:"uppercase",fontWeight:700,marginBottom:12,fontFamily:SANS}}>KM NACH KATEGORIE</div>
     {/* Donut */}
     {stats.gKm > 0 && <div style={{display:"flex",justifyContent:"center",marginBottom:12}}>
-    <svg width={isMobile?80:90} height={isMobile?80:90} viewBox="0 0 100 100">
+    <svg width={isMobile?120:160} height={isMobile?120:160} viewBox="0 0 100 100">
     {/* Outer white border */}
-    <circle cx="50" cy="50" r="43" fill="none" stroke="#fff" strokeWidth="1.5"/>
+    <circle cx="50" cy="50" r="45" fill="none" stroke="#fff" strokeWidth="1.2"/>
     {/* Background track */}
-    <circle cx="50" cy="50" r="38" fill="none" stroke={C.border} strokeWidth="9"/>
+    <circle cx="50" cy="50" r="40" fill="none" stroke={C.border} strokeWidth="8"/>
     {/* Inner white border */}
-    <circle cx="50" cy="50" r="33" fill="none" stroke="#fff" strokeWidth="1.5"/>
+    <circle cx="50" cy="50" r="35" fill="none" stroke="#fff" strokeWidth="1.2"/>
     {(()=>{
       const entries = Object.entries(stats.nK).filter(([,km])=>km>0).sort((a,b)=>b[1]-a[1]);
       const total = stats.gKm || 1;
-      const circ = 2 * Math.PI * 38;
+      const circ = 2 * Math.PI * 40;
       let offset = -circ * 0.25;
       return entries.map(([kat,km])=>{
         const pct = km / total;
         const dash = circ * pct;
-        const el = <circle key={kat} cx="50" cy="50" r="38" fill="none" stroke={katAccent[kat]||C.steel} strokeWidth="9" strokeDasharray={`${dash} ${circ-dash}`} strokeDashoffset={-offset} strokeLinecap="round"/>;
+        const el = <circle key={kat} cx="50" cy="50" r="40" fill="none" stroke={katAccent[kat]||C.steel} strokeWidth="8" strokeDasharray={`${dash} ${circ-dash}`} strokeDashoffset={-offset} strokeLinecap="round"/>;
         offset += dash;
         return el;
       });
     })()}
     {/* Repeat white borders on top of segments */}
-    <circle cx="50" cy="50" r="43" fill="none" stroke="#fff" strokeWidth="1.5"/>
-    <circle cx="50" cy="50" r="33" fill="none" stroke="#fff" strokeWidth="1.5"/>
-    <text x="50" y="46" textAnchor="middle" fontSize="14" fontWeight="800" fill={C.text} fontFamily={SANS}>{stats.gKm.toFixed(0)}</text>
-    <text x="50" y="59" textAnchor="middle" fontSize="9" fontWeight="600" fill={C.text} fontFamily={SANS} letterSpacing="1.5">km</text>
+    <circle cx="50" cy="50" r="45" fill="none" stroke="#fff" strokeWidth="1.2"/>
+    <circle cx="50" cy="50" r="35" fill="none" stroke="#fff" strokeWidth="1.2"/>
+    <text x="50" y="48" textAnchor="middle" fontSize="16" fontWeight="800" fill={C.text} fontFamily={SANS}>{stats.gKm.toFixed(0)}</text>
+    <text x="50" y="60" textAnchor="middle" fontSize="10" fontWeight="600" fill={C.text} fontFamily={SANS} letterSpacing="2">km</text>
     </svg>
     </div>}
     {Object.entries(stats.nK).map(([kat,km])=>{
