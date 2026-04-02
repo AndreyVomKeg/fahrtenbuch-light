@@ -3348,7 +3348,12 @@ function UebersichtTab({stats, aktiv, acc, accDk, C, SANS, FS, katAccent, katAcc
     {/* Donut */}
     {stats.gKm > 0 && <div style={{display:"flex",justifyContent:"center",marginBottom:12}}>
     <svg width={isMobile?80:90} height={isMobile?80:90} viewBox="0 0 100 100">
+    {/* Outer white border */}
+    <circle cx="50" cy="50" r="43" fill="none" stroke="#fff" strokeWidth="1.5"/>
+    {/* Background track */}
     <circle cx="50" cy="50" r="38" fill="none" stroke={C.border} strokeWidth="9"/>
+    {/* Inner white border */}
+    <circle cx="50" cy="50" r="33" fill="none" stroke="#fff" strokeWidth="1.5"/>
     {(()=>{
       const entries = Object.entries(stats.nK).filter(([,km])=>km>0).sort((a,b)=>b[1]-a[1]);
       const total = stats.gKm || 1;
@@ -3362,8 +3367,11 @@ function UebersichtTab({stats, aktiv, acc, accDk, C, SANS, FS, katAccent, katAcc
         return el;
       });
     })()}
-    <text x="50" y="47" textAnchor="middle" fontSize="13" fontWeight="800" fill={C.text} fontFamily={SANS}>{stats.gKm.toFixed(0)}</text>
-    <text x="50" y="59" textAnchor="middle" fontSize="8" fill={C.muted} fontFamily={SANS}>km</text>
+    {/* Repeat white borders on top of segments */}
+    <circle cx="50" cy="50" r="43" fill="none" stroke="#fff" strokeWidth="1.5"/>
+    <circle cx="50" cy="50" r="33" fill="none" stroke="#fff" strokeWidth="1.5"/>
+    <text x="50" y="46" textAnchor="middle" fontSize="14" fontWeight="800" fill={C.text} fontFamily={SANS}>{stats.gKm.toFixed(0)}</text>
+    <text x="50" y="59" textAnchor="middle" fontSize="9" fontWeight="600" fill={C.text} fontFamily={SANS} letterSpacing="1.5">km</text>
     </svg>
     </div>}
     {Object.entries(stats.nK).map(([kat,km])=>{
