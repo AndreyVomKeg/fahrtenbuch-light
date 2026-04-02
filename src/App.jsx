@@ -3502,7 +3502,7 @@ function UebersichtTab({stats, aktiv, acc, accDk, C, SANS, FS, katAccent, katAcc
     </div>
 
     {/* Letzte Fahrten */}
-    <div style={{...gls,background:glsBg,padding:isMobile?"14px 12px":"16px 18px",borderLeft:glsBl(C.red),boxShadow:glsSh,borderRadius:glsR,gridColumn:isMobile?"1":isTablet?"1 / -1":"auto"}}>
+    <div style={{...gls,background:glsBg,padding:isMobile?"14px 12px":"16px 18px",borderLeft:glsBl(C.red),boxShadow:glsSh,borderRadius:glsR,gridColumn:isMobile?"1":isTablet?"1 / -1":"auto",overflow:"hidden",boxSizing:"border-box"}}>
     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:isMobile?8:10}}>
     <div style={{fontSize:isMobile?12:13,color:C.text,letterSpacing:1.5,textTransform:"uppercase",fontWeight:700,fontFamily:SANS}}>LETZTE FAHRTEN</div>
     <button onClick={()=>{setTab("fahrten");setFForm("new");setFData(E_F());}} style={{...btnSolid(C.redDk),height:32,padding:"0 12px",fontSize:11}}>
@@ -3515,10 +3515,10 @@ function UebersichtTab({stats, aktiv, acc, accDk, C, SANS, FS, katAccent, katAcc
     <div key={f.id} style={{display:"flex",alignItems:"center",gap:10,padding:"7px 0",borderBottom:`1px solid ${C.border}`}}>
     <div style={{width:9,height:9,borderRadius:"50%",background:ak,flexShrink:0}}/>
     <div style={{flex:1,minWidth:0}}>
-    <div style={{fontSize:15,fontWeight:600,color:C.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",fontFamily:SANS}}>{getZielName(f)}</div>
-    <div style={{fontSize:12,color:C.muted,fontFamily:SANS}}>{formatDatum(f.datum)}</div>
+    <div style={{fontSize:isMobile?13:15,fontWeight:600,color:C.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",fontFamily:SANS}}>{getZielName(f)}</div>
+    <div style={{fontSize:isMobile?11:12,color:C.muted,fontFamily:SANS}}>{formatDatum(f.datum)}</div>
     </div>
-    <span style={{color:C.text,fontWeight:700,fontFamily:SANS,fontSize:14,flexShrink:0,fontVariantNumeric:"tabular-nums"}}>{safeFloat(f.km).toFixed(0)} km</span>
+    <span style={{color:C.text,fontWeight:700,fontFamily:SANS,fontSize:isMobile?12:14,flexShrink:0,fontVariantNumeric:"tabular-nums",whiteSpace:"nowrap"}}>{safeFloat(f.km).toFixed(0)} km</span>
     </div>
     );
     }) : (
