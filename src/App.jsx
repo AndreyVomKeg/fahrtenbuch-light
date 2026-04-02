@@ -3328,10 +3328,11 @@ function UebersichtTab({stats, aktiv, acc, accDk, C, SANS, FS, katAccent, katAcc
     <div style={{fontSize:isMobile?16:18,fontWeight:800,color:C.text,fontFamily:SANS,whiteSpace:"nowrap"}}>{stats.gesamtKosten.toFixed(2)} €</div>
     </div>
     <div style={{display:"grid",gridTemplateColumns:isMobile?"1fr":"1fr 1fr",gap:isMobile?6:8}}>
-    {kostenCats.map(cat=>{
+    {kostenCats.map((cat,idx)=>{
     const pct = stats.gesamtKosten > 0 ? ((cat.betrag / stats.gesamtKosten) * 100).toFixed(0) : 0;
+    const isLastOdd = !isMobile && idx === kostenCats.length - 1 && kostenCats.length % 2 === 1;
     return (
-    <div key={cat.label} style={{padding:isMobile?"8px 10px":"10px 12px",borderLeft:`2px solid ${cat.color}`,background:GLASS_MODE?'rgba(255,255,255,0.7)':C.surfaceAlt,borderRadius:GLASS_MODE?8:"0 6px 6px 0"}}>
+    <div key={cat.label} style={{padding:isMobile?"8px 10px":"10px 12px",borderLeft:`2px solid ${cat.color}`,background:GLASS_MODE?'rgba(255,255,255,0.7)':C.surfaceAlt,borderRadius:GLASS_MODE?8:"0 6px 6px 0",...(isLastOdd?{gridColumn:"1 / -1"}:{})}}>
     <div style={{display:"flex",alignItems:"center",gap:5,marginBottom:4}}>
     <Ico name={cat.icon} size={14} color={(cat.colorDk||cat.color)}/>
     <span style={{fontSize:11,fontWeight:700,letterSpacing:1,textTransform:"uppercase",fontFamily:SANS,color:C.text}}>{cat.label}</span>
