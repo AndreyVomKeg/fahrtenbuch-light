@@ -17,6 +17,7 @@ let { katAccent, katAccentDk, katBg, ST_TYP_COLORS, ST_TYP_COLORS_DK } = syncThe
 // ─── GLASSMORPHISM MODE ──────────────────────────────────────────────────────
 const GLASS_MODE = true;
 
+
 const GLASS = {
   background: 'rgba(244,244,240,0.82)',
   backdropFilter: 'blur(24px) saturate(1.4)',
@@ -27,7 +28,7 @@ const GLASS = {
   borderRight: '1px solid rgba(255,255,255,0.12)',
   borderBottom: '1px solid rgba(255,255,255,0.08)',
   borderRadius: 16,
-  boxShadow: '0 8px 32px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.6), inset 1px 0 0 rgba(255,255,255,0.3), inset 0 -1px 0 rgba(255,255,255,0.15), inset -1px 0 0 rgba(255,255,255,0.08)',
+  boxShadow: '0 8px 32px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.6), inset 1px 0 0 rgba(255,255,255,0.3), inset 0 -1px 0 rgba(255,255,255,0.15), inset -1px 0 0 rgba(255,255,255,0.09)',
 };
 
 // Video background — replaces static image
@@ -6630,7 +6631,7 @@ input[type=number] { -moz-appearance:textfield; }
         </filter>
       </defs></svg>}
       {GLASS_MODE && <video autoPlay muted loop playsInline poster={BG_VIDEO_POSTER}
-        style={{position:"fixed",top:0,left:0,width:"100vw",height:"100vh",objectFit:"cover",zIndex:-1,pointerEvents:"none",filter:"brightness(1.12) contrast(0.32) url(#illustrated)",transform:"scale(1.04)"}}>
+        style={{position:"fixed",top:0,left:0,width:"100vw",height:"100vh",objectFit:"cover",zIndex:-1,pointerEvents:"none"}}>
         <source src={BG_VIDEO_SRC} type="video/mp4"/>
       </video>}
 
