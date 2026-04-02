@@ -27,15 +27,12 @@ const GLASS = {
   boxShadow: '0 8px 32px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.5)',
 };
 
-const GLASS_BG = `
-  linear-gradient(135deg,
-    rgba(244,244,240,0.93) 0%,
-    rgba(240,240,235,0.90) 30%,
-    rgba(242,242,237,0.91) 60%,
-    rgba(244,244,240,0.94) 100%
-  ),
-  url('https://plus.unsplash.com/premium_photo-1742418773972-31bfcca60540?w=1920&q=60&auto=format&fit=crop') center/cover fixed no-repeat
-`;
+// Video background — replaces static image
+const BG_VIDEO_SRC = './bg-video.mp4';
+const BG_VIDEO_POSTER = './bg-video-poster.jpg';
+
+// Overlay gradient on top of video for card readability
+const GLASS_BG = 'rgba(244,244,240,0.55)';
 
 // ─── CLIPBOARD UTILITY ──────────────────────────────────────────────────────
 function copyToClipboard(text, onDone) {
@@ -6442,7 +6439,12 @@ input[type=number] { -moz-appearance:textfield; }
     }
   }
 `}</style>
-    <div style={{minHeight:"100vh",background:GLASS_MODE?GLASS_BG:C.bg,backgroundColor:GLASS_MODE?'#F4F4F0':undefined,color:C.text,fontFamily:SANS,overflowX:"clip",width:"100%",maxWidth:"100vw"}}>
+    <div style={{minHeight:"100vh",background:GLASS_MODE?GLASS_BG:C.bg,color:C.text,fontFamily:SANS,overflowX:"clip",width:"100%",maxWidth:"100vw",position:"relative"}}>
+      {/* ── VIDEO BACKGROUND ── */}
+      {GLASS_MODE && <video autoPlay muted loop playsInline poster={BG_VIDEO_POSTER}
+        style={{position:"fixed",top:0,left:0,width:"100vw",height:"100vh",objectFit:"cover",zIndex:-1,pointerEvents:"none"}}>
+        <source src={BG_VIDEO_SRC} type="video/mp4"/>
+      </video>}
 
       {/* ══ HEADER ══ */}
       <header ref={headerRef} style={{background:GLASS_MODE?'rgba(244,244,240,0.92)':C.bg,backdropFilter:GLASS_MODE?'blur(24px) saturate(1.4)':undefined,WebkitBackdropFilter:GLASS_MODE?'blur(24px) saturate(1.4)':undefined,borderBottom:`0.5px solid ${GLASS_MODE?'rgba(221,221,216,0.6)':C.border}`,position:"sticky",top:0,zIndex:100,transition:"border-color 0.3s",boxShadow:'0 2px 8px rgba(0,0,0,0.10), 0 6px 24px rgba(0,0,0,0.06)'}}>
