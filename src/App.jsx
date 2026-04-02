@@ -6579,10 +6579,10 @@ input[type=number] { -moz-appearance:textfield; }
             transformStyle:"preserve-3d",
             flexShrink:0,
           }}>
-            <div onClick={()=>{if(state.fahrzeuge.length>1)setCarPopup(v=>!v);}} style={{cursor:state.fahrzeuge.length>1?"pointer":"default",display:"flex",alignItems:"center",gap:6}}>
+            <div onClick={()=>{if(state.fahrzeuge.length>1)setCarPopup(v=>!v);}} style={{cursor:state.fahrzeuge.length>1?"pointer":"default",position:"relative",display:"inline-flex"}}>
               <Kennzeichen value={aktiv.kennzeichen||""} size={isMobile?"md":isTablet?"lg":"xl"}/>
-              {state.fahrzeuge.length>1&&<div style={{width:22,height:22,borderRadius:"50%",background:acc,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,transition:"transform 0.2s",transform:carPopup?"rotate(180deg)":"rotate(0)"}}>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              {state.fahrzeuge.length>1&&<div style={{position:"absolute",right:-8,top:"50%",transform:`translateY(-50%)${carPopup?" rotate(180deg)":""}`,width:20,height:20,borderRadius:"50%",background:acc,display:"flex",alignItems:"center",justifyContent:"center",transition:"transform 0.2s",boxShadow:"0 1px 4px rgba(0,0,0,0.25)"}}>
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
               </div>}
             </div>
             {/* ── Car Selector Dropdown ── */}
