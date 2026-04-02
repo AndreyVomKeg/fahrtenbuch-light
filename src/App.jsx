@@ -3397,7 +3397,7 @@ function UebersichtTab({stats, aktiv, acc, accDk, C, SANS, FS, katAccent, katAcc
     </div>
     {/* SVG Line Chart */}
     {kmArr.length > 0 ? (
-    <svg width="100%" viewBox={`0 0 600 ${isMobile?120:140}`} preserveAspectRatio="xMinYMin meet" style={{display:"block"}}>
+    <svg width="100%" viewBox={`0 0 600 ${isMobile?135:155}`} preserveAspectRatio="xMinYMin meet" style={{display:"block"}}>
     <defs>
     <linearGradient id="areaGradOv" x1="0" y1="0" x2="0" y2="1">
     <stop offset="0%" stopColor={C.red} stopOpacity="0.25"/>
@@ -3405,11 +3405,11 @@ function UebersichtTab({stats, aktiv, acc, accDk, C, SANS, FS, katAccent, katAcc
     </linearGradient>
     </defs>
     {[0.25,0.5,0.75].map(f=>
-    <line key={f} x1="20" y1={10+(isMobile?80:100)*(1-f)} x2="580" y2={10+(isMobile?80:100)*(1-f)} stroke={C.border} strokeWidth="0.5" strokeDasharray="4 3" opacity="0.5"/>
+    <line key={f} x1="20" y1={22+(isMobile?80:100)*(1-f)} x2="580" y2={22+(isMobile?80:100)*(1-f)} stroke={C.border} strokeWidth="0.5" strokeDasharray="4 3" opacity="0.5"/>
     )}
     {(()=>{
       const H = isMobile ? 80 : 100;
-      const T = 10;
+      const T = 22;
       const pts = kmArr.map((d,i) => {
         const x = 20 + i * (560 / Math.max(kmArr.length-1,1));
         const y = d.km > 0 ? T + H - (d.km / maxKm) * H : T + H;
