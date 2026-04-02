@@ -6438,10 +6438,10 @@ input[type=number] { -moz-appearance:textfield; }
   .fb-ico-btn { transition: transform 0.12s ease; }
   .fb-ico-btn:hover { transform: scale(1.2); }
   /* Mobile touch improvements */
-  html, body { overflow-x: hidden; width: 100%; }
+  html, body { overflow-x: clip; width: 100%; }
   @media (max-width: 480px) {
     * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
-    html, body, #root { overflow-x: hidden; max-width: 100vw; }
+    html, body, #root { overflow-x: clip; max-width: 100vw; }
     input, textarea, select { font-size: 16px !important; }
     .fb-ico-btn:hover { transform: none; }
   }
@@ -6452,7 +6452,7 @@ input[type=number] { -moz-appearance:textfield; }
     }
   }
 `}</style>
-    <div style={{minHeight:"100vh",background:GLASS_MODE?GLASS_BG:C.bg,backgroundColor:GLASS_MODE?'#F4F4F0':undefined,color:C.text,fontFamily:SANS,overflowX:"hidden",width:"100%",maxWidth:"100vw"}}>
+    <div style={{minHeight:"100vh",background:GLASS_MODE?GLASS_BG:C.bg,backgroundColor:GLASS_MODE?'#F4F4F0':undefined,color:C.text,fontFamily:SANS,overflowX:"clip",width:"100%",maxWidth:"100vw"}}>
 
       {/* ══ HEADER ══ */}
       <header ref={headerRef} style={{background:GLASS_MODE?'rgba(244,244,240,0.92)':C.bg,backdropFilter:GLASS_MODE?'blur(24px) saturate(1.4)':undefined,WebkitBackdropFilter:GLASS_MODE?'blur(24px) saturate(1.4)':undefined,borderBottom:`0.5px solid ${GLASS_MODE?'rgba(221,221,216,0.6)':C.border}`,position:"sticky",top:0,zIndex:100,transition:"border-color 0.3s",boxShadow:'0 2px 8px rgba(0,0,0,0.10), 0 6px 24px rgba(0,0,0,0.06)'}}>
