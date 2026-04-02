@@ -4490,6 +4490,7 @@ function FahrtenbuchApp({authUser, onLogout, themeId, setThemeId}) {
   const [ready,setReady]     = useState(false);
   const [tuvPopup,setTuvPopup] = useState(false);
   const [carPopup,setCarPopup] = useState(false);
+  const [carDropLeft, setCarDropLeft] = useState(16);
   const carPopRef = useRef(null);
   const kzBoxRef = useRef(null);
   const headerRef = useRef(null);
@@ -6646,7 +6647,7 @@ input[type=number] { -moz-appearance:textfield; }
             transformStyle:"preserve-3d",
             flexShrink:0,
           }}>
-            <div onClick={()=>{if(state.fahrzeuge.length>1)setCarPopup(v=>!v);}} style={{cursor:state.fahrzeuge.length>1?"pointer":"default",position:"relative",display:"inline-flex"}}>
+            <div onClick={()=>{if(state.fahrzeuge.length>1){const r=kzBoxRef.current?.getBoundingClientRect();if(r)setCarDropLeft(r.left);setCarPopup(v=>!v);}}} style={{cursor:state.fahrzeuge.length>1?"pointer":"default",position:"relative",display:"inline-flex"}}>
               <Kennzeichen value={aktiv.kennzeichen||""} size={isMobile?"md":isTablet?"lg":"xl"}/>
               {state.fahrzeuge.length>1&&<div style={{position:"absolute",right:-8,top:"50%",transform:`translateY(-50%)${carPopup?" rotate(180deg)":""}`,width:20,height:20,borderRadius:"50%",background:acc,display:"flex",alignItems:"center",justifyContent:"center",transition:"transform 0.2s",boxShadow:"0 1px 4px rgba(0,0,0,0.25)"}}>
                 <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
@@ -6767,7 +6768,7 @@ input[type=number] { -moz-appearance:textfield; }
       {carPopup&&state.fahrzeuge.length>1&&<div onClick={()=>setCarPopup(false)} style={{position:"fixed",inset:0,zIndex:499,background:"rgba(0,0,0,0.18)"}}/>}
       {carPopup&&state.fahrzeuge.length>1&&(
         <div ref={carDropRef} style={{
-          position:"fixed",top:isMobile?56:70,left:isMobile?8:16,right:isMobile?8:undefined,
+          position:"fixed",top:isMobile?56:70,left:isMobile?8:carDropLeft,right:isMobile?8:undefined,
           background:'#f4f4f0',
           borderRadius:12,
           border:`1px solid ${C.border}`,
