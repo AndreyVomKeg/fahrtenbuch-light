@@ -6560,9 +6560,35 @@ input[type=number] { -moz-appearance:textfield; }
 `}</style>
     <div style={{minHeight:"100vh",background:GLASS_MODE?GLASS_BG:C.bg,color:C.text,fontFamily:SANS,overflowX:"clip",width:"100%",maxWidth:"100vw",position:"relative"}}>
       {/* ── VIDEO BACKGROUND ── */}
-      {GLASS_MODE && <svg width="0" height="0" style={{position:'absolute'}}><defs><filter id="sharpen"><feConvolveMatrix order="3" kernelMatrix="0 -0.5 0 -0.5 3 -0.5 0 -0.5 0" preserveAlpha="true"/></filter></defs></svg>}
+      {GLASS_MODE && <svg width="0" height="0" style={{position:'absolute'}}><defs>
+        {/* Cartoon / cel-shading filter */}
+        <filter id="cartoon" colorInterpolationFilters="sRGB">
+          {/* Step 1: Slight blur to smooth noise before posterizing */}
+          <feGaussianBlur in="SourceGraphic" stdDeviation="1.2" result="blurred"/>
+          {/* Step 2: Posterize — reduce to ~6 color levels per channel */}
+          <feComponentTransfer in="blurred" result="posterized">
+            <feFuncR type="discrete" tableValues="0 0.15 0.3 0.5 0.7 0.85 1"/>
+            <feFuncG type="discrete" tableValues="0 0.15 0.3 0.5 0.7 0.85 1"/>
+            <feFuncB type="discrete" tableValues="0 0.15 0.3 0.5 0.7 0.85 1"/>
+          </feComponentTransfer>
+          {/* Step 3: Edge detection for outlines */}
+          <feConvolveMatrix in="SourceGraphic" order="3" kernelMatrix="-1 -1 -1 -1 8 -1 -1 -1 -1" preserveAlpha="true" result="edges"/>
+          {/* Step 4: Threshold edges to black lines */}
+          <feComponentTransfer in="edges" result="darkEdges">
+            <feFuncR type="linear" slope="3" intercept="-0.5"/>
+            <feFuncG type="linear" slope="3" intercept="-0.5"/>
+            <feFuncB type="linear" slope="3" intercept="-0.5"/>
+          </feComponentTransfer>
+          {/* Step 5: Invert edges so lines are dark on white */}
+          <feColorMatrix in="darkEdges" type="matrix" values="-1 0 0 0 1  0 -1 0 0 1  0 0 -1 0 1  0 0 0 1 0" result="invertedEdges"/>
+          {/* Step 6: Multiply posterized colors with edge outlines */}
+          <feBlend in="posterized" in2="invertedEdges" mode="multiply" result="toon"/>
+          {/* Step 7: Boost saturation for cartoon vibrancy */}
+          <feColorMatrix in="toon" type="saturate" values="1.8"/>
+        </filter>
+      </defs></svg>}
       {GLASS_MODE && <video autoPlay muted loop playsInline poster={BG_VIDEO_POSTER}
-        style={{position:"fixed",top:0,left:0,width:"100vw",height:"100vh",objectFit:"cover",zIndex:-1,pointerEvents:"none",filter:"brightness(1.1) contrast(0.3) url(#sharpen)",transform:"scale(1.04)"}}>
+        style={{position:"fixed",top:0,left:0,width:"100vw",height:"100vh",objectFit:"cover",zIndex:-1,pointerEvents:"none",filter:"brightness(1.15) contrast(0.35) url(#cartoon)",transform:"scale(1.04)"}}>
         <source src={BG_VIDEO_SRC} type="video/mp4"/>
       </video>}
 
