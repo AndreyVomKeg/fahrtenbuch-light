@@ -6561,20 +6561,20 @@ input[type=number] { -moz-appearance:textfield; }
     <div style={{minHeight:"100vh",background:GLASS_MODE?GLASS_BG:C.bg,color:C.text,fontFamily:SANS,overflowX:"clip",width:"100%",maxWidth:"100vw",position:"relative"}}>
       {/* ── VIDEO BACKGROUND ── */}
       {GLASS_MODE && <svg width="0" height="0" style={{position:'absolute'}}><defs>
-        {/* Painterly illustrated — stronger stylisation, NO posterize (no pixels) */}
+        {/* Cartoon-style — low blur, strong sharpen+flatten+saturate, NO posterize */}
         <filter id="illustrated" colorInterpolationFilters="sRGB">
-          {/* Heavier blur — oil-paint smoothness */}
-          <feGaussianBlur in="SourceGraphic" stdDeviation="2.2" result="smooth"/>
-          {/* Strong sharpen — crisp illustrated edges */}
-          <feConvolveMatrix in="smooth" order="3" kernelMatrix="0 -0.9 0 -0.9 4.6 -0.9 0 -0.9 0" preserveAlpha="true" result="sharp"/>
-          {/* Slightly compress tonal range — flatter, more cartoon-like */}
+          {/* Light blur — just enough to smooth video noise */}
+          <feGaussianBlur in="SourceGraphic" stdDeviation="0.9" result="smooth"/>
+          {/* Aggressive sharpen — bold illustrated outlines */}
+          <feConvolveMatrix in="smooth" order="3" kernelMatrix="0 -1.2 0 -1.2 5.8 -1.2 0 -1.2 0" preserveAlpha="true" result="sharp"/>
+          {/* Strong gamma flatten — compressed tones, cartoon feel */}
           <feComponentTransfer in="sharp" result="flat">
-            <feFuncR type="gamma" amplitude="1" exponent="0.85" offset="0.04"/>
-            <feFuncG type="gamma" amplitude="1" exponent="0.85" offset="0.04"/>
-            <feFuncB type="gamma" amplitude="1" exponent="0.85" offset="0.04"/>
+            <feFuncR type="gamma" amplitude="1" exponent="0.7" offset="0.06"/>
+            <feFuncG type="gamma" amplitude="1" exponent="0.7" offset="0.06"/>
+            <feFuncB type="gamma" amplitude="1" exponent="0.7" offset="0.06"/>
           </feComponentTransfer>
-          {/* Warm saturation boost */}
-          <feColorMatrix in="flat" type="saturate" values="1.5"/>
+          {/* Vivid saturation */}
+          <feColorMatrix in="flat" type="saturate" values="1.7"/>
         </filter>
       </defs></svg>}
       {GLASS_MODE && <video autoPlay muted loop playsInline poster={BG_VIDEO_POSTER}
