@@ -1682,11 +1682,11 @@ function SpringBtn({children, ...props}) {
   },[]);
   return <button ref={ref} {...props}>{children}</button>;
 }
-function SectionBar({count, label, onAdd, accent, accentDk, addLabel, formOpen}) {
+function SectionBar({count, label, onAdd, accent, accentDk, addLabel, formOpen, noGlass}) {
   if(!count) return null;
   return (
-    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10,
-      ...(GLASS_MODE?{background:GLASS.background,backdropFilter:GLASS.backdropFilter,WebkitBackdropFilter:GLASS.backdropFilter,borderRadius:12,border:GLASS.border,padding:'8px 14px'}:{})
+    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:noGlass?0:10,
+      ...(!noGlass&&GLASS_MODE?{background:GLASS.background,backdropFilter:GLASS.backdropFilter,WebkitBackdropFilter:GLASS.backdropFilter,borderRadius:12,border:GLASS.border,padding:'8px 14px'}:{})
     }}>
       <div style={{fontSize:14,color:C.text}}>
         {count} <span style={{color:accent,fontWeight:700}}>{label}</span>
@@ -2410,13 +2410,6 @@ function StandortePanel({aktiv, patchAktiv, setConfirmDel, setFData, setFForm, s
 
   return (
     <div>
-      <div style={{borderLeft:`2px solid ${C.standort}`,padding:"8px 0 8px 14px",marginBottom:14,display:"flex",alignItems:"center",gap:8,fontSize:14,color:GLASS_MODE?C.text:C.standort,fontFamily:SANS,
-        ...(GLASS_MODE?{background:GLASS.background,backdropFilter:GLASS.backdropFilter,WebkitBackdropFilter:GLASS.backdropFilter,borderRadius:12,border:GLASS.border}:{})
-      }}>
-        <Ico name="road" size={13} color={C.standortDk}/>
-        <span>Aus <b>Stammstandort</b> + <b>Kosten</b> · {autoOrte.length} automatisch · +{manOrte.length} manuell</span>
-      </div>
-
       {stOrtForm!==null&&(
         <FormPanel accent={C.standort} title={stOrtForm==="new"?"Standort hinzufügen":"Standort bearbeiten"} icon="mapPin" onSave={saveStOrt}>
           <FormRow cols={2}>
@@ -2438,10 +2431,15 @@ function StandortePanel({aktiv, patchAktiv, setConfirmDel, setFData, setFForm, s
         </FormPanel>
       )}
 
-      {/* Header: count + add + search (combined glass) */}
+      {/* Header: info + count + add + search (combined glass) */}
       {!!alle.length&&<div style={{marginBottom:14,
         ...(GLASS_MODE?{background:GLASS.background,backdropFilter:GLASS.backdropFilter,WebkitBackdropFilter:GLASS.backdropFilter,borderRadius:12,border:GLASS.border,padding:'14px'}:{})
       }}>
+      <div style={{borderLeft:`2px solid ${C.standort}`,padding:"6px 0 6px 12px",marginBottom:10,display:"flex",alignItems:"center",gap:8,fontSize:14,color:GLASS_MODE?C.text:C.standort,fontFamily:SANS
+      }}>
+        <Ico name="road" size={13} color={C.standortDk}/>
+        <span>Aus <b>Stammstandort</b> + <b>Kosten</b> · {autoOrte.length} automatisch · +{manOrte.length} manuell</span>
+      </div>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
         <div style={{fontSize:14,color:C.text}}>
           {gefilert.length !== alle.length ? `${gefilert.length} von ${alle.length} Standorten` : `${alle.length} Standorte gesamt`}
@@ -6982,12 +6980,13 @@ input[type=number] { -moz-appearance:textfield; }
                     <FormActions onSave={savePartner} onCancel={()=>setPForm(null)} accent={C.red} saveDisabled={dupCheckP.exakt}/>
                   </FormPanel>
                 )}
+                {(aktiv.partner||[]).length>0&&<div style={{marginBottom:14,
+                  ...(GLASS_MODE?{background:GLASS.background,backdropFilter:GLASS.backdropFilter,WebkitBackdropFilter:GLASS.backdropFilter,borderRadius:12,border:GLASS.border,padding:'14px'}:{})
+                }}>
                 <SectionBar count={(aktiv.partner||[]).length} label="Partner" accent={C.red} accentDk={C.redDk} addLabel="PARTNER HINZUFÜGEN"
-                  onAdd={()=>{setPForm("new");setPData(E_P());}} formOpen={pForm!==null}/>
+                  onAdd={()=>{setPForm("new");setPData(E_P());}} formOpen={pForm!==null} noGlass/>
                 {/* Suche + Typ-Filter */}
-                {(aktiv.partner||[]).length>0&&(
-                  <div style={{display:"flex",gap:10,alignItems:"center",flexWrap:"wrap",marginBottom:14,
-                    ...(GLASS_MODE?{background:GLASS.background,backdropFilter:GLASS.backdropFilter,WebkitBackdropFilter:GLASS.backdropFilter,borderRadius:12,border:GLASS.border,padding:'8px 14px'}:{})
+                  <div style={{display:"flex",gap:10,alignItems:"center",flexWrap:"wrap",marginTop:10
                   }}>
                     <div style={{position:"relative",flex:1,minWidth:160,display:"flex",alignItems:"center"}}>
                       <input value={pFilter?.q||""} onChange={e=>setPFilter(f=>({...f,q:e.target?.value??""}))} placeholder="Partner suchen…"
@@ -7000,7 +6999,7 @@ input[type=number] { -moz-appearance:textfield; }
                     </div>
                     <div style={{flex:"0 0 clamp(150px,18%,200px)"}}><CustomSelect value={pFilter?.typ||""} onChange={v=>setPFilter(f=>({...f,typ:v}))} options={[{value:"",label:"Alle Typen"},...Object.entries(PARTNER_TYP_LABELS).map(([v,l])=>({value:v,label:l}))]} accent={C.red}/></div>
                   </div>
-                )}
+                </div>}
                 <div className="fb-stagger" style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(340px,1fr))",gap:2}}>
                   {aktiv.partner
                     .filter(p=>{
