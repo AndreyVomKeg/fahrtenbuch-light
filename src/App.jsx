@@ -6561,24 +6561,33 @@ input[type=number] { -moz-appearance:textfield; }
     <div style={{minHeight:"100vh",background:GLASS_MODE?GLASS_BG:C.bg,color:C.text,fontFamily:SANS,overflowX:"clip",width:"100%",maxWidth:"100vw",position:"relative"}}>
       {/* ── VIDEO BACKGROUND ── */}
       {GLASS_MODE && <svg width="0" height="0" style={{position:'absolute'}}><defs>
-        {/* Soft toon filter — subtle posterize + gentle edges, close to original */}
-        <filter id="softtoon" colorInterpolationFilters="sRGB">
-          {/* Gentle blur to reduce video noise */}
-          <feGaussianBlur in="SourceGraphic" stdDeviation="0.8" result="smooth"/>
-          {/* Mild posterize — 12 levels, barely noticeable flat-color steps */}
+        {/* Medium toon — between full cartoon and subtle */}
+        <filter id="medtoon" colorInterpolationFilters="sRGB">
+          {/* Blur to smooth before posterize */}
+          <feGaussianBlur in="SourceGraphic" stdDeviation="1.0" result="smooth"/>
+          {/* 8 levels — visible flat-color steps but not extreme */}
           <feComponentTransfer in="smooth" result="poster">
-            <feFuncR type="discrete" tableValues="0 0.08 0.16 0.25 0.33 0.42 0.5 0.58 0.67 0.75 0.84 0.92 1"/>
-            <feFuncG type="discrete" tableValues="0 0.08 0.16 0.25 0.33 0.42 0.5 0.58 0.67 0.75 0.84 0.92 1"/>
-            <feFuncB type="discrete" tableValues="0 0.08 0.16 0.25 0.33 0.42 0.5 0.58 0.67 0.75 0.84 0.92 1"/>
+            <feFuncR type="discrete" tableValues="0 0.12 0.25 0.38 0.5 0.65 0.8 0.92 1"/>
+            <feFuncG type="discrete" tableValues="0 0.12 0.25 0.38 0.5 0.65 0.8 0.92 1"/>
+            <feFuncB type="discrete" tableValues="0 0.12 0.25 0.38 0.5 0.65 0.8 0.92 1"/>
           </feComponentTransfer>
-          {/* Light sharpen to keep edges defined */}
-          <feConvolveMatrix in="poster" order="3" kernelMatrix="0 -0.3 0 -0.3 2.2 -0.3 0 -0.3 0" preserveAlpha="true" result="sharp"/>
-          {/* Keep saturation natural — just slightly warm */}
-          <feColorMatrix in="sharp" type="saturate" values="1.1"/>
+          {/* Soft edge detection */}
+          <feConvolveMatrix in="SourceGraphic" order="3" kernelMatrix="-1 -1 -1 -1 8 -1 -1 -1 -1" preserveAlpha="true" result="edges"/>
+          {/* Gentle threshold — softer lines than full cartoon */}
+          <feComponentTransfer in="edges" result="darkEdges">
+            <feFuncR type="linear" slope="1.5" intercept="-0.2"/>
+            <feFuncG type="linear" slope="1.5" intercept="-0.2"/>
+            <feFuncB type="linear" slope="1.5" intercept="-0.2"/>
+          </feComponentTransfer>
+          <feColorMatrix in="darkEdges" type="matrix" values="-1 0 0 0 1  0 -1 0 0 1  0 0 -1 0 1  0 0 0 1 0" result="inv"/>
+          {/* Blend edges at 40% opacity with posterized image */}
+          <feBlend in="poster" in2="inv" mode="multiply" result="toon"/>
+          {/* Moderate saturation — warm but not acid */}
+          <feColorMatrix in="toon" type="saturate" values="1.3"/>
         </filter>
       </defs></svg>}
       {GLASS_MODE && <video autoPlay muted loop playsInline poster={BG_VIDEO_POSTER}
-        style={{position:"fixed",top:0,left:0,width:"100vw",height:"100vh",objectFit:"cover",zIndex:-1,pointerEvents:"none",filter:"brightness(1.1) contrast(0.3) url(#softtoon)",transform:"scale(1.04)"}}>
+        style={{position:"fixed",top:0,left:0,width:"100vw",height:"100vh",objectFit:"cover",zIndex:-1,pointerEvents:"none",filter:"brightness(1.12) contrast(0.32) url(#medtoon)",transform:"scale(1.04)"}}>
         <source src={BG_VIDEO_SRC} type="video/mp4"/>
       </video>}
 
