@@ -3319,7 +3319,7 @@ function UebersichtTab({stats, aktiv, acc, accDk, C, SANS, FS, katAccent, katAcc
     </div>
 
     {/* ── ROW 2: Kosten + KM nach Kat — equal halves ── */}
-    <div style={{display:"grid",gridTemplateColumns:isMobile?"1fr":isTablet?"1fr":"minmax(0,1fr) minmax(0,1fr)",gap:isMobile?8:10,marginBottom:isMobile?8:10}}>
+    <div style={{display:"grid",gridTemplateColumns:isMobile?"1fr":isTablet?"1fr":"minmax(0,1fr) minmax(0,1fr)",gap:isMobile?8:10,marginBottom:isMobile?8:10,overflow:"hidden"}}>
 
     {/* Kosten — compact 2×2+1 grid with % */}
     <div style={{...gls,background:glsBg,padding:isMobile?"14px 12px":"16px 18px",borderLeft:glsBl(C.steel),boxShadow:glsSh,borderRadius:glsR,overflow:"hidden",boxSizing:"border-box",display:"flex",flexDirection:"column"}}>
@@ -3457,10 +3457,10 @@ function UebersichtTab({stats, aktiv, acc, accDk, C, SANS, FS, katAccent, katAcc
     </div>
 
     {/* ── ROW 4: Fälligkeiten + Top 5 + Letzte Fahrten — 3 columns ── */}
-    <div style={{display:"grid",gridTemplateColumns:isMobile?"1fr":isTablet?"1fr 1fr":"minmax(0,1fr) minmax(0,1fr) minmax(0,1fr)",gap:isMobile?8:10,marginBottom:isMobile?8:10}}>
+    <div style={{display:"grid",gridTemplateColumns:isMobile?"1fr":isTablet?"1fr 1fr":"minmax(0,1fr) minmax(0,1fr) minmax(0,1fr)",gap:isMobile?8:10,marginBottom:isMobile?8:10,overflow:"hidden"}}>
 
     {/* Nächste Fälligkeiten */}
-    <div style={{...gls,background:glsBg,padding:isMobile?"14px 12px":"16px 18px",borderLeft:glsBl(C.service),boxShadow:glsSh,borderRadius:glsR}}>
+    <div style={{...gls,background:glsBg,padding:isMobile?"14px 12px":"16px 18px",borderLeft:glsBl(C.service),boxShadow:glsSh,borderRadius:glsR,overflow:"hidden",boxSizing:"border-box"}}>
     <div style={{fontSize:isMobile?12:13,color:C.text,letterSpacing:1.5,textTransform:"uppercase",fontWeight:700,marginBottom:12,fontFamily:SANS}}>NÄCHSTE FÄLLIGKEITEN</div>
     {stats.faelligkeiten.length>0 ? stats.faelligkeiten.map(x=>{
     const today=new Date().toISOString().slice(0,10);
@@ -3485,7 +3485,7 @@ function UebersichtTab({stats, aktiv, acc, accDk, C, SANS, FS, katAccent, katAcc
     </div>
 
     {/* Top Besucht */}
-    <div style={{...gls,background:glsBg,padding:isMobile?"14px 12px":"16px 18px",borderLeft:glsBl(C.red),boxShadow:glsSh,borderRadius:glsR}}>
+    <div style={{...gls,background:glsBg,padding:isMobile?"14px 12px":"16px 18px",borderLeft:glsBl(C.red),boxShadow:glsSh,borderRadius:glsR,overflow:"hidden",boxSizing:"border-box"}}>
     <div style={{fontSize:isMobile?12:13,color:C.text,letterSpacing:1.5,textTransform:"uppercase",fontWeight:700,marginBottom:12,fontFamily:SANS}}>TOP 5 BESUCHT</div>
     {Object.entries(stats.nP).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([id,km],i)=>{
     const p=(aktiv.partner||[]).find(x=>x.id===id);
@@ -3531,39 +3531,39 @@ function UebersichtTab({stats, aktiv, acc, accDk, C, SANS, FS, katAccent, katAcc
     {(!aktiv.standort?.name||stats.strafenOffen>0||stats.faelligUeberfaellig.length>0)&&(
     <div style={{display:"flex",flexDirection:"column",gap:10,marginTop:2}}>
     {!aktiv.standort?.name&&(
-    <div style={{...gls,background:glsBg,borderTop:GLASS_MODE?`2px solid ${C.red}99`:`2px solid ${C.red}`,padding:"14px 18px",
-    display:"flex",alignItems:"center",justifyContent:"space-between",
+    <div style={{...gls,background:glsBg,borderTop:GLASS_MODE?`2px solid ${C.red}99`:`2px solid ${C.red}`,padding:isMobile?"10px 12px":"14px 18px",
+    display:"flex",alignItems:"center",justifyContent:"space-between",gap:8,flexWrap:"wrap",overflow:"hidden",boxSizing:"border-box",
     boxShadow:glsSh,borderRadius:glsR}}>
-    <div style={{display:"flex",alignItems:"center",gap:8,fontSize:13,color:C.redDk,fontFamily:SANS,fontWeight:600}}>
-    <Ico name="alert" size={14} color={C.redDk}/>Kein Stammstandort — bitte einrichten.
+    <div style={{display:"flex",alignItems:"center",gap:8,fontSize:isMobile?12:13,color:C.redDk,fontFamily:SANS,fontWeight:600,minWidth:0,flex:1}}>
+    <Ico name="alert" size={14} color={C.redDk}/><span style={{overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>Kein Stammstandort — bitte einrichten.</span>
     </div>
-    <button onClick={()=>setTab("einstellungen")} style={{...btnSolid(C.redDk),height:32,padding:"0 14px",fontSize:11}}>
+    <button onClick={()=>setTab("einstellungen")} style={{...btnSolid(C.redDk),height:32,padding:"0 14px",fontSize:11,flexShrink:0}}>
     <Ico name="settings" size={13} color="#fff"/>EINSTELLUNGEN
     </button>
     </div>
     )}
     {stats.strafenOffen>0&&(
-    <div style={{...gls,background:glsBg,borderTop:GLASS_MODE?`2px solid ${C.strafe}99`:`2px solid ${C.strafe}`,padding:"14px 18px",
-    display:"flex",alignItems:"center",justifyContent:"space-between",
+    <div style={{...gls,background:glsBg,borderTop:GLASS_MODE?`2px solid ${C.strafe}99`:`2px solid ${C.strafe}`,padding:isMobile?"10px 12px":"14px 18px",
+    display:"flex",alignItems:"center",justifyContent:"space-between",gap:8,flexWrap:"wrap",overflow:"hidden",boxSizing:"border-box",
     boxShadow:glsSh,borderRadius:glsR}}>
-    <div style={{display:"flex",alignItems:"center",gap:8,fontSize:13,color:C.strafeDk,fontFamily:SANS,fontWeight:600}}>
+    <div style={{display:"flex",alignItems:"center",gap:8,fontSize:isMobile?12:13,color:C.strafeDk,fontFamily:SANS,fontWeight:600,minWidth:0,flex:1}}>
     <Ico name="zap" size={14} color={C.strafeDk}/>
-    {stats.strafenOffen} offene {stats.strafenOffen===1?"Strafe":"Strafen"} — noch nicht bezahlt
+    <span style={{overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{stats.strafenOffen} offene {stats.strafenOffen===1?"Strafe":"Strafen"} — noch nicht bezahlt</span>
     </div>
-    <button onClick={()=>setTab("kosten")} style={{...btnSolid(C.strafeDk),height:32,padding:"0 14px",fontSize:11}}>
+    <button onClick={()=>setTab("kosten")} style={{...btnSolid(C.strafeDk),height:32,padding:"0 14px",fontSize:11,flexShrink:0}}>
     <Ico name="arrowRight" size={13} color="#fff"/>ANZEIGEN
     </button>
     </div>
     )}
     {stats.faelligUeberfaellig.length>0&&(
-    <div style={{...gls,background:glsBg,borderTop:GLASS_MODE?`2px solid ${C.service}99`:`2px solid ${C.service}`,padding:"14px 18px",
-    display:"flex",alignItems:"center",justifyContent:"space-between",
+    <div style={{...gls,background:glsBg,borderTop:GLASS_MODE?`2px solid ${C.service}99`:`2px solid ${C.service}`,padding:isMobile?"10px 12px":"14px 18px",
+    display:"flex",alignItems:"center",justifyContent:"space-between",gap:8,flexWrap:"wrap",overflow:"hidden",boxSizing:"border-box",
     boxShadow:glsSh,borderRadius:glsR}}>
-    <div style={{display:"flex",alignItems:"center",gap:8,fontSize:13,color:C.serviceDk,fontFamily:SANS,fontWeight:600}}>
+    <div style={{display:"flex",alignItems:"center",gap:8,fontSize:isMobile?12:13,color:C.serviceDk,fontFamily:SANS,fontWeight:600,minWidth:0,flex:1}}>
     <Ico name="alert" size={14} color={C.serviceDk}/>
-    {stats.faelligUeberfaellig.length} {stats.faelligUeberfaellig.length===1?"Fälligkeit":"Fälligkeiten"} überfällig: {stats.faelligUeberfaellig.map(x=>x.typ).join(", ")}
+    <span style={{overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{stats.faelligUeberfaellig.length} {stats.faelligUeberfaellig.length===1?"Fälligkeit":"Fälligkeiten"} überfällig: {stats.faelligUeberfaellig.map(x=>x.typ).join(", ")}</span>
     </div>
-    <button onClick={()=>setTab("kosten")} style={{...btnSolid(C.serviceDk),height:32,padding:"0 14px",fontSize:11}}>
+    <button onClick={()=>setTab("kosten")} style={{...btnSolid(C.serviceDk),height:32,padding:"0 14px",fontSize:11,flexShrink:0}}>
     <Ico name="arrowRight" size={13} color="#fff"/>ANZEIGEN
     </button>
     </div>
