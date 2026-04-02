@@ -6606,16 +6606,19 @@ input[type=number] { -moz-appearance:textfield; }
             {carPopup&&state.fahrzeuge.length>1&&<div onClick={()=>setCarPopup(false)} style={{position:"fixed",inset:0,zIndex:499,background:"rgba(0,0,0,0.15)"}}/>}
             {carPopup&&state.fahrzeuge.length>1&&(
               <div style={{
-                position:"fixed",top:isMobile?56:70,left:isMobile?8:16,
+                position:"fixed",top:isMobile?56:70,left:isMobile?8:16,right:isMobile?8:undefined,
                 background:'#f4f4f0',
                 borderRadius:12,
                 border:`1px solid ${C.border}`,
                 boxShadow:"0 16px 48px rgba(0,0,0,0.22), 0 4px 12px rgba(0,0,0,0.12)",
-                width:isMobile?"calc(100vw - 16px)":"auto",minWidth:isMobile?280:380,maxWidth:440,
+                width:isMobile?undefined:"auto",minWidth:isMobile?undefined:380,maxWidth:isMobile?undefined:440,
                 zIndex:500,overflow:"hidden",
                 animation:"modalIn 0.2s cubic-bezier(0.34,1.36,0.64,1)",
+                display:"flex",flexDirection:"column",
+                maxHeight:isMobile?"calc(100vh - 70px)":"calc(100vh - 90px)",
               }}>
-                <div style={{padding:"12px 16px 8px",fontSize:11,color:C.muted,letterSpacing:1.5,textTransform:"uppercase",fontWeight:700,fontFamily:SANS,borderBottom:`1px solid ${C.border}`}}>FAHRZEUG WÄHLEN</div>
+                <div style={{padding:"10px 14px 8px",fontSize:11,color:C.muted,letterSpacing:1.5,textTransform:"uppercase",fontWeight:700,fontFamily:SANS,borderBottom:`1px solid ${C.border}`,flexShrink:0}}>FAHRZEUG WÄHLEN</div>
+                <div style={{overflowY:"auto",WebkitOverflowScrolling:"touch"}}>
                 {state.fahrzeuge.map(fz=>{
                   const isActive=fz.id===state.aktivId;
                   const halter=fz.halterName||fz.halterFirma||"";
@@ -6623,28 +6626,29 @@ input[type=number] { -moz-appearance:textfield; }
                     <div key={fz.id}
                       onClick={()=>{setState(prev=>({...prev,aktivId:fz.id}));setCarPopup(false);setTab("uebersicht");}}
                       style={{
-                        display:"flex",alignItems:"center",gap:isMobile?10:14,
-                        padding:isMobile?"10px 14px":"12px 16px",
+                        display:"flex",alignItems:"center",gap:isMobile?8:14,
+                        padding:isMobile?"8px 12px":"12px 16px",
                         cursor:"pointer",
                         borderLeft:isActive?`3px solid ${acc}`:`3px solid transparent`,
-                        background:isActive?(GLASS_MODE?"rgba(0,0,0,0.04)":"rgba(0,0,0,0.03)"):"transparent",
+                        background:isActive?"rgba(0,0,0,0.05)":"transparent",
                         borderBottom:`1px solid ${C.border}`,
                         transition:"background 0.12s",
                       }}
-                      onMouseEnter={e=>{if(!isActive)e.currentTarget.style.background=GLASS_MODE?"rgba(0,0,0,0.03)":"rgba(0,0,0,0.02)";}}
+                      onMouseEnter={e=>{if(!isActive)e.currentTarget.style.background="rgba(0,0,0,0.03)";}}
                       onMouseLeave={e=>{if(!isActive)e.currentTarget.style.background="transparent";}}
                     >
-                      <div style={{borderRadius:4,boxShadow:"0 2px 4px rgba(0,0,0,0.15), 0 4px 12px rgba(0,0,0,0.10)",lineHeight:0,flexShrink:0}}>
-                        <Kennzeichen value={fz.kennzeichen||"—"} size="md"/>
+                      <div style={{borderRadius:4,boxShadow:"0 1px 3px rgba(0,0,0,0.15)",lineHeight:0,flexShrink:0}}>
+                        <Kennzeichen value={fz.kennzeichen||"—"} size={isMobile?"sm":"md"}/>
                       </div>
                       <div style={{flex:1,minWidth:0}}>
-                        <div style={{fontSize:isMobile?13:15,fontWeight:700,color:C.text,fontFamily:SANS,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{fz.marke?`${fz.marke} ${fz.modell||""}`:(fz.name||"Fahrzeug")}</div>
-                        {halter&&<div style={{fontSize:isMobile?11:12,color:C.muted,fontFamily:SANS,marginTop:1,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{halter}</div>}
+                        <div style={{fontSize:isMobile?12:15,fontWeight:700,color:C.text,fontFamily:SANS,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{fz.marke?`${fz.marke} ${fz.modell||""}`:(fz.name||"Fahrzeug")}</div>
+                        {halter&&<div style={{fontSize:isMobile?10:12,color:C.muted,fontFamily:SANS,marginTop:1,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{halter}</div>}
                       </div>
-                      {isActive&&<span style={{fontSize:10,fontWeight:700,color:"#fff",fontFamily:SANS,letterSpacing:1,textTransform:"uppercase",flexShrink:0,padding:"3px 8px",borderRadius:6,background:acc}}>AKTIV</span>}
+                      {isActive&&<span style={{fontSize:9,fontWeight:800,color:"#fff",fontFamily:SANS,letterSpacing:1.5,textTransform:"uppercase",flexShrink:0,padding:"2px 8px",borderRadius:10,background:acc,lineHeight:"16px"}}>AKTIV</span>}
                     </div>
                   );
                 })}
+                </div>
               </div>
             )}
           </div>
