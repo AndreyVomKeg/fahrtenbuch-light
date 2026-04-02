@@ -3322,24 +3322,24 @@ function UebersichtTab({stats, aktiv, acc, accDk, C, SANS, FS, katAccent, katAcc
     <div style={{display:"grid",gridTemplateColumns:isMobile?"1fr":isTablet?"1fr":"minmax(0,1fr) minmax(0,1fr)",gap:isMobile?8:10,marginBottom:isMobile?8:10}}>
 
     {/* Kosten — compact 2×2+1 grid with % */}
-    <div style={{...gls,background:glsBg,padding:isMobile?"14px 12px":"16px 18px",borderLeft:glsBl(C.steel),boxShadow:glsSh,borderRadius:glsR,overflow:"hidden",boxSizing:"border-box"}}>
+    <div style={{...gls,background:glsBg,padding:isMobile?"14px 12px":"16px 18px",borderLeft:glsBl(C.steel),boxShadow:glsSh,borderRadius:glsR,overflow:"hidden",boxSizing:"border-box",display:"flex",flexDirection:"column"}}>
     <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",marginBottom:isMobile?8:12,flexWrap:"wrap",gap:4}}>
-    <div style={{fontSize:isMobile?11:12,color:C.text,letterSpacing:isMobile?1:1.5,textTransform:"uppercase",fontWeight:700,fontFamily:SANS}}>KOSTEN NACH KATEGORIE</div>
-    <div style={{fontSize:isMobile?16:18,fontWeight:800,color:C.text,fontFamily:SANS,whiteSpace:"nowrap"}}>{stats.gesamtKosten.toFixed(2)} €</div>
+    <div style={{fontSize:isMobile?11:13,color:C.text,letterSpacing:isMobile?1:1.5,textTransform:"uppercase",fontWeight:700,fontFamily:SANS}}>KOSTEN NACH KATEGORIE</div>
+    <div style={{fontSize:isMobile?18:22,fontWeight:800,color:C.text,fontFamily:SANS,whiteSpace:"nowrap"}}>{stats.gesamtKosten.toFixed(2)} €</div>
     </div>
-    <div style={{display:"grid",gridTemplateColumns:isMobile?"1fr":"1fr 1fr",gap:isMobile?6:8}}>
+    <div style={{display:"grid",gridTemplateColumns:isMobile?"1fr":"1fr 1fr",gap:isMobile?6:8,flex:1}}>
     {kostenCats.map((cat,idx)=>{
     const pct = stats.gesamtKosten > 0 ? ((cat.betrag / stats.gesamtKosten) * 100).toFixed(0) : 0;
     const isLastOdd = !isMobile && idx === kostenCats.length - 1 && kostenCats.length % 2 === 1;
     return (
-    <div key={cat.label} style={{padding:isMobile?"8px 10px":"10px 12px",borderLeft:`2px solid ${cat.color}`,background:GLASS_MODE?'rgba(255,255,255,0.7)':C.surfaceAlt,borderRadius:GLASS_MODE?8:"0 6px 6px 0",...(isLastOdd?{gridColumn:"1 / -1"}:{})}}>
-    <div style={{display:"flex",alignItems:"center",gap:5,marginBottom:4}}>
-    <Ico name={cat.icon} size={14} color={(cat.colorDk||cat.color)}/>
-    <span style={{fontSize:11,fontWeight:700,letterSpacing:1,textTransform:"uppercase",fontFamily:SANS,color:C.text}}>{cat.label}</span>
+    <div key={cat.label} style={{padding:isMobile?"10px 12px":"14px 16px",borderLeft:`3px solid ${cat.color}`,background:GLASS_MODE?'rgba(255,255,255,0.7)':C.surfaceAlt,borderRadius:GLASS_MODE?8:"0 6px 6px 0",display:"flex",flexDirection:"column",justifyContent:"center",...(isLastOdd?{gridColumn:"1 / -1"}:{})}}>
+    <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:6}}>
+    <Ico name={cat.icon} size={isMobile?15:17} color={(cat.colorDk||cat.color)}/>
+    <span style={{fontSize:isMobile?12:13,fontWeight:700,letterSpacing:1,textTransform:"uppercase",fontFamily:SANS,color:C.text}}>{cat.label}</span>
     </div>
-    <div style={{display:"flex",alignItems:"baseline",gap:6}}>
-    <div style={{fontSize:isMobile?16:18,fontWeight:800,color:C.text,fontFamily:SANS,lineHeight:1}}>{cat.betrag.toFixed(2)} €</div>
-    {cat.count>0&&<div style={{fontSize:11,color:C.muted,fontFamily:SANS}}>{cat.count} Eintr. · {pct}%</div>}
+    <div style={{display:"flex",alignItems:"baseline",gap:8}}>
+    <div style={{fontSize:isMobile?20:24,fontWeight:800,color:C.text,fontFamily:SANS,lineHeight:1}}>{cat.betrag.toFixed(2)} €</div>
+    {cat.count>0&&<div style={{fontSize:isMobile?11:13,color:C.muted,fontFamily:SANS}}>{cat.count} Eintr. · {pct}%</div>}
     </div>
     </div>
     );})}
