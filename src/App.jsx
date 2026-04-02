@@ -37,6 +37,25 @@ const GLASS_BG = `
   url('https://plus.unsplash.com/premium_photo-1742418773972-31bfcca60540?w=1920&q=60&auto=format&fit=crop') center/cover fixed no-repeat
 `;
 
+// ─── CLIPBOARD UTILITY ──────────────────────────────────────────────────────
+function copyToClipboard(text, onDone) {
+  if (navigator.clipboard?.writeText) {
+    navigator.clipboard.writeText(text).then(onDone).catch(() => {
+      const ta = document.createElement("textarea");
+      ta.value = text; ta.style.cssText = "position:fixed;left:-9999px;top:0;opacity:0";
+      document.body.appendChild(ta); ta.select();
+      try { document.execCommand("copy"); onDone(); } catch(e) {/*ok*/}
+      document.body.removeChild(ta);
+    });
+  } else {
+    const ta = document.createElement("textarea");
+    ta.value = text; ta.style.cssText = "position:fixed;left:-9999px;top:0;opacity:0";
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand("copy"); onDone(); } catch(e) {/*ok*/}
+    document.body.removeChild(ta);
+  }
+}
+
 // ─── TYPOGRAPHY TOKENS (desktop scale) ───────────────────────────────────────
 const FS = {
   hint:  11,  // подсказки, вторичный текст
@@ -1465,11 +1484,11 @@ function KpiCard({wert, unit, label, akzent, akzentDk, icon}) {
       {(C.useGradients||GLASS_MODE)&&<div style={{position:"absolute",top:0,left:0,right:0,height:3,background:`linear-gradient(90deg, ${akzentDk||akzent}, ${akzent})`,opacity:1}}/>}
       <div style={{position:"absolute",top:isMobile?6:10,right:isMobile?8:12,opacity:GLASS_MODE?0.55:0.18}}><Ico name={icon} size={isMobile?32:44} color={akzent}/></div>
       <div style={{display:"flex",alignItems:"baseline",gap:4,marginBottom:isMobile?3:5,minWidth:0}}>
-        <div style={{fontSize:isMobile?22:28,fontWeight:800,color:GLASS_MODE?(akzentDk||akzent):(akzentDk||akzent),fontFamily:SANS,
+        <div style={{fontSize:isMobile?22:28,fontWeight:800,color:(akzentDk||akzent),fontFamily:SANS,
           lineHeight:1,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{display}</div>
         {unit&&<div style={{fontSize:isMobile?12:14,fontWeight:700,color:GLASS_MODE?akzent:(akzentDk||akzent),fontFamily:SANS,flexShrink:0}}>{unit}</div>}
       </div>
-      <div style={{fontSize:isMobile?11:14,fontWeight:700,color:GLASS_MODE?C.text:C.text,letterSpacing:isMobile?1:2,textTransform:"uppercase",
+      <div style={{fontSize:isMobile?11:14,fontWeight:700,color:C.text,letterSpacing:isMobile?1:2,textTransform:"uppercase",
         fontFamily:SANS,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{label}</div>
     </div>
   );
@@ -2514,7 +2533,7 @@ function SettingsBtn({active, accent, onClick}) {
   // Фон меняется ТОЛЬКО в активном состоянии (acc цвет) — без hover фона, чтобы избежать
   // SVG transparency bleed-through. Иконка затемняется через CSS filter на самом SVG.
   const bg = active ? toRgba(accent,0.14) : pressed ? (GLASS_MODE?"rgba(0,0,0,0.08)":"rgba(0,0,0,0.14)") : hov ? (GLASS_MODE?"rgba(0,0,0,0.05)":"rgba(0,0,0,0.08)") : "transparent";
-  const svgFilter = active ? "none" : pressed ? (GLASS_MODE?"brightness(0.3)":"brightness(0.3)") : hov ? (GLASS_MODE?"brightness(0.45)":"brightness(0.45)") : "none";
+  const svgFilter = active ? "none" : pressed ? "brightness(0.3)" : hov ? "brightness(0.45)" : "none";
   return (
     <button onClick={onClick}
       style={{width:40,height:40,background:bg,border:"none",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",borderRadius:C.inputRadius||8,transition:"background 0.12s"}}
@@ -3416,8 +3435,8 @@ function UebersichtTab({stats, aktiv, acc, accDk, C, SANS, FS, katAccent, katAcc
     <div style={{...(GLASS_MODE?GLASS:{}),background:GLASS_MODE?GLASS.background:C.surface,borderTop:GLASS_MODE?`2px solid ${C.red}60`:`2px solid ${C.red}`,padding:"16px 20px",
     display:"flex",alignItems:"center",justifyContent:"space-between",
     boxShadow:GLASS_MODE?GLASS.boxShadow:C.shadow,borderRadius:GLASS_MODE?16:(C.inputRadius||8)}}>
-    <div style={{display:"flex",alignItems:"center",gap:10,fontSize:14,color:GLASS_MODE?C.redDk:C.redDk,fontFamily:SANS,fontWeight:600}}>
-    <Ico name="alert" size={15} color={GLASS_MODE?C.redDk:C.redDk}/>Kein Stammstandort — bitte einrichten.
+    <div style={{display:"flex",alignItems:"center",gap:10,fontSize:14,color:C.redDk,fontFamily:SANS,fontWeight:600}}>
+    <Ico name="alert" size={15} color={C.redDk}/>Kein Stammstandort — bitte einrichten.
     </div>
     <button onClick={()=>setTab("einstellungen")} style={btnSolid(C.redDk)}>
     <Ico name="settings" size={15} color="#fff"/>EINSTELLUNGEN
@@ -3719,22 +3738,7 @@ function BerichtTab({gefFahrten, aktiv, acc, accDk, C, SANS, safeFloat, formatDa
     });
     const text=[hdr.join("\t"),...rows].join("\n");
     const copyDone=()=>{setSheetsCopied(true);sheetsCopiedTimer.current=setTimeout(()=>setSheetsCopied(false),3000);};
-    if(navigator.clipboard?.writeText){
-      navigator.clipboard.writeText(text).then(copyDone).catch(()=>{
-        // Fallback: textarea + execCommand
-        const ta=document.createElement("textarea");
-        ta.value=text;ta.style.cssText="position:fixed;left:-9999px;top:0;opacity:0";
-        document.body.appendChild(ta);ta.select();
-        try{document.execCommand("copy");copyDone();}catch(e){/*ok*/}
-        document.body.removeChild(ta);
-      });
-    } else {
-      const ta=document.createElement("textarea");
-      ta.value=text;ta.style.cssText="position:fixed;left:-9999px;top:0;opacity:0";
-      document.body.appendChild(ta);ta.select();
-      try{document.execCommand("copy");copyDone();}catch(e){/*ok*/}
-      document.body.removeChild(ta);
-    }
+    copyToClipboard(text, copyDone);
     }} style={{
     flex:1,height:48,borderRadius:C.inputRadius||8,border:"none",
     background:sheetsCopied?C.sheetsGreenDk:C.text,
@@ -3786,21 +3790,7 @@ function BerichtTab({gefFahrten, aktiv, acc, accDk, C, SANS, safeFloat, formatDa
     <button onClick={()=>{
     const text=buildCsv();
     const copyDone=()=>{setCopied(true);copiedTimer.current=setTimeout(()=>setCopied(false),2000);};
-    if(navigator.clipboard?.writeText){
-      navigator.clipboard.writeText(text).then(copyDone).catch(()=>{
-        const ta=document.createElement("textarea");
-        ta.value=text;ta.style.cssText="position:fixed;left:-9999px;top:0;opacity:0";
-        document.body.appendChild(ta);ta.select();
-        try{document.execCommand("copy");copyDone();}catch(e){/*ok*/}
-        document.body.removeChild(ta);
-      });
-    } else {
-      const ta=document.createElement("textarea");
-      ta.value=text;ta.style.cssText="position:fixed;left:-9999px;top:0;opacity:0";
-      document.body.appendChild(ta);ta.select();
-      try{document.execCommand("copy");copyDone();}catch(e){/*ok*/}
-      document.body.removeChild(ta);
-    }
+    copyToClipboard(text, copyDone);
     }} style={{
     flex:1,height:48,borderRadius:C.inputRadius||8,
     background:copied?C.savedGreen:acc,border:"none",
@@ -6583,7 +6573,6 @@ input[type=number] { -moz-appearance:textfield; }
       <main key={tab+sub} style={{padding:isMobile?"12px 8px 24px":isTablet?"18px 16px 32px":"28px 32px 40px",maxWidth:1200,margin:"0 auto",animation:"tabFade 0.18s ease-out",overflowX:"hidden",boxSizing:"border-box",width:"100%"}}>
 
         {/* ── Übersicht ── */}
-        {/* ── Übersicht ── */}
         {tab==="uebersicht"&&(
           <UebersichtTab
             stats={stats} aktiv={aktiv} acc={acc} C={C} SANS={SANS} FS={FS}
@@ -7552,7 +7541,6 @@ input[type=number] { -moz-appearance:textfield; }
           </div>
         )}
 
-        {/* ── Bericht / Fahrtenbuch-Ausdruck ── */}
         {/* ── Bericht / Fahrtenbuch-Ausdruck ── */}
         {tab==="bericht"&&(
           <BerichtTab

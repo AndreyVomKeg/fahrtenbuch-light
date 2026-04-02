@@ -5,11 +5,12 @@
 const SYNC_KEYS = ["fb2_real", "fb2_demo"];
 const DEBOUNCE_MS = 3000;
 
-let saveTimer = null;
+// Per-key debounce timers (fix: previously one shared timer caused lost saves)
+const saveTimers = {};
 
 function debounceCloudSave(key, value) {
-  clearTimeout(saveTimer);
-  saveTimer = setTimeout(async () => {
+  clearTimeout(saveTimers[key]);
+  saveTimers[key] = setTimeout(async () => {
     try {
       await fetch("/api/state", {
         method: "POST",
@@ -47,7 +48,6 @@ async function restoreFromCloud() {
 
       const { state } = await res.json();
       if (state) {
-        const original = localStorage.setItem.__original || localStorage.setItem;
         // Use native setItem to avoid re-triggering cloud save
         Object.getPrototypeOf(localStorage).setItem.call(localStorage, key, JSON.stringify(state));
       }

@@ -9,17 +9,38 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY
 );
 
-export default async function handler(req, res) {
-  // CORS
-  res.setHeader("Access-Control-Allow-Origin", "*");
+// ─── CORS: разрешённые домены ────────────────────────────────────────────────
+const ALLOWED_ORIGINS = [
+  "https://fahrtenbuch-light.vercel.app",
+  "http://localhost:5173",
+  "http://localhost:3000",
+  "http://127.0.0.1:5173",
+  "http://127.0.0.1:3000",
+];
+
+// ─── Допустимые user_id (защита от произвольного доступа) ────────────────────
+const VALID_USER_IDS = ["fb2_real", "fb2_demo"];
+
+function setCors(req, res) {
+  const origin = req.headers.origin || "";
+  if (ALLOWED_ORIGINS.includes(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+  }
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+}
+
+export default async function handler(req, res) {
+  setCors(req, res);
   if (req.method === "OPTIONS") return res.status(200).end();
 
   try {
     if (req.method === "GET") {
       const user_id = req.query.user_id;
       if (!user_id) return res.status(400).json({ error: "user_id required" });
+      if (!VALID_USER_IDS.includes(user_id)) {
+        return res.status(403).json({ error: "Invalid user_id" });
+      }
 
       const { data, error } = await supabase
         .from("user_state")
@@ -37,6 +58,9 @@ export default async function handler(req, res) {
       const { user_id, state } = req.body;
       if (!user_id || !state) {
         return res.status(400).json({ error: "user_id and state required" });
+      }
+      if (!VALID_USER_IDS.includes(user_id)) {
+        return res.status(403).json({ error: "Invalid user_id" });
       }
 
       const { error } = await supabase
