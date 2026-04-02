@@ -3301,7 +3301,7 @@ function UebersichtTab({stats, aktiv, acc, accDk, C, SANS, FS, katAccent, katAcc
   const lastWithData = kmArr.slice().reverse().find(m => m.km > 0);
   const maxKm = Math.max(...kmArr.map(d => d.km), 1);
   const avgKmMo = kmArr.length > 0 ? (kmArr.reduce((s,m)=>s+m.km,0) / Math.max(kmArr.filter(m=>m.km>0).length,1)).toFixed(0) : 0;
-  const [selMonatIdx, setSelMonatIdx] = Ht.useState(null);
+  const [selMonatIdx, setSelMonatIdx] = useState(null);
   const selMonat = selMonatIdx !== null ? kmArr[selMonatIdx] : null;
   const displayMonat = selMonat || lastWithData;
   const MO = ["Jan","Feb","Mär","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nov","Dez"];
