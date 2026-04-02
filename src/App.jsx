@@ -3286,192 +3286,267 @@ function UebersichtTab({stats, aktiv, acc, accDk, C, SANS, FS, katAccent, katAcc
   {label:"Tanken",  color:C.tank, colorDk:C.tankDk, betrag:stats.tankKosten,   count:(aktiv.tankstellen||[]).length, icon:"droplet"},
   {label:"Service", color:C.service, colorDk:C.serviceDk, betrag:stats.serviceKosten,count:(aktiv.services||[]).length,    icon:"tool"},
   {label:"Wäsche",  color:C.wasch, colorDk:C.waschDk, betrag:stats.waschKosten,  count:(aktiv.waesche||[]).length,     icon:"wasch"},
-  {label:"Strafen", color:C.strafe, colorDk:C.strafeDk, betrag:stats.strafeKosten, count:(aktiv.strafen||[]).length,     icon:"alert"}
-  ,{label:"Parken",  color:C.park, colorDk:C.parkDk, betrag:stats.parkKosten,   count:(aktiv.parkplaetze||[]).length, icon:"park"},
+  {label:"Strafen", color:C.strafe, colorDk:C.strafeDk, betrag:stats.strafeKosten, count:(aktiv.strafen||[]).length,     icon:"alert"},
+  {label:"Parken",  color:C.park, colorDk:C.parkDk, betrag:stats.parkKosten,   count:(aktiv.parkplaetze||[]).length, icon:"park"},
   ];
+  const gls = GLASS_MODE ? GLASS : {};
+  const glsBg = GLASS_MODE ? GLASS.background : C.surface;
+  const glsBl = (c) => GLASS_MODE ? GLASS.borderLeft : `2px solid ${c}`;
+  const glsSh = GLASS_MODE ? GLASS.boxShadow : C.shadow;
+  const glsR = GLASS_MODE ? 16 : (C.inputRadius||8);
+  const totalFahrten = (aktiv.fahrten||[]).length;
+  const avgKmFahrt = totalFahrten > 0 ? (stats.gKm / totalFahrten).toFixed(0) : 0;
+  // KM for previous month vs current peak
+  const kmArr = stats.kmByMonth || [];
+  const lastWithData = kmArr.slice().reverse().find(m => m.km > 0);
+  const maxKm = Math.max(...kmArr.map(d => d.km), 1);
+  const avgKmMo = kmArr.length > 0 ? (kmArr.reduce((s,m)=>s+m.km,0) / Math.max(kmArr.filter(m=>m.km>0).length,1)).toFixed(0) : 0;
+  const MO = ["Jan","Feb","Mär","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nov","Dez"];
+  const short={standorte:"Standort",partner:"Partner",messe:"Messen",tankstelle:"Tankstelle",waesche:"Wäsche",service:"Service",laden:"Laden",bank:"Bank",behoerde:"Behörde",sonstige:"Sonstige"};
+
   return (
     <div>
 
-    {/* ── ZONE 2: 4 Haupt-KPIs — 2 строки по 2 ── */}
-    <div style={{display:"grid",gridTemplateColumns:isMobile?"repeat(2,minmax(0,1fr))":isTablet?"repeat(2,minmax(0,1fr))":"repeat(4,minmax(0,1fr))",gap:isMobile?8:12,marginBottom:isMobile?8:12}}>
+    {/* ── ROW 1: 4 KPI Cards with delta badges ── */}
+    <div style={{display:"grid",gridTemplateColumns:isMobile?"repeat(2,minmax(0,1fr))":isTablet?"repeat(2,minmax(0,1fr))":"repeat(4,minmax(0,1fr))",gap:isMobile?8:10,marginBottom:isMobile?8:10}}>
     <KpiCard wert={stats.gesamtKosten.toFixed(2)} unit="€" label="GESAMTKOSTEN" akzent={C.steel} akzentDk={C.steelDk} icon="download"/>
     <KpiCard wert={stats.gKm.toFixed(1)}          unit="km" label="GEFAHRENE KM" akzent={C.red} akzentDk={C.redDk}   icon="road"/>
-    <KpiCard wert={(aktiv.fahrten||[]).length}                     label="FAHRTEN"      akzent={C.gold} akzentDk={C.goldDk}  icon="car"/>
+    <KpiCard wert={totalFahrten}                     label="FAHRTEN"      akzent={C.gold} akzentDk={C.goldDk}  icon="car"/>
     <KpiCard wert={stats.strafenOffen}                        label="OFF. STRAFEN" akzent={stats.strafenOffen>0?C.strafe:C.muted} akzentDk={stats.strafenOffen>0?C.strafeDk:C.mutedDk} icon="alert"/>
     </div>
 
-    {/* ── ZONE 3: Kosten-Breakdown + KM nach Kat ── */}
-    <div style={{display:"grid",gridTemplateColumns:isMobile?"1fr":isTablet?"1fr":"minmax(0,3fr) minmax(0,2fr)",gap:isMobile?8:12,marginBottom:isMobile?8:12}}>
+    {/* ── ROW 2: Kosten (3fr) + KM nach Kat with Donut (2fr) ── */}
+    <div style={{display:"grid",gridTemplateColumns:isMobile?"1fr":isTablet?"1fr":"minmax(0,3fr) minmax(0,2fr)",gap:isMobile?8:10,marginBottom:isMobile?8:10}}>
 
-    {/* Kosten Breakdown */}
-    <div style={{...(GLASS_MODE?GLASS:{}),background:GLASS_MODE?GLASS.background:C.surface,padding:isMobile?"14px 12px":"18px 20px",borderLeft:GLASS_MODE?GLASS.borderLeft:`2px solid ${C.steel}`,boxShadow:GLASS_MODE?GLASS.boxShadow:C.shadow,borderRadius:GLASS_MODE?16:(C.inputRadius||8),overflow:"hidden",boxSizing:"border-box"}}>
-    <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",marginBottom:isMobile?10:16,flexWrap:"wrap",gap:4,overflow:"hidden"}}>
-    <div style={{fontSize:isMobile?11:13,color:C.text,letterSpacing:isMobile?1:2,textTransform:"uppercase",fontWeight:700,fontFamily:SANS,flexShrink:1,minWidth:0}}>KOSTEN ÜBERSICHT</div>
-    <div style={{fontSize:isMobile?16:20,fontWeight:800,color:C.text,fontFamily:SANS,flexShrink:0,whiteSpace:"nowrap"}}>{stats.gesamtKosten.toFixed(2)} €</div>
+    {/* Kosten — compact 2×2+1 grid with % */}
+    <div style={{...gls,background:glsBg,padding:isMobile?"14px 12px":"16px 18px",borderLeft:glsBl(C.steel),boxShadow:glsSh,borderRadius:glsR,overflow:"hidden",boxSizing:"border-box"}}>
+    <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",marginBottom:isMobile?8:12,flexWrap:"wrap",gap:4}}>
+    <div style={{fontSize:isMobile?11:12,color:C.text,letterSpacing:isMobile?1:1.5,textTransform:"uppercase",fontWeight:700,fontFamily:SANS}}>KOSTEN NACH KATEGORIE</div>
+    <div style={{fontSize:isMobile?16:18,fontWeight:800,color:C.text,fontFamily:SANS,whiteSpace:"nowrap"}}>{stats.gesamtKosten.toFixed(2)} €</div>
     </div>
-    <div style={{display:"grid",gridTemplateColumns:isMobile?"1fr":"1fr 1fr",gap:isMobile?6:10}}>
-    {kostenCats.map(cat=>(
-    <div key={cat.label} style={{padding:"12px 14px",borderLeft:`2px solid ${cat.color}`,background:GLASS_MODE?'rgba(255,255,255,0.82)':C.surfaceAlt,borderRadius:GLASS_MODE?8:"0 6px 6px 0"}}>
-    <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:6}}>
-    <Ico name={cat.icon} size={18} color={(cat.colorDk||cat.color)}/>
-    <span style={{fontSize:13,fontWeight:700,letterSpacing:1.5,textTransform:"uppercase",fontFamily:SANS,color:C.text}}>{cat.label}</span>
+    <div style={{display:"grid",gridTemplateColumns:isMobile?"1fr":"1fr 1fr",gap:isMobile?6:8}}>
+    {kostenCats.map(cat=>{
+    const pct = stats.gesamtKosten > 0 ? ((cat.betrag / stats.gesamtKosten) * 100).toFixed(0) : 0;
+    return (
+    <div key={cat.label} style={{padding:isMobile?"8px 10px":"10px 12px",borderLeft:`2px solid ${cat.color}`,background:GLASS_MODE?'rgba(255,255,255,0.7)':C.surfaceAlt,borderRadius:GLASS_MODE?8:"0 6px 6px 0"}}>
+    <div style={{display:"flex",alignItems:"center",gap:5,marginBottom:4}}>
+    <Ico name={cat.icon} size={14} color={(cat.colorDk||cat.color)}/>
+    <span style={{fontSize:11,fontWeight:700,letterSpacing:1,textTransform:"uppercase",fontFamily:SANS,color:C.text}}>{cat.label}</span>
     </div>
-    <div style={{fontSize:20,fontWeight:800,color:C.text,fontFamily:SANS,lineHeight:1,marginBottom:4}}>{cat.betrag.toFixed(2)} €</div>
-    {cat.count>0&&<div style={{fontSize:13,color:C.muted,fontFamily:SANS,marginBottom:4}}>{cat.count} {cat.count===1?"Eintrag":"Einträge"}</div>}
-    <AnimatedBar pct={stats.gesamtKosten>0?Math.min((cat.betrag/stats.gesamtKosten)*100,100).toFixed(1):0} color={cat.color} colorDk={cat.colorDk} height={3}/>
+    <div style={{display:"flex",alignItems:"baseline",gap:6}}>
+    <div style={{fontSize:isMobile?16:18,fontWeight:800,color:C.text,fontFamily:SANS,lineHeight:1}}>{cat.betrag.toFixed(2)} €</div>
+    {cat.count>0&&<div style={{fontSize:11,color:C.muted,fontFamily:SANS}}>{cat.count} Eintr. · {pct}%</div>}
     </div>
-    ))}
+    </div>
+    );})}
     </div>
     </div>
 
-    {/* KM nach Kategorie */}
-    <div style={{...(GLASS_MODE?GLASS:{}),background:GLASS_MODE?GLASS.background:C.surface,padding:"18px 20px",borderLeft:GLASS_MODE?GLASS.borderLeft:`2px solid ${C.red}`,boxShadow:GLASS_MODE?GLASS.boxShadow:C.shadow,borderRadius:GLASS_MODE?16:(C.inputRadius||8)}}>
-    <div style={{fontSize:13,color:C.text,letterSpacing:1.5,textTransform:"uppercase",fontWeight:700,marginBottom:16,fontFamily:SANS}}>KM NACH KAT.</div>
+    {/* KM nach Kategorie — Donut + Bars */}
+    <div style={{...gls,background:glsBg,padding:isMobile?"14px 12px":"16px 18px",borderLeft:glsBl(C.red),boxShadow:glsSh,borderRadius:glsR}}>
+    <div style={{fontSize:isMobile?11:12,color:C.text,letterSpacing:1.5,textTransform:"uppercase",fontWeight:700,marginBottom:12,fontFamily:SANS}}>KM NACH KATEGORIE</div>
+    {/* Donut */}
+    {stats.gKm > 0 && <div style={{display:"flex",justifyContent:"center",marginBottom:12}}>
+    <svg width={isMobile?80:90} height={isMobile?80:90} viewBox="0 0 100 100">
+    <circle cx="50" cy="50" r="38" fill="none" stroke={C.border} strokeWidth="9"/>
+    {(()=>{
+      const entries = Object.entries(stats.nK).filter(([,km])=>km>0).sort((a,b)=>b[1]-a[1]);
+      const total = stats.gKm || 1;
+      const circ = 2 * Math.PI * 38;
+      let offset = -circ * 0.25;
+      return entries.map(([kat,km])=>{
+        const pct = km / total;
+        const dash = circ * pct;
+        const el = <circle key={kat} cx="50" cy="50" r="38" fill="none" stroke={katAccent[kat]||C.steel} strokeWidth="9" strokeDasharray={`${dash} ${circ-dash}`} strokeDashoffset={-offset} strokeLinecap="round"/>;
+        offset += dash;
+        return el;
+      });
+    })()}
+    <text x="50" y="47" textAnchor="middle" fontSize="13" fontWeight="800" fill={C.text} fontFamily={SANS}>{stats.gKm.toFixed(0)}</text>
+    <text x="50" y="59" textAnchor="middle" fontSize="8" fill={C.muted} fontFamily={SANS}>km</text>
+    </svg>
+    </div>}
     {Object.entries(stats.nK).map(([kat,km])=>{
     const pct=((km/(stats.gKm||1))*100).toFixed(0);
     const ak=katAccent[kat]||C.steel;
-    const short={standorte:"Standort",partner:"Partner",messe:"Messen",tankstelle:"Tankstelle",waesche:"Wäsche",service:"Service",laden:"Laden",bank:"Bank",behoerde:"Behörde",sonstige:"Sonstige"};
     return (
-    <div key={kat} style={{marginBottom:14}}>
-    <div style={{display:"flex",justifyContent:"space-between",marginBottom:5,fontSize:14}}>
-    <span style={{color:C.text,fontFamily:SANS}}>{short[kat]||kat}</span>
-    <span style={{color:C.text,fontWeight:700,fontFamily:SANS}}>
-    {km.toFixed(0)} km <span style={{color:C.muted,fontSize:13}}>({pct}%)</span>
-    </span>
+    <div key={kat} style={{display:"flex",alignItems:"center",gap:8,marginBottom:8}}>
+    <div style={{width:8,height:8,borderRadius:"50%",background:ak,flexShrink:0}}/>
+    <span style={{fontSize:12,color:C.text,fontFamily:SANS,width:isMobile?50:60}}>{short[kat]||kat}</span>
+    <div style={{flex:1,height:5,background:C.border,borderRadius:3,overflow:"hidden"}}>
+    <div style={{width:`${pct}%`,height:"100%",background:ak,borderRadius:3,transition:"width 0.5s ease"}}/>
     </div>
-    <AnimatedBar pct={pct} color={ak} colorDk={katAccentDk[kat]||C.steelDk}/>
+    <span style={{fontSize:11,fontWeight:700,color:C.text,fontFamily:SANS,minWidth:70,textAlign:"right",fontVariantNumeric:"tabular-nums"}}>{km.toFixed(0)} km</span>
     </div>
     );
     })}
     </div>
     </div>
 
-    {/* ── ZONE 4: KM / Monat Chart ── */}
-    <div style={{...(GLASS_MODE?GLASS:{}),background:GLASS_MODE?GLASS.background:C.surface,padding:isMobile?"14px 12px":"18px 20px",borderLeft:GLASS_MODE?GLASS.borderLeft:`2px solid ${C.red}`,boxShadow:GLASS_MODE?GLASS.boxShadow:C.shadow,borderRadius:GLASS_MODE?16:(C.inputRadius||8),marginBottom:isMobile?8:12}}>
-    <div style={{fontSize:13,color:C.text,letterSpacing:1.5,textTransform:"uppercase",fontWeight:700,marginBottom:4,fontFamily:SANS}}>KM / MONAT</div>
-    <MonatsChart kmByMonth={stats.kmByMonth} accent={C.red}/>
+    {/* ── ROW 3: KM / Monat — Line Chart ── */}
+    <div style={{...gls,background:glsBg,padding:isMobile?"14px 12px":"16px 18px",borderLeft:glsBl(C.red),boxShadow:glsSh,borderRadius:glsR,marginBottom:isMobile?8:10}}>
+    <div style={{display:"flex",justifyContent:"space-between",alignItems:"baseline",marginBottom:6}}>
+    <div>
+    <div style={{fontSize:isMobile?11:12,color:C.text,letterSpacing:1.5,textTransform:"uppercase",fontWeight:700,fontFamily:SANS}}>KM / MONAT</div>
+    <div style={{fontSize:11,color:C.muted,fontFamily:SANS,marginTop:2}}>12 Monate · ⌀ {avgKmMo} km/Mo</div>
+    </div>
+    {lastWithData && <div style={{textAlign:"right"}}>
+    <div style={{fontSize:isMobile?16:20,fontWeight:800,color:C.redDk||C.red,fontFamily:SANS,lineHeight:1}}>{lastWithData.km.toFixed(0)} km</div>
+    <div style={{fontSize:10,color:C.muted,fontFamily:SANS}}>{MO[parseInt(lastWithData.monat.slice(5))-1]}</div>
+    </div>}
+    </div>
+    {/* SVG Line Chart */}
+    {kmArr.length > 0 ? (
+    <svg width="100%" viewBox={`0 0 600 ${isMobile?120:140}`} preserveAspectRatio="xMinYMin meet" style={{display:"block"}}>
+    <defs>
+    <linearGradient id="areaGradOv" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stopColor={C.red} stopOpacity="0.25"/>
+    <stop offset="100%" stopColor={C.red} stopOpacity="0.02"/>
+    </linearGradient>
+    </defs>
+    {[0.25,0.5,0.75].map(f=>
+    <line key={f} x1="20" y1={10+(isMobile?80:100)*(1-f)} x2="580" y2={10+(isMobile?80:100)*(1-f)} stroke={C.border} strokeWidth="0.5" strokeDasharray="4 3" opacity="0.5"/>
+    )}
+    {(()=>{
+      const H = isMobile ? 80 : 100;
+      const T = 10;
+      const pts = kmArr.map((d,i) => {
+        const x = 20 + i * (560 / Math.max(kmArr.length-1,1));
+        const y = d.km > 0 ? T + H - (d.km / maxKm) * H : T + H;
+        return {x, y, d};
+      });
+      const lineStr = pts.map(p => `${p.x},${p.y}`).join(" ");
+      const areaStr = `M${pts[0].x},${T+H} ` + pts.map(p => `L${p.x},${p.y}`).join(" ") + ` L${pts[pts.length-1].x},${T+H} Z`;
+      const peakIdx = pts.reduce((mi,p,i,a)=> p.d.km > a[mi].d.km ? i : mi, 0);
+      return <>
+      <path d={areaStr} fill="url(#areaGradOv)"/>
+      <polyline points={lineStr} fill="none" stroke={C.red} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      {pts.map((p,i)=> p.d.km > 0 && (
+        <circle key={i} cx={p.x} cy={p.y} r={i===peakIdx?5:3} fill={C.red} stroke={i===peakIdx?"#fff":"none"} strokeWidth={i===peakIdx?2:0}/>
+      ))}
+      {pts.map((p,i)=> p.d.km > 0 && (isMobile ? i===peakIdx : true) && (
+        <text key={"v"+i} x={p.x} y={p.y-8} textAnchor="middle" fontSize="8" fontWeight="600" fill={C.muted} fontFamily={SANS}>{Math.round(p.d.km)}</text>
+      ))}
+      {pts.map((p,i)=>(
+        <text key={"m"+i} x={p.x} y={T+H+14} textAnchor="middle" fontSize="8" fontWeight="500" fill={C.muted} fontFamily={SANS}>{MO[parseInt(p.d.monat.slice(5))-1]}</text>
+      ))}
+      </>;
+    })()}
+    </svg>
+    ) : (
+    <div style={{color:C.muted,fontSize:13,textAlign:"center",padding:"24px 0",fontFamily:SANS}}>Keine Daten</div>
+    )}
     </div>
 
-    {/* ── ZONE 5: Nächste Fälligkeiten + Top Besucht ── */}
-    <div style={{display:"grid",gridTemplateColumns:isMobile?"1fr":"minmax(0,1fr) minmax(0,1fr)",gap:isMobile?8:12,marginBottom:isMobile?8:12}}>
+    {/* ── ROW 4: Fälligkeiten + Top 5 + Letzte Fahrten — 3 columns ── */}
+    <div style={{display:"grid",gridTemplateColumns:isMobile?"1fr":isTablet?"1fr 1fr":"minmax(0,1fr) minmax(0,1fr) minmax(0,1fr)",gap:isMobile?8:10,marginBottom:isMobile?8:10}}>
 
     {/* Nächste Fälligkeiten */}
-    <div style={{...(GLASS_MODE?GLASS:{}),background:GLASS_MODE?GLASS.background:C.surface,padding:"18px 20px",borderLeft:GLASS_MODE?GLASS.borderLeft:`2px solid ${C.service}`,boxShadow:GLASS_MODE?GLASS.boxShadow:C.shadow,borderRadius:GLASS_MODE?16:(C.inputRadius||8)}}>
-    <div style={{fontSize:13,color:C.text,letterSpacing:1.5,textTransform:"uppercase",fontWeight:700,marginBottom:14,fontFamily:SANS}}>NÄCHSTE FÄLLIGKEITEN</div>
+    <div style={{...gls,background:glsBg,padding:isMobile?"14px 12px":"16px 18px",borderLeft:glsBl(C.service),boxShadow:glsSh,borderRadius:glsR}}>
+    <div style={{fontSize:isMobile?11:12,color:C.text,letterSpacing:1.5,textTransform:"uppercase",fontWeight:700,marginBottom:12,fontFamily:SANS}}>NÄCHSTE FÄLLIGKEITEN</div>
     {stats.faelligkeiten.length>0 ? stats.faelligkeiten.map(x=>{
     const today=new Date().toISOString().slice(0,10);
     const ueberfaellig=x.faelligDatum&&x.faelligDatum<=today;
     const accentFaellig=ueberfaellig?C.strafe:C.service;
     const accentFaelligDk=ueberfaellig?C.strafeDk:C.serviceDk;
     return (
-    <div key={x.id} style={{display:"flex",flexDirection:"column",gap:4,padding:"9px 0",borderBottom:`1px solid ${C.border}`}}>
-    <span style={{fontSize:15,color:C.text,fontFamily:SANS,fontWeight:600}}>{x.typ}</span>
-    <div style={{display:"flex",gap:12,alignItems:"center"}}>
-    {x.faelligDatum&&(
-    <span style={{fontSize:15,color:C.text,fontFamily:SANS,display:"flex",alignItems:"center",gap:4,whiteSpace:"nowrap"}}>
-    <Ico name="clock" size={15} color={accentFaelligDk}/>
-    {formatDatum(x.faelligDatum)}
-    </span>
-    )}
-    {x.faelligKm&&(
-    <span style={{fontSize:15,color:C.text,fontFamily:SANS,display:"flex",alignItems:"center",gap:4,whiteSpace:"nowrap"}}>
-    <Ico name="road" size={15} color={C.tankDk}/>
-    {x.faelligKm} km
-    </span>
-    )}
+    <div key={x.id} style={{display:"flex",flexDirection:"column",gap:3,padding:"7px 0",borderBottom:`1px solid ${C.border}`}}>
+    <span style={{fontSize:13,color:C.text,fontFamily:SANS,fontWeight:600}}>{x.typ}</span>
+    <div style={{display:"flex",gap:10,alignItems:"center"}}>
+    {x.faelligDatum&&<span style={{fontSize:12,color:C.text,fontFamily:SANS,display:"flex",alignItems:"center",gap:3}}><Ico name="clock" size={13} color={accentFaelligDk}/>{formatDatum(x.faelligDatum)}</span>}
+    {x.faelligKm&&<span style={{fontSize:12,color:C.text,fontFamily:SANS,display:"flex",alignItems:"center",gap:3}}><Ico name="road" size={13} color={C.tankDk}/>{x.faelligKm} km</span>}
     </div>
     </div>
     );
     }) : (
-    <div style={{color:C.muted,fontSize:13,textAlign:"center",padding:"16px 0",fontFamily:SANS}}>Keine Fälligkeiten eingetragen</div>
+    <div style={{textAlign:"center",padding:"18px 0"}}>
+    <div style={{fontSize:20,color:C.muted,marginBottom:4}}>✓</div>
+    <div style={{color:C.muted,fontSize:12,fontFamily:SANS}}>Keine Fälligkeiten</div>
+    </div>
     )}
     </div>
 
     {/* Top Besucht */}
-    <div style={{...(GLASS_MODE?GLASS:{}),background:GLASS_MODE?GLASS.background:C.surface,padding:"18px 20px",borderLeft:GLASS_MODE?GLASS.borderLeft:`2px solid ${C.red}`,boxShadow:GLASS_MODE?GLASS.boxShadow:C.shadow,borderRadius:GLASS_MODE?16:(C.inputRadius||8)}}>
-    <div style={{fontSize:13,color:C.text,letterSpacing:1.5,textTransform:"uppercase",fontWeight:700,marginBottom:14,fontFamily:SANS}}>TOP BESUCHT</div>
+    <div style={{...gls,background:glsBg,padding:isMobile?"14px 12px":"16px 18px",borderLeft:glsBl(C.red),boxShadow:glsSh,borderRadius:glsR}}>
+    <div style={{fontSize:isMobile?11:12,color:C.text,letterSpacing:1.5,textTransform:"uppercase",fontWeight:700,marginBottom:12,fontFamily:SANS}}>TOP 5 BESUCHT</div>
     {Object.entries(stats.nP).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([id,km],i)=>{
     const p=(aktiv.partner||[]).find(x=>x.id===id);
     return (
-    <div key={id} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"6px 0",borderBottom:`1px solid ${C.border}`,fontSize:14}}>
+    <div key={id} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"5px 0",borderBottom:`1px solid ${C.border}`,fontSize:13}}>
     <span style={{color:C.text,minWidth:0,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",fontFamily:SANS}}>
-    <span style={{color:C.muted,marginRight:6}}>{i+1}.</span>{p?p.name:id}
+    <span style={{color:C.muted,marginRight:4,fontSize:11}}>{i+1}.</span>{p?p.name:id}
     </span>
-    <span style={{color:C.text,fontWeight:700,fontFamily:SANS,flexShrink:0,marginLeft:8}}>
-    {km.toFixed(0)} km
-    </span>
+    <span style={{color:C.text,fontWeight:700,fontFamily:SANS,flexShrink:0,marginLeft:6,fontSize:12,fontVariantNumeric:"tabular-nums"}}>{km.toFixed(0)} km</span>
     </div>
     );
     })}
-    {!Object.keys(stats.nP).length&&(
-    <div style={{color:C.muted,fontSize:13,textAlign:"center",padding:"16px 0",fontFamily:SANS}}>Keine Partnerfahrten</div>
-    )}
-    </div>
+    {!Object.keys(stats.nP).length&&<div style={{color:C.muted,fontSize:12,textAlign:"center",padding:"16px 0",fontFamily:SANS}}>Keine Partnerfahrten</div>}
     </div>
 
-    {/* ── ZONE 6: Letzte Fahrten ── */}
-    <div style={{...(GLASS_MODE?GLASS:{}),background:GLASS_MODE?GLASS.background:C.surface,padding:isMobile?"14px 12px":"18px 20px",borderLeft:GLASS_MODE?GLASS.borderLeft:`2px solid ${C.red}`,boxShadow:GLASS_MODE?GLASS.boxShadow:C.shadow,borderRadius:GLASS_MODE?16:(C.inputRadius||8)}}>
-    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:isMobile?8:12}}>
-    <div style={{fontSize:isMobile?12:13,color:C.text,letterSpacing:2,textTransform:"uppercase",fontWeight:700,fontFamily:SANS}}>LETZTE FAHRTEN</div>
-    <button onClick={()=>{setTab("fahrten");setFForm("new");setFData(E_F());}} style={btnSolid(C.redDk)}>
-    <Ico name="plus" size={15} color="#fff"/>FAHRT
+    {/* Letzte Fahrten */}
+    <div style={{...gls,background:glsBg,padding:isMobile?"14px 12px":"16px 18px",borderLeft:glsBl(C.red),boxShadow:glsSh,borderRadius:glsR,gridColumn:isMobile?"1":isTablet?"1 / -1":"auto"}}>
+    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:isMobile?8:10}}>
+    <div style={{fontSize:isMobile?11:12,color:C.text,letterSpacing:1.5,textTransform:"uppercase",fontWeight:700,fontFamily:SANS}}>LETZTE FAHRTEN</div>
+    <button onClick={()=>{setTab("fahrten");setFForm("new");setFData(E_F());}} style={{...btnSolid(C.redDk),height:32,padding:"0 12px",fontSize:11}}>
+    <Ico name="plus" size={13} color="#fff"/>FAHRT
     </button>
     </div>
-    {(aktiv.fahrten||[]).length>0 ? aktiv.fahrten.slice().reverse().slice(0,5).map(f=>{
+    {totalFahrten>0 ? aktiv.fahrten.slice().reverse().slice(0,5).map(f=>{
     const ak=katAccent[f.kategorie]||C.strafe;
     return (
-    <div key={f.id} style={{display:"flex",alignItems:"center",gap:14,padding:"10px 0",borderBottom:`1px solid ${C.border}`}}>
-    <div style={{width:10,height:10,borderRadius:"50%",background:ak,flexShrink:0}}/>
+    <div key={f.id} style={{display:"flex",alignItems:"center",gap:10,padding:"7px 0",borderBottom:`1px solid ${C.border}`}}>
+    <div style={{width:8,height:8,borderRadius:"50%",background:ak,flexShrink:0}}/>
     <div style={{flex:1,minWidth:0}}>
-    <div style={{fontSize:15,fontWeight:700,color:C.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",fontFamily:SANS}}>{getZielName(f)}</div>
-    <div style={{fontSize:14,color:C.muted,fontFamily:SANS}}>{formatDatum(f.datum)}</div>
+    <div style={{fontSize:13,fontWeight:600,color:C.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",fontFamily:SANS}}>{getZielName(f)}</div>
+    <div style={{fontSize:11,color:C.muted,fontFamily:SANS}}>{formatDatum(f.datum)}</div>
     </div>
-    <span style={{color:C.text,fontWeight:700,fontFamily:SANS,fontSize:14,flexShrink:0}}>{safeFloat(f.km).toFixed(0)} km</span>
+    <span style={{color:C.text,fontWeight:700,fontFamily:SANS,fontSize:12,flexShrink:0,fontVariantNumeric:"tabular-nums"}}>{safeFloat(f.km).toFixed(0)} km</span>
     </div>
     );
     }) : (
-    <EmptyState icon="car" accent={C.red} accentDk={C.redDk} text="Noch keine Fahrten" hint="Erste Fahrt erfassen und hier sehen" btnLabel="FAHRT ERFASSEN" onBtnClick={()=>{setTab("fahrten");setFForm("new");setFData(E_F());}}/>
+    <EmptyState icon="car" accent={C.red} accentDk={C.redDk} text="Noch keine Fahrten" hint="Erste Fahrt erfassen" btnLabel="FAHRT ERFASSEN" onBtnClick={()=>{setTab("fahrten");setFForm("new");setFData(E_F());}}/>
     )}
     </div>
-
-    {/* ── ZONE 7: Alerts ── */}
-    {(!aktiv.standort?.name||stats.strafenOffen>0||stats.faelligUeberfaellig.length>0)&&(
-    <div style={{display:"flex",flexDirection:"column",gap:12,marginTop:12}}>
-    {!aktiv.standort?.name&&(
-    <div style={{...(GLASS_MODE?GLASS:{}),background:GLASS_MODE?GLASS.background:C.surface,borderTop:GLASS_MODE?`2px solid ${C.red}99`:`2px solid ${C.red}`,padding:"16px 20px",
-    display:"flex",alignItems:"center",justifyContent:"space-between",
-    boxShadow:GLASS_MODE?GLASS.boxShadow:C.shadow,borderRadius:GLASS_MODE?16:(C.inputRadius||8)}}>
-    <div style={{display:"flex",alignItems:"center",gap:10,fontSize:14,color:C.redDk,fontFamily:SANS,fontWeight:600}}>
-    <Ico name="alert" size={15} color={C.redDk}/>Kein Stammstandort — bitte einrichten.
     </div>
-    <button onClick={()=>setTab("einstellungen")} style={btnSolid(C.redDk)}>
-    <Ico name="settings" size={15} color="#fff"/>EINSTELLUNGEN
+
+    {/* ── ROW 5: Alerts (unchanged logic) ── */}
+    {(!aktiv.standort?.name||stats.strafenOffen>0||stats.faelligUeberfaellig.length>0)&&(
+    <div style={{display:"flex",flexDirection:"column",gap:10,marginTop:2}}>
+    {!aktiv.standort?.name&&(
+    <div style={{...gls,background:glsBg,borderTop:GLASS_MODE?`2px solid ${C.red}99`:`2px solid ${C.red}`,padding:"14px 18px",
+    display:"flex",alignItems:"center",justifyContent:"space-between",
+    boxShadow:glsSh,borderRadius:glsR}}>
+    <div style={{display:"flex",alignItems:"center",gap:8,fontSize:13,color:C.redDk,fontFamily:SANS,fontWeight:600}}>
+    <Ico name="alert" size={14} color={C.redDk}/>Kein Stammstandort — bitte einrichten.
+    </div>
+    <button onClick={()=>setTab("einstellungen")} style={{...btnSolid(C.redDk),height:32,padding:"0 14px",fontSize:11}}>
+    <Ico name="settings" size={13} color="#fff"/>EINSTELLUNGEN
     </button>
     </div>
     )}
     {stats.strafenOffen>0&&(
-    <div style={{...(GLASS_MODE?GLASS:{}),background:GLASS_MODE?GLASS.background:C.surface,borderTop:GLASS_MODE?`2px solid ${C.strafe}99`:`2px solid ${C.strafe}`,padding:"16px 20px",
+    <div style={{...gls,background:glsBg,borderTop:GLASS_MODE?`2px solid ${C.strafe}99`:`2px solid ${C.strafe}`,padding:"14px 18px",
     display:"flex",alignItems:"center",justifyContent:"space-between",
-    boxShadow:GLASS_MODE?GLASS.boxShadow:C.shadow,borderRadius:GLASS_MODE?16:(C.inputRadius||8)}}>
-    <div style={{display:"flex",alignItems:"center",gap:10,fontSize:14,color:C.strafeDk,fontFamily:SANS,fontWeight:600}}>
-    <Ico name="zap" size={15} color={C.strafeDk}/>
+    boxShadow:glsSh,borderRadius:glsR}}>
+    <div style={{display:"flex",alignItems:"center",gap:8,fontSize:13,color:C.strafeDk,fontFamily:SANS,fontWeight:600}}>
+    <Ico name="zap" size={14} color={C.strafeDk}/>
     {stats.strafenOffen} offene {stats.strafenOffen===1?"Strafe":"Strafen"} — noch nicht bezahlt
     </div>
-    <button onClick={()=>{setTab("kosten");setKostenSub("strafen");}} style={btnSolid(C.strafeDk)}>
-    <Ico name="arrowRight" size={15} color="#fff"/>ANZEIGEN
+    <button onClick={()=>setTab("kosten")} style={{...btnSolid(C.strafeDk),height:32,padding:"0 14px",fontSize:11}}>
+    <Ico name="arrowRight" size={13} color="#fff"/>ANZEIGEN
     </button>
     </div>
     )}
     {stats.faelligUeberfaellig.length>0&&(
-    <div style={{...(GLASS_MODE?GLASS:{}),background:GLASS_MODE?GLASS.background:C.surface,borderTop:GLASS_MODE?`2px solid ${C.service}99`:`2px solid ${C.service}`,padding:"16px 20px",
+    <div style={{...gls,background:glsBg,borderTop:GLASS_MODE?`2px solid ${C.service}99`:`2px solid ${C.service}`,padding:"14px 18px",
     display:"flex",alignItems:"center",justifyContent:"space-between",
-    boxShadow:GLASS_MODE?GLASS.boxShadow:C.shadow,borderRadius:GLASS_MODE?16:(C.inputRadius||8)}}>
-    <div style={{display:"flex",alignItems:"center",gap:10,fontSize:14,color:C.serviceDk,fontFamily:SANS,fontWeight:600}}>
-    <Ico name="alert" size={15} color={C.serviceDk}/>
+    boxShadow:glsSh,borderRadius:glsR}}>
+    <div style={{display:"flex",alignItems:"center",gap:8,fontSize:13,color:C.serviceDk,fontFamily:SANS,fontWeight:600}}>
+    <Ico name="alert" size={14} color={C.serviceDk}/>
     {stats.faelligUeberfaellig.length} {stats.faelligUeberfaellig.length===1?"Fälligkeit":"Fälligkeiten"} überfällig: {stats.faelligUeberfaellig.map(x=>x.typ).join(", ")}
     </div>
-    <button onClick={()=>{setTab("kosten");setKostenSub("service");}} style={btnSolid(C.serviceDk)}>
-    <Ico name="arrowRight" size={15} color="#fff"/>ANZEIGEN
+    <button onClick={()=>setTab("kosten")} style={{...btnSolid(C.serviceDk),height:32,padding:"0 14px",fontSize:11}}>
+    <Ico name="arrowRight" size={13} color="#fff"/>ANZEIGEN
     </button>
     </div>
     )}
@@ -6467,7 +6542,7 @@ input[type=number] { -moz-appearance:textfield; }
       {/* ══ HEADER ══ */}
       <header ref={headerRef} style={{background:GLASS_MODE?'rgba(244,244,240,0.85)':C.bg,backdropFilter:GLASS_MODE?'blur(24px) saturate(1.4)':undefined,WebkitBackdropFilter:GLASS_MODE?'blur(24px) saturate(1.4)':undefined,borderBottom:`0.5px solid ${GLASS_MODE?'rgba(221,221,216,0.6)':C.border}`,position:"sticky",top:0,zIndex:100,transition:"border-color 0.3s",boxShadow:'0 2px 8px rgba(0,0,0,0.10), 0 6px 24px rgba(0,0,0,0.06)'}}>
         {C.useGradients&&<div style={{height:3,background:C.headerGradient}}/>}
-        <div style={{maxWidth:1200,margin:"0 auto",padding:isMobile?"10px 12px":isTablet?"14px 20px":"22px 28px",width:"100%",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+        <div style={{maxWidth:1200,margin:"0 auto",padding:isMobile?"8px 12px":isTablet?"10px 20px":"12px 28px",width:"100%",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
         <div style={{display:"flex",alignItems:"center",gap:isMobile?8:16,minWidth:0,flex:1}}>
           <div ref={kzBoxRef} style={{
             borderRadius:6,
@@ -6581,7 +6656,7 @@ input[type=number] { -moz-appearance:textfield; }
           <div style={{maxWidth:1200,margin:"0 auto",display:"flex",width:isMobile?"max-content":"100%",padding:isMobile?"0 8px":isTablet?"0 20px":"0 32px",boxSizing:"border-box"}}>
             {TABS.map(t=>(
               <button key={t.id} onClick={()=>{setTab(t.id);resetForms();}}
-                style={{flex:isMobile?"none":1,padding:isMobile?"10px 14px":isTablet?"10px 8px":"12px 8px",background:tab===t.id?'transparent':'transparent',border:"none",boxShadow:tab===t.id?`inset 0 ${C.useGradients?"-3":"-2"}px 0 ${accDk||acc}`:"none",color:tab===t.id?(accDk||acc):C.text,cursor:"pointer",fontSize:isMobile?13:isTablet?14:15,fontFamily:SANS,fontWeight:700,letterSpacing:isMobile?0.5:1,textTransform:"uppercase",transition:"all 0.15s",whiteSpace:"nowrap",textAlign:"center",minWidth:0}}>
+                style={{flex:isMobile?"none":1,padding:isMobile?"8px 14px":isTablet?"8px 8px":"9px 8px",background:tab===t.id?'transparent':'transparent',border:"none",boxShadow:tab===t.id?`inset 0 ${C.useGradients?"-3":"-2"}px 0 ${accDk||acc}`:"none",color:tab===t.id?(accDk||acc):C.text,cursor:"pointer",fontSize:isMobile?13:isTablet?14:15,fontFamily:SANS,fontWeight:700,letterSpacing:isMobile?0.5:1,textTransform:"uppercase",transition:"all 0.15s",whiteSpace:"nowrap",textAlign:"center",minWidth:0}}>
                 {t.label}
               </button>
             ))}
