@@ -7591,13 +7591,13 @@ input[type=number] { -moz-appearance:textfield; }
         {tab==="einstellungen"&&(
           <div style={{maxWidth:860}}>
             <div id="fz-block"/>
-            <div style={{display:"flex",alignItems:"center",gap:isMobile?10:16,marginBottom:10,paddingBottom:10}}>
+            <div style={{display:"flex",alignItems:"center",gap:isMobile?10:16,marginBottom:10,padding:isMobile?'10px 12px':'12px 18px',...(GLASS_MODE?{...GLASS,borderRadius:12}:{})}}>
               <div style={{width:isMobile?40:52,height:isMobile?40:52,background:acc,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,borderRadius:C.inputRadius||8}}>
                 <Ico name="settings" size={isMobile?20:26} color="#fff"/>
               </div>
               <div>
                 <div style={{fontSize:isMobile?14:16,fontWeight:700,letterSpacing:isMobile?1:2,textTransform:"uppercase",color:C.text}}>Einstellungen</div>
-                <div style={{fontSize:isMobile?12:14,color:C.muted,letterSpacing:1,marginTop:2}}>Fuhrpark, Erscheinungsbild{isMobile?"":", Datensicherung"}</div>
+                <div style={{fontSize:isMobile?12:14,color:C.textSoft,letterSpacing:1,marginTop:2}}>Fuhrpark, Erscheinungsbild{isMobile?"":", Datensicherung"}</div>
               </div>
             </div>
 
