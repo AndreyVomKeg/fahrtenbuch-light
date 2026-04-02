@@ -3301,6 +3301,9 @@ function UebersichtTab({stats, aktiv, acc, accDk, C, SANS, FS, katAccent, katAcc
   const lastWithData = kmArr.slice().reverse().find(m => m.km > 0);
   const maxKm = Math.max(...kmArr.map(d => d.km), 1);
   const avgKmMo = kmArr.length > 0 ? (kmArr.reduce((s,m)=>s+m.km,0) / Math.max(kmArr.filter(m=>m.km>0).length,1)).toFixed(0) : 0;
+  const [selMonatIdx, setSelMonatIdx] = Ht.useState(null);
+  const selMonat = selMonatIdx !== null ? kmArr[selMonatIdx] : null;
+  const displayMonat = selMonat || lastWithData;
   const MO = ["Jan","Feb","Mär","Apr","Mai","Jun","Jul","Aug","Sep","Okt","Nov","Dez"];
   const short={standorte:"Standort",partner:"Partner",messe:"Messen",tankstelle:"Tankstelle",waesche:"Wäsche",service:"Service",laden:"Laden",bank:"Bank",behoerde:"Behörde",sonstige:"Sonstige"};
 
@@ -3398,9 +3401,9 @@ function UebersichtTab({stats, aktiv, acc, accDk, C, SANS, FS, katAccent, katAcc
     <div style={{fontSize:isMobile?11:12,color:C.text,letterSpacing:1.5,textTransform:"uppercase",fontWeight:700,fontFamily:SANS}}>KM / MONAT</div>
     <div style={{fontSize:11,color:C.muted,fontFamily:SANS,marginTop:2}}>12 Monate · ⌀ {avgKmMo} km/Mo</div>
     </div>
-    {lastWithData && <div style={{textAlign:"right"}}>
-    <div style={{fontSize:isMobile?16:20,fontWeight:800,color:C.redDk||C.red,fontFamily:SANS,lineHeight:1}}>{lastWithData.km.toFixed(0)} km</div>
-    <div style={{fontSize:10,color:C.muted,fontFamily:SANS}}>{MO[parseInt(lastWithData.monat.slice(5))-1]}</div>
+    {displayMonat && <div style={{textAlign:"right",cursor:selMonat?"pointer":"default"}} onClick={()=>selMonat&&setSelMonatIdx(null)} title={selMonat?"Klick zum Zurücksetzen":""}>
+    <div style={{fontSize:isMobile?16:20,fontWeight:800,color:C.redDk||C.red,fontFamily:SANS,lineHeight:1,transition:"all 0.2s ease"}}>{displayMonat.km.toFixed(0)} km</div>
+    <div style={{fontSize:10,color:C.muted,fontFamily:SANS}}>{MO[parseInt(displayMonat.monat.slice(5))-1]}{selMonat?" ✕":""}</div>
     </div>}
     </div>
     {/* SVG Line Chart */}
@@ -3426,17 +3429,23 @@ function UebersichtTab({stats, aktiv, acc, accDk, C, SANS, FS, katAccent, katAcc
       const lineStr = pts.map(p => `${p.x},${p.y}`).join(" ");
       const areaStr = `M${pts[0].x},${T+H} ` + pts.map(p => `L${p.x},${p.y}`).join(" ") + ` L${pts[pts.length-1].x},${T+H} Z`;
       const peakIdx = pts.reduce((mi,p,i,a)=> p.d.km > a[mi].d.km ? i : mi, 0);
+      const isSel = (i) => selMonatIdx === i;
+      const isHighlight = (i) => selMonatIdx === null ? i === peakIdx : isSel(i);
       return <>
       <path d={areaStr} fill="url(#areaGradOv)"/>
       <polyline points={lineStr} fill="none" stroke={C.red} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
       {pts.map((p,i)=> p.d.km > 0 && (
-        <circle key={i} cx={p.x} cy={p.y} r={i===peakIdx?5:3} fill={C.red} stroke={i===peakIdx?"#fff":"none"} strokeWidth={i===peakIdx?2:0}/>
+        <circle key={i} cx={p.x} cy={p.y} r={isHighlight(i)?5:3} fill={selMonatIdx!==null && !isSel(i) ? C.red+"66" : C.red} stroke={isHighlight(i)?"#fff":"none"} strokeWidth={isHighlight(i)?2:0} style={{transition:"all 0.2s ease"}}/>
       ))}
-      {pts.map((p,i)=> p.d.km > 0 && (isMobile ? i===peakIdx : true) && (
-        <text key={"v"+i} x={p.x} y={p.y-8} textAnchor="middle" fontSize="8" fontWeight="600" fill={C.muted} fontFamily={SANS}>{Math.round(p.d.km)}</text>
+      {pts.map((p,i)=> p.d.km > 0 && (isMobile ? isHighlight(i) : true) && (
+        <text key={"v"+i} x={p.x} y={p.y-8} textAnchor="middle" fontSize={isHighlight(i)?"10":"8"} fontWeight={isHighlight(i)?"800":"600"} fill={selMonatIdx!==null && !isSel(i) ? C.muted+"88" : C.muted} fontFamily={SANS} style={{transition:"all 0.2s ease"}}>{Math.round(p.d.km)}</text>
       ))}
       {pts.map((p,i)=>(
-        <text key={"m"+i} x={p.x} y={T+H+14} textAnchor="middle" fontSize="8" fontWeight="500" fill={C.muted} fontFamily={SANS}>{MO[parseInt(p.d.monat.slice(5))-1]}</text>
+        <text key={"m"+i} x={p.x} y={T+H+14} textAnchor="middle" fontSize={isHighlight(i)?"9":"8"} fontWeight={isHighlight(i)?"700":"500"} fill={selMonatIdx!==null && !isSel(i) ? C.muted+"88" : C.muted} fontFamily={SANS} style={{transition:"all 0.2s ease"}}>{MO[parseInt(p.d.monat.slice(5))-1]}</text>
+      ))}
+      {/* Invisible hit targets for click */}
+      {pts.map((p,i)=>(
+        <rect key={"hit"+i} x={p.x - 560/(Math.max(kmArr.length-1,1)*2)} y={0} width={560/Math.max(kmArr.length-1,1)} height={T+H+20} fill="transparent" style={{cursor:"pointer"}} onClick={()=>setSelMonatIdx(isSel(i)?null:i)}/>
       ))}
       </>;
     })()}
