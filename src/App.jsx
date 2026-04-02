@@ -2438,20 +2438,19 @@ function StandortePanel({aktiv, patchAktiv, setConfirmDel, setFData, setFForm, s
         </FormPanel>
       )}
 
-      {/* Header: count + add button */}
-      {!!alle.length&&<div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10,
-        ...(GLASS_MODE?{background:GLASS.background,backdropFilter:GLASS.backdropFilter,WebkitBackdropFilter:GLASS.backdropFilter,borderRadius:12,border:GLASS.border,padding:'8px 14px'}:{})
+      {/* Header: count + add + search (combined glass) */}
+      {!!alle.length&&<div style={{marginBottom:14,
+        ...(GLASS_MODE?{background:GLASS.background,backdropFilter:GLASS.backdropFilter,WebkitBackdropFilter:GLASS.backdropFilter,borderRadius:12,border:GLASS.border,padding:'14px'}:{})
       }}>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
         <div style={{fontSize:14,color:C.text}}>
           {gefilert.length !== alle.length ? `${gefilert.length} von ${alle.length} Standorten` : `${alle.length} Standorte gesamt`}
         </div>
         {stOrtForm===null&&<SpringBtn onClick={()=>{setStOrtForm("new");setStOrtData({name:"",adresse:"",notiz:"",typ:"laden",auto:false});}} style={btnSolid(C.standortDk)}><Ico name="plus" size={15} color="#fff"/>STANDORT HINZUFÜGEN</SpringBtn>}
-      </div>}
+      </div>
 
       {/* Suche + Typ-Filter */}
-      {alle.length>0&&(
-        <div style={{display:"flex",gap:10,alignItems:"center",flexWrap:"wrap",marginBottom:14,
-          ...(GLASS_MODE?{background:GLASS.background,backdropFilter:GLASS.backdropFilter,WebkitBackdropFilter:GLASS.backdropFilter,borderRadius:12,border:GLASS.border,padding:'8px 14px'}:{})
+        <div style={{display:"flex",gap:10,alignItems:"center",flexWrap:"wrap"
         }}>
           <div style={{position:"relative",flex:1,minWidth:160,display:"flex",alignItems:"center"}}>
             <input value={stQ} onChange={e=>setStQ(e.target?.value ?? "")} placeholder="Standort suchen…"
@@ -2462,7 +2461,7 @@ function StandortePanel({aktiv, patchAktiv, setConfirmDel, setFData, setFForm, s
           </div>
           <div style={{flex:"0 0 clamp(150px,18%,200px)"}}><CustomSelect value={stTyp} onChange={setStTyp} options={[{value:"",label:"Alle Typen"},{value:"stamm",label:"Stammstandort"},...ST_TYP_OPTS.map(t=>({value:t,label:ST_TYP_LABELS[t]||t}))]} accent={C.border}/></div>
         </div>
-      )}
+      </div>}
 
       {/* Liste */}
       <div className="fb-stagger" style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(340px,1fr))",gap:2}}>
@@ -6686,9 +6685,11 @@ input[type=number] { -moz-appearance:textfield; }
 
             {/* List header */}
             {!!(aktiv.fahrten||[]).length&&<>
-            {/* Zeile 1: Zähler + Button */}
-            <div style={{display:"flex",alignItems:"center",marginBottom:isMobile?6:10,flexWrap:isMobile?"wrap":"nowrap",gap:isMobile?6:0,
-              ...(GLASS_MODE?{background:GLASS.background,backdropFilter:GLASS.backdropFilter,WebkitBackdropFilter:GLASS.backdropFilter,borderRadius:12,border:GLASS.border,padding:'8px 14px'}:{})
+            {/* Zeile 1+2: Zähler + Button + Suche (combined glass) */}
+            <div style={{marginBottom:isMobile?8:14,
+              ...(GLASS_MODE?{background:GLASS.background,backdropFilter:GLASS.backdropFilter,WebkitBackdropFilter:GLASS.backdropFilter,borderRadius:12,border:GLASS.border,padding:isMobile?'10px 12px':'14px'}:{})
+            }}>
+            <div style={{display:"flex",alignItems:"center",marginBottom:isMobile?6:10,flexWrap:isMobile?"wrap":"nowrap",gap:isMobile?6:0
             }}>
               <div style={{fontSize:isMobile?13:14,color:C.text}}>
                 {gefFahrten.length !== (aktiv.fahrten||[]).length
@@ -6703,9 +6704,8 @@ input[type=number] { -moz-appearance:textfield; }
                 </SpringBtn>
               )}
             </div>
-            {/* Zeile 2: Suche + Filter */}
-            <div style={{display:"flex",gap:isMobile?6:10,alignItems:"center",flexWrap:"wrap",marginBottom:isMobile?8:14,
-              ...(GLASS_MODE?{background:GLASS.background,backdropFilter:GLASS.backdropFilter,WebkitBackdropFilter:GLASS.backdropFilter,borderRadius:12,border:GLASS.border,padding:'8px 14px'}:{})
+            {/* Suche + Filter */}
+            <div style={{display:"flex",gap:isMobile?6:10,alignItems:"center",flexWrap:"wrap"
             }}>
               <div style={{position:"relative",flex:isMobile?"1 1 100%":"1",minWidth:isMobile?0:160,display:"flex",alignItems:"center"}}>
                 <input value={fQ} onChange={e=>setFQ(e.target?.value ?? "")} placeholder="Suchen…"
@@ -6719,6 +6719,7 @@ input[type=number] { -moz-appearance:textfield; }
               {(fQ||fMonat||fKat!=="alle")&&(
                 <button style={{height:40,border:`1px solid ${C.border}`,borderRadius:C.inputRadius||8,background:"#fff",color:C.muted,boxShadow:"0 1px 4px rgba(0,0,0,0.06)",fontSize:14,fontFamily:SANS,padding:"0 10px",cursor:"pointer",flexShrink:0,outline:"none"}} onClick={()=>{setFQ("");setFMonat("");setFKat("alle");}}>✕ Reset</button>
               )}
+            </div>
             </div>
             </>}
             {!(aktiv.fahrten||[]).length&&fForm===null&&<EmptyState icon="car" accent={acc} accentDk={accDk} text="Noch keine Fahrten" hint="Erste Fahrt erfassen und hier sehen" btnLabel="FAHRT EINTRAGEN" onBtnClick={()=>{setFForm("new");setFData(E_F());}}/>}
