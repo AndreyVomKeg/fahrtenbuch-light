@@ -6561,18 +6561,24 @@ input[type=number] { -moz-appearance:textfield; }
     <div style={{minHeight:"100vh",background:GLASS_MODE?GLASS_BG:C.bg,color:C.text,fontFamily:SANS,overflowX:"clip",width:"100%",maxWidth:"100vw",position:"relative"}}>
       {/* ── VIDEO BACKGROUND ── */}
       {GLASS_MODE && <svg width="0" height="0" style={{position:'absolute'}}><defs>
-        {/* Smooth illustrated look — no posterize, no pixelation */}
+        {/* Painterly illustrated — stronger stylisation, NO posterize (no pixels) */}
         <filter id="illustrated" colorInterpolationFilters="sRGB">
-          {/* Smooth out video noise — soft painterly base */}
-          <feGaussianBlur in="SourceGraphic" stdDeviation="1.4" result="smooth"/>
-          {/* Sharpen edges back for definition */}
-          <feConvolveMatrix in="smooth" order="3" kernelMatrix="0 -0.6 0 -0.6 3.4 -0.6 0 -0.6 0" preserveAlpha="true" result="sharp"/>
-          {/* Warm saturation */}
-          <feColorMatrix in="sharp" type="saturate" values="1.3"/>
+          {/* Heavier blur — oil-paint smoothness */}
+          <feGaussianBlur in="SourceGraphic" stdDeviation="2.2" result="smooth"/>
+          {/* Strong sharpen — crisp illustrated edges */}
+          <feConvolveMatrix in="smooth" order="3" kernelMatrix="0 -0.9 0 -0.9 4.6 -0.9 0 -0.9 0" preserveAlpha="true" result="sharp"/>
+          {/* Slightly compress tonal range — flatter, more cartoon-like */}
+          <feComponentTransfer in="sharp" result="flat">
+            <feFuncR type="gamma" amplitude="1" exponent="0.85" offset="0.04"/>
+            <feFuncG type="gamma" amplitude="1" exponent="0.85" offset="0.04"/>
+            <feFuncB type="gamma" amplitude="1" exponent="0.85" offset="0.04"/>
+          </feComponentTransfer>
+          {/* Warm saturation boost */}
+          <feColorMatrix in="flat" type="saturate" values="1.5"/>
         </filter>
       </defs></svg>}
       {GLASS_MODE && <video autoPlay muted loop playsInline poster={BG_VIDEO_POSTER}
-        style={{position:"fixed",top:0,left:0,width:"100vw",height:"100vh",objectFit:"cover",zIndex:-1,pointerEvents:"none",filter:"brightness(1.1) contrast(0.3) url(#illustrated)",transform:"scale(1.04)"}}>
+        style={{position:"fixed",top:0,left:0,width:"100vw",height:"100vh",objectFit:"cover",zIndex:-1,pointerEvents:"none",filter:"brightness(1.12) contrast(0.32) url(#illustrated)",transform:"scale(1.04)"}}>
         <source src={BG_VIDEO_SRC} type="video/mp4"/>
       </video>}
 
