@@ -1506,10 +1506,12 @@ function AnimatedBar({pct, color, colorDk, height=6}) {
 function EmptyState({icon="car", text, hint, btnLabel, onBtnClick, accent=C.muted, accentDk}) {
   return (
     <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",
-      padding:"48px 24px",gap:12,textAlign:"center"}}>
+      padding:"48px 24px",gap:12,textAlign:"center",
+      ...(GLASS_MODE?{background:GLASS.background,backdropFilter:GLASS.backdropFilter,WebkitBackdropFilter:GLASS.backdropFilter,borderRadius:16,border:GLASS.border,boxShadow:GLASS.boxShadow}:{})
+    }}>
       <div style={{position:"relative",marginBottom:8}}>
-        <div style={{width:56,height:56,borderRadius:"50%",background:accent+"80",
-          border:`1.5px solid ${accent}AA`,
+        <div style={{width:56,height:56,borderRadius:"50%",background:GLASS_MODE?(accent+"30"):(accent+"80"),
+          border:`1.5px solid ${GLASS_MODE?(accent+"66"):(accent+"AA")}`,
           display:"flex",alignItems:"center",justifyContent:"center",
           animation:"esFloat 4s ease-in-out infinite"}}>
           <Ico name={icon} size={26} color={accent}/>
@@ -1519,7 +1521,7 @@ function EmptyState({icon="car", text, hint, btnLabel, onBtnClick, accent=C.mute
           animation:"esShadow 4s ease-in-out infinite"}}/>
       </div>
       <div style={{fontSize:14,fontWeight:700,color:C.text,fontFamily:SANS}}>{text}</div>
-      {hint&&<div style={{fontSize:14,color:C.muted,fontFamily:SANS,maxWidth:280,lineHeight:1.5}}>{hint}</div>}
+      {hint&&<div style={{fontSize:14,color:GLASS_MODE?C.textSoft:C.muted,fontFamily:SANS,maxWidth:280,lineHeight:1.5}}>{hint}</div>}
       {btnLabel&&onBtnClick&&(
         <SpringBtn title="Aktion ausführen"
                   onClick={onBtnClick} style={{...btnSolid(accentDk||accent),marginTop:8}}>
@@ -1683,7 +1685,9 @@ function SpringBtn({children, ...props}) {
 function SectionBar({count, label, onAdd, accent, accentDk, addLabel, formOpen}) {
   if(!count) return null;
   return (
-    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
+    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10,
+      ...(GLASS_MODE?{background:GLASS.background,backdropFilter:GLASS.backdropFilter,WebkitBackdropFilter:GLASS.backdropFilter,borderRadius:12,border:GLASS.border,padding:'8px 14px'}:{})
+    }}>
       <div style={{fontSize:14,color:C.text}}>
         {count} <span style={{color:accent,fontWeight:700}}>{label}</span>
       </div>
@@ -2406,7 +2410,9 @@ function StandortePanel({aktiv, patchAktiv, setConfirmDel, setFData, setFForm, s
 
   return (
     <div>
-      <div style={{borderLeft:`2px solid ${C.standort}`,padding:"8px 0 8px 14px",marginBottom:14,display:"flex",alignItems:"center",gap:8,fontSize:14,color:C.standort,fontFamily:SANS}}>
+      <div style={{borderLeft:`2px solid ${C.standort}`,padding:"8px 0 8px 14px",marginBottom:14,display:"flex",alignItems:"center",gap:8,fontSize:14,color:GLASS_MODE?C.text:C.standort,fontFamily:SANS,
+        ...(GLASS_MODE?{background:GLASS.background,backdropFilter:GLASS.backdropFilter,WebkitBackdropFilter:GLASS.backdropFilter,borderRadius:12,border:GLASS.border}:{})
+      }}>
         <Ico name="road" size={13} color={C.standortDk}/>
         <span>Aus <b>Stammstandort</b> + <b>Kosten</b> · {autoOrte.length} automatisch · +{manOrte.length} manuell</span>
       </div>
@@ -2433,7 +2439,9 @@ function StandortePanel({aktiv, patchAktiv, setConfirmDel, setFData, setFForm, s
       )}
 
       {/* Header: count + add button */}
-      {!!alle.length&&<div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
+      {!!alle.length&&<div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10,
+        ...(GLASS_MODE?{background:GLASS.background,backdropFilter:GLASS.backdropFilter,WebkitBackdropFilter:GLASS.backdropFilter,borderRadius:12,border:GLASS.border,padding:'8px 14px'}:{})
+      }}>
         <div style={{fontSize:14,color:C.text}}>
           {gefilert.length !== alle.length ? `${gefilert.length} von ${alle.length} Standorten` : `${alle.length} Standorte gesamt`}
         </div>
@@ -2442,7 +2450,9 @@ function StandortePanel({aktiv, patchAktiv, setConfirmDel, setFData, setFForm, s
 
       {/* Suche + Typ-Filter */}
       {alle.length>0&&(
-        <div style={{display:"flex",gap:10,alignItems:"center",flexWrap:"wrap",marginBottom:14}}>
+        <div style={{display:"flex",gap:10,alignItems:"center",flexWrap:"wrap",marginBottom:14,
+          ...(GLASS_MODE?{background:GLASS.background,backdropFilter:GLASS.backdropFilter,WebkitBackdropFilter:GLASS.backdropFilter,borderRadius:12,border:GLASS.border,padding:'8px 14px'}:{})
+        }}>
           <div style={{position:"relative",flex:1,minWidth:160,display:"flex",alignItems:"center"}}>
             <input value={stQ} onChange={e=>setStQ(e.target?.value ?? "")} placeholder="Standort suchen…"
               style={{width:"100%",height:40,boxSizing:"border-box",padding:"0 34px 0 36px",border:`1px solid ${C.border}`,borderRadius:C.inputRadius||8,boxShadow:"0 1px 4px rgba(0,0,0,0.06)",transition:"border-color 0.15s, box-shadow 0.15s",background:"#fff",color:"#111",fontSize:14,fontFamily:SANS,outline:"none",WebkitAppearance:"none",appearance:"none"}}/>
@@ -2516,7 +2526,9 @@ function StandortePanel({aktiv, patchAktiv, setConfirmDel, setFData, setFForm, s
         );
       })}
       </div>
-      {gefilert.length===0&&alle.length>0&&<div style={{color:C.text,fontSize:14,textAlign:"center",padding:"32px 0"}}>Keine Treffer — Suche anpassen</div>}
+      {gefilert.length===0&&alle.length>0&&<div style={{color:C.text,fontSize:14,textAlign:"center",padding:"32px 0",
+        ...(GLASS_MODE?{background:GLASS.background,backdropFilter:GLASS.backdropFilter,WebkitBackdropFilter:GLASS.backdropFilter,borderRadius:12}:{})
+      }}>Keine Treffer — Suche anpassen</div>}
       {!alle.length&&stOrtForm===null&&<EmptyState icon="road" accent={C.standort} accentDk={C.standortDk} text="Noch keine Standorte" hint="Adressen werden automatisch aus Kosten-Einträgen übernommen" btnLabel="STANDORT HINZUFÜGEN" onBtnClick={()=>{setStOrtForm("new");setStOrtData({name:"",adresse:"",notiz:"",typ:"laden",auto:false});}}/>}
     </div>
   );
@@ -3814,15 +3826,23 @@ function BerichtTab({gefFahrten, aktiv, acc, accDk, C, SANS, safeFloat, formatDa
     )}
 
     {/* Toolbar */}
-    <div style={{display:"flex",justifyContent:"flex-end",gap:8,marginBottom:14}}>
+    <div style={{display:"flex",justifyContent:"flex-end",gap:8,marginBottom:14,
+      ...(GLASS_MODE?{background:GLASS.background,backdropFilter:GLASS.backdropFilter,WebkitBackdropFilter:GLASS.backdropFilter,borderRadius:12,border:GLASS.border,padding:'8px 14px'}:{})
+    }}>
     <button onClick={()=>{setCopied(false);setCsvModal(true);}}
-    style={{height:36,border:`1px solid ${C.border}`,borderRadius:C.inputRadius||8,background:"transparent",color:C.text,
+    style={{height:36,border:`1px solid ${C.border}`,borderRadius:C.inputRadius||8,
+    background:GLASS_MODE?GLASS.background:'transparent',
+    backdropFilter:GLASS_MODE?GLASS.backdropFilter:undefined,WebkitBackdropFilter:GLASS_MODE?GLASS.backdropFilter:undefined,
+    color:C.text,
     fontSize:14,fontFamily:SANS,fontWeight:700,letterSpacing:2,
     textTransform:"uppercase",padding:"0 14px",cursor:"pointer",display:"flex",alignItems:"center",gap:6}}>
-    <Ico name="copy" size={13} color={C.muted}/> CSV
+    <Ico name="copy" size={13} color={C.text}/> CSV
     </button>
     <button onClick={()=>{setSheetsCopied(false);setSheetsModal(true);}}
-    style={{height:36,border:`1px solid ${C.sheetsGreenDk}`,borderRadius:C.inputRadius||8,background:"transparent",color:C.sheetsGreenDk,
+    style={{height:36,border:`1px solid ${C.sheetsGreenDk}`,borderRadius:C.inputRadius||8,
+    background:GLASS_MODE?GLASS.background:'transparent',
+    backdropFilter:GLASS_MODE?GLASS.backdropFilter:undefined,WebkitBackdropFilter:GLASS_MODE?GLASS.backdropFilter:undefined,
+    color:C.sheetsGreenDk,
     fontSize:14,fontFamily:SANS,fontWeight:700,letterSpacing:2,
     textTransform:"uppercase",padding:"0 14px",cursor:"pointer",display:"flex",alignItems:"center",gap:6}}>
     <Ico name="fileText" size={15} color={C.sheetsGreenDk}/> SHEETS
@@ -6442,7 +6462,7 @@ input[type=number] { -moz-appearance:textfield; }
     <div style={{minHeight:"100vh",background:GLASS_MODE?GLASS_BG:C.bg,color:C.text,fontFamily:SANS,overflowX:"clip",width:"100%",maxWidth:"100vw",position:"relative"}}>
       {/* ── VIDEO BACKGROUND ── */}
       {GLASS_MODE && <video autoPlay muted loop playsInline poster={BG_VIDEO_POSTER}
-        style={{position:"fixed",top:0,left:0,width:"100vw",height:"100vh",objectFit:"cover",zIndex:-1,pointerEvents:"none"}}>
+        style={{position:"fixed",top:0,left:0,width:"100vw",height:"100vh",objectFit:"cover",zIndex:-1,pointerEvents:"none",filter:"blur(6px)",transform:"scale(1.04)"}}>
         <source src={BG_VIDEO_SRC} type="video/mp4"/>
       </video>}
 
@@ -6666,7 +6686,9 @@ input[type=number] { -moz-appearance:textfield; }
             {/* List header */}
             {!!(aktiv.fahrten||[]).length&&<>
             {/* Zeile 1: Zähler + Button */}
-            <div style={{display:"flex",alignItems:"center",marginBottom:isMobile?6:10,flexWrap:isMobile?"wrap":"nowrap",gap:isMobile?6:0}}>
+            <div style={{display:"flex",alignItems:"center",marginBottom:isMobile?6:10,flexWrap:isMobile?"wrap":"nowrap",gap:isMobile?6:0,
+              ...(GLASS_MODE?{background:GLASS.background,backdropFilter:GLASS.backdropFilter,WebkitBackdropFilter:GLASS.backdropFilter,borderRadius:12,border:GLASS.border,padding:'8px 14px'}:{})
+            }}>
               <div style={{fontSize:isMobile?13:14,color:C.text}}>
                 {gefFahrten.length !== (aktiv.fahrten||[]).length
                   ? <>{gefFahrten.length} von {(aktiv.fahrten||[]).length} · <span style={{color:acc,fontWeight:700}}>{stats.gefKm.toFixed(1)} km</span></>
@@ -6681,7 +6703,9 @@ input[type=number] { -moz-appearance:textfield; }
               )}
             </div>
             {/* Zeile 2: Suche + Filter */}
-            <div style={{display:"flex",gap:isMobile?6:10,alignItems:"center",flexWrap:"wrap",marginBottom:isMobile?8:14}}>
+            <div style={{display:"flex",gap:isMobile?6:10,alignItems:"center",flexWrap:"wrap",marginBottom:isMobile?8:14,
+              ...(GLASS_MODE?{background:GLASS.background,backdropFilter:GLASS.backdropFilter,WebkitBackdropFilter:GLASS.backdropFilter,borderRadius:12,border:GLASS.border,padding:'8px 14px'}:{})
+            }}>
               <div style={{position:"relative",flex:isMobile?"1 1 100%":"1",minWidth:isMobile?0:160,display:"flex",alignItems:"center"}}>
                 <input value={fQ} onChange={e=>setFQ(e.target?.value ?? "")} placeholder="Suchen…"
                   style={{width:"100%",height:isMobile?44:40,boxSizing:"border-box",padding:"0 34px 0 36px",border:`1px solid ${C.border}`,borderRadius:C.inputRadius||8,boxShadow:"0 1px 4px rgba(0,0,0,0.06)",transition:"border-color 0.15s, box-shadow 0.15s",background:"#fff",color:"#111",fontSize:isMobile?16:14,fontFamily:SANS,outline:"none",WebkitAppearance:"none",appearance:"none"}}/>
@@ -6960,7 +6984,9 @@ input[type=number] { -moz-appearance:textfield; }
                   onAdd={()=>{setPForm("new");setPData(E_P());}} formOpen={pForm!==null}/>
                 {/* Suche + Typ-Filter */}
                 {(aktiv.partner||[]).length>0&&(
-                  <div style={{display:"flex",gap:10,alignItems:"center",flexWrap:"wrap",marginBottom:14}}>
+                  <div style={{display:"flex",gap:10,alignItems:"center",flexWrap:"wrap",marginBottom:14,
+                    ...(GLASS_MODE?{background:GLASS.background,backdropFilter:GLASS.backdropFilter,WebkitBackdropFilter:GLASS.backdropFilter,borderRadius:12,border:GLASS.border,padding:'8px 14px'}:{})
+                  }}>
                     <div style={{position:"relative",flex:1,minWidth:160,display:"flex",alignItems:"center"}}>
                       <input value={pFilter?.q||""} onChange={e=>setPFilter(f=>({...f,q:e.target?.value??""}))} placeholder="Partner suchen…"
                         style={{width:"100%",height:40,boxSizing:"border-box",padding:"0 34px 0 36px",border:`1px solid ${C.border}`,borderRadius:C.inputRadius||8,fontSize:14,fontFamily:SANS,outline:"none"}}/>
@@ -7215,7 +7241,7 @@ input[type=number] { -moz-appearance:textfield; }
                     <FormActions onSave={saveTanke} onCancel={()=>setTForm(null)} accent={C.tank}/>
                   </FormPanel>
                 )}
-                {!!(aktiv.tankstellen||[]).length&&<div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
+                {!!(aktiv.tankstellen||[]).length&&<div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10,...(GLASS_MODE?{background:GLASS.background,backdropFilter:GLASS.backdropFilter,WebkitBackdropFilter:GLASS.backdropFilter,borderRadius:12,border:GLASS.border,padding:"8px 14px"}:{})}}>
                   <div style={{fontSize:14,color:C.text}}>
                     Gesamt: <span style={{color:C.tankDk,fontWeight:700}}>{(aktiv.tankstellen||[]).reduce((s,t)=>s+(parseFloat(t.menge)||0),0).toFixed(1)} L</span>
                     {" · "}<span style={{color:C.goldDk,fontWeight:700}}>{(aktiv.tankstellen||[]).reduce((s,t)=>s+(parseFloat(t.gesamtbetrag)||0),0).toFixed(2)} €</span>
@@ -7262,7 +7288,7 @@ input[type=number] { -moz-appearance:textfield; }
                     <FormActions onSave={saveService} onCancel={()=>setSvForm(null)} accent={C.service}/>
                   </FormPanel>
                 )}
-                {!!(aktiv.services||[]).length&&<div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
+                {!!(aktiv.services||[]).length&&<div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10,...(GLASS_MODE?{background:GLASS.background,backdropFilter:GLASS.backdropFilter,WebkitBackdropFilter:GLASS.backdropFilter,borderRadius:12,border:GLASS.border,padding:"8px 14px"}:{})}}>
                   <div style={{fontSize:14,color:C.text}}>
                     Gesamt: <span style={{color:C.serviceDk,fontWeight:700}}>{(aktiv.services||[]).reduce((s,x)=>s+(parseFloat(x.betrag)||0),0).toFixed(2)} €</span>
                     {" · "}<span style={{color:C.text}}>{(aktiv.services||[]).length} Einträge</span>
@@ -7346,7 +7372,7 @@ input[type=number] { -moz-appearance:textfield; }
                     <FormActions onSave={saveWaesche} onCancel={()=>setWForm(null)} accent={C.wasch}/>
                   </FormPanel>
                 )}
-                {!!(aktiv.waesche||[]).length&&<div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
+                {!!(aktiv.waesche||[]).length&&<div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10,...(GLASS_MODE?{background:GLASS.background,backdropFilter:GLASS.backdropFilter,WebkitBackdropFilter:GLASS.backdropFilter,borderRadius:12,border:GLASS.border,padding:"8px 14px"}:{})}}>
                   <div style={{fontSize:14,color:C.text}}>
                     Gesamt: <span style={{color:C.waschDk,fontWeight:700}}>{(aktiv.waesche||[]).reduce((s,x)=>s+(parseFloat(x.betrag)||0),0).toFixed(2)} €</span>
                     {" · "}<span style={{color:C.text}}>{(aktiv.waesche||[]).length} Wäschen</span>
@@ -7419,7 +7445,7 @@ input[type=number] { -moz-appearance:textfield; }
                     <FormActions onSave={savePark} onCancel={()=>setParkForm(null)} accent={C.park}/>
                   </FormPanel>
                 )}
-                {!!(aktiv.parkplaetze||[]).length&&<div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
+                {!!(aktiv.parkplaetze||[]).length&&<div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10,...(GLASS_MODE?{background:GLASS.background,backdropFilter:GLASS.backdropFilter,WebkitBackdropFilter:GLASS.backdropFilter,borderRadius:12,border:GLASS.border,padding:"8px 14px"}:{})}}>
                   <div style={{fontSize:14,color:C.text}}>
                     Gesamt: <span style={{color:C.parkDk,fontWeight:700}}>{(aktiv.parkplaetze||[]).reduce((s,x)=>s+(parseFloat(x.betrag)||0),0).toFixed(2)} €</span>
                     {" · "}<span style={{color:C.text}}>{(aktiv.parkplaetze||[]).length} Parkvorgänge</span>
@@ -7522,7 +7548,7 @@ input[type=number] { -moz-appearance:textfield; }
                     <FormActions onSave={saveStrafe} onCancel={()=>setSForm(null)} accent={C.strafe}/>
                   </FormPanel>
                 )}
-                {!!(aktiv.strafen||[]).length&&<div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
+                {!!(aktiv.strafen||[]).length&&<div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10,...(GLASS_MODE?{background:GLASS.background,backdropFilter:GLASS.backdropFilter,WebkitBackdropFilter:GLASS.backdropFilter,borderRadius:12,border:GLASS.border,padding:"8px 14px"}:{})}}>
                   <div style={{fontSize:14,color:C.text}}>
                     Gesamt: <span style={{color:C.strafeDk,fontWeight:700}}>{(aktiv.strafen||[]).reduce((s,x)=>s+(parseFloat(x.betrag)||0),0).toFixed(2)} €</span>
                     {" · "}<span style={{color:C.goldDk,fontWeight:700}}>{(aktiv.strafen||[]).filter(x=>x.bezahlt).length} bez.</span>
