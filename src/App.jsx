@@ -1,5 +1,6 @@
 // FahrtenbuchLight v51
 import React, { useState, useMemo, useEffect, useRef } from "react";
+import ReactDOM from "react-dom";
 import {
   THEMES, THEME_GOOGLE, THEME_CLASSIC, THEME_HYBRID, syncTheme,
   FARBEN, FARBE_DK_MAP,
@@ -1988,14 +1989,28 @@ function CustomSelect({value, onChange, options, placeholder="— bitte wählen 
   const [q, setQ] = useState("");
   const [hovered, setHovered] = useState(null);
   const ref = useRef(null);
+  const btnRef = useRef(null);
+  const dropRef = useRef(null);
   const searchRef = useRef(null);
   const selected = options.find(o=>o.value===value);
+  const [dropPos, setDropPos] = useState({top:0,left:0,width:0});
 
   useEffect(()=>{
-    const handler = e => { if(ref.current && !ref.current.contains(e.target)){setOpen(false);setQ("");} };
+    const handler = e => {
+      if(ref.current && ref.current.contains(e.target)) return;
+      if(dropRef.current && dropRef.current.contains(e.target)) return;
+      setOpen(false);setQ("");
+    };
     document.addEventListener("mousedown", handler);
     return ()=>document.removeEventListener("mousedown", handler);
   },[]);
+
+  useEffect(()=>{
+    if(open && btnRef.current) {
+      const r = btnRef.current.getBoundingClientRect();
+      setDropPos({top:r.bottom+4, left:r.left, width:r.width});
+    }
+  },[open]);
 
   const focusTimer = useRef(null);
   useEffect(()=>{
@@ -2010,7 +2025,7 @@ function CustomSelect({value, onChange, options, placeholder="— bitte wählen 
   return (
     <div ref={ref} style={{position:"relative",width:"100%"}}>
       {/* Trigger button */}
-      <button type="button" onClick={()=>setOpen(o=>!o)}
+      <button ref={btnRef} type="button" onClick={()=>setOpen(o=>!o)}
         style={{
           width:"100%", background:C.surface,
           border:`1px solid ${open ? accent : C.border}`,
@@ -2037,15 +2052,15 @@ function CustomSelect({value, onChange, options, placeholder="— bitte wählen 
         </span>
       </button>
 
-      {/* Dropdown panel */}
-      {open&&(
-        <div style={{
-          position:"absolute", top:"calc(100% + 6px)", left:0, right:0,
+      {/* Dropdown panel — fixed position to escape overflow:hidden parents */}
+      {open&&ReactDOM.createPortal(
+        <div ref={dropRef} style={{
+          position:"fixed", top:dropPos.top, left:dropPos.left, width:dropPos.width,
           background:C.surface,
           borderRadius:C.inputRadius||8,
           border:"1px solid #e8e8e8",
           boxShadow:"0 4px 20px rgba(0,0,0,0.13), 0 1px 4px rgba(0,0,0,0.08)",
-          zIndex:300, overflow:"hidden",
+          zIndex:600, overflow:"hidden",
         }}>
           {searchable&&(
             <div style={{padding:"8px 10px", borderBottom:"1px solid #f0f0f0"}}>
@@ -2126,7 +2141,8 @@ function CustomSelect({value, onChange, options, placeholder="— bitte wählen 
               </div>
             )}
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );
