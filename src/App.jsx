@@ -6603,17 +6603,16 @@ input[type=number] { -moz-appearance:textfield; }
               </div>}
             </div>
             {/* ── Car Selector Dropdown ── */}
+            {carPopup&&state.fahrzeuge.length>1&&<div onClick={()=>setCarPopup(false)} style={{position:"fixed",inset:0,zIndex:499,background:"rgba(0,0,0,0.15)"}}/>}
             {carPopup&&state.fahrzeuge.length>1&&(
               <div style={{
-                position:"absolute",top:"calc(100% + 8px)",left:0,
-                background:GLASS_MODE?'rgba(244,244,240,0.95)':C.surface,
-                backdropFilter:GLASS_MODE?'blur(20px) saturate(1.4)':undefined,
-                WebkitBackdropFilter:GLASS_MODE?'blur(20px) saturate(1.4)':undefined,
+                position:"fixed",top:isMobile?56:70,left:isMobile?8:16,
+                background:'#f4f4f0',
                 borderRadius:12,
                 border:`1px solid ${C.border}`,
-                boxShadow:"0 16px 48px rgba(0,0,0,0.18), 0 4px 12px rgba(0,0,0,0.10)",
-                minWidth:isMobile?280:380,maxWidth:isMobile?320:440,
-                zIndex:300,overflow:"hidden",
+                boxShadow:"0 16px 48px rgba(0,0,0,0.22), 0 4px 12px rgba(0,0,0,0.12)",
+                width:isMobile?"calc(100vw - 16px)":"auto",minWidth:isMobile?280:380,maxWidth:440,
+                zIndex:500,overflow:"hidden",
                 animation:"modalIn 0.2s cubic-bezier(0.34,1.36,0.64,1)",
               }}>
                 <div style={{padding:"12px 16px 8px",fontSize:11,color:C.muted,letterSpacing:1.5,textTransform:"uppercase",fontWeight:700,fontFamily:SANS,borderBottom:`1px solid ${C.border}`}}>FAHRZEUG WÄHLEN</div>
@@ -6642,7 +6641,7 @@ input[type=number] { -moz-appearance:textfield; }
                         <div style={{fontSize:isMobile?13:15,fontWeight:700,color:C.text,fontFamily:SANS,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{fz.marke?`${fz.marke} ${fz.modell||""}`:(fz.name||"Fahrzeug")}</div>
                         {halter&&<div style={{fontSize:isMobile?11:12,color:C.muted,fontFamily:SANS,marginTop:1,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{halter}</div>}
                       </div>
-                      {isActive&&<span style={{fontSize:10,fontWeight:700,color:acc,fontFamily:SANS,letterSpacing:1,textTransform:"uppercase",flexShrink:0,padding:"3px 8px",borderRadius:6,background:acc+"18"}}>AKTIV</span>}
+                      {isActive&&<span style={{fontSize:10,fontWeight:700,color:"#fff",fontFamily:SANS,letterSpacing:1,textTransform:"uppercase",flexShrink:0,padding:"3px 8px",borderRadius:6,background:acc}}>AKTIV</span>}
                     </div>
                   );
                 })}
