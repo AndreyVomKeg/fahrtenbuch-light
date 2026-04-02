@@ -17,7 +17,7 @@ let { katAccent, katAccentDk, katBg, ST_TYP_COLORS, ST_TYP_COLORS_DK } = syncThe
 const GLASS_MODE = true;
 
 const GLASS = {
-  background: 'rgba(244,244,240,0.93)',
+  background: 'rgba(244,244,240,0.96)',
   backdropFilter: 'blur(24px) saturate(1.4)',
   WebkitBackdropFilter: 'blur(24px) saturate(1.4)',
   border: '1px solid rgba(221,221,216,0.5)',
@@ -32,7 +32,7 @@ const BG_VIDEO_SRC = './bg-video.mp4';
 const BG_VIDEO_POSTER = './bg-video-poster.jpg';
 
 // Overlay gradient on top of video for card readability
-const GLASS_BG = 'rgba(244,244,240,0.55)';
+const GLASS_BG = 'transparent';
 
 // ─── CLIPBOARD UTILITY ──────────────────────────────────────────────────────
 function copyToClipboard(text, onDone) {
@@ -1414,7 +1414,7 @@ function FormPanel({accent, title, icon, children, onSave}) {
       ...(GLASS_MODE?GLASS:{}),
       background:GLASS_MODE?GLASS.background:C.surface,
       border:GLASS_MODE?GLASS.border:`1px solid ${C.border}`,
-      borderTop:GLASS_MODE?`3px solid ${accent}60`:`3px solid ${accent}`,
+      borderTop:GLASS_MODE?`3px solid ${accent}99`:`3px solid ${accent}`,
       borderRadius:GLASS_MODE?16:(C.inputRadius||8),
       padding:isMobile?"14px 12px 16px":"22px 24px 24px",
       marginBottom:isMobile?8:12,
@@ -1479,7 +1479,7 @@ function KpiCard({wert, unit, label, akzent, akzentDk, icon}) {
     <div style={{...(GLASS_MODE?GLASS:{}), background:GLASS_MODE?GLASS.background:C.surface, borderTop:GLASS_MODE?'none':(C.useGradients?'none':`2px solid ${akzent}`), padding:isMobile?"14px 12px":"20px 22px",
       position:"relative", overflow:"hidden", boxShadow:GLASS_MODE?GLASS.boxShadow:C.shadow, borderRadius:GLASS_MODE?16:(C.inputRadius||8)}}>
       {(C.useGradients||GLASS_MODE)&&<div style={{position:"absolute",top:0,left:0,right:0,height:3,background:`linear-gradient(90deg, ${akzentDk||akzent}, ${akzent})`,opacity:1}}/>}
-      <div style={{position:"absolute",top:isMobile?6:10,right:isMobile?8:12,opacity:GLASS_MODE?0.55:0.18}}><Ico name={icon} size={isMobile?32:44} color={akzent}/></div>
+      <div style={{position:"absolute",top:isMobile?6:10,right:isMobile?8:12,opacity:GLASS_MODE?0.75:0.18}}><Ico name={icon} size={isMobile?32:44} color={akzent}/></div>
       <div style={{display:"flex",alignItems:"baseline",gap:4,marginBottom:isMobile?3:5,minWidth:0}}>
         <div style={{fontSize:isMobile?22:28,fontWeight:800,color:(akzentDk||akzent),fontFamily:SANS,
           lineHeight:1,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{display}</div>
@@ -1508,8 +1508,8 @@ function EmptyState({icon="car", text, hint, btnLabel, onBtnClick, accent=C.mute
     <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",
       padding:"48px 24px",gap:12,textAlign:"center"}}>
       <div style={{position:"relative",marginBottom:8}}>
-        <div style={{width:56,height:56,borderRadius:"50%",background:accent+"40",
-          border:`1.5px solid ${accent}70`,
+        <div style={{width:56,height:56,borderRadius:"50%",background:accent+"80",
+          border:`1.5px solid ${accent}AA`,
           display:"flex",alignItems:"center",justifyContent:"center",
           animation:"esFloat 4s ease-in-out infinite"}}>
           <Ico name={icon} size={26} color={accent}/>
@@ -1605,7 +1605,7 @@ function Kennzeichen({value,size="md"}) {
 }
 function SettingsBlock({children,accent=C.red}) {
   const {isMobile} = useScreenSize();
-  return <div style={{...(GLASS_MODE?GLASS:{}),background:GLASS_MODE?GLASS.background:C.surface,border:GLASS_MODE?GLASS.border:`1px solid ${C.border}`,borderTop:GLASS_MODE?`2px solid ${accent}60`:`2px solid ${accent}`,borderRadius:GLASS_MODE?16:undefined,padding:isMobile?"16px 12px":"24px 28px",marginBottom:GLASS_MODE?8:3,boxShadow:GLASS_MODE?GLASS.boxShadow:C.shadow}}>{children}</div>;
+  return <div style={{...(GLASS_MODE?GLASS:{}),background:GLASS_MODE?GLASS.background:C.surface,border:GLASS_MODE?GLASS.border:`1px solid ${C.border}`,borderTop:GLASS_MODE?`2px solid ${accent}99`:`2px solid ${accent}`,borderRadius:GLASS_MODE?16:undefined,padding:isMobile?"16px 12px":"24px 28px",marginBottom:GLASS_MODE?8:3,boxShadow:GLASS_MODE?GLASS.boxShadow:C.shadow}}>{children}</div>;
 }
 function SettingsLabel({icon,text,sub,accent=C.muted}) {
   return (
@@ -2530,7 +2530,7 @@ function SettingsBtn({active, accent, onClick}) {
   // Фон меняется ТОЛЬКО в активном состоянии (acc цвет) — без hover фона, чтобы избежать
   // SVG transparency bleed-through. Иконка затемняется через CSS filter на самом SVG.
   const bg = active ? toRgba(accent,0.14) : pressed ? (GLASS_MODE?"rgba(0,0,0,0.08)":"rgba(0,0,0,0.14)") : hov ? (GLASS_MODE?"rgba(0,0,0,0.05)":"rgba(0,0,0,0.08)") : "transparent";
-  const svgFilter = active ? "none" : pressed ? "brightness(0.3)" : hov ? "brightness(0.45)" : "none";
+  const svgFilter = active ? "none" : pressed ? "brightness(0.4)" : hov ? "brightness(0.55)" : "none";
   return (
     <button onClick={onClick}
       style={{width:40,height:40,background:bg,border:"none",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",borderRadius:C.inputRadius||8,transition:"background 0.12s"}}
@@ -2538,7 +2538,7 @@ function SettingsBtn({active, accent, onClick}) {
       onMouseLeave={()=>{setHov(false);setPressed(false);}}
       onMouseDown={()=>setPressed(true)}
       onMouseUp={()=>setPressed(false)}>
-      <Ico name="settings" size={22} color={active ? accent : C.muted} style={{filter:svgFilter,transition:"filter 0.12s"}}/>
+      <Ico name="settings" size={22} color={active ? accent : C.text} style={{filter:svgFilter,transition:"filter 0.12s"}}/>
     </button>
   );
 }
@@ -3429,7 +3429,7 @@ function UebersichtTab({stats, aktiv, acc, accDk, C, SANS, FS, katAccent, katAcc
     {(!aktiv.standort?.name||stats.strafenOffen>0||stats.faelligUeberfaellig.length>0)&&(
     <div style={{display:"flex",flexDirection:"column",gap:12,marginTop:12}}>
     {!aktiv.standort?.name&&(
-    <div style={{...(GLASS_MODE?GLASS:{}),background:GLASS_MODE?GLASS.background:C.surface,borderTop:GLASS_MODE?`2px solid ${C.red}60`:`2px solid ${C.red}`,padding:"16px 20px",
+    <div style={{...(GLASS_MODE?GLASS:{}),background:GLASS_MODE?GLASS.background:C.surface,borderTop:GLASS_MODE?`2px solid ${C.red}99`:`2px solid ${C.red}`,padding:"16px 20px",
     display:"flex",alignItems:"center",justifyContent:"space-between",
     boxShadow:GLASS_MODE?GLASS.boxShadow:C.shadow,borderRadius:GLASS_MODE?16:(C.inputRadius||8)}}>
     <div style={{display:"flex",alignItems:"center",gap:10,fontSize:14,color:C.redDk,fontFamily:SANS,fontWeight:600}}>
@@ -3441,7 +3441,7 @@ function UebersichtTab({stats, aktiv, acc, accDk, C, SANS, FS, katAccent, katAcc
     </div>
     )}
     {stats.strafenOffen>0&&(
-    <div style={{...(GLASS_MODE?GLASS:{}),background:GLASS_MODE?GLASS.background:C.surface,borderTop:GLASS_MODE?`2px solid ${C.strafe}60`:`2px solid ${C.strafe}`,padding:"16px 20px",
+    <div style={{...(GLASS_MODE?GLASS:{}),background:GLASS_MODE?GLASS.background:C.surface,borderTop:GLASS_MODE?`2px solid ${C.strafe}99`:`2px solid ${C.strafe}`,padding:"16px 20px",
     display:"flex",alignItems:"center",justifyContent:"space-between",
     boxShadow:GLASS_MODE?GLASS.boxShadow:C.shadow,borderRadius:GLASS_MODE?16:(C.inputRadius||8)}}>
     <div style={{display:"flex",alignItems:"center",gap:10,fontSize:14,color:C.strafeDk,fontFamily:SANS,fontWeight:600}}>
@@ -3454,7 +3454,7 @@ function UebersichtTab({stats, aktiv, acc, accDk, C, SANS, FS, katAccent, katAcc
     </div>
     )}
     {stats.faelligUeberfaellig.length>0&&(
-    <div style={{...(GLASS_MODE?GLASS:{}),background:GLASS_MODE?GLASS.background:C.surface,borderTop:GLASS_MODE?`2px solid ${C.service}60`:`2px solid ${C.service}`,padding:"16px 20px",
+    <div style={{...(GLASS_MODE?GLASS:{}),background:GLASS_MODE?GLASS.background:C.surface,borderTop:GLASS_MODE?`2px solid ${C.service}99`:`2px solid ${C.service}`,padding:"16px 20px",
     display:"flex",alignItems:"center",justifyContent:"space-between",
     boxShadow:GLASS_MODE?GLASS.boxShadow:C.shadow,borderRadius:GLASS_MODE?16:(C.inputRadius||8)}}>
     <div style={{display:"flex",alignItems:"center",gap:10,fontSize:14,color:C.serviceDk,fontFamily:SANS,fontWeight:600}}>
@@ -3752,7 +3752,7 @@ function BerichtTab({gefFahrten, aktiv, acc, accDk, C, SANS, safeFloat, formatDa
     background:C.sheetsGreenDk,color:"#fff",cursor:"pointer",
     fontSize:16,fontFamily:SANS,fontWeight:700,letterSpacing:0.5,
     display:"flex",alignItems:"center",justifyContent:"center",gap:8,
-    opacity:sheetsCopied?1:0.55,transition:"opacity 0.2s",
+    opacity:sheetsCopied?1:0.75,transition:"opacity 0.2s",
     }}>
     <Ico name="arrowRight" size={15} color="#fff"/>
     2. Sheets öffnen
@@ -6447,7 +6447,7 @@ input[type=number] { -moz-appearance:textfield; }
       </video>}
 
       {/* ══ HEADER ══ */}
-      <header ref={headerRef} style={{background:GLASS_MODE?'rgba(244,244,240,0.92)':C.bg,backdropFilter:GLASS_MODE?'blur(24px) saturate(1.4)':undefined,WebkitBackdropFilter:GLASS_MODE?'blur(24px) saturate(1.4)':undefined,borderBottom:`0.5px solid ${GLASS_MODE?'rgba(221,221,216,0.6)':C.border}`,position:"sticky",top:0,zIndex:100,transition:"border-color 0.3s",boxShadow:'0 2px 8px rgba(0,0,0,0.10), 0 6px 24px rgba(0,0,0,0.06)'}}>
+      <header ref={headerRef} style={{background:GLASS_MODE?'rgba(244,244,240,0.97)':C.bg,backdropFilter:GLASS_MODE?'blur(24px) saturate(1.4)':undefined,WebkitBackdropFilter:GLASS_MODE?'blur(24px) saturate(1.4)':undefined,borderBottom:`0.5px solid ${GLASS_MODE?'rgba(221,221,216,0.6)':C.border}`,position:"sticky",top:0,zIndex:100,transition:"border-color 0.3s",boxShadow:'0 2px 8px rgba(0,0,0,0.10), 0 6px 24px rgba(0,0,0,0.06)'}}>
         {C.useGradients&&<div style={{height:3,background:C.headerGradient}}/>}
         <div style={{maxWidth:1200,margin:"0 auto",padding:isMobile?"10px 12px":isTablet?"14px 20px":"22px 28px",width:"100%",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
         <div style={{display:"flex",alignItems:"center",gap:isMobile?8:16,minWidth:0,flex:1}}>
