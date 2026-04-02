@@ -1463,7 +1463,7 @@ function KpiCard({wert, unit, label, akzent, akzentDk, icon}) {
     <div style={{...(GLASS_MODE?GLASS:{}), background:GLASS_MODE?GLASS.background:C.surface, borderTop:GLASS_MODE?'none':(C.useGradients?'none':`2px solid ${akzent}`), padding:isMobile?"14px 12px":"20px 22px",
       position:"relative", overflow:"hidden", boxShadow:GLASS_MODE?GLASS.boxShadow:C.shadow, borderRadius:GLASS_MODE?16:(C.inputRadius||8)}}>
       {(C.useGradients||GLASS_MODE)&&<div style={{position:"absolute",top:0,left:0,right:0,height:3,background:`linear-gradient(90deg, ${akzentDk||akzent}, ${akzent})`,opacity:1}}/>}
-      <div style={{position:"absolute",top:isMobile?6:10,right:isMobile?8:12,opacity:GLASS_MODE?0.45:0.18}}><Ico name={icon} size={isMobile?32:44} color={akzent}/></div>
+      <div style={{position:"absolute",top:isMobile?6:10,right:isMobile?8:12,opacity:GLASS_MODE?0.55:0.18}}><Ico name={icon} size={isMobile?32:44} color={akzent}/></div>
       <div style={{display:"flex",alignItems:"baseline",gap:4,marginBottom:isMobile?3:5,minWidth:0}}>
         <div style={{fontSize:isMobile?22:28,fontWeight:800,color:GLASS_MODE?(akzentDk||akzent):(akzentDk||akzent),fontFamily:SANS,
           lineHeight:1,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{display}</div>
@@ -1492,8 +1492,8 @@ function EmptyState({icon="car", text, hint, btnLabel, onBtnClick, accent=C.mute
     <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",
       padding:"48px 24px",gap:12,textAlign:"center"}}>
       <div style={{position:"relative",marginBottom:8}}>
-        <div style={{width:56,height:56,borderRadius:"50%",background:accent+"28",
-          border:`1px solid ${accent}50`,
+        <div style={{width:56,height:56,borderRadius:"50%",background:accent+"40",
+          border:`1.5px solid ${accent}70`,
           display:"flex",alignItems:"center",justifyContent:"center",
           animation:"esFloat 4s ease-in-out infinite"}}>
           <Ico name={icon} size={26} color={accent}/>
@@ -6889,7 +6889,7 @@ input[type=number] { -moz-appearance:textfield; }
               });
               if(!rows.length) return null;
               return rows.map(r=>(
-                <div key={"ja-"+r.year} style={{background:r.locked?(acc+"30"):C.surfaceAlt,borderLeft:`4px solid ${r.locked?acc:C.border}`,padding:"12px 16px",marginBottom:2,display:"flex",alignItems:"center",justifyContent:"space-between",boxShadow:C.shadow}}>
+                <div key={"ja-"+r.year} style={{background:r.locked?(acc+"55"):C.surfaceAlt,borderLeft:`4px solid ${r.locked?acc:C.border}`,padding:"12px 16px",marginBottom:2,display:"flex",alignItems:"center",justifyContent:"space-between",boxShadow:C.shadow}}>
                   <div style={{display:"flex",alignItems:"center",gap:10}}>
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={r.locked?accDk:C.muted} strokeWidth="2.5" strokeLinecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/>{r.locked?<path d="M7 11V7a5 5 0 0 1 10 0v4"/>:<path d="M7 11V7a5 5 0 0 1 9.9-1"/>}</svg>
                     <div>
@@ -6897,7 +6897,7 @@ input[type=number] { -moz-appearance:textfield; }
                       <span style={{fontSize:13,color:r.locked?acc:C.muted,marginLeft:10}}>{r.count} Fahrten · km {Number(r.km||0).toLocaleString("de-DE")}</span>
                     </div>
                   </div>
-                  <button onClick={()=>toggleJahresAbschluss(r.year)} style={{fontSize:12,color:r.locked?accDk:"#fff",background:r.locked?"transparent":acc,border:`1px solid ${acc}`,borderRadius:C.inputRadius||8,height:40,width:130,padding:"0 8px",marginRight:8,cursor:"pointer",fontWeight:700,fontFamily:SANS,letterSpacing:0.5,textTransform:"uppercase"}}>{r.locked?"Entsperren":"Abschließen"}</button>
+                  <button onClick={()=>toggleJahresAbschluss(r.year)} style={{fontSize:12,color:r.locked?accDk:"#fff",background:r.locked?(acc+"18"):acc,border:`1.5px solid ${acc}`,borderRadius:C.inputRadius||8,height:40,width:130,padding:"0 8px",marginRight:8,cursor:"pointer",fontWeight:700,fontFamily:SANS,letterSpacing:0.5,textTransform:"uppercase"}}>{r.locked?"Entsperren":"Abschließen"}</button>
                 </div>
               ));
             })()}
