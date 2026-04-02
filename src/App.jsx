@@ -6889,7 +6889,7 @@ input[type=number] { -moz-appearance:textfield; }
               });
               if(!rows.length) return null;
               return rows.map(r=>(
-                <div key={"ja-"+r.year} style={{background:r.locked?(acc+"55"):C.surfaceAlt,borderLeft:`4px solid ${r.locked?acc:C.border}`,padding:"12px 16px",marginBottom:2,display:"flex",alignItems:"center",justifyContent:"space-between",boxShadow:C.shadow}}>
+                <div key={"ja-"+r.year} style={{background:r.locked?"#FFFFFF":C.surfaceAlt,borderLeft:`4px solid ${r.locked?acc:C.border}`,padding:"12px 16px",marginBottom:2,display:"flex",alignItems:"center",justifyContent:"space-between",boxShadow:C.shadow}}>
                   <div style={{display:"flex",alignItems:"center",gap:10}}>
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={r.locked?accDk:C.muted} strokeWidth="2.5" strokeLinecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/>{r.locked?<path d="M7 11V7a5 5 0 0 1 10 0v4"/>:<path d="M7 11V7a5 5 0 0 1 9.9-1"/>}</svg>
                     <div>
