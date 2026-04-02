@@ -6545,10 +6545,10 @@ input[type=number] { -moz-appearance:textfield; }
   .fb-ico-btn { transition: transform 0.12s ease; }
   .fb-ico-btn:hover { transform: scale(1.2); }
   /* Mobile touch improvements */
-  html, body { overflow-x: clip; width: 100%; }
+  html, body { overflow-x: hidden; width: 100%; max-width: 100vw; }
   @media (max-width: 480px) {
     * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
-    html, body, #root { overflow-x: clip; max-width: 100vw; }
+    html, body, #root { overflow-x: hidden; max-width: 100vw; width: 100%; }
     input, textarea, select { font-size: 16px !important; }
     .fb-ico-btn:hover { transform: none; }
   }
@@ -6559,7 +6559,7 @@ input[type=number] { -moz-appearance:textfield; }
     }
   }
 `}</style>
-    <div style={{minHeight:"100vh",background:GLASS_MODE?GLASS_BG:C.bg,color:C.text,fontFamily:SANS,overflowX:"clip",width:"100%",maxWidth:"100vw",position:"relative"}}>
+    <div style={{minHeight:"100vh",background:GLASS_MODE?GLASS_BG:C.bg,color:C.text,fontFamily:SANS,overflowX:"hidden",width:"100%",maxWidth:"100vw",position:"relative"}}>
       {/* ── VIDEO BACKGROUND ── */}
       {GLASS_MODE && <svg width="0" height="0" style={{position:'absolute'}}><defs>
         {/* Cartoon-style — low blur, strong sharpen+flatten+saturate, NO posterize */}
@@ -6746,7 +6746,7 @@ input[type=number] { -moz-appearance:textfield; }
         </div>
         </div>
         {/* ── TABS (inside header) ── */}
-        <div style={{background:GLASS_MODE?'transparent':C.bg,borderTop:undefined,overflow:isMobile?"auto":"hidden",WebkitOverflowScrolling:"touch"}}>
+        <div style={{background:GLASS_MODE?'transparent':C.bg,borderTop:undefined,overflowX:isMobile?"auto":"hidden",overflowY:"hidden",WebkitOverflowScrolling:"touch",maxWidth:"100vw"}}>
           <div style={{maxWidth:1200,margin:"0 auto",display:"flex",width:isMobile?"max-content":"100%",padding:isMobile?"0 8px":isTablet?"0 20px":"0 32px",boxSizing:"border-box"}}>
             {TABS.map(t=>(
               <button key={t.id} onClick={()=>{setTab(t.id);resetForms();}}
