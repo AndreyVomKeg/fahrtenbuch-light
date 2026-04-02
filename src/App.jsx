@@ -6462,7 +6462,7 @@ input[type=number] { -moz-appearance:textfield; }
     <div style={{minHeight:"100vh",background:GLASS_MODE?GLASS_BG:C.bg,color:C.text,fontFamily:SANS,overflowX:"clip",width:"100%",maxWidth:"100vw",position:"relative"}}>
       {/* ── VIDEO BACKGROUND ── */}
       {GLASS_MODE && <video autoPlay muted loop playsInline poster={BG_VIDEO_POSTER}
-        style={{position:"fixed",top:0,left:0,width:"100vw",height:"100vh",objectFit:"cover",zIndex:-1,pointerEvents:"none",filter:"blur(6px)",transform:"scale(1.04)"}}>
+        style={{position:"fixed",top:0,left:0,width:"100vw",height:"100vh",objectFit:"cover",zIndex:-1,pointerEvents:"none",filter:"blur(6px) brightness(0.7) contrast(1.2)",transform:"scale(1.04)"}}>
         <source src={BG_VIDEO_SRC} type="video/mp4"/>
       </video>}
 
