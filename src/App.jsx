@@ -3451,40 +3451,40 @@ function UebersichtTab({stats, aktiv, acc, accDk, C, SANS, FS, katAccent, katAcc
 
     {/* Nächste Fälligkeiten */}
     <div style={{...gls,background:glsBg,padding:isMobile?"14px 12px":"16px 18px",borderLeft:glsBl(C.service),boxShadow:glsSh,borderRadius:glsR}}>
-    <div style={{fontSize:isMobile?11:12,color:C.text,letterSpacing:1.5,textTransform:"uppercase",fontWeight:700,marginBottom:12,fontFamily:SANS}}>NÄCHSTE FÄLLIGKEITEN</div>
+    <div style={{fontSize:isMobile?12:13,color:C.text,letterSpacing:1.5,textTransform:"uppercase",fontWeight:700,marginBottom:12,fontFamily:SANS}}>NÄCHSTE FÄLLIGKEITEN</div>
     {stats.faelligkeiten.length>0 ? stats.faelligkeiten.map(x=>{
     const today=new Date().toISOString().slice(0,10);
     const ueberfaellig=x.faelligDatum&&x.faelligDatum<=today;
     const accentFaellig=ueberfaellig?C.strafe:C.service;
     const accentFaelligDk=ueberfaellig?C.strafeDk:C.serviceDk;
     return (
-    <div key={x.id} style={{display:"flex",flexDirection:"column",gap:3,padding:"7px 0",borderBottom:`1px solid ${C.border}`}}>
-    <span style={{fontSize:13,color:C.text,fontFamily:SANS,fontWeight:600}}>{x.typ}</span>
+    <div key={x.id} style={{display:"flex",flexDirection:"column",gap:4,padding:"8px 0",borderBottom:`1px solid ${C.border}`}}>
+    <span style={{fontSize:15,color:C.text,fontFamily:SANS,fontWeight:600}}>{x.typ}</span>
     <div style={{display:"flex",gap:10,alignItems:"center"}}>
-    {x.faelligDatum&&<span style={{fontSize:12,color:C.text,fontFamily:SANS,display:"flex",alignItems:"center",gap:3}}><Ico name="clock" size={13} color={accentFaelligDk}/>{formatDatum(x.faelligDatum)}</span>}
-    {x.faelligKm&&<span style={{fontSize:12,color:C.text,fontFamily:SANS,display:"flex",alignItems:"center",gap:3}}><Ico name="road" size={13} color={C.tankDk}/>{x.faelligKm} km</span>}
+    {x.faelligDatum&&<span style={{fontSize:13,color:C.text,fontFamily:SANS,display:"flex",alignItems:"center",gap:4}}><Ico name="clock" size={14} color={accentFaelligDk}/>{formatDatum(x.faelligDatum)}</span>}
+    {x.faelligKm&&<span style={{fontSize:13,color:C.text,fontFamily:SANS,display:"flex",alignItems:"center",gap:4}}><Ico name="road" size={14} color={C.tankDk}/>{x.faelligKm} km</span>}
     </div>
     </div>
     );
     }) : (
     <div style={{textAlign:"center",padding:"18px 0"}}>
     <div style={{fontSize:20,color:C.muted,marginBottom:4}}>✓</div>
-    <div style={{color:C.muted,fontSize:12,fontFamily:SANS}}>Keine Fälligkeiten</div>
+    <div style={{color:C.muted,fontSize:14,fontFamily:SANS}}>Keine Fälligkeiten</div>
     </div>
     )}
     </div>
 
     {/* Top Besucht */}
     <div style={{...gls,background:glsBg,padding:isMobile?"14px 12px":"16px 18px",borderLeft:glsBl(C.red),boxShadow:glsSh,borderRadius:glsR}}>
-    <div style={{fontSize:isMobile?11:12,color:C.text,letterSpacing:1.5,textTransform:"uppercase",fontWeight:700,marginBottom:12,fontFamily:SANS}}>TOP 5 BESUCHT</div>
+    <div style={{fontSize:isMobile?12:13,color:C.text,letterSpacing:1.5,textTransform:"uppercase",fontWeight:700,marginBottom:12,fontFamily:SANS}}>TOP 5 BESUCHT</div>
     {Object.entries(stats.nP).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([id,km],i)=>{
     const p=(aktiv.partner||[]).find(x=>x.id===id);
     return (
-    <div key={id} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"5px 0",borderBottom:`1px solid ${C.border}`,fontSize:13}}>
+    <div key={id} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"7px 0",borderBottom:`1px solid ${C.border}`,fontSize:15}}>
     <span style={{color:C.text,minWidth:0,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",fontFamily:SANS}}>
-    <span style={{color:C.muted,marginRight:4,fontSize:11}}>{i+1}.</span>{p?p.name:id}
+    <span style={{color:C.muted,marginRight:5,fontSize:13}}>{i+1}.</span>{p?p.name:id}
     </span>
-    <span style={{color:C.text,fontWeight:700,fontFamily:SANS,flexShrink:0,marginLeft:6,fontSize:12,fontVariantNumeric:"tabular-nums"}}>{km.toFixed(0)} km</span>
+    <span style={{color:C.text,fontWeight:700,fontFamily:SANS,flexShrink:0,marginLeft:8,fontSize:14,fontVariantNumeric:"tabular-nums"}}>{km.toFixed(0)} km</span>
     </div>
     );
     })}
@@ -3494,7 +3494,7 @@ function UebersichtTab({stats, aktiv, acc, accDk, C, SANS, FS, katAccent, katAcc
     {/* Letzte Fahrten */}
     <div style={{...gls,background:glsBg,padding:isMobile?"14px 12px":"16px 18px",borderLeft:glsBl(C.red),boxShadow:glsSh,borderRadius:glsR,gridColumn:isMobile?"1":isTablet?"1 / -1":"auto"}}>
     <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:isMobile?8:10}}>
-    <div style={{fontSize:isMobile?11:12,color:C.text,letterSpacing:1.5,textTransform:"uppercase",fontWeight:700,fontFamily:SANS}}>LETZTE FAHRTEN</div>
+    <div style={{fontSize:isMobile?12:13,color:C.text,letterSpacing:1.5,textTransform:"uppercase",fontWeight:700,fontFamily:SANS}}>LETZTE FAHRTEN</div>
     <button onClick={()=>{setTab("fahrten");setFForm("new");setFData(E_F());}} style={{...btnSolid(C.redDk),height:32,padding:"0 12px",fontSize:11}}>
     <Ico name="plus" size={13} color="#fff"/>FAHRT
     </button>
@@ -3503,12 +3503,12 @@ function UebersichtTab({stats, aktiv, acc, accDk, C, SANS, FS, katAccent, katAcc
     const ak=katAccent[f.kategorie]||C.strafe;
     return (
     <div key={f.id} style={{display:"flex",alignItems:"center",gap:10,padding:"7px 0",borderBottom:`1px solid ${C.border}`}}>
-    <div style={{width:8,height:8,borderRadius:"50%",background:ak,flexShrink:0}}/>
+    <div style={{width:9,height:9,borderRadius:"50%",background:ak,flexShrink:0}}/>
     <div style={{flex:1,minWidth:0}}>
-    <div style={{fontSize:13,fontWeight:600,color:C.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",fontFamily:SANS}}>{getZielName(f)}</div>
-    <div style={{fontSize:11,color:C.muted,fontFamily:SANS}}>{formatDatum(f.datum)}</div>
+    <div style={{fontSize:15,fontWeight:600,color:C.text,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",fontFamily:SANS}}>{getZielName(f)}</div>
+    <div style={{fontSize:12,color:C.muted,fontFamily:SANS}}>{formatDatum(f.datum)}</div>
     </div>
-    <span style={{color:C.text,fontWeight:700,fontFamily:SANS,fontSize:12,flexShrink:0,fontVariantNumeric:"tabular-nums"}}>{safeFloat(f.km).toFixed(0)} km</span>
+    <span style={{color:C.text,fontWeight:700,fontFamily:SANS,fontSize:14,flexShrink:0,fontVariantNumeric:"tabular-nums"}}>{safeFloat(f.km).toFixed(0)} km</span>
     </div>
     );
     }) : (
