@@ -4536,9 +4536,14 @@ function FahrtenbuchApp({authUser, onLogout, themeId, setThemeId}) {
   },[tuvPopup]);
 
   // Car selector popup — close on outside click
+  const carDropRef = useRef(null);
   useEffect(()=>{
     if(!carPopup) return;
-    const handler=(e)=>{ if(carPopRef.current&&!carPopRef.current.contains(e.target)) setCarPopup(false); };
+    const handler=(e)=>{
+      if(carPopRef.current&&carPopRef.current.contains(e.target)) return;
+      if(carDropRef.current&&carDropRef.current.contains(e.target)) return;
+      setCarPopup(false);
+    };
     document.addEventListener("mousedown", handler);
     return ()=>document.removeEventListener("mousedown", handler);
   },[carPopup]);
@@ -6716,7 +6721,7 @@ input[type=number] { -moz-appearance:textfield; }
       {/* ── Car Selector Dropdown (outside header to avoid transformStyle:preserve-3d breaking position:fixed on Safari iOS) ── */}
       {carPopup&&state.fahrzeuge.length>1&&<div onClick={()=>setCarPopup(false)} style={{position:"fixed",inset:0,zIndex:499,background:"rgba(0,0,0,0.18)"}}/>}
       {carPopup&&state.fahrzeuge.length>1&&(
-        <div style={{
+        <div ref={carDropRef} style={{
           position:"fixed",top:isMobile?56:70,left:isMobile?8:16,right:isMobile?8:undefined,
           background:'#f4f4f0',
           borderRadius:12,
