@@ -6635,7 +6635,7 @@ input[type=number] { -moz-appearance:textfield; }
       </video>}
 
       {/* ══ HEADER ══ */}
-      <header ref={headerRef} style={{background:GLASS_MODE?'rgba(244,244,240,0.85)':C.bg,backdropFilter:GLASS_MODE?'blur(24px) saturate(1.4)':undefined,WebkitBackdropFilter:GLASS_MODE?'blur(24px) saturate(1.4)':undefined,borderBottom:`0.5px solid ${GLASS_MODE?'rgba(221,221,216,0.6)':C.border}`,position:"sticky",top:0,zIndex:100,transition:"border-color 0.3s",boxShadow:'0 2px 8px rgba(0,0,0,0.10), 0 6px 24px rgba(0,0,0,0.06)'}}>
+      <header ref={headerRef} style={{background:GLASS_MODE?'rgba(244,244,240,0.85)':C.bg,backdropFilter:GLASS_MODE?'blur(24px) saturate(1.4)':undefined,WebkitBackdropFilter:GLASS_MODE?'blur(24px) saturate(1.4)':undefined,borderBottom:`0.5px solid ${GLASS_MODE?'rgba(221,221,216,0.6)':C.border}`,position:"fixed",top:0,left:0,right:0,zIndex:100,transition:"border-color 0.3s",boxShadow:'0 2px 8px rgba(0,0,0,0.10), 0 6px 24px rgba(0,0,0,0.06)'}}>
         {C.useGradients&&<div style={{height:3,background:C.headerGradient}}/>}
         <div style={{maxWidth:1200,margin:"0 auto",padding:isMobile?"8px 12px":isTablet?"10px 20px":"12px 28px",width:"100%",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
         <div style={{display:"flex",alignItems:"center",gap:isMobile?8:16,minWidth:0,flex:1}}>
@@ -6763,6 +6763,7 @@ input[type=number] { -moz-appearance:textfield; }
           </div>
         </div>
       </header>
+      <div style={{height:headerH}}/>
 
       {/* ── Car Selector Dropdown (outside header to avoid transformStyle:preserve-3d breaking position:fixed on Safari iOS) ── */}
       {carPopup&&state.fahrzeuge.length>1&&<div onClick={()=>setCarPopup(false)} style={{position:"fixed",inset:0,zIndex:499,background:"rgba(0,0,0,0.18)"}}/>}
