@@ -4530,7 +4530,9 @@ function FahrtenbuchApp({authUser, onLogout}) {
     const resume = () => {
       vid.play().catch(()=>{});
     };
-    const onActivity = () => {
+    const onActivity = (e) => {
+      // Ignore tab/header navigation clicks
+      if(e&&e.target&&e.target.closest&&e.target.closest('[data-nav]')) return;
       if(!vid.paused && idleTimer===null) pause();
       clearTimeout(idleTimer);
       idleTimer = setTimeout(()=>{ resume(); idleTimer=null; }, IDLE_DELAY);
@@ -6664,7 +6666,7 @@ input[type=number] { -moz-appearance:textfield; }
       </video>}
 
       {/* ══ HEADER ══ */}
-      <header ref={headerRef} style={{background:GLASS_MODE?'rgba(244,244,240,0.85)':C.bg,backdropFilter:GLASS_MODE?'blur(24px) saturate(1.4)':undefined,WebkitBackdropFilter:GLASS_MODE?'blur(24px) saturate(1.4)':undefined,borderBottom:`0.5px solid ${GLASS_MODE?'rgba(221,221,216,0.6)':C.border}`,position:"fixed",top:0,left:0,right:0,zIndex:100,transition:"border-color 0.3s",boxShadow:'0 2px 8px rgba(0,0,0,0.10), 0 6px 24px rgba(0,0,0,0.06)'}}>
+      <header ref={headerRef} data-nav="1" style={{background:GLASS_MODE?'rgba(244,244,240,0.85)':C.bg,backdropFilter:GLASS_MODE?'blur(24px) saturate(1.4)':undefined,WebkitBackdropFilter:GLASS_MODE?'blur(24px) saturate(1.4)':undefined,borderBottom:`0.5px solid ${GLASS_MODE?'rgba(221,221,216,0.6)':C.border}`,position:"fixed",top:0,left:0,right:0,zIndex:100,transition:"border-color 0.3s",boxShadow:'0 2px 8px rgba(0,0,0,0.10), 0 6px 24px rgba(0,0,0,0.06)'}}>
 
         <div style={{maxWidth:1200,margin:"0 auto",padding:isMobile?"8px 12px":isTablet?"10px 20px":"12px 28px",width:"100%",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
         <div style={{display:"flex",alignItems:"center",gap:isMobile?8:16,minWidth:0,flex:1}}>
