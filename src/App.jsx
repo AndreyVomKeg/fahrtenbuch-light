@@ -6787,7 +6787,7 @@ input[type=number] { -moz-appearance:textfield; }
             const halter=fz.halterName||fz.halterFirma||"";
             return (
               <div key={fz.id}
-                onClick={()=>{setState(prev=>({...prev,aktivId:fz.id}));setCarPopup(false);setTab("uebersicht");}}
+                onClick={()=>{setState(prev=>({...prev,aktivId:fz.id}));setCarPopup(false);setTab("uebersicht");flipKz();}}
                 style={{
                   display:"flex",alignItems:"center",gap:10,
                   padding:"10px 12px",
