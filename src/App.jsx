@@ -2,7 +2,7 @@
 import React, { useState, useMemo, useEffect, useRef } from "react";
 import ReactDOM from "react-dom";
 import {
-  THEMES, THEME_GOOGLE, syncTheme,
+  THEME_GOOGLE, syncTheme,
   FARBEN, FARBE_DK_MAP,
   PARTNER_TYP_COLORS, PARTNER_TYP_COLORS_DK,
   PARTNER_TYP_LABELS, PARTNER_TYP_OPTS,
@@ -82,9 +82,7 @@ function useScreenSize() {
 
 // ─── UTILS ───────────────────────────────────────────────────────────────────
 const safeFloat = (v, fallback=0) => { const n=parseFloat(v); return isNaN(n)?fallback:n; };
-// Gradient helper: returns gradient string if C.useGradients, else solid color
-const grad = (dk, base, dir="90deg") => C.useGradients ? `linear-gradient(${dir}, ${dk}, ${base})` : base;
-const gradBg = (dk, base, dir="90deg") => C.useGradients ? {background:`linear-gradient(${dir}, ${dk}, ${base})`} : {background:base};
+
 
 
 // ─── CLAUDE API HELPER ────────────────────────────────────────────────────────
@@ -1338,9 +1336,9 @@ const LBL_f = () => ({
 const btnSolid = (color) => ({
   display:"inline-flex", alignItems:"center", gap:6,
   height:40, padding:"0 20px",
-  background:C.useGradients?`linear-gradient(135deg, ${color}, ${color}cc)`:color,
+  background:color,
   border:`1px solid ${color}`,
-  boxShadow:C.useGradients?`0 2px 8px ${color}30`:"none",
+  boxShadow:"none",
   color:"#fff", cursor:"pointer", fontSize:14,
   fontFamily:SANS, fontWeight:700,
   letterSpacing:1.5, textTransform:"uppercase",
@@ -1480,9 +1478,9 @@ function KpiCard({wert, unit, label, akzent, akzentDk, icon}) {
     return ()=>{ if(rafRef.current) cancelAnimationFrame(rafRef.current); };
   },[numVal]);
   return (
-    <div className={GLASS_MODE?"glass-card":undefined} style={{...(GLASS_MODE?GLASS:{}), background:GLASS_MODE?GLASS.background:C.surface, borderTop:GLASS_MODE?'none':(C.useGradients?'none':`2px solid ${akzent}`), padding:isMobile?"14px 12px":"20px 22px",
+    <div className={GLASS_MODE?"glass-card":undefined} style={{...(GLASS_MODE?GLASS:{}), background:GLASS_MODE?GLASS.background:C.surface, borderTop:GLASS_MODE?'none':`2px solid ${akzent}`, padding:isMobile?"14px 12px":"20px 22px",
       position:"relative", overflow:"hidden", boxShadow:GLASS_MODE?GLASS.boxShadow:C.shadow, borderRadius:GLASS_MODE?16:(C.inputRadius||8)}}>
-      {(C.useGradients||GLASS_MODE)&&<div style={{position:"absolute",top:0,left:0,right:0,height:3,background:`linear-gradient(90deg, ${akzentDk||akzent}, ${akzent})`,opacity:1}}/>}
+      {GLASS_MODE&&<div style={{position:"absolute",top:0,left:0,right:0,height:3,background:`linear-gradient(90deg, ${akzentDk||akzent}, ${akzent})`,opacity:1}}/>}
       <div style={{position:"absolute",top:isMobile?6:10,right:isMobile?8:12,opacity:GLASS_MODE?0.75:0.18}}><Ico name={icon} size={isMobile?32:44} color={akzent}/></div>
       <div style={{display:"flex",alignItems:"baseline",gap:4,marginBottom:isMobile?3:5,minWidth:0}}>
         <div style={{fontSize:isMobile?22:28,fontWeight:800,color:(akzentDk||akzent),fontFamily:SANS,
@@ -1500,7 +1498,7 @@ function AnimatedBar({pct, color, colorDk, height=6}) {
     const id = requestAnimationFrame(()=>setWidth(parseFloat(pct)||0));
     return ()=>cancelAnimationFrame(id);
   },[pct]);
-  const barBg = C.useGradients&&colorDk ? `linear-gradient(90deg, ${colorDk}, ${color})` : color;
+  const barBg = color;
   return (
     <div style={{height,background:C.border,borderRadius:C.inputRadius||8}}>
       <div style={{width:`${width}%`,height:"100%",background:barBg,borderRadius:C.inputRadius||8,transition:"width 0.5s ease"}}/>
@@ -4418,8 +4416,7 @@ function AuthForm({onLogin, onMuster}) {
 
 // ─── Корневой компонент — только роутинг auth ─────────────────────────────────
 export default function FahrtenbuchLight() {
-  const themeId = "google";
-  C = THEMES.google;
+  C = THEME_GOOGLE;
   if (GLASS_MODE) {
     // Light glass mode: keep original theme colors, only add glass-specific shadows
     C = { ...C,
@@ -4451,11 +4448,11 @@ export default function FahrtenbuchLight() {
     setAuthUser(u);
   }
   if(!authUser) return <AuthForm onLogin={handleLogin} onMuster={handleMuster}/>;
-  return <FahrtenbuchApp authUser={authUser} onLogout={()=>{try{sessionStorage.removeItem("fb2_auth");}catch(e){/*ok*/}setAuthUser(null);}} themeId={themeId}/>;
+  return <FahrtenbuchApp authUser={authUser} onLogout={()=>{try{sessionStorage.removeItem("fb2_auth");}catch(e){/*ok*/}setAuthUser(null);}}/>;
 }
 
 // ─── Основное приложение (все хуки здесь) ─────────────────────────────────────
-function FahrtenbuchApp({authUser, onLogout, themeId}) {
+function FahrtenbuchApp({authUser, onLogout}) {
   const {isMobile, isTablet, isDesktop, width: screenW} = useScreenSize();
   // ── Role-based permissions ──
   const isDemo   = !!authUser?.isMuster;
@@ -6636,7 +6633,7 @@ input[type=number] { -moz-appearance:textfield; }
 
       {/* ══ HEADER ══ */}
       <header ref={headerRef} style={{background:GLASS_MODE?'rgba(244,244,240,0.85)':C.bg,backdropFilter:GLASS_MODE?'blur(24px) saturate(1.4)':undefined,WebkitBackdropFilter:GLASS_MODE?'blur(24px) saturate(1.4)':undefined,borderBottom:`0.5px solid ${GLASS_MODE?'rgba(221,221,216,0.6)':C.border}`,position:"fixed",top:0,left:0,right:0,zIndex:100,transition:"border-color 0.3s",boxShadow:'0 2px 8px rgba(0,0,0,0.10), 0 6px 24px rgba(0,0,0,0.06)'}}>
-        {C.useGradients&&<div style={{height:3,background:C.headerGradient}}/>}
+
         <div style={{maxWidth:1200,margin:"0 auto",padding:isMobile?"8px 12px":isTablet?"10px 20px":"12px 28px",width:"100%",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
         <div style={{display:"flex",alignItems:"center",gap:isMobile?8:16,minWidth:0,flex:1}}>
           <div ref={(el)=>{kzBoxRef.current=el;carPopRef.current=el;}} style={{
@@ -6756,7 +6753,7 @@ input[type=number] { -moz-appearance:textfield; }
           <div style={{maxWidth:1200,margin:"0 auto",display:"flex",width:isMobile?"max-content":"100%",padding:isMobile?"0 8px":isTablet?"0 20px":"0 32px",boxSizing:"border-box"}}>
             {TABS.map(t=>(
               <button key={t.id} onClick={()=>{setTab(t.id);resetForms();}}
-                style={{flex:isMobile?"none":1,padding:isMobile?"8px 14px":isTablet?"8px 8px":"9px 8px",background:tab===t.id?'transparent':'transparent',border:"none",boxShadow:tab===t.id?`inset 0 ${C.useGradients?"-3":"-2"}px 0 ${accDk||acc}`:"none",color:tab===t.id?(accDk||acc):C.text,cursor:"pointer",fontSize:isMobile?13:isTablet?14:15,fontFamily:SANS,fontWeight:700,letterSpacing:isMobile?0.5:1,textTransform:"uppercase",transition:"all 0.15s",whiteSpace:"nowrap",textAlign:"center",minWidth:0}}>
+                style={{flex:isMobile?"none":1,padding:isMobile?"8px 14px":isTablet?"8px 8px":"9px 8px",background:tab===t.id?'transparent':'transparent',border:"none",boxShadow:tab===t.id?`inset 0 -2px 0 ${accDk||acc}`:"none",color:tab===t.id?(accDk||acc):C.text,cursor:"pointer",fontSize:isMobile?13:isTablet?14:15,fontFamily:SANS,fontWeight:700,letterSpacing:isMobile?0.5:1,textTransform:"uppercase",transition:"all 0.15s",whiteSpace:"nowrap",textAlign:"center",minWidth:0}}>
                 {t.label}
               </button>
             ))}

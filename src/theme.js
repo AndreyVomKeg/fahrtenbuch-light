@@ -1,39 +1,8 @@
 // ─── FAHRTENBUCH LIGHT — THEME & COLORS ─────────────────────────────────────
 // All color definitions, palettes, labels, and Dk (dark) variants.
-// Import in App.jsx: import { THEMES, THEME_GOOGLE, syncTheme, ... } from './theme.js'
+// Import in App.jsx: import { THEME_GOOGLE, syncTheme, ... } from './theme.js'
 
-// ═══ THEMES ═══════════════════════════════════════════════════════════════════
-
-export const THEME_CLASSIC = {
-  id:"classic", label:"Classic", font:"'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
-  bg:"#F4F4F0", surface:"#FFFFFF", surfaceAlt:"#F9F9F7",
-  border:"#DDDDD8", borderHi:"#BBBBBB",
-  red:"#CD5959",   redLight:"#F5E0E0",
-  gold:"#C1A759",  goldLight:"#F3EEE0",
-  steel:"#7E8993", steelMid:"#909090", steelLight:"#EAEAEA",
-  muted:"#888888", text:"#111111", textSoft:"#333333",
-  sonstige:"#7493B2", sonstigeL:"#E5EBF0",
-  strafe:"#A86AA8", strafeLight:"#EFE3EF",
-  tank:"#6A9E7E",  tankLight:"#E3EDE7",
-  wasch:"#62A4B6", waschLight:"#E2EEF1",
-  service:"#7E8993", serviceLight:"#E7E9EB",
-  park:"#A8936A",    parkLight:"#EFEBE3",
-  standort:"#937EB2", standortLight:"#EBE7F0",
-  laden:"#749E93", ladenLight:"#E5EDEB",
-  bank:"#6A93B2", bankLight:"#E3EBF0",
-  behoerde:"#938974", behoerdeLight:"#EBE9E5",
-  shadow:"0 1px 4px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.04)",
-  shadowMd:"0 2px 8px rgba(0,0,0,0.10), 0 8px 32px rgba(0,0,0,0.06)",
-  euBlue:"#003399", euBlueTint:"#f0f4ff", euBlueHover:"#f5f7ff", euBluePale:"#eef2ff",
-  euGold:"#FFD700", sheetsGreen:"#6AA889", savedGreen:"#679A7B",
-  redDk:"#A44747", goldDk:"#9A8547", steelDk:"#646D75", steelMidDk:"#737373",
-  strafeDk:"#865486", tankDk:"#547E64", waschDk:"#4E8391", serviceDk:"#646D75",
-  parkDk:"#867554", standortDk:"#75648E", ladenDk:"#5C7E75", bankDk:"#54758E",
-  behoerdeDk:"#756D5C", sonstigeDk:"#5C758E", mutedDk:"#6C6C6C",
-  sheetsGreenDk:"#54866D", savedGreenDk:"#527B62",
-  chatPrimary:"#003399", chatTint:"#f0f4ff", chatBorder:"#dde3f0", chatHover:"#eef2ff",
-  btnRadius:8, cardRadius:0, inputRadius:8,
-};
+// ═══ THEME (Google Material) ═════════════════════════════════════════════════
 
 export const THEME_GOOGLE = {
   id:"google", label:"Material", font:"'Google Sans', 'Roboto', -apple-system, sans-serif",
@@ -65,16 +34,6 @@ export const THEME_GOOGLE = {
   chatPrimary:"#1A73E8", chatTint:"#E8F0FE", chatBorder:"#D2E3FC", chatHover:"#D2E3FC",
   btnRadius:20, cardRadius:12, inputRadius:8,
 };
-
-export const THEME_HYBRID = {
-  ...THEME_CLASSIC,
-  id:"hybrid", label:"Carbon", font:"'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
-  useGradients: true,
-  headerGradient: "linear-gradient(90deg, #A44747, #E8A838, #547E64)",
-  btnRadius:8, cardRadius:8, inputRadius:8,
-};
-
-export const THEMES = { classic: THEME_CLASSIC, google: THEME_GOOGLE, hybrid: THEME_HYBRID };
 
 // ═══ STATIC COLOR PALETTES ═══════════════════════════════════════════════════
 
