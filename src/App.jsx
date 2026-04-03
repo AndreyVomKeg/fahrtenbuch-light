@@ -4531,14 +4531,15 @@ function FahrtenbuchApp({authUser, onLogout}) {
       vid.play().catch(()=>{});
     };
     const onActivity = (e) => {
-      // Ignore tab/header navigation clicks
-      if(e&&e.target&&e.target.closest&&e.target.closest('[data-nav]')) return;
-      if(!vid.paused && idleTimer===null) pause();
+      // Tab/header navigation clicks → resume video instead of pausing
+      if(e&&e.target&&e.target.closest&&e.target.closest('[data-nav]')) {
+        if(vid.paused) resume();
+        return;
+      }
+      if(!vid.paused) pause();
       clearTimeout(idleTimer);
       idleTimer = setTimeout(()=>{ resume(); idleTimer=null; }, IDLE_DELAY);
     };
-    // Start playing initially, auto-pause after 8s
-    const initTimer = setTimeout(onActivity, 8000);
     const events = ['mousedown','keydown','scroll','touchstart'];
     events.forEach(e=>window.addEventListener(e, onActivity, {passive:true}));
     return ()=>{
