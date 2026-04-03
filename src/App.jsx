@@ -4525,13 +4525,9 @@ function FahrtenbuchApp({authUser, onLogout}) {
     const FADE_MS = 1500;
     const pause = () => {
       if(vid.paused) return;
-      vid.style.transition = `opacity ${FADE_MS}ms ease`;
-      vid.style.opacity = '0.6';
-      setTimeout(()=>{ if(bgVideoRef.current) vid.pause(); }, FADE_MS);
+      vid.pause();
     };
     const resume = () => {
-      vid.style.transition = `opacity ${FADE_MS}ms ease`;
-      vid.style.opacity = '1';
       vid.play().catch(()=>{});
     };
     const onActivity = () => {
