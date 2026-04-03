@@ -2,7 +2,7 @@
 import React, { useState, useMemo, useEffect, useRef } from "react";
 import ReactDOM from "react-dom";
 import {
-  THEMES, THEME_GOOGLE, THEME_CLASSIC, THEME_HYBRID, syncTheme,
+  THEMES, THEME_GOOGLE, syncTheme,
   FARBEN, FARBE_DK_MAP,
   PARTNER_TYP_COLORS, PARTNER_TYP_COLORS_DK,
   PARTNER_TYP_LABELS, PARTNER_TYP_OPTS,
@@ -10,7 +10,7 @@ import {
 } from "./theme.js";
 
 // ─── ACTIVE THEME (reassigned in component) ──────────────────────────────────
-let C = THEME_HYBRID;
+let C = THEME_GOOGLE;
 let SANS = C.font;
 let { katAccent, katAccentDk, katBg, ST_TYP_COLORS, ST_TYP_COLORS_DK } = syncTheme(C);
 
@@ -4418,9 +4418,8 @@ function AuthForm({onLogin, onMuster}) {
 
 // ─── Корневой компонент — только роутинг auth ─────────────────────────────────
 export default function FahrtenbuchLight() {
-  const [themeId, setThemeId] = useState(()=>{try{return localStorage.getItem("fb2_theme")||"hybrid"}catch(e){return"hybrid"}});
-  React.useEffect(()=>{try{localStorage.setItem("fb2_theme",themeId)}catch(e){/*ok*/}}, [themeId]);
-  C = THEMES[themeId] || THEME_HYBRID;
+  const themeId = "google";
+  C = THEMES.google;
   if (GLASS_MODE) {
     // Light glass mode: keep original theme colors, only add glass-specific shadows
     C = { ...C,
@@ -4430,14 +4429,14 @@ export default function FahrtenbuchLight() {
   }
   ({ katAccent, katAccentDk, katBg, ST_TYP_COLORS, ST_TYP_COLORS_DK } = syncTheme(C));
   SANS = C.font;
-  // Load Google Sans for Google theme
+  // Load Google Sans font
   React.useEffect(()=>{
-    if(themeId==="google" && !document.getElementById("gfont-roboto")){
+    if(!document.getElementById("gfont-roboto")){
       const l=document.createElement("link");l.id="gfont-roboto";l.rel="stylesheet";
       l.href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap";
       document.head.appendChild(l);
     }
-  },[themeId]);
+  },[]);
 
   const [authUser, setAuthUser] = useState(()=>{
     try { const s=sessionStorage.getItem("fb2_auth"); return s?JSON.parse(s):null; } catch(e){return null;}
@@ -4452,11 +4451,11 @@ export default function FahrtenbuchLight() {
     setAuthUser(u);
   }
   if(!authUser) return <AuthForm onLogin={handleLogin} onMuster={handleMuster}/>;
-  return <FahrtenbuchApp authUser={authUser} onLogout={()=>{try{sessionStorage.removeItem("fb2_auth");}catch(e){/*ok*/}setAuthUser(null);}} themeId={themeId} setThemeId={setThemeId}/>;
+  return <FahrtenbuchApp authUser={authUser} onLogout={()=>{try{sessionStorage.removeItem("fb2_auth");}catch(e){/*ok*/}setAuthUser(null);}} themeId={themeId}/>;
 }
 
 // ─── Основное приложение (все хуки здесь) ─────────────────────────────────────
-function FahrtenbuchApp({authUser, onLogout, themeId, setThemeId}) {
+function FahrtenbuchApp({authUser, onLogout, themeId}) {
   const {isMobile, isTablet, isDesktop, width: screenW} = useScreenSize();
   // ── Role-based permissions ──
   const isDemo   = !!authUser?.isMuster;
@@ -6452,7 +6451,7 @@ WICHTIG — WANN UI-TOOLS NUTZEN:
   font-display: swap;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button { -webkit-appearance:none; margin:0; }
 input[type=number] { -moz-appearance:textfield; }
@@ -7823,7 +7822,7 @@ input[type=number] { -moz-appearance:textfield; }
               </div>
               <div>
                 <div style={{fontSize:isMobile?14:16,fontWeight:700,letterSpacing:isMobile?1:2,textTransform:"uppercase",color:C.text}}>Einstellungen</div>
-                <div style={{fontSize:isMobile?12:14,color:C.textSoft,letterSpacing:1,marginTop:2}}>Fuhrpark, Erscheinungsbild{isMobile?"":", Datensicherung"}</div>
+                <div style={{fontSize:isMobile?12:14,color:C.textSoft,letterSpacing:1,marginTop:2}}>Fuhrpark{isMobile?"":", Datensicherung"}</div>
               </div>
             </div>
 
@@ -7873,53 +7872,7 @@ input[type=number] { -moz-appearance:textfield; }
 
             </SettingsBlock>
 
-            {/* DESIGN-THEMA */}
-            <SettingsBlock accent={acc}>
-              <SettingsLabel text="ERSCHEINUNGSBILD" accent={C.muted}/>
-              <div style={{fontSize:14,color:C.muted,marginBottom:14,lineHeight:1.6}}>
-                Farbschema und Stil der Benutzeroberfläche anpassen.
-              </div>
-              <div style={{display:"flex",gap:10,flexWrap:"wrap"}}>
-                {[THEMES.hybrid, THEMES.google, THEMES.classic].map(t=>{
-                  const active = themeId===t.id;
-                  const preview = t.id==="classic"
-                    ? {bg:"#F4F4F0",accent:"#CD5959",surface:"#FFFFFF",text:"#111",radius:6,letter:"C",desc:"Zurückhaltend, Deutsch, Fahrtenbuch-typisch",colors:["#CD5959","#F4F4F0","#FFFFFF"]}
-                    : t.id==="hybrid"
-                    ? {bg:"#F4F4F0",accent:"#A44747",surface:"#FFFFFF",text:"#111",radius:6,letter:"H",desc:"Classic-Basis mit Carbon-Akzenten, Gradient-Effekte",colors:["#A44747","#E8A838","#547E64"],gradient:true}
-                    : {bg:"#F8F9FA",accent:"#6AA4F0",surface:"#FFFFFF",text:"#202124",radius:12,letter:"M",desc:"Material Design 3, hell, rund",colors:["#6AA4F0","#F8F9FA","#FFFFFF","#34A853","#FBBC05","#EA4335"]};
-                  return (
-                    <button key={t.id} onClick={()=>setThemeId(t.id)}
-                      style={{
-                        flex:"1 1 160px",maxWidth:320,padding:0,border:active?`2px solid ${preview.accent}`:`1.5px solid ${C.border}`,
-                        borderRadius:preview.radius,background:preview.bg,cursor:"pointer",
-                        overflow:"hidden",transition:"border-color 0.2s, box-shadow 0.2s",
-                        boxShadow:active?"0 0 0 3px "+preview.accent+"22":"none",
-                      }}>
-                      {preview.gradient
-                        ?<div style={{height:3,background:"linear-gradient(90deg, #A44747, #E8A838, #547E64)"}}/>
-                        :<div style={{height:3}}/>}
-                      <div style={{padding:"14px 16px 12px"}}>
-                        <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}>
-                          <div style={{width:28,height:28,borderRadius:preview.radius>=12?14:6,background:preview.accent,display:"flex",alignItems:"center",justifyContent:"center"}}>
-                            <span style={{color:"#fff",fontSize:14,fontWeight:700}}>{preview.letter}</span>
-                          </div>
-                          <span style={{fontSize:15,fontWeight:700,color:preview.text,fontFamily:t.font}}>{t.label}</span>
-                          {active&&<span style={{marginLeft:"auto",fontSize:11,fontWeight:700,background:preview.accent,color:"#fff",padding:"2px 8px",borderRadius:10}}>AKTIV</span>}
-                        </div>
-                        <div style={{display:"flex",gap:4,marginBottom:8}}>
-                          {preview.colors.map((c,i)=>(
-                            <div key={i} style={{width:20,height:20,borderRadius:preview.radius>=12?10:4,background:c,border:"1px solid rgba(0,0,0,0.1)"}}/>
-                          ))}
-                        </div>
-                        <div style={{fontSize:12,color:preview.text,opacity:0.6,fontFamily:t.font,textAlign:"left"}}>
-                          {preview.desc}
-                        </div>
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
-            </SettingsBlock>
+
 
             {/* DATENSICHERUNG — nur für Admin */}
             {canAdmin&&(
