@@ -4491,6 +4491,7 @@ function FahrtenbuchApp({authUser, onLogout}) {
   const carPopRef = useRef(null);
   const kzBoxRef = useRef(null);
   const headerRef = useRef(null);
+  const bgVideoRef = useRef(null);
   const [headerH, setHeaderH] = useState(138);
   const [chatPos, setChatPos] = useState({x: null, y: null});
   const chatDrag = useRef({dragging:false, startX:0, startY:0, startPosX:0, startPosY:0});
@@ -4512,6 +4513,41 @@ function FahrtenbuchApp({authUser, onLogout}) {
     const ro = new ResizeObserver(()=>setHeaderH(headerRef.current?.offsetHeight||138));
     ro.observe(headerRef.current);
     return ()=>ro.disconnect();
+  },[]);
+
+  // Auto-pause background video after user interaction, resume on idle
+  useEffect(()=>{
+    if(!GLASS_MODE) return;
+    const vid = bgVideoRef.current;
+    if(!vid) return;
+    let idleTimer = null;
+    const IDLE_DELAY = 30000; // 30s without interaction → resume
+    const FADE_MS = 1500;
+    const pause = () => {
+      if(vid.paused) return;
+      vid.style.transition = `opacity ${FADE_MS}ms ease`;
+      vid.style.opacity = '0.6';
+      setTimeout(()=>{ if(bgVideoRef.current) vid.pause(); }, FADE_MS);
+    };
+    const resume = () => {
+      vid.style.transition = `opacity ${FADE_MS}ms ease`;
+      vid.style.opacity = '1';
+      vid.play().catch(()=>{});
+    };
+    const onActivity = () => {
+      if(!vid.paused && idleTimer===null) pause();
+      clearTimeout(idleTimer);
+      idleTimer = setTimeout(()=>{ resume(); idleTimer=null; }, IDLE_DELAY);
+    };
+    // Start playing initially, auto-pause after 8s
+    const initTimer = setTimeout(onActivity, 8000);
+    const events = ['mousedown','keydown','scroll','touchstart'];
+    events.forEach(e=>window.addEventListener(e, onActivity, {passive:true}));
+    return ()=>{
+      clearTimeout(initTimer);
+      clearTimeout(idleTimer);
+      events.forEach(e=>window.removeEventListener(e, onActivity));
+    };
   },[]);
   // Chat drag handlers
   const onChatDragStart = (e) => {
@@ -6626,8 +6662,8 @@ input[type=number] { -moz-appearance:textfield; }
           <feColorMatrix in="flat" type="saturate" values="1.7"/>
         </filter>
       </defs></svg>}
-      {GLASS_MODE && <video autoPlay muted loop playsInline poster={BG_VIDEO_POSTER}
-        style={{position:"fixed",top:0,left:0,width:"100vw",height:"100vh",objectFit:"cover",zIndex:-1,pointerEvents:"none",filter:"brightness(1.12) contrast(0.52) saturate(1.25) sepia(0.15) hue-rotate(-5deg) url(#illustrated)",transform:"scale(1.03)"}}>
+      {GLASS_MODE && <video ref={bgVideoRef} autoPlay muted loop playsInline poster={BG_VIDEO_POSTER}
+        style={{position:"fixed",top:0,left:0,width:"100vw",height:"100vh",objectFit:"cover",zIndex:-1,pointerEvents:"none",filter:"brightness(1.12) contrast(0.52) saturate(1.25) sepia(0.15) hue-rotate(-5deg) url(#illustrated)",transform:"scale(1.03)",opacity:1,transition:"opacity 1.5s ease"}}>
         <source src={BG_VIDEO_SRC} type="video/mp4"/>
       </video>}
 
