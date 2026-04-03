@@ -6644,25 +6644,8 @@ input[type=number] { -moz-appearance:textfield; }
 `}</style>
     <div style={{minHeight:"100vh",background:GLASS_MODE?GLASS_BG:C.bg,color:C.text,fontFamily:SANS,overflowX:"hidden",width:"100%",maxWidth:"100vw",position:"relative"}}>
       {/* ── VIDEO BACKGROUND ── */}
-      {GLASS_MODE && <svg width="0" height="0" style={{position:'absolute'}}><defs>
-        {/* Cartoon-style — low blur, strong sharpen+flatten+saturate, NO posterize */}
-        <filter id="illustrated" colorInterpolationFilters="sRGB">
-          {/* Light blur — just enough to smooth video noise */}
-          <feGaussianBlur in="SourceGraphic" stdDeviation="0.9" result="smooth"/>
-          {/* Aggressive sharpen — bold illustrated outlines */}
-          <feConvolveMatrix in="smooth" order="3" kernelMatrix="0 -1.2 0 -1.2 5.8 -1.2 0 -1.2 0" preserveAlpha="true" result="sharp"/>
-          {/* Strong gamma flatten — compressed tones, cartoon feel */}
-          <feComponentTransfer in="sharp" result="flat">
-            <feFuncR type="gamma" amplitude="1" exponent="0.7" offset="0.06"/>
-            <feFuncG type="gamma" amplitude="1" exponent="0.7" offset="0.06"/>
-            <feFuncB type="gamma" amplitude="1" exponent="0.7" offset="0.06"/>
-          </feComponentTransfer>
-          {/* Vivid saturation */}
-          <feColorMatrix in="flat" type="saturate" values="1.7"/>
-        </filter>
-      </defs></svg>}
       {GLASS_MODE && <video ref={bgVideoRef} autoPlay muted loop playsInline poster={BG_VIDEO_POSTER}
-        style={{position:"fixed",top:0,left:0,width:"100vw",height:"100vh",objectFit:"cover",zIndex:-1,pointerEvents:"none",filter:"brightness(1.12) contrast(0.52) saturate(1.25) sepia(0.15) hue-rotate(-5deg) url(#illustrated)",transform:"scale(1.03)",opacity:1,transition:"opacity 1.5s ease"}}>
+        style={{position:"fixed",top:0,left:0,width:"100vw",height:"100vh",objectFit:"cover",zIndex:-1,pointerEvents:"none",transform:"scale(1.03)"}}>
         <source src={BG_VIDEO_SRC} type="video/mp4"/>
       </video>}
 
