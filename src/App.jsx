@@ -1725,14 +1725,15 @@ function FzEditForm({fz,onSave,onCancel,accent}) {
     stName:fz.standort?.name||"", stAdr:fz.standort?.adresse||"",
   });
   const ac=f.farbe||accent;
+  const {isMobile} = useScreenSize();
   const save=()=>{ const p=(f.markeModell||"").trim().split(/\s+/); onSave({...f,marke:p[0]||"",modell:p.slice(1).join(" ")||""}); };
   const SectionHead = ({label, first=false}) => (
-    <div style={{...(first?{}:{borderTop:`2px solid ${ac}`}),paddingTop:first?0:12,marginTop:first?0:4}}>
-      <div style={{fontSize:13,color:ac,letterSpacing:3,textTransform:"uppercase",fontFamily:SANS,fontWeight:700,marginBottom:10}}>{label}</div>
+    <div style={{...(first?{}:{borderTop:`1px solid ${C.border}`,paddingTop:16,marginTop:12})}}>
+      <div style={{fontSize:13,color:C.text,letterSpacing:3,textTransform:"uppercase",fontFamily:SANS,fontWeight:700,marginBottom:10}}>{label}</div>
     </div>
   );
   return (
-    <div style={{background:C.surface,borderTop:`2px solid ${ac}`,padding:"18px 0 0 0",marginTop:2,display:"flex",flexDirection:"column",gap:6}}>
+    <div style={{borderTop:`1px solid ${C.border}`,paddingTop:16,marginTop:12,display:"flex",flexDirection:"column",gap:6}}>
 
       {/* ── SCAN ── */}
       <FahrzeugScan onResult={d=>{
@@ -2756,7 +2757,7 @@ function FahrzeugScan({onResult}) {
   };
   return (
     <div style={{marginBottom:4}}>
-      <label style={{display:"inline-flex",alignItems:"center",gap:8,padding:"9px 18px",background:loading?"rgba(0,0,0,0.06)":"#7A8A96",border:"1px solid #7A8A96",borderRadius:C.inputRadius||8,cursor:loading?"not-allowed":"pointer",fontSize:14,fontFamily:SANS,fontWeight:700,letterSpacing:1.5,textTransform:"uppercase",color:"#fff",userSelect:"none",opacity:loading?0.7:1}}>
+      <label style={{display:"inline-flex",alignItems:"center",gap:8,padding:"9px 18px",background:loading?"rgba(0,0,0,0.06)":C.service,border:`1px solid ${C.service}`,borderRadius:C.inputRadius||8,cursor:loading?"not-allowed":"pointer",fontSize:14,fontFamily:SANS,fontWeight:700,letterSpacing:1.5,textTransform:"uppercase",color:"#fff",userSelect:"none",opacity:loading?0.7:1}}>
         <Ico name="upload" size={15} color="#fff"/>
         {loading?"KI liest Fahrzeugschein…":"Fahrzeugschein scannen (KI)"}
         <input type="file" accept="image/*,application/pdf" onChange={handleFile} style={{display:"none"}} disabled={loading}/>
